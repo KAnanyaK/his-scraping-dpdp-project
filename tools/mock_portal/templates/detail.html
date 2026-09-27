@@ -1,31 +1,17 @@
 {% extends "base.html" %}
 {% block title %}{{ title }} record - HIS Portal{% endblock %}
-{% block body_class %}app view-record{% endblock %}
 {% block content %}
-<section class="band">
-  <span class="code">{{ module_code(slug) }}</span>
-  <h1>{{ title }}</h1>
-  <p class="meta">Record {{ rid + 1 }} of {{ total }}</p>
-</section>
-<div class="toolbar">
-  <a class="btn" href="{{ url_for('module_list', slug=slug) }}"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4.5h10M3 8h10M3 11.5h10"/></svg>Back to {{ title }}</a>
-  <nav class="pager" aria-label="Records">
-    {% if prev_id is not none %}<a class="btn" href="{{ url_for('module_detail', slug=slug, rid=prev_id) }}"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 4 6 8l4 4"/></svg>Previous record</a>{% else %}<span class="btn off"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 4 6 8l4 4"/></svg>Previous record</span>{% endif %}
-    {% if next_id is not none %}<a class="btn" href="{{ url_for('module_detail', slug=slug, rid=next_id) }}">Next record<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></a>{% else %}<span class="btn off">Next record<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></span>{% endif %}
-  </nav>
-</div>
-<div class="sheet-wrap">
-<table class="sheet">
+<p><a href="{{ url_for('module_list', slug=slug) }}">&laquo; Back to {{ title }}</a></p>
+<h1>{{ title }} &mdash; record</h1>
+<table>
   <tbody>
   {% for name, value in record.items() %}
   <tr><th>{{ label(name) }}</th><td>{{ value }}</td></tr>
   {% endfor %}
   </tbody>
 </table>
-</div>
-{% endblock %}
-{% block status %}
-<span class="slot s-view">Record</span>
-<span class="slot s-page">Record <b>{{ ('%0' ~ (total|string|length) ~ 'd')|format(rid + 1) }}</b>&nbsp;/ {{ total }}</span>
-<span class="slot s-rows">{{ record|length }} fields</span>
+<p class="pager">
+  {% if prev_id is not none %}<a href="{{ url_for('module_detail', slug=slug, rid=prev_id) }}">&laquo; Previous record</a>{% endif %}
+  {% if next_id is not none %}<a href="{{ url_for('module_detail', slug=slug, rid=next_id) }}">Next record &raquo;</a>{% endif %}
+</p>
 {% endblock %}
