@@ -77,6 +77,10 @@ MODULE_TITLES: dict[HISLayer, str] = {
     HISLayer.ADMINISTRATIVE_FINANCIAL: "Billing & Accounts",
     HISLayer.INFRASTRUCTURE_INTEGRATION: "Audit Log",
 }
+# Short codes the portal shows beside a module's name (tabs, status bar, launcher).
+MODULE_CODES: dict[str, str] = {
+    "registration": "REG", "clinical": "CLN", "departments": "DEP", "billing": "BIL", "integration": "AUD",
+}
 _SLUG_TO_LAYER = {slug: layer for layer, slug in MODULE_SLUGS.items()}
 
 DEFAULT_USERS = {"frontdesk": "letmein"}
@@ -146,6 +150,8 @@ def create_app(
             ],
             "user": session.get("user"),
             "label": lambda name: labels.get(name, name),
+            "module_code": lambda slug: MODULE_CODES.get(slug, ""),
+            "signed_in_at": session.get("since"),
         }
 
     # -------------------------------------------------------------- routes --
@@ -168,11 +174,12 @@ def create_app(
         if token_ok and app.config["USERS"].get(username) == password:
             session.clear()
             session["user"] = username
+            session["since"] = time.strftime("%H:%M")
             target = request.args.get("next") or url_for("home")
             return redirect(target)
         session["login_token"] = secrets.token_urlsafe(16)
         return render_template(
-            "login.html", token=session["login_token"], error="Invalid credentials."
+            "login.html", token=session["login_token"], error="Username or password not recognised. Check both and sign in again."
         ), 401
 
     @app.get("/logout")
@@ -222,6 +229,8 @@ def create_app(
             pages=pages,
             total=len(indexed),
             query=query,
+            first=(page - 1) * size + 1 if chunk else 0,
+            last=(page - 1) * size + len(chunk),
         )
 
     @app.get("/m/<slug>/record/<int:rid>")
@@ -237,6 +246,7 @@ def create_app(
             title=MODULE_TITLES[layer],
             rid=rid,
             record=rows[rid],
+            total=len(rows),
             prev_id=rid - 1 if rid > 0 else None,
             next_id=rid + 1 if rid + 1 < len(rows) else None,
         )
