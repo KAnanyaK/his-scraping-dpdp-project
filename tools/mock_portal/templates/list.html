@@ -1,53 +1,27 @@
 {% extends "base.html" %}
 {% block title %}{{ title }} - HIS Portal{% endblock %}
-{% block body_class %}app view-list{% endblock %}
 {% block content %}
-<section class="band">
-  <span class="code">{{ module_code(slug) }}</span>
-  <h1>{{ title }}</h1>
-  <p class="meta">{{ total }} record{{ '' if total == 1 else 's' }}{% if query %} matching "{{ query }}"{% endif %} &middot; page {{ page }} of {{ pages }}</p>
-</section>
-<div class="toolbar">
-  <form method="get" action="{{ url_for('module_list', slug=slug) }}" role="search">
-    <label for="q">Find</label>
-    <input type="text" id="q" name="q" value="{{ query }}" placeholder="Patient ID, name, ward&hellip;">
-    <button type="submit"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.3"/><path d="m10.2 10.2 3.3 3.3"/></svg>Search</button>
-    {% if query %}<a class="clear" href="{{ url_for('module_list', slug=slug) }}">Clear search</a>{% endif %}
-  </form>
-  <nav class="pager" aria-label="Pages">
-    {% if page > 1 %}
-    <a class="btn edge" href="{{ url_for('module_list', slug=slug, page=1, q=query or None) }}"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3.5v9M11.5 4 7.5 8l4 4"/></svg><span>First</span></a>
-    <a class="btn" href="{{ url_for('module_list', slug=slug, page=page-1, q=query or None) }}"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 4 6 8l4 4"/></svg><span>Previous</span></a>
-    {% else %}
-    <span class="btn off edge"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3.5v9M11.5 4 7.5 8l4 4"/></svg><span>First</span></span>
-    <span class="btn off"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 4 6 8l4 4"/></svg><span>Previous</span></span>
-    {% endif %}
-    {% if page < pages %}
-    <a class="btn" href="{{ url_for('module_list', slug=slug, page=page+1, q=query or None) }}"><span>Next</span><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></a>
-    <a class="btn edge" href="{{ url_for('module_list', slug=slug, page=pages, q=query or None) }}"><span>Last</span><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M12 3.5v9M4.5 4l4 4-4 4"/></svg></a>
-    {% else %}
-    <span class="btn off"><span>Next</span><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4"/></svg></span>
-    <span class="btn off edge"><span>Last</span><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M12 3.5v9M4.5 4l4 4-4 4"/></svg></span>
-    {% endif %}
-  </nav>
-</div>
-<div class="grid-wrap">
-<table class="grid">
-  <thead><tr>{% for c in columns %}<th>{{ label(c) }}</th>{% endfor %}<th aria-label="Actions"></th></tr></thead>
+<h1>{{ title }}</h1>
+<form class="search" method="get" action="{{ url_for('module_list', slug=slug) }}">
+  <input type="text" name="q" value="{{ query }}" placeholder="Search">
+  <button type="submit">Search</button>
+  {% if query %}<a href="{{ url_for('module_list', slug=slug) }}">Clear</a>{% endif %}
+</form>
+<p>{{ total }} record{{ '' if total == 1 else 's' }}{% if query %} matching "{{ query }}"{% endif %} &middot; page {{ page }} of {{ pages }}</p>
+<table>
+  <thead><tr>{% for c in columns %}<th>{{ label(c) }}</th>{% endfor %}<th></th></tr></thead>
   <tbody>
   {% for rid, row in rows %}
   <tr>
     {% for c in columns %}<td>{{ row.get(c, '') }}</td>{% endfor %}
-    <td><a class="open" href="{{ url_for('module_detail', slug=slug, rid=rid) }}">Open</a></td>
+    <td><a href="{{ url_for('module_detail', slug=slug, rid=rid) }}">Open</a></td>
   </tr>
   {% endfor %}
   </tbody>
 </table>
-{% if not rows %}<p class="empty">No {{ title|lower }} records match &ldquo;{{ query }}&rdquo;. Check the spelling, or search by Patient ID.</p>{% endif %}
-</div>
-{% endblock %}
-{% block status %}
-<span class="slot s-view">{% if query %}Search &ldquo;{{ query }}&rdquo;{% else %}List{% endif %}</span>
-<span class="slot s-page">Page <b>{{ ('%0' ~ (pages|string|length) ~ 'd')|format(page) }}</b>&nbsp;/ {{ pages }}</span>
-<span class="slot s-rows">{% if rows %}Rows <b>{{ first }}&ndash;{{ last }}</b> of {{ total }}{% else %}No rows{% endif %}</span>
+<p class="pager">
+  {% if page > 1 %}<a href="{{ url_for('module_list', slug=slug, page=page-1, q=query or None) }}">&laquo; Previous</a>{% endif %}
+  <span>Page {{ page }} / {{ pages }}</span>
+  {% if page < pages %}<a href="{{ url_for('module_list', slug=slug, page=page+1, q=query or None) }}">Next &raquo;</a>{% endif %}
+</p>
 {% endblock %}
