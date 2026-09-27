@@ -1,13 +1,13 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-27T08:22:35+00:00",
+  "generatedAt": "2026-09-27T09:21:12+00:00",
   "title": "Design System: DPDP-compliant HIS extraction — Review demo pages",
   "extensions": {
     "colorMeta": {
-      "paper": {
+      "page": {
         "role": "neutral",
-        "displayName": "Paper",
-        "canonical": "#f3f4f6",
+        "displayName": "Grey Desk",
+        "canonical": "#f5f6f8",
         "tonalRamp": [
           "oklch(15% 0.003 264.5)",
           "oklch(26% 0.003 264.5)",
@@ -19,24 +19,9 @@
           "oklch(95% 0.003 264.5)"
         ]
       },
-      "paper-glow": {
-        "role": "neutral",
-        "displayName": "Paper Glow",
-        "canonical": "#e9ecf1",
-        "tonalRamp": [
-          "oklch(15% 0.007 260.7)",
-          "oklch(26% 0.007 260.7)",
-          "oklch(38% 0.007 260.7)",
-          "oklch(50% 0.007 260.7)",
-          "oklch(62% 0.007 260.7)",
-          "oklch(74% 0.007 260.7)",
-          "oklch(85% 0.007 260.7)",
-          "oklch(95% 0.007 260.7)"
-        ]
-      },
       "card": {
         "role": "neutral",
-        "displayName": "Card",
+        "displayName": "Panel White",
         "canonical": "#ffffff",
         "tonalRamp": [
           "oklch(15% 0.000 89.9)",
@@ -49,9 +34,9 @@
           "oklch(95% 0.000 89.9)"
         ]
       },
-      "card-recess": {
+      "recess": {
         "role": "neutral",
-        "displayName": "Card Recess",
+        "displayName": "Recess Grey",
         "canonical": "#f0f2f5",
         "tonalRamp": [
           "oklch(15% 0.005 258.3)",
@@ -64,34 +49,34 @@
           "oklch(95% 0.005 258.3)"
         ]
       },
-      "hairline": {
+      "line": {
         "role": "neutral",
-        "displayName": "Hairline",
-        "canonical": "#e1e5ea",
+        "displayName": "Rule Line",
+        "canonical": "#e1e4e9",
         "tonalRamp": [
-          "oklch(15% 0.008 253.9)",
-          "oklch(26% 0.008 253.9)",
-          "oklch(38% 0.008 253.9)",
-          "oklch(50% 0.008 253.9)",
-          "oklch(62% 0.008 253.9)",
-          "oklch(74% 0.008 253.9)",
-          "oklch(85% 0.008 253.9)",
-          "oklch(95% 0.008 253.9)"
+          "oklch(15% 0.008 260.7)",
+          "oklch(26% 0.008 260.7)",
+          "oklch(38% 0.008 260.7)",
+          "oklch(50% 0.008 260.7)",
+          "oklch(62% 0.008 260.7)",
+          "oklch(74% 0.008 260.7)",
+          "oklch(85% 0.008 260.7)",
+          "oklch(95% 0.008 260.7)"
         ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Ink",
-        "canonical": "#121417",
+        "canonical": "#14161a",
         "tonalRamp": [
-          "oklch(15% 0.007 258.4)",
-          "oklch(26% 0.007 258.4)",
-          "oklch(38% 0.007 258.4)",
-          "oklch(50% 0.007 258.4)",
-          "oklch(62% 0.007 258.4)",
-          "oklch(74% 0.007 258.4)",
-          "oklch(85% 0.007 258.4)",
-          "oklch(95% 0.007 258.4)"
+          "oklch(15% 0.009 264.4)",
+          "oklch(26% 0.009 264.4)",
+          "oklch(38% 0.009 264.4)",
+          "oklch(50% 0.009 264.4)",
+          "oklch(62% 0.009 264.4)",
+          "oklch(74% 0.009 264.4)",
+          "oklch(85% 0.009 264.4)",
+          "oklch(95% 0.009 264.4)"
         ]
       },
       "ink-soft": {
@@ -257,6 +242,21 @@
           "oklch(74% 0.029 82.6)",
           "oklch(85% 0.029 82.6)",
           "oklch(95% 0.029 82.6)"
+        ]
+      },
+      "on-fill": {
+        "role": "tertiary",
+        "displayName": "On-Fill",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(38% 0.000 89.9)",
+          "oklch(50% 0.000 89.9)",
+          "oklch(62% 0.000 89.9)",
+          "oklch(74% 0.000 89.9)",
+          "oklch(85% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
         ]
       },
       "layer-patient-admin": {
@@ -427,16 +427,16 @@
       "terminal": {
         "role": "neutral",
         "displayName": "Terminal Slab",
-        "canonical": "#0d1014",
+        "canonical": "#111316",
         "tonalRamp": [
-          "oklch(15% 0.010 255.7)",
-          "oklch(26% 0.010 255.7)",
-          "oklch(38% 0.010 255.7)",
-          "oklch(50% 0.010 255.7)",
-          "oklch(62% 0.010 255.7)",
-          "oklch(74% 0.010 255.7)",
-          "oklch(85% 0.010 255.7)",
-          "oklch(95% 0.010 255.7)"
+          "oklch(15% 0.007 258.4)",
+          "oklch(26% 0.007 258.4)",
+          "oklch(38% 0.007 258.4)",
+          "oklch(50% 0.007 258.4)",
+          "oklch(62% 0.007 258.4)",
+          "oklch(74% 0.007 258.4)",
+          "oklch(85% 0.007 258.4)",
+          "oklch(95% 0.007 258.4)"
         ]
       },
       "terminal-ink": {
@@ -454,9 +454,54 @@
           "oklch(95% 0.010 247.9)"
         ]
       },
-      "night-paper": {
+      "terminal-ok": {
         "role": "neutral",
-        "displayName": "Night Paper",
+        "displayName": "Terminal Pass",
+        "canonical": "#5fd38d",
+        "tonalRamp": [
+          "oklch(15% 0.146 154.5)",
+          "oklch(26% 0.146 154.5)",
+          "oklch(38% 0.146 154.5)",
+          "oklch(50% 0.146 154.5)",
+          "oklch(62% 0.146 154.5)",
+          "oklch(74% 0.146 154.5)",
+          "oklch(85% 0.146 154.5)",
+          "oklch(95% 0.146 154.5)"
+        ]
+      },
+      "terminal-no": {
+        "role": "neutral",
+        "displayName": "Terminal Fail",
+        "canonical": "#ff7b7b",
+        "tonalRamp": [
+          "oklch(15% 0.161 21.8)",
+          "oklch(26% 0.161 21.8)",
+          "oklch(38% 0.161 21.8)",
+          "oklch(50% 0.161 21.8)",
+          "oklch(62% 0.161 21.8)",
+          "oklch(74% 0.161 21.8)",
+          "oklch(85% 0.161 21.8)",
+          "oklch(95% 0.161 21.8)"
+        ]
+      },
+      "terminal-dim": {
+        "role": "neutral",
+        "displayName": "Terminal Dim",
+        "canonical": "#8b949e",
+        "tonalRamp": [
+          "oklch(15% 0.018 250.9)",
+          "oklch(26% 0.018 250.9)",
+          "oklch(38% 0.018 250.9)",
+          "oklch(50% 0.018 250.9)",
+          "oklch(62% 0.018 250.9)",
+          "oklch(74% 0.018 250.9)",
+          "oklch(85% 0.018 250.9)",
+          "oklch(95% 0.018 250.9)"
+        ]
+      },
+      "night-page": {
+        "role": "neutral",
+        "displayName": "Night Grey Desk",
         "canonical": "#0f1114",
         "tonalRamp": [
           "oklch(15% 0.007 258.4)",
@@ -469,25 +514,10 @@
           "oklch(95% 0.007 258.4)"
         ]
       },
-      "night-paper-glow": {
-        "role": "neutral",
-        "displayName": "Night Paper Glow",
-        "canonical": "#15181d",
-        "tonalRamp": [
-          "oklch(15% 0.011 260.7)",
-          "oklch(26% 0.011 260.7)",
-          "oklch(38% 0.011 260.7)",
-          "oklch(50% 0.011 260.7)",
-          "oklch(62% 0.011 260.7)",
-          "oklch(74% 0.011 260.7)",
-          "oklch(85% 0.011 260.7)",
-          "oklch(95% 0.011 260.7)"
-        ]
-      },
       "night-card": {
         "role": "neutral",
-        "displayName": "Night Card",
-        "canonical": "#1a1d22",
+        "displayName": "Night Panel White",
+        "canonical": "#181b20",
         "tonalRamp": [
           "oklch(15% 0.011 260.7)",
           "oklch(26% 0.011 260.7)",
@@ -499,10 +529,10 @@
           "oklch(95% 0.011 260.7)"
         ]
       },
-      "night-card-recess": {
+      "night-recess": {
         "role": "neutral",
-        "displayName": "Night Card Recess",
-        "canonical": "#23272d",
+        "displayName": "Night Recess Grey",
+        "canonical": "#22262c",
         "tonalRamp": [
           "oklch(15% 0.013 258.4)",
           "oklch(26% 0.013 258.4)",
@@ -514,9 +544,9 @@
           "oklch(95% 0.013 258.4)"
         ]
       },
-      "night-hairline": {
+      "night-line": {
         "role": "neutral",
-        "displayName": "Night Hairline",
+        "displayName": "Night Rule Line",
         "canonical": "#2c3138",
         "tonalRamp": [
           "oklch(15% 0.014 256.8)",
@@ -532,7 +562,7 @@
       "night-ink": {
         "role": "neutral",
         "displayName": "Night Ink",
-        "canonical": "#f1f3f5",
+        "canonical": "#eef0f2",
         "tonalRamp": [
           "oklch(15% 0.003 247.9)",
           "oklch(26% 0.003 247.9)",
@@ -634,6 +664,21 @@
           "oklch(95% 0.157 155.0)"
         ]
       },
+      "night-good-wash": {
+        "role": "tertiary",
+        "displayName": "Night Green Wash",
+        "canonical": "#173527",
+        "tonalRamp": [
+          "oklch(15% 0.045 161.8)",
+          "oklch(26% 0.045 161.8)",
+          "oklch(38% 0.045 161.8)",
+          "oklch(50% 0.045 161.8)",
+          "oklch(62% 0.045 161.8)",
+          "oklch(74% 0.045 161.8)",
+          "oklch(85% 0.045 161.8)",
+          "oklch(95% 0.045 161.8)"
+        ]
+      },
       "night-bad": {
         "role": "tertiary",
         "displayName": "Night Verdict Red",
@@ -647,6 +692,21 @@
           "oklch(74% 0.163 22.3)",
           "oklch(85% 0.163 22.3)",
           "oklch(95% 0.163 22.3)"
+        ]
+      },
+      "night-bad-wash": {
+        "role": "tertiary",
+        "displayName": "Night Red Wash",
+        "canonical": "#3a2023",
+        "tonalRamp": [
+          "oklch(15% 0.041 12.6)",
+          "oklch(26% 0.041 12.6)",
+          "oklch(38% 0.041 12.6)",
+          "oklch(50% 0.041 12.6)",
+          "oklch(62% 0.041 12.6)",
+          "oklch(74% 0.041 12.6)",
+          "oklch(85% 0.041 12.6)",
+          "oklch(95% 0.041 12.6)"
         ]
       },
       "night-warn": {
@@ -663,114 +723,164 @@
           "oklch(85% 0.135 77.5)",
           "oklch(95% 0.135 77.5)"
         ]
+      },
+      "night-warn-wash": {
+        "role": "tertiary",
+        "displayName": "Night Ochre Wash",
+        "canonical": "#3a2f1c",
+        "tonalRamp": [
+          "oklch(15% 0.035 80.6)",
+          "oklch(26% 0.035 80.6)",
+          "oklch(38% 0.035 80.6)",
+          "oklch(50% 0.035 80.6)",
+          "oklch(62% 0.035 80.6)",
+          "oklch(74% 0.035 80.6)",
+          "oklch(85% 0.035 80.6)",
+          "oklch(95% 0.035 80.6)"
+        ]
+      },
+      "night-on-fill": {
+        "role": "tertiary",
+        "displayName": "Night On-Fill",
+        "canonical": "#0f1114",
+        "tonalRamp": [
+          "oklch(15% 0.007 258.4)",
+          "oklch(26% 0.007 258.4)",
+          "oklch(38% 0.007 258.4)",
+          "oklch(50% 0.007 258.4)",
+          "oklch(62% 0.007 258.4)",
+          "oklch(74% 0.007 258.4)",
+          "oklch(85% 0.007 258.4)",
+          "oklch(95% 0.007 258.4)"
+        ]
+      },
+      "night-layer-clinical": {
+        "role": "tertiary",
+        "displayName": "Night Layer Clinical",
+        "canonical": "#22b07e",
+        "tonalRamp": [
+          "oklch(15% 0.137 163.2)",
+          "oklch(26% 0.137 163.2)",
+          "oklch(38% 0.137 163.2)",
+          "oklch(50% 0.137 163.2)",
+          "oklch(62% 0.137 163.2)",
+          "oklch(74% 0.137 163.2)",
+          "oklch(85% 0.137 163.2)",
+          "oklch(95% 0.137 163.2)"
+        ]
+      },
+      "night-layer-ancillary": {
+        "role": "tertiary",
+        "displayName": "Night Layer Ancillary",
+        "canonical": "#2bb3c0",
+        "tonalRamp": [
+          "oklch(15% 0.111 204.8)",
+          "oklch(26% 0.111 204.8)",
+          "oklch(38% 0.111 204.8)",
+          "oklch(50% 0.111 204.8)",
+          "oklch(62% 0.111 204.8)",
+          "oklch(74% 0.111 204.8)",
+          "oklch(85% 0.111 204.8)",
+          "oklch(95% 0.111 204.8)"
+        ]
+      },
+      "night-layer-financial": {
+        "role": "tertiary",
+        "displayName": "Night Layer Financial",
+        "canonical": "#e0662f",
+        "tonalRamp": [
+          "oklch(15% 0.167 42.5)",
+          "oklch(26% 0.167 42.5)",
+          "oklch(38% 0.167 42.5)",
+          "oklch(50% 0.167 42.5)",
+          "oklch(62% 0.167 42.5)",
+          "oklch(74% 0.167 42.5)",
+          "oklch(85% 0.167 42.5)",
+          "oklch(95% 0.167 42.5)"
+        ]
+      },
+      "night-layer-integration": {
+        "role": "tertiary",
+        "displayName": "Night Layer Integration",
+        "canonical": "#b08a5a",
+        "tonalRamp": [
+          "oklch(15% 0.079 72.2)",
+          "oklch(26% 0.079 72.2)",
+          "oklch(38% 0.079 72.2)",
+          "oklch(50% 0.079 72.2)",
+          "oklch(62% 0.079 72.2)",
+          "oklch(74% 0.079 72.2)",
+          "oklch(85% 0.079 72.2)",
+          "oklch(95% 0.079 72.2)"
+        ]
       }
     },
     "typographyMeta": {
-      "display": {
-        "displayName": "Display",
-        "purpose": "Page title; 2.6rem on the index hero."
-      },
-      "hero-number": {
-        "displayName": "Hero number",
-        "purpose": "Funnel and tile numbers, coloured by owner, counting up."
-      },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Card and section titles."
+        "purpose": "The page title, once per page, in the display cut."
+      },
+      "key-number": {
+        "displayName": "Key number",
+        "purpose": "The key-number strip in the display cut; lane counts 2.3rem, patient scores 2.2rem, secondary figures 1.35-1.6rem."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Sub-headings inside cards, in ink-soft."
+        "purpose": "Panel and section headings in the display cut."
       },
-      "lead": {
-        "displayName": "Lead",
-        "purpose": "The one-line brief under a step, max 90ch."
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Sub-headings inside panels, text cut, in ink-soft."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Running text on a 15px root (18px under A+); paragraphs max 78ch."
+        "purpose": "Running text on a 15px root (18px under A+); paragraphs max 78ch, leads 90ch."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Hero-number captions and table headers, sentence case."
+        "purpose": "Number captions, legends, footers; sentence case, never letter-spaced."
       },
       "data": {
         "displayName": "Data (mono)",
-        "purpose": "Field names, URLs, codes, paths, commands, numeric columns only."
+        "purpose": "Field names, URLs, codes, rule ids, paths, commands, numeric columns only."
       }
     },
     "shadows": [
       {
-        "name": "rest",
-        "value": "0 1px 2px rgba(16,20,26,.05), 0 6px 20px -8px rgba(16,20,26,.12)",
-        "purpose": "Every card and floating control (light)."
-      },
-      {
-        "name": "lifted",
-        "value": "0 2px 4px rgba(16,20,26,.06), 0 14px 32px -10px rgba(16,20,26,.22)",
-        "purpose": "Hover on clickable cards (light)."
-      },
-      {
-        "name": "rest-night",
-        "value": "0 1px 2px rgba(0,0,0,.4), 0 8px 24px -10px rgba(0,0,0,.6)",
-        "purpose": "Rest shadow in the dark theme."
-      },
-      {
-        "name": "lifted-night",
-        "value": "0 2px 4px rgba(0,0,0,.5), 0 16px 36px -10px rgba(0,0,0,.8)",
-        "purpose": "Lifted shadow in the dark theme."
-      },
-      {
-        "name": "focus-halo",
-        "value": "0 0 0 3px color-mix(in srgb, var(--ours) 20%, transparent)",
-        "purpose": "Active form field in the portal sign-in replay."
+        "name": "none",
+        "value": "none",
+        "purpose": "No surface casts a shadow; depth is the grey page to white panel step and a 1px rule."
       }
     ],
     "motion": [
       {
-        "name": "ease",
-        "value": "cubic-bezier(.16, 1, .3, 1)",
-        "purpose": "House easing for arrivals, growth and lifts."
+        "name": "static-by-default",
+        "value": "none",
+        "purpose": "Numbers are written in place (Kit.count returns text, Kit.countIn is a no-op); panes switch without an entrance; no hover lifts; replies appear at once."
       },
       {
-        "name": "rise",
-        "value": "rise .42s var(--ease); opacity .35 to 1, translateY(8px) to 0",
-        "purpose": "Every pane's arrival; index tiles use .5s staggered 70ms."
+        "name": "caret-blink",
+        "value": "pulse 1s steps(1) infinite; opacity 1 to .35 to 1",
+        "purpose": "The caret in the portal's sign-in replay."
       },
       {
-        "name": "grow",
-        "value": "grow .9s var(--ease); scaleX(0) to 1, staggered 50ms per row",
-        "purpose": "Bar fills when their pane is shown."
-      },
-      {
-        "name": "pop",
-        "value": "scale(.86) opacity .3 to scale(1) opacity 1",
-        "purpose": "Small arrivals: crumbs, trap cells, rule chips."
-      },
-      {
-        "name": "pulse",
-        "value": "opacity 1 to .35 to 1",
-        "purpose": "Typing dots and the replay caret."
-      },
-      {
-        "name": "count-up",
-        "value": "Kit.countIn on pane arrival",
-        "purpose": "Hero numbers count up."
-      },
-      {
-        "name": "hover-lift",
-        "value": "translateY(-1px) controls, -2px role cards, -4px demo tiles; .15s",
-        "purpose": "Hover affordance."
+        "name": "demo-playback",
+        "value": "scripted timers",
+        "purpose": "Only the demos move: the portal sign-in replay and crawl playback, the dataset retention playback, the assistant's scripted scenes."
       },
       {
         "name": "reduced-motion",
         "value": "prefers-reduced-motion: reduce -> animation none, transition none",
-        "purpose": "Disables all animation and transition."
+        "purpose": "Disables every CSS animation and transition."
       }
     ],
     "breakpoints": [
       {
-        "name": "assistant-stack",
+        "name": "tasks-stack",
+        "value": "520px"
+      },
+      {
+        "name": "rows-stack",
         "value": "760px"
       },
       {
@@ -787,114 +897,182 @@
       },
       {
         "name": "container",
-        "value": "1180px"
+        "value": "1140px"
+      }
+    ],
+    "tints": [
+      {
+        "name": "selection-segment",
+        "value": "color-mix(in srgb, var(--ours) 11%, var(--card))",
+        "purpose": "Pressed segment."
+      },
+      {
+        "name": "selection-tile",
+        "value": "color-mix(in srgb, var(--ours) 7%, var(--card))",
+        "purpose": "Pressed file tile, patient and role, with an ours border."
+      },
+      {
+        "name": "message-you",
+        "value": "color-mix(in srgb, var(--ours) 12%, var(--card))",
+        "purpose": "The user's message in the assistant."
+      },
+      {
+        "name": "crumb-current",
+        "value": "color-mix(in srgb, var(--ours) 14%, var(--card))",
+        "purpose": "The current breadcrumb in the fake browser."
+      },
+      {
+        "name": "heat-ours",
+        "value": "color-mix(in srgb, var(--ours) 6%-50%, var(--card))",
+        "purpose": "Rules page per-rule heat map, by score."
+      },
+      {
+        "name": "primary-hover",
+        "value": "color-mix(in srgb, var(--ours) 85%, var(--ink))",
+        "purpose": "Hover on Play and Send."
+      },
+      {
+        "name": "text-selection",
+        "value": "color-mix(in srgb, var(--ours) 24%, transparent)",
+        "purpose": "::selection."
       }
     ]
   },
   "components": [
     {
-      "name": "Card",
+      "name": "Panel",
       "kind": "card",
       "refersTo": "card",
-      "description": "The instrument: every content block sits on one.",
-      "html": "<div class=\"ds-card\"><h2 class=\"ds-card-h\">Fields pulled</h2><p class=\"ds-card-p\">Only what the purpose needs.</p></div>",
-      "css": ".ds-card{background:var(--card,#fff);color:var(--ink,#121417);border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);font-family:\"Segoe UI Variable Text\",system-ui,sans-serif;max-width:320px}.ds-card-h{font-family:\"Segoe UI Variable Display\",system-ui,sans-serif;font-size:1.08rem;font-weight:650;letter-spacing:-0.01em;margin:0 0 6px}.ds-card-p{margin:0;color:var(--ink-2,#4d5560)}"
+      "description": "Every content block: a white 1px ruled panel at 6px on the grey page, no shadow.",
+      "html": "<div class=\"ds-desk\"><div class=\"ds-card\"><h2 class=\"ds-card-h\">Fields pulled</h2><p class=\"ds-card-p\">Only what the purpose needs.</p></div></div>",
+      "css": ".ds-desk{background:var(--bg,#f5f6f8);padding:16px;max-width:360px}.ds-card{background:var(--card,#fff);color:var(--ink,#14161a);border:1px solid var(--line,#e1e4e9);border-radius:6px;padding:16px 18px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-card-h{font-family:\"Segoe UI Variable Display\",\"Segoe UI Variable Text\",system-ui,sans-serif;font-size:1.06rem;font-weight:600;letter-spacing:-.005em;margin:0 0 10px}.ds-card-p{margin:0;color:var(--ink-2,#4d5560)}"
     },
     {
-      "name": "Hero number",
+      "name": "Key-number strip",
       "kind": "custom",
-      "refersTo": "hero-number",
-      "description": "Funnel tile: a large tabular number in its owner's hue over a short label; counts up on arrival.",
-      "html": "<div class=\"ds-fn\"><div class=\"ds-fn-v\">32</div><div class=\"ds-fn-l\">page loads · ours</div></div>",
-      "css": ".ds-fn{background:var(--card,#fff);border-radius:14px;padding:12px 14px 11px;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);width:180px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-fn-v{font-family:\"Segoe UI Variable Display\",system-ui,sans-serif;font-size:2.1rem;font-weight:700;letter-spacing:-0.03em;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ours,#266ec4)}.ds-fn-l{font-size:.74rem;font-weight:600;color:var(--ink-2,#4d5560);margin-top:3px}"
+      "refersTo": "funnel",
+      "description": "One white ruled strip of display figures, each over a caption, coloured by owner.",
+      "html": "<div class=\"ds-funnel\"><div class=\"ds-fn\"><div class=\"ds-v\" style=\"color:var(--ours,#266ec4)\">32</div><div class=\"ds-l\">page loads · ours</div></div><div class=\"ds-fn\"><div class=\"ds-v\" style=\"color:var(--agent,#7d52dd)\">35</div><div class=\"ds-l\">page loads · AI agent</div></div><div class=\"ds-fn\"><div class=\"ds-v\" style=\"color:var(--base,#bc7f00)\">440</div><div class=\"ds-l\">page loads · baseline</div></div></div>",
+      "css": ".ds-funnel{display:grid;grid-template-columns:repeat(3,minmax(130px,1fr));background:var(--card,#fff);border:1px solid var(--line,#e1e4e9);border-radius:6px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif;max-width:540px}.ds-fn{padding:12px 16px;border-right:1px solid var(--line,#e1e4e9)}.ds-fn:last-child{border-right:none}.ds-v{font-family:\"Segoe UI Variable Display\",\"Segoe UI Variable Text\",system-ui,sans-serif;font-size:1.8rem;font-weight:600;letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}.ds-l{font-size:.8rem;color:var(--ink-2,#4d5560);margin-top:2px}"
     },
     {
       "name": "Site navigation",
       "kind": "nav",
-      "refersTo": "sitenav",
-      "description": "One pill bar per page; the current page inverts to ink.",
+      "refersTo": "sitenav-link",
+      "description": "Plain text links; the current page is ink at 600 underlined in ours blue.",
       "html": "<nav class=\"ds-nav\"><a href=\"#\">Index</a><a href=\"#\" aria-current=\"page\">The portal run</a><a href=\"#\">The dataset</a><a href=\"#\">Ask the assistant</a><a href=\"#\">Rules vs AI</a></nav>",
-      "css": ".ds-nav{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:var(--card,#fff);box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);font:.82rem \"Segoe UI Variable Text\",system-ui,sans-serif}.ds-nav a{color:var(--ink-2,#4d5560);text-decoration:none;padding:5px 13px;border-radius:999px;transition:background .15s,color .15s}.ds-nav a:hover{color:var(--ink,#121417);background:var(--card-2,#f0f2f5)}.ds-nav a:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-nav a[aria-current=page]{color:var(--bg,#f3f4f6);background:var(--ink,#121417);font-weight:650}"
+      "css": ".ds-nav{display:flex;gap:20px;font:.86rem \"Segoe UI Variable Text\",system-ui,sans-serif}.ds-nav a{color:var(--ink-2,#4d5560);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}.ds-nav a:hover{color:var(--ink,#14161a)}.ds-nav a:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-nav a[aria-current=page]{color:var(--ink,#14161a);border-bottom-color:var(--ours,#266ec4);font-weight:600}"
     },
     {
       "name": "Stepper",
       "kind": "custom",
       "refersTo": "step",
-      "description": "Pill tabs with numbered circles; selected inverts, visited turns green.",
-      "html": "<div class=\"ds-steps\" role=\"tablist\"><button class=\"ds-step ds-seen\" role=\"tab\"><span class=\"ds-n\">1</span>The portal</button><button class=\"ds-step\" role=\"tab\" aria-selected=\"true\"><span class=\"ds-n\">2</span>Discovery</button><button class=\"ds-step\" role=\"tab\"><span class=\"ds-n\">3</span>The crawl</button></div>",
-      "css": ".ds-steps{display:flex;gap:6px;padding:2px}.ds-step{font:600 .92rem \"Segoe UI Variable Text\",system-ui,sans-serif;background:var(--card,#fff);border:none;border-radius:999px;padding:8px 14px 8px 8px;color:var(--ink-2,#4d5560);cursor:pointer;display:inline-flex;gap:9px;align-items:center;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);transition:background .2s,color .2s,transform .15s}.ds-step:hover{transform:translateY(-1px);color:var(--ink,#121417)}.ds-step:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-n{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--card-2,#f0f2f5);font-size:.8rem;font-weight:750}.ds-step[aria-selected=true]{background:var(--ink,#121417);color:var(--bg,#f3f4f6)}.ds-step[aria-selected=true] .ds-n{background:var(--bg,#f3f4f6);color:var(--ink,#121417)}.ds-seen .ds-n{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}"
+      "description": "Underlined text tabs; the selected tab's underline and number in ours blue.",
+      "html": "<div class=\"ds-steps\" role=\"tablist\"><button role=\"tab\" aria-selected=\"false\"><span class=\"ds-n\">1</span>The portal</button><button role=\"tab\" aria-selected=\"true\"><span class=\"ds-n\">2</span>Discovery</button><button role=\"tab\" aria-selected=\"false\"><span class=\"ds-n\">3</span>The crawl</button></div>",
+      "css": ".ds-steps{display:flex;gap:22px;border-bottom:1px solid var(--line,#e1e4e9);font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-steps button{font:inherit;font-size:.92rem;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;padding:8px 0;color:var(--ink-2,#4d5560);cursor:pointer;display:inline-flex;gap:7px;align-items:baseline}.ds-steps button:hover{color:var(--ink,#14161a)}.ds-steps button:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-n{font-size:.8rem;color:var(--ink-3,#686e76);font-variant-numeric:tabular-nums}.ds-steps button[aria-selected=true]{color:var(--ink,#14161a);border-bottom-color:var(--ours,#266ec4);font-weight:600}.ds-steps button[aria-selected=true] .ds-n{color:var(--ours,#266ec4)}"
     },
     {
       "name": "Segmented control",
       "kind": "chip",
       "refersTo": "seg-button",
-      "description": "Recessed pill well; the pressed segment rises as a white pill.",
+      "description": "A white bordered button group; the pressed segment takes an 11% ours tint.",
       "html": "<div class=\"ds-seg\"><button aria-pressed=\"true\">Told the policy</button><button aria-pressed=\"false\">Unaided</button><button aria-pressed=\"false\">Told the Act</button></div>",
-      "css": ".ds-seg{display:inline-flex;border-radius:999px;background:var(--card-2,#f0f2f5);padding:3px;gap:2px}.ds-seg button{font:600 .86rem \"Segoe UI Variable Text\",system-ui,sans-serif;border:none;background:none;padding:5px 12px;cursor:pointer;color:var(--ink-2,#4d5560);border-radius:999px;transition:background .15s,color .15s}.ds-seg button:hover{color:var(--ink,#121417)}.ds-seg button:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-seg button[aria-pressed=true]{background:var(--card,#fff);color:var(--ink,#121417);box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12)}"
+      "css": ".ds-seg{display:inline-flex;border:1px solid var(--line,#e1e4e9);border-radius:6px;overflow:hidden;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-seg button{font:inherit;font-size:.86rem;border:none;border-right:1px solid var(--line,#e1e4e9);background:var(--card,#fff);padding:4px 11px;cursor:pointer;color:var(--ink-2,#4d5560)}.ds-seg button:last-child{border-right:none}.ds-seg button:hover{color:var(--ink,#14161a)}.ds-seg button:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-seg button[aria-pressed=true]{background:color-mix(in srgb,var(--ours,#266ec4) 11%,var(--card,#fff));color:var(--ink,#14161a);font-weight:600}"
     },
     {
       "name": "Badges",
       "kind": "chip",
       "refersTo": "badge",
-      "description": "Verdict pills: solid hue on its own wash.",
-      "html": "<span class=\"ds-badge\">synthetic</span> <span class=\"ds-badge ds-good\">held</span> <span class=\"ds-badge ds-bad\">fell</span> <span class=\"ds-badge ds-warn\">attested</span>",
-      "css": ".ds-badge{display:inline-flex;align-items:center;gap:6px;font:600 .78rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:3px 10px;border-radius:999px;background:var(--card-2,#f0f2f5);color:var(--ink-2,#4d5560)}.ds-good{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}.ds-bad{background:var(--bad-bg,#fbe5e5);color:var(--bad,#c53232)}.ds-warn{background:var(--warn-bg,#fcf1dd);color:var(--warn,#976419)}"
+      "description": "Borderless 4px chips; states are a wash with text in the solid hue, a failure that matters is solid red.",
+      "html": "<span class=\"ds-badge\">synthetic</span> <span class=\"ds-badge ds-good\">held</span> <span class=\"ds-badge ds-bad\">fell</span> <span class=\"ds-badge ds-warn\">attested</span> <span class=\"ds-badge ds-fail\">PL-01</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:5px;font:600 .78rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:2px 8px;border-radius:4px;background:var(--card-2,#f0f2f5);color:var(--ink-2,#4d5560)}.ds-good{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}.ds-bad{background:var(--bad-bg,#fbe5e5);color:var(--bad,#c53232)}.ds-warn{background:var(--warn-bg,#fcf1dd);color:var(--warn,#976419)}.ds-fail{background:var(--bad,#c53232);color:var(--on-fill,#fff);font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace}"
     },
     {
-      "name": "Play button",
+      "name": "Primary button",
       "kind": "button",
-      "refersTo": "button-play",
-      "description": "The one filled action: starts a page's authored moment.",
+      "refersTo": "button-primary",
+      "description": "The demo's action (Play, Send): solid ours blue with on-fill text.",
       "html": "<button class=\"ds-play\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M8 5.8v12.4a.6.6 0 0 0 .9.5l10-6.2a.6.6 0 0 0 0-1l-10-6.2a.6.6 0 0 0-.9.5z\" fill=\"currentColor\"/></svg>Run the crawl</button>",
-      "css": ".ds-play{display:inline-flex;align-items:center;gap:7px;font:700 1rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:9px 18px;border-radius:999px;border:none;background:var(--ours,#266ec4);color:#fff;cursor:pointer;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);transition:transform .12s}.ds-play:hover{transform:translateY(-1px)}.ds-play:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-play:disabled{opacity:.55;cursor:default;transform:none}"
+      "css": ".ds-play{display:inline-flex;align-items:center;gap:6px;font:600 1rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:5px 12px;border-radius:6px;border:1px solid var(--ours,#266ec4);background:var(--ours,#266ec4);color:var(--on-fill,#fff);cursor:pointer}.ds-play:hover{background:color-mix(in srgb,var(--ours,#266ec4) 85%,var(--ink,#14161a))}.ds-play:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-play:disabled{opacity:.55;cursor:default}"
     },
     {
-      "name": "Bar row",
+      "name": "Plain button",
+      "kind": "button",
+      "refersTo": "button-plain",
+      "description": "Secondary actions (New, Scenes): page grey, line border, recess on hover.",
+      "html": "<button class=\"ds-plain\">Scenes</button>",
+      "css": ".ds-plain{display:inline-flex;align-items:center;gap:6px;font:600 .88rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:5px 12px;border-radius:6px;border:1px solid var(--line,#e1e4e9);background:var(--bg,#f5f6f8);color:var(--ink,#14161a);cursor:pointer}.ds-plain:hover{background:var(--card-2,#f0f2f5)}.ds-plain:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}"
+    },
+    {
+      "name": "Selectable tile",
       "kind": "custom",
-      "refersTo": "track",
-      "description": "Label with identity dot, a pill track whose fill grows in, and a mono value.",
-      "html": "<div class=\"ds-bar\"><span><span class=\"ds-bdot\"></span>ours</span><div class=\"ds-track\"><i></i></div><b>32</b></div>",
-      "css": ".ds-bar{display:grid;grid-template-columns:120px 1fr 48px;gap:10px;align-items:center;font:.88rem \"Segoe UI Variable Text\",system-ui,sans-serif;color:var(--ink,#121417);width:420px}.ds-bdot{display:inline-block;width:.62em;height:.62em;border-radius:50%;background:var(--ours,#266ec4);margin-right:.45em}.ds-track{height:14px;background:var(--card-2,#f0f2f5);border-radius:999px;overflow:hidden}.ds-track i{display:block;height:100%;width:22%;border-radius:999px;background:var(--ours,#266ec4);transform-origin:left center;animation:ds-grow .9s cubic-bezier(.16,1,.3,1) both}.ds-bar b{font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;text-align:right;font-weight:400}@keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){.ds-track i{animation:none}}"
+      "refersTo": "card",
+      "description": "Files, patients and roles; the pressed tile takes an ours border and a 7% ours tint.",
+      "html": "<div class=\"ds-tiles\"><button class=\"ds-tile\" aria-pressed=\"true\"><span class=\"ds-nm\">patients.csv</span><span class=\"ds-meta\">registration</span></button><button class=\"ds-tile\" aria-pressed=\"false\"><span class=\"ds-nm\">claims.csv</span><span class=\"ds-meta\">billing</span></button></div>",
+      "css": ".ds-tiles{display:flex;gap:8px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-tile{text-align:left;font:inherit;background:var(--card,#fff);border:1px solid var(--line,#e1e4e9);border-radius:6px;padding:8px 10px;cursor:pointer;color:var(--ink,#14161a);display:grid;gap:4px;min-width:140px}.ds-tile:hover{border-color:var(--ink-3,#686e76)}.ds-tile:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-tile[aria-pressed=true]{border-color:var(--ours,#266ec4);background:color-mix(in srgb,var(--ours,#266ec4) 7%,var(--card,#fff))}.ds-nm{font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;font-size:.8rem;font-weight:600}.ds-meta{font-size:.74rem;color:var(--ink-3,#686e76)}"
+    },
+    {
+      "name": "Verdict bar",
+      "kind": "custom",
+      "refersTo": "verdict-ok",
+      "description": "Held or declined, as a washed bar with no border.",
+      "html": "<div class=\"ds-verdict ds-ok\">Gate open: provenance stated</div><div class=\"ds-verdict ds-no\">Declined under PL-01</div>",
+      "css": ".ds-verdict{font:600 1rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:9px 12px;border-radius:6px;margin-bottom:8px;max-width:360px}.ds-ok{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}.ds-no{background:var(--bad-bg,#fbe5e5);color:var(--bad,#c53232)}"
     },
     {
       "name": "Terminal slab",
       "kind": "custom",
       "refersTo": "terminal",
-      "description": "Theme-invariant dark mono block for commands and the gate log.",
-      "html": "<pre class=\"ds-term\">python scripts/run_pipeline.py</pre>",
-      "css": ".ds-term{margin:0;font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;font-size:.8rem;background:#0d1014;color:#d7dde3;border-radius:8px;padding:7px 10px;overflow-x:auto}"
+      "description": "Theme-invariant dark mono block for command output and the gate log.",
+      "html": "<pre class=\"ds-term\"><span class=\"ds-dim\">python scripts/run_pipeline.py</span>\n<span class=\"ds-ok2\">gate open</span></pre>",
+      "css": ".ds-term{margin:0;font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;font-size:.8rem;white-space:pre-wrap;background:#111316;color:#d7dde3;border-radius:6px;padding:8px 10px}.ds-ok2{color:#5fd38d}.ds-dim{color:#8b949e}"
     }
   ],
   "narrative": {
-    "northStar": "The Instrument Panel",
-    "overview": "Every page is a quiet grey desk with a few white instruments laid on it, and the instruments carry the numbers. The page itself says one line; a presenter says the rest. What the eye lands on is a count (page loads, trap runs held, a compliance score), coloured by who produced it, arriving with a small, deliberate motion. Nothing on the page decorates; every coloured mark identifies a technique, a layer, a model or a verdict.\n\nDensity is moderate and laptop-first: one 1180px column, cards that tile with `auto-fit`, a pill navigation bar and a pill stepper that turn each page into a short sequence of panes. The surface is flat paper with soft, low ambient shadows under white cards; there are no borders on cards and no side stripes. Two themes exist and are equal citizens (system preference, overridable by a header switch), plus an A+ switch that lifts the root size from 15px to 18px for a projector.\n\nThe pages are built to open offline by double-click, so the system is deliberately made from what every machine already has: system fonts, inline SVG drawn icons, inline CSS and script. That constraint is a design commitment, not a limitation to work around.",
+    "northStar": "The Ruled Page",
+    "overview": "Each page reads like a well-set lab report laid on a soft grey desk: white panels with a thin rule round them, a title in a display cut and one line under it, and numbers set large and tabular. Colour marks data (which technique produced a number, which HIS layer a field belongs to, which model a series is, whether a rule held or fell) and one thing more: where you are and what you chose, in our blue. The presenter explains; the page shows the point and lets a panel member click, type or flip a switch.\n\nDensity is moderate and laptop-first: one centred 1140px column, a row of plain text links for navigation, a strip of key numbers inside one white panel, then underlined text tabs whose panes hold white panels and tables. Nothing floats and nothing moves on its own except the demos themselves (the portal's sign-in replay and crawl playback, the dataset's retention playback, the assistant's scripted scenes, the login caret). Two themes are equal citizens (system preference, overridable by a header switch), and an A+ switch lifts the root size from 15px to 18px for a projector.\n\nThe pages open offline by double-click, so the system is made from what every machine already has: the system's own Segoe UI Variable faces (Display for titles and figures, Text for everything else), a monospace stack, inline SVG icons, inline CSS and script. Minimal, quiet, and a little elegant; never decorated.",
     "keyCharacteristics": [
-      "Grey paper, white cards, soft ambient shadow; no card borders, no stripes.",
-      "Fixed technique colours shared with the deck: ours blue, AI agents violet, baseline amber.",
-      "Large tabular hero numbers in the display face; one-line briefs in soft ink.",
-      "Everything rounded: 14px cards, full pills for every control.",
-      "System fonts only; mono only for data, field names, codes and paths.",
-      "One arrival motion for every pane; one authored moment per page."
+      "Soft grey page, white panels with a 1px rule; no shadows, no gradients, no pills.",
+      "Colour for data (technique, layer, model, verdict) and for the current place and choice, in ours blue.",
+      "States are tinted washes, not outlines: green, red and ochre washes for verdicts, a light blue tint for a selection.",
+      "A display cut for the title, card headings and key figures; the text cut for everything else; mono only for data.",
+      "Navigation and steps are underlined text; the one filled button is the demo's primary action.",
+      "Numbers are written in place; only the demos animate."
     ],
     "rules": [
       {
-        "name": "The Fixed Identity Rule",
-        "body": "Ours is blue, AI agents are violet, the baseline is amber, on every page and in the deck. No page may reassign these hues or use them for anything else.",
+        "name": "The Meaning or Place Rule",
+        "body": "A hue on the page must mean a technique, a layer, a model or a verdict, or mark the current place or choice in ours blue. Structure and emphasis are carried by ink, weight, rules and the grey-to-white step.",
         "section": "colors"
       },
       {
-        "name": "The Dot, Not Stripe Rule",
-        "body": "Identity colour is carried by a small round dot before a name (0.62em) and by coloured numbers. Never by a coloured side border, top stripe or tinted card background.",
+        "name": "The Fixed Identity Rule",
+        "body": "Ours is blue, AI agents are violet, the baseline is amber, on every page and in the deck. No chart, strip, lane or table may reassign these hues. Ours blue alone doubles as the accent for place, selection and the primary action.",
+        "section": "colors"
+      },
+      {
+        "name": "The Wash Rule",
+        "body": "A state is a tinted wash with text in its solid hue, not an outline: good-wash, bad-wash and warn-wash for verdicts, a 7–12% ours tint for a selection. Only a failure that matters goes solid.",
         "section": "colors"
       },
       {
         "name": "The 4.5 Floor Rule",
-        "body": "Every text colour holds at least 4.5:1 on paper, card and card-recess in both themes. The light ink-quiet, good, bad, warn and the three identity hues were tuned to that floor; a new text colour must be checked the same way before it ships.",
+        "body": "Small text holds at least 4.5:1 on its own background in both themes, including a verdict hue on its own wash (the washes are tuned to sit exactly there). Baseline amber and the lighter layer hues do not hold it and stay on fills and large figures.",
         "section": "colors"
       },
       {
-        "name": "The System Fonts Only Rule",
-        "body": "No downloaded or web fonts, by team decision: the pages must open offline by double-click. Use the three stacks above and nothing else.",
+        "name": "The Offline Faces Rule",
+        "body": "No downloaded or web fonts: the pages open offline, so only faces the machine already has are named, each with a full fallback stack.",
+        "section": "typography"
+      },
+      {
+        "name": "The Display Is for Titles and Figures Rule",
+        "body": "The display cut sets the page title, panel headings and large numbers only; body, labels, buttons and tables stay in the text cut.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "No uppercase, letter-spaced labels and no eyebrow line above a heading; a label is a short sentence-case caption in ink-soft.",
         "section": "typography"
       },
       {
@@ -913,28 +1091,33 @@
         "section": "layout"
       },
       {
-        "name": "The Soft Lift Rule",
-        "body": "Shadows are diffuse and offset only downward with negative spread. No hard offset shadows, no coloured glows, no borders standing in for elevation.",
+        "name": "The Ruled, Not Lifted Rule",
+        "body": "A panel is separated by its white-on-grey step and its 1px rule, never by a shadow, a glow or a hover lift. Tints mark state, never structure.",
         "section": "elevation"
       }
     ],
     "dos": [
       "Do colour a technique by its fixed hue (ours blue, agents violet, baseline amber) through a dot before its name and its numbers.",
-      "Do use only the system font stacks; keep monospace for data, field names, codes and paths.",
-      "Do check every new text colour at 4.5:1 or better on paper, card and card-recess in both themes.",
+      "Do set white panels on the grey page with a 1px line border at 6px corners, and chips at 4px.",
+      "Do put a page's key numbers in one ruled strip, 1.8rem display at 600, each with a caption.",
+      "Do mark the current nav link and the selected step with a 2px ours-blue underline, and a selection with a light ours tint.",
+      "Do show verdict, category, rule and field states as a wash with text in the solid hue; go solid red only for a failure that matters.",
+      "Do keep the display cut for the title, panel headings and large numbers, the text cut for everything else, and monospace for data.",
+      "Do check every small text colour at 4.5:1 or better on its own background in both themes, and use on-fill for text on solid fills.",
       "Do read every number from a committed artefact and give it a label.",
-      "Do draw icons from `Kit.icon` (24 grid, 2.2 stroke, round joins).",
-      "Do give every control a visible 2px Ours Blue focus outline and a keyboard path.",
-      "Do let panes arrive with the shared rise and keep one authored moment per page; honour reduced motion."
+      "Do draw icons from `Kit.icon` and give every control a visible 2px Ours Blue focus outline and a keyboard path."
     ],
     "donts": [
+      "Don't add shadows, gradients, glows or hover lifts.",
+      "Don't use pill shapes or full rounding on controls, chips or tracks.",
+      "Don't outline a state where a wash will do, or fill a button other than the demo's primary action.",
+      "Don't animate numbers, panes or replies; only the demos move.",
+      "Don't use colour for structure or decoration; it is reserved for data meaning and the current place.",
+      "Don't use uppercase letter-spaced labels or an eyebrow or kicker line.",
       "Don't load web fonts, CDNs or any external asset; the pages open offline.",
-      "Don't put an eyebrow or kicker line above a heading.",
       "Don't add explanatory paragraphs; one-line briefs only, the presenter explains.",
-      "Don't mark identity with side stripes, top borders or tinted card fills.",
       "Don't use emoji or unicode glyphs as icons.",
-      "Don't use hard offset shadows or borders for elevation.",
-      "Don't reassign or reuse the three technique hues for anything else."
+      "Don't reassign the three technique hues inside a chart, strip, lane or table."
     ]
   }
 }

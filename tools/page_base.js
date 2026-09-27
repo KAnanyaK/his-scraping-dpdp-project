@@ -1,6 +1,5 @@
 /* Shared by every demo page (inlined at build time): the header buttons, the
-   stepper, one drawn icon family, and numbers that count up when their pane
-   comes into view. */
+   stepper, and one drawn icon family. */
 window.Kit = (() => {
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -27,24 +26,11 @@ window.Kit = (() => {
   function hydrate(root) { (root || document).querySelectorAll("[data-icon]").forEach((el) => { el.outerHTML = icon(el.dataset.icon, el.dataset.cls || ""); }); }
 
 
-  // <span data-count="440" data-dp="0" data-suffix="×">440</span> counts up from zero.
-  function countIn(root) {
-    (root || document).querySelectorAll("[data-count]").forEach((el) => {
-      const to = Number(el.dataset.count), dp = Number(el.dataset.dp || 0), suf = el.dataset.suffix || "";
-      const fmt = (v) => (dp ? v.toFixed(dp) : Math.round(v).toLocaleString("en-US")) + suf;
-      if (still || !isFinite(to)) { el.textContent = fmt(to); return; }
-      const t0 = performance.now(), dur = 900;
-      const tick = (t) => {
-        const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
-        el.textContent = fmt(to * e);
-        if (k < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    });
-  }
-  const count = (v, dp = 0, suffix = "") => `<span data-count="${v}" data-dp="${dp}" data-suffix="${suffix}">${dp ? Number(v).toFixed(dp) : Number(v).toLocaleString("en-US")}${suffix}</span>`;
+  // Numbers are written in place; nothing counts up (kept as a no-op so the pages' calls stay valid).
+  function countIn() {}
+  const count = (v, dp = 0, suffix = "") => `${dp ? Number(v).toFixed(dp) : Number(v).toLocaleString("en-US")}${suffix}`;
 
-  // Tabs as steps: number keys and arrows move, the hash remembers, each pane animates on entry.
+  // Tabs as steps: number keys and arrows move, the hash remembers.
   function steps(n, onEnter) {
     const btns = [...document.querySelectorAll("#steps button")];
     btns.forEach((b) => {
