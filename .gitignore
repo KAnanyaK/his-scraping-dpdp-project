@@ -55,3 +55,9 @@ Review-* Template.pptx
 
 # recorder quota ledger (per machine, per day)
 .quota.json
+
+# design tooling: keep the product record, design sidecar and surface briefs; ignore local and generated files
+.impeccable/review/
+.impeccable/questions/
+.impeccable/config.local.json
+.impeccable/hook.cache.json

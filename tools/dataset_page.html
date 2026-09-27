@@ -9,18 +9,16 @@
   .group h3 { margin-bottom: 7px; display: flex; gap: 8px; align-items: center; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
   .group .sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
   .tilegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-  .tile { text-align: left; font: inherit; background: var(--card); border: none; border-radius: 10px; padding: 9px 11px; cursor: pointer; color: var(--ink); display: grid; gap: 5px; box-shadow: var(--shadow); position: relative; overflow: hidden; animation: pop .35s both; transition: transform .12s, box-shadow .12s; }
-  .tile::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--c, var(--ink-3)); }
+  .tile { text-align: left; font: inherit; background: var(--card); border: none; border-radius: 10px; padding: 9px 11px; cursor: pointer; color: var(--ink); display: grid; gap: 5px; box-shadow: var(--shadow); position: relative; overflow: hidden; transition: transform .15s var(--ease), box-shadow .15s; }
   .tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-up); }
   .tile.off { background: var(--card-2); color: var(--ink-2); box-shadow: none; }
-  .tile.off::before { background: transparent; }
   .tile[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ink), var(--shadow-up); }
   .tile .nm { font-family: var(--mono); font-size: .8rem; font-weight: 650; overflow-wrap: anywhere; }
   .tile .meta { font-size: .72rem; color: var(--ink-3); }
   .bar3 { display: flex; height: 5px; border-radius: 999px; overflow: hidden; background: var(--card-2); }
   .bar3 i { display: block; height: 100%; transform-origin: left; animation: grow .8s both .2s; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { display: inline-flex; gap: 6px; align-items: baseline; font-size: .8rem; padding: 3px 9px; border-radius: 999px; background: var(--card-2); animation: pop .3s both; }
+  .chip { display: inline-flex; gap: 6px; align-items: baseline; font-size: .8rem; padding: 3px 9px; border-radius: 999px; background: var(--card-2); }
   .chip .h { font-family: var(--mono); }
   .chip.in { background: var(--good-bg); }
   .chip.in .to { font-family: var(--mono); color: var(--good); font-weight: 650; }
@@ -36,7 +34,6 @@
   .bigcount > div > span { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 600; }
   .layerstrip { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
   .lcard { padding: 12px 14px; border-radius: 12px; background: var(--card); box-shadow: var(--shadow); position: relative; overflow: hidden; }
-  .lcard::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--c); }
   .lcard .ll { font-weight: 680; font-size: .9rem; }
   .lcard .lr { font-size: 1.5rem; font-weight: 760; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
   .lcard .lm { font-size: .74rem; color: var(--ink-3); }
@@ -46,7 +43,7 @@
   .check { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--card); box-shadow: var(--shadow); transition: background .2s; }
   .check.offc { background: var(--bad-bg); }
   .switch { position: relative; width: 50px; height: 28px; border-radius: 14px; background: var(--good); border: none; cursor: pointer; transition: background .2s; flex: none; }
-  .switch::after { content: ""; position: absolute; top: 3px; left: 25px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: left .2s cubic-bezier(.2, .8, .2, 1); box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 25px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: left .2s var(--ease); box-shadow: 0 1px 3px rgba(0,0,0,.25); }
   .switch[aria-checked="false"] { background: var(--bad); }
   .switch[aria-checked="false"]::after { left: 3px; }
   .check .t { font-weight: 680; }
@@ -55,7 +52,7 @@
   .term .ln { display: block; animation: rise .25s both; }
   .term .ok { color: #5fd38d; } .term .no { color: #ff7b7b; } .term .dim { color: #8b949e; }
   .verdict { font-size: 1.35rem; font-weight: 760; padding: 16px 18px; border-radius: 12px; display: flex; align-items: center; gap: 12px; letter-spacing: -0.01em; animation: pop .35s both; }
-  .verdict .ico { font-size: 1.8rem; }
+  .verdict .ico.big { font-size: 1.8rem; }
   .verdict.ok { background: var(--good-bg); color: var(--good); }
   .verdict.no { background: var(--bad-bg); color: var(--bad); }
 
@@ -69,9 +66,7 @@
   .chip-btn .sm { font-size: .72rem; color: var(--ink-3); }
   .who { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   @media (max-width: 900px) { .who { grid-template-columns: 1fr; } }
-  .tech { position: relative; overflow: hidden; animation: rise .4s both; }
-  .tech:nth-child(2) { animation-delay: .06s; } .tech:nth-child(3) { animation-delay: .12s; }
-  .tech::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--c, var(--ink-3)); }
+  .tech { position: relative; overflow: hidden; }
   .tech.ours { --c: var(--ours); } .tech.agent { --c: var(--agent); } .tech.baseline { --c: var(--base); }
   .tech .name { font-weight: 650; font-size: .86rem; color: var(--ink-2); }
   .tech .score { font-size: 2.6rem; font-weight: 780; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; line-height: 1.05; color: var(--c); }
@@ -81,16 +76,16 @@
   .readn .x { font-weight: 700; font-size: .85rem; }
   .readn .x.bad { color: var(--bad); } .readn .x.ok { color: var(--good); }
   .readbar { height: 8px; border-radius: 999px; background: var(--card-2); overflow: hidden; margin-top: 5px; }
-  .readbar i { display: block; height: 100%; border-radius: 999px; transform-origin: left; animation: grow 1s cubic-bezier(.2, .8, .2, 1) both .15s; }
+  .readbar i { display: block; height: 100%; border-radius: 999px; transform-origin: left; animation: grow 1s var(--ease) both .15s; }
   .fchips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
-  .fchip { font-family: var(--mono); font-size: .72rem; padding: 2px 7px; border-radius: 999px; background: var(--card-2); animation: pop .3s both; }
+  .fchip { font-family: var(--mono); font-size: .72rem; padding: 2px 7px; border-radius: 999px; background: var(--card-2); }
   .fchip.need { background: var(--good-bg); color: var(--good); }
   .fchip.extra { background: var(--warn-bg); color: var(--warn); }
-  .fchip.oos { background: var(--bad); color: #fff; font-weight: 700; }
+  .fchip.oos { background: var(--bad); color: var(--on-fill); font-weight: 700; }
   .rules { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
   .rule { font-family: var(--mono); font-size: .68rem; font-weight: 650; padding: 2px 6px; border-radius: 999px; }
   .rule.pass { background: var(--good-bg); color: var(--good); }
-  .rule.fail { background: var(--bad); color: #fff; }
+  .rule.fail { background: var(--bad); color: var(--on-fill); }
   .rule.partial { background: var(--warn-bg); color: var(--warn); }
   .rule.not_applicable { background: var(--card-2); color: var(--ink-3); }
   .facts2 { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
@@ -104,7 +99,7 @@
 
   /* 4 -- score */
   .stack { display: flex; height: 30px; border-radius: 999px; overflow: hidden; gap: 2px; }
-  .stack div { display: grid; place-items: center; font-size: .78rem; font-weight: 700; color: #fff; min-width: 0; white-space: nowrap; overflow: hidden; transform-origin: left; animation: grow .9s both .1s; }
+  .stack div { display: grid; place-items: center; font-size: .78rem; font-weight: 700; color: var(--on-fill); min-width: 0; white-space: nowrap; overflow: hidden; transform-origin: left; animation: grow .9s both .1s; }
   .heat td.c { text-align: center; font-family: var(--mono); font-size: .8rem; border-bottom: 2px solid var(--card); border-left: 2px solid var(--card); }
 
   /* 5 -- retention */
@@ -121,8 +116,7 @@
   .file.gone .st { color: var(--ink-3); }
   .kept-forever { color: var(--bad); font-weight: 700; }
   .log { font-family: var(--mono); font-size: .76rem; margin-top: 8px; color: var(--good); min-height: 1.2em; }
-  .log:not(:empty) { animation: rise .3s both; }
-  .play { font: inherit; font-weight: 700; padding: 8px 16px; border-radius: 999px; border: none; background: var(--ink); color: var(--bg); cursor: pointer; }
+  .play { display: inline-flex; align-items: center; gap: 7px; font: inherit; font-weight: 700; padding: 8px 16px; border-radius: 999px; border: none; background: var(--ink); color: var(--bg); cursor: pointer; }
 </style>
 
 <div class="wrap">
@@ -134,7 +128,7 @@
     </div>
     <div class="tools">
       <button id="bigger" title="Larger text for a projector">A+</button>
-      <button id="theme" title="Light / dark">◐</button>
+      <button id="theme"></button>
     </div>
   </div>
   <div class="funnel" id="funnel"></div>
@@ -206,7 +200,7 @@
     <p class="lead">Every export has an end date. <b>Move time forward.</b></p>
     <div class="card">
       <div class="timebar">
-        <button class="play" id="retplay">▶ Play</button>
+        <button class="play" id="retplay"><span data-icon="play"></span> Play</button>
         <input type="range" class="slider" id="days" min="0" max="400" value="0" aria-label="Days from today">
         <div class="day"><span id="daylabel"></span><div class="muted mono" id="datelabel"></div></div>
       </div>
@@ -243,7 +237,7 @@
 
   /* ------------------------------------------------------------- header */
   const m = D.meta;
-  $("sub").innerHTML = `<span class="mono">${esc(m.dataset)}</span> · same adapter, rules and export path as a hospital's.`
+  $("sub").innerHTML = `<span><span class="mono">${esc(m.dataset)}</span> · same adapter, rules and export path as a hospital's.</span>`
     + (m.values_shown ? ` <span class="badge warn">synthetic · values shown</span>` : ` <span class="badge bad">real export · structure only</span>`)
     + ` <span class="badge good">no raw identifier on this page</span>`;
   const F = D.funnel;
@@ -272,7 +266,7 @@
       return `<div class="group"><h3><span class="sw" style="background:${sw}"></span>${esc(label)}</h3><div class="tilegrid">`
         + groups[g].map((f) => {
           const c = f.columns.length, a = f.columns.filter((x) => x.s === "in").length, b = f.columns.filter((x) => x.s === "blank").length;
-          return `<button class="tile${f.read ? "" : " off"}" style="--c:${f.read ? lcol(f.layer) : "transparent"};animation-delay:${(n++) * 25}ms" data-f="${esc(f.name)}" aria-pressed="${f.name === sel}">`
+          return `<button class="tile${f.read ? "" : " off"}" style="--c:${f.read ? lcol(f.layer) : "transparent"}" data-f="${esc(f.name)}" aria-pressed="${f.name === sel}">`
             + `<span class="nm">${esc(f.name)}</span><span class="meta">${num(f.rows)} rows · ${a}/${c} in</span>`
             + `<span class="bar3"><i style="width:${100 * a / c}%;background:var(--good)"></i><i style="width:${100 * b / c}%;background:var(--ink-3)"></i></span></button>`;
         }).join("") + `</div></div>`;
@@ -292,12 +286,12 @@
       : `<span class="badge bad">not read</span> <span class="muted">${esc(f.reason)}</span>`;
     $("filedetail").innerHTML = `<div class="head"><h2 class="mono">${esc(f.name)}</h2>${head}</div>`
       + `<div class="bigcount"><div><b>${Kit.count(f.rows)}</b><span>rows</span></div><div><b style="color:var(--good)">${Kit.count(ins.length)}</b><span>let in</span></div><div><b style="color:var(--ink-3)">${Kit.count(out.length)}</b><span>stopped</span></div></div>`
-      + (ins.length ? `<div class="chips">` + ins.map((c, i) => `<span class="chip in" style="animation-delay:${i * 30}ms"><span class="h">${esc(c.h)}</span>→<span class="to">${esc(c.to)}</span><span class="cat ${esc(c.cat)}">${esc(c.cat.replace(/_/g, " "))}</span></span>`).join("") + `</div>` : "")
-      + (out.length ? `<div class="chips" style="margin-top:10px">` + out.map((c, i) => `<span class="chip ${c.s}" style="animation-delay:${(ins.length + i) * 15}ms" title="${c.s === "blank" ? "dropped by the column map" : "not a catalogue field"}"><span class="h">${esc(c.h)}</span></span>`).join("") + `</div>` : "");
+      + (ins.length ? `<div class="chips">` + ins.map((c, i) => `<span class="chip in"><span class="h">${esc(c.h)}</span>→<span class="to">${esc(c.to)}</span><span class="cat ${esc(c.cat)}">${esc(c.cat.replace(/_/g, " "))}</span></span>`).join("") + `</div>` : "")
+      + (out.length ? `<div class="chips" style="margin-top:10px">` + out.map((c, i) => `<span class="chip ${c.s}" title="${c.s === "blank" ? "dropped by the column map" : "not a catalogue field"}"><span class="h">${esc(c.h)}</span></span>`).join("") + `</div>` : "");
     Kit.countIn($("filedetail"));
   }
   tiles(); detail();
-  $("layers").innerHTML = D.layers.map((l) => `<div class="lcard" style="--c:${lcol(l.layer)}" title="${esc(l.fields.join(", "))}"><div class="ll">${esc(l.label)}</div><div class="lr">${Kit.count(l.rows)}</div>`
+  $("layers").innerHTML = D.layers.map((l) => `<div class="lcard" style="--c:${lcol(l.layer)}" title="${esc(l.fields.join(", "))}"><div class="ll"><span class="dot-c"></span>${esc(l.label)}</div><div class="lr">${Kit.count(l.rows)}</div>`
     + `<div class="lm">rows · ${l.files.length} file${l.files.length > 1 ? "s" : ""}${l.files.length > 1 ? (l.stacked ? ", stacked" : ", concatenated") : ""} · ${l.fields.length} fields</div></div>`).join("");
 
   /* ------------------------------------------------------------- 2 gate */
@@ -308,7 +302,7 @@
     $("checks").querySelectorAll(".switch").forEach((s) => s.addEventListener("click", () => { gate[s.dataset.i].on = !gate[s.dataset.i].on; gatePaint(true); }));
     const ok = gate.every((c) => c.on);
     $("verdict").className = "verdict " + (ok ? "ok" : "no");
-    $("verdict").innerHTML = ok ? `<span class="ico">✓</span>Safe to read` : `<span class="ico">⛔</span>Refused — nothing is read`;
+    $("verdict").innerHTML = ok ? `${Kit.icon("shield", "big")}Safe to read` : `${Kit.icon("stop", "big")}Refused — nothing is read`;
     // The adapter's own output, line for line (scripts/check_source.py).
     const lines = [`<span class="dim">$ python scripts/check_source.py data/${esc(m.dataset)}</span>`, `  handling checks for data/${esc(m.dataset)}:`]
       .concat(gate.map((c) => `    <span class="${c.on ? "ok" : "no"}">[${c.on ? "x" : " "}]</span> ${esc(c.name)}: ${esc(c.on ? c.detail : c.fail)}`))
@@ -323,10 +317,10 @@
   const kindsNow = () => ["ours", AG, "baseline"].filter((k) => k && Object.keys(D.traces).some((x) => x.endsWith("|" + k)));
   let T = single[0]?.id, P = D.patients[0]?.token, OT = "ours", FMT = "hl7";
   function segs() {
-    $("taskseg").innerHTML = single.map((t) => `<button aria-pressed="${t.id === T}" data-t="${esc(t.id)}">${esc(TASKLABEL(t.id))}${t.trap ? " ⚠" : ""}</button>`).join("");
+    $("taskseg").innerHTML = single.map((t) => `<button aria-pressed="${t.id === T}" data-t="${esc(t.id)}">${esc(TASKLABEL(t.id))}${t.trap ? " " + Kit.icon("alert") : ""}</button>`).join("");
     $("taskseg").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { T = b.dataset.t; paint3(); }));
     const t = single.find((x) => x.id === T);
-    $("taskdesc").innerHTML = `<span class="badge">${esc(t.purpose.replace(/_/g, " "))}</span>` + (t.trap ? ` <span class="badge bad" title="${esc(t.trap)}">⚠ trap</span>` : "");
+    $("taskdesc").innerHTML = `<span class="badge">${esc(t.purpose.replace(/_/g, " "))}</span>` + (t.trap ? ` <span class="badge bad" title="${esc(t.trap)}">${Kit.icon("alert")} trap</span>` : "");
     $("patients").innerHTML = D.patients.map((p) => {
       const own = Object.values(p.records).reduce((a, b) => a + b, 0);
       return `<button class="chip-btn" aria-pressed="${p.token === P}" data-p="${esc(p.token)}"><span class="tk">${esc(p.token)}</span><span class="sm">${esc(p.label)}${p.label ? " · " : ""}${num(own)} records</span></button>`;
@@ -349,21 +343,21 @@
     const worst = {};
     v.fields.forEach((f) => { const r = !f.allowed ? 2 : f.needed ? 0 : 1; if (!(f.field in worst) || r > worst[f.field].r) worst[f.field] = { ...f, r }; });
     const uniq = Object.values(worst).sort((a, b) => b.r - a.r);
-    const chips = uniq.map((f, i) => `<span class="fchip ${!f.allowed ? "oos" : f.needed ? "need" : "extra"}" style="animation-delay:${150 + i * 20}ms" title="${esc(f.layer)} · ${esc(f.cat || "")}${!f.allowed ? " · OUT OF SCOPE for this purpose" : f.needed ? " · needed" : " · not needed"}">${esc(f.field)}</span>`).join("");
+    const chips = uniq.map((f, i) => `<span class="fchip ${!f.allowed ? "oos" : f.needed ? "need" : "extra"}" title="${esc(f.layer)} · ${esc(f.cat || "")}${!f.allowed ? " · OUT OF SCOPE for this purpose" : f.needed ? " · needed" : " · not needed"}">${esc(f.field)}</span>`).join("");
     const oos = uniq.filter((f) => !f.allowed).length;
     const rules = v.rules.map((r) => `<span class="rule ${esc(r.status)}" title="${esc(r.title)}: ${esc(r.status)}${r.finding ? " — " + esc(r.finding) : ""}">${esc(r.id)}</span>`).join("");
     const ex = v.export, clean = ex.leaked === 0, x = v.record_excess;
     const xs = x === null || x === undefined ? "" : x > 1.05 ? `<span class="x bad">${x >= 10 ? num(Math.round(x)) : f2(x)}× own</span>` : `<span class="x ok">${x < 0.95 ? "≤" : ""}1× own</span>`;
     const ret = v.manifest.retention_days ? `<span class="badge">keeps ${v.manifest.retention_days} d</span>` : `<span class="badge bad">no retention</span>`;
     const onward = v.manifest.onward.length ? `<span class="badge bad">onward: ${v.manifest.onward.map(esc).join(", ")}</span>` : "";
-    return `<div class="card tech ${base(k)}"><div class="name">${esc(KIND(k))}</div>`
+    return `<div class="card tech ${base(k)}"><div class="name"><span class="dot-c"></span>${esc(KIND(k))}</div>`
       + `<div class="score">${Kit.count(v.score, 2)}</div>`
       + `<div class="kl">records read</div><div class="readn"><b>${Kit.count(v.records)}</b>${xs}</div>`
       + `<div class="readbar"><i style="width:${w}%;background:${kcol(k)}"></i></div>`
       + `<div class="kl">fields · ${uniq.length}${oos ? ` · <span style="color:var(--bad)">${oos} out of scope</span>` : ""}</div><div class="fchips">${chips || '<span class="muted">nothing</span>'}</div>`
       + `<div class="kl">rules</div><div class="rules">${rules}</div>`
       + `<div class="facts2">${ret}${onward}</div>`
-      + `<div class="exportline ${clean ? "ok" : "no"}">${clean ? "✓ no raw identifier left" : `✗ ${num(ex.leaked)} raw identifiers left`}</div></div>`;
+      + `<div class="exportline ${clean ? "ok" : "no"}">${clean ? `${Kit.icon("check")} no raw identifier left` : `${Kit.icon("x")} ${num(ex.leaked)} raw identifiers left`}</div></div>`;
   }
   function hilite(s) {
     return esc(s)
@@ -432,20 +426,20 @@
       const life = r.days ? `<span class="badge">${r.days} d of ${r.ceiling} allowed</span> <span class="badge">erase ≥ ${esc(r.erase_after)}</span>` : `<span class="badge bad">no retention — never erased</span>`;
       const fill = r.days ? Math.min(100, 100 * d / r.days) : Math.min(100, 100 * d / max);
       const log = gone ? `purge ${esc(r.run_id)} · ${r.files.length} file(s) erased` : "";
-      return `<div class="card tech ${base(r.kind)}" style="animation:none"><div class="name">${esc(KIND(r.kind))}</div><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">${life}</div>`
+      return `<div class="card tech ${base(r.kind)}" style="animation:none"><div class="name"><span class="dot-c"></span>${esc(KIND(r.kind))}</div><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">${life}</div>`
         + `<div class="life${gone ? " gone" : ""}"><i style="width:${fill}%"></i></div>${files}<div class="log">${log}</div></div>`;
     }).join("");
   }
-  $("days").addEventListener("input", () => { if (retTimer) { clearInterval(retTimer); retTimer = null; $("retplay").textContent = "▶ Play"; } paint5(); });
+  $("days").addEventListener("input", () => { if (retTimer) { clearInterval(retTimer); retTimer = null; $("retplay").innerHTML = `${Kit.icon("play")} Play`; } paint5(); });
   $("retplay").addEventListener("click", () => {
-    if (retTimer) { clearInterval(retTimer); retTimer = null; $("retplay").textContent = "▶ Play"; return; }
+    if (retTimer) { clearInterval(retTimer); retTimer = null; $("retplay").innerHTML = `${Kit.icon("play")} Play`; return; }
     if (Number($("days").value) >= Number($("days").max)) $("days").value = "0";
-    $("retplay").textContent = "❚❚ Pause";
+    $("retplay").innerHTML = `${Kit.icon("pause")} Pause`;
     retTimer = setInterval(() => {
       const d = Number($("days").value) + 2;
       $("days").value = String(Math.min(d, Number($("days").max)));
       paint5();
-      if (d >= Number($("days").max)) { clearInterval(retTimer); retTimer = null; $("retplay").textContent = "↻ Again"; }
+      if (d >= Number($("days").max)) { clearInterval(retTimer); retTimer = null; $("retplay").innerHTML = `${Kit.icon("replay")} Again`; }
     }, 30);
   });
   paint5();

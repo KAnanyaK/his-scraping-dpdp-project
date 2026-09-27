@@ -1,0 +1,940 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-27T08:22:35+00:00",
+  "title": "Design System: DPDP-compliant HIS extraction — Review demo pages",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f3f4f6",
+        "tonalRamp": [
+          "oklch(15% 0.003 264.5)",
+          "oklch(26% 0.003 264.5)",
+          "oklch(38% 0.003 264.5)",
+          "oklch(50% 0.003 264.5)",
+          "oklch(62% 0.003 264.5)",
+          "oklch(74% 0.003 264.5)",
+          "oklch(85% 0.003 264.5)",
+          "oklch(95% 0.003 264.5)"
+        ]
+      },
+      "paper-glow": {
+        "role": "neutral",
+        "displayName": "Paper Glow",
+        "canonical": "#e9ecf1",
+        "tonalRamp": [
+          "oklch(15% 0.007 260.7)",
+          "oklch(26% 0.007 260.7)",
+          "oklch(38% 0.007 260.7)",
+          "oklch(50% 0.007 260.7)",
+          "oklch(62% 0.007 260.7)",
+          "oklch(74% 0.007 260.7)",
+          "oklch(85% 0.007 260.7)",
+          "oklch(95% 0.007 260.7)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(38% 0.000 89.9)",
+          "oklch(50% 0.000 89.9)",
+          "oklch(62% 0.000 89.9)",
+          "oklch(74% 0.000 89.9)",
+          "oklch(85% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      },
+      "card-recess": {
+        "role": "neutral",
+        "displayName": "Card Recess",
+        "canonical": "#f0f2f5",
+        "tonalRamp": [
+          "oklch(15% 0.005 258.3)",
+          "oklch(26% 0.005 258.3)",
+          "oklch(38% 0.005 258.3)",
+          "oklch(50% 0.005 258.3)",
+          "oklch(62% 0.005 258.3)",
+          "oklch(74% 0.005 258.3)",
+          "oklch(85% 0.005 258.3)",
+          "oklch(95% 0.005 258.3)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#e1e5ea",
+        "tonalRamp": [
+          "oklch(15% 0.008 253.9)",
+          "oklch(26% 0.008 253.9)",
+          "oklch(38% 0.008 253.9)",
+          "oklch(50% 0.008 253.9)",
+          "oklch(62% 0.008 253.9)",
+          "oklch(74% 0.008 253.9)",
+          "oklch(85% 0.008 253.9)",
+          "oklch(95% 0.008 253.9)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#121417",
+        "tonalRamp": [
+          "oklch(15% 0.007 258.4)",
+          "oklch(26% 0.007 258.4)",
+          "oklch(38% 0.007 258.4)",
+          "oklch(50% 0.007 258.4)",
+          "oklch(62% 0.007 258.4)",
+          "oklch(74% 0.007 258.4)",
+          "oklch(85% 0.007 258.4)",
+          "oklch(95% 0.007 258.4)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Ink Soft",
+        "canonical": "#4d5560",
+        "tonalRamp": [
+          "oklch(15% 0.021 256.4)",
+          "oklch(26% 0.021 256.4)",
+          "oklch(38% 0.021 256.4)",
+          "oklch(50% 0.021 256.4)",
+          "oklch(62% 0.021 256.4)",
+          "oklch(74% 0.021 256.4)",
+          "oklch(85% 0.021 256.4)",
+          "oklch(95% 0.021 256.4)"
+        ]
+      },
+      "ink-quiet": {
+        "role": "neutral",
+        "displayName": "Ink Quiet",
+        "canonical": "#686e76",
+        "tonalRamp": [
+          "oklch(15% 0.015 255.6)",
+          "oklch(26% 0.015 255.6)",
+          "oklch(38% 0.015 255.6)",
+          "oklch(50% 0.015 255.6)",
+          "oklch(62% 0.015 255.6)",
+          "oklch(74% 0.015 255.6)",
+          "oklch(85% 0.015 255.6)",
+          "oklch(95% 0.015 255.6)"
+        ]
+      },
+      "ours-blue": {
+        "role": "primary",
+        "displayName": "Ours Blue",
+        "canonical": "#266ec4",
+        "tonalRamp": [
+          "oklch(15% 0.151 255.4)",
+          "oklch(26% 0.151 255.4)",
+          "oklch(38% 0.151 255.4)",
+          "oklch(50% 0.151 255.4)",
+          "oklch(62% 0.151 255.4)",
+          "oklch(74% 0.151 255.4)",
+          "oklch(85% 0.151 255.4)",
+          "oklch(95% 0.151 255.4)"
+        ]
+      },
+      "agent-violet": {
+        "role": "secondary",
+        "displayName": "Agent Violet",
+        "canonical": "#7d52dd",
+        "tonalRamp": [
+          "oklch(15% 0.202 293.0)",
+          "oklch(26% 0.202 293.0)",
+          "oklch(38% 0.202 293.0)",
+          "oklch(50% 0.202 293.0)",
+          "oklch(62% 0.202 293.0)",
+          "oklch(74% 0.202 293.0)",
+          "oklch(85% 0.202 293.0)",
+          "oklch(95% 0.202 293.0)"
+        ]
+      },
+      "baseline-amber": {
+        "role": "secondary",
+        "displayName": "Baseline Amber",
+        "canonical": "#bc7f00",
+        "tonalRamp": [
+          "oklch(15% 0.135 75.2)",
+          "oklch(26% 0.135 75.2)",
+          "oklch(38% 0.135 75.2)",
+          "oklch(50% 0.135 75.2)",
+          "oklch(62% 0.135 75.2)",
+          "oklch(74% 0.135 75.2)",
+          "oklch(85% 0.135 75.2)",
+          "oklch(95% 0.135 75.2)"
+        ]
+      },
+      "good": {
+        "role": "tertiary",
+        "displayName": "Verdict Green",
+        "canonical": "#187d43",
+        "tonalRamp": [
+          "oklch(15% 0.127 152.4)",
+          "oklch(26% 0.127 152.4)",
+          "oklch(38% 0.127 152.4)",
+          "oklch(50% 0.127 152.4)",
+          "oklch(62% 0.127 152.4)",
+          "oklch(74% 0.127 152.4)",
+          "oklch(85% 0.127 152.4)",
+          "oklch(95% 0.127 152.4)"
+        ]
+      },
+      "good-wash": {
+        "role": "tertiary",
+        "displayName": "Green Wash",
+        "canonical": "#e1f4e9",
+        "tonalRamp": [
+          "oklch(15% 0.025 160.6)",
+          "oklch(26% 0.025 160.6)",
+          "oklch(38% 0.025 160.6)",
+          "oklch(50% 0.025 160.6)",
+          "oklch(62% 0.025 160.6)",
+          "oklch(74% 0.025 160.6)",
+          "oklch(85% 0.025 160.6)",
+          "oklch(95% 0.025 160.6)"
+        ]
+      },
+      "bad": {
+        "role": "tertiary",
+        "displayName": "Verdict Red",
+        "canonical": "#c53232",
+        "tonalRamp": [
+          "oklch(15% 0.184 25.8)",
+          "oklch(26% 0.184 25.8)",
+          "oklch(38% 0.184 25.8)",
+          "oklch(50% 0.184 25.8)",
+          "oklch(62% 0.184 25.8)",
+          "oklch(74% 0.184 25.8)",
+          "oklch(85% 0.184 25.8)",
+          "oklch(95% 0.184 25.8)"
+        ]
+      },
+      "bad-wash": {
+        "role": "tertiary",
+        "displayName": "Red Wash",
+        "canonical": "#fbe5e5",
+        "tonalRamp": [
+          "oklch(15% 0.024 17.6)",
+          "oklch(26% 0.024 17.6)",
+          "oklch(38% 0.024 17.6)",
+          "oklch(50% 0.024 17.6)",
+          "oklch(62% 0.024 17.6)",
+          "oklch(74% 0.024 17.6)",
+          "oklch(85% 0.024 17.6)",
+          "oklch(95% 0.024 17.6)"
+        ]
+      },
+      "warn": {
+        "role": "tertiary",
+        "displayName": "Verdict Ochre",
+        "canonical": "#976419",
+        "tonalRamp": [
+          "oklch(15% 0.108 71.1)",
+          "oklch(26% 0.108 71.1)",
+          "oklch(38% 0.108 71.1)",
+          "oklch(50% 0.108 71.1)",
+          "oklch(62% 0.108 71.1)",
+          "oklch(74% 0.108 71.1)",
+          "oklch(85% 0.108 71.1)",
+          "oklch(95% 0.108 71.1)"
+        ]
+      },
+      "warn-wash": {
+        "role": "tertiary",
+        "displayName": "Ochre Wash",
+        "canonical": "#fcf1dd",
+        "tonalRamp": [
+          "oklch(15% 0.029 82.6)",
+          "oklch(26% 0.029 82.6)",
+          "oklch(38% 0.029 82.6)",
+          "oklch(50% 0.029 82.6)",
+          "oklch(62% 0.029 82.6)",
+          "oklch(74% 0.029 82.6)",
+          "oklch(85% 0.029 82.6)",
+          "oklch(95% 0.029 82.6)"
+        ]
+      },
+      "layer-patient-admin": {
+        "role": "tertiary",
+        "displayName": "Layer Patient Admin",
+        "canonical": "#266ec4",
+        "tonalRamp": [
+          "oklch(15% 0.151 255.4)",
+          "oklch(26% 0.151 255.4)",
+          "oklch(38% 0.151 255.4)",
+          "oklch(50% 0.151 255.4)",
+          "oklch(62% 0.151 255.4)",
+          "oklch(74% 0.151 255.4)",
+          "oklch(85% 0.151 255.4)",
+          "oklch(95% 0.151 255.4)"
+        ]
+      },
+      "layer-clinical": {
+        "role": "tertiary",
+        "displayName": "Layer Clinical",
+        "canonical": "#1baf7a",
+        "tonalRamp": [
+          "oklch(15% 0.141 162.1)",
+          "oklch(26% 0.141 162.1)",
+          "oklch(38% 0.141 162.1)",
+          "oklch(50% 0.141 162.1)",
+          "oklch(62% 0.141 162.1)",
+          "oklch(74% 0.141 162.1)",
+          "oklch(85% 0.141 162.1)",
+          "oklch(95% 0.141 162.1)"
+        ]
+      },
+      "layer-ancillary": {
+        "role": "tertiary",
+        "displayName": "Layer Ancillary",
+        "canonical": "#0e9aa7",
+        "tonalRamp": [
+          "oklch(15% 0.105 205.6)",
+          "oklch(26% 0.105 205.6)",
+          "oklch(38% 0.105 205.6)",
+          "oklch(50% 0.105 205.6)",
+          "oklch(62% 0.105 205.6)",
+          "oklch(74% 0.105 205.6)",
+          "oklch(85% 0.105 205.6)",
+          "oklch(95% 0.105 205.6)"
+        ]
+      },
+      "layer-financial": {
+        "role": "tertiary",
+        "displayName": "Layer Financial",
+        "canonical": "#eb6834",
+        "tonalRamp": [
+          "oklch(15% 0.175 40.6)",
+          "oklch(26% 0.175 40.6)",
+          "oklch(38% 0.175 40.6)",
+          "oklch(50% 0.175 40.6)",
+          "oklch(62% 0.175 40.6)",
+          "oklch(74% 0.175 40.6)",
+          "oklch(85% 0.175 40.6)",
+          "oklch(95% 0.175 40.6)"
+        ]
+      },
+      "layer-integration": {
+        "role": "tertiary",
+        "displayName": "Layer Integration",
+        "canonical": "#8a6d3b",
+        "tonalRamp": [
+          "oklch(15% 0.077 79.7)",
+          "oklch(26% 0.077 79.7)",
+          "oklch(38% 0.077 79.7)",
+          "oklch(50% 0.077 79.7)",
+          "oklch(62% 0.077 79.7)",
+          "oklch(74% 0.077 79.7)",
+          "oklch(85% 0.077 79.7)",
+          "oklch(95% 0.077 79.7)"
+        ]
+      },
+      "model-a0": {
+        "role": "tertiary",
+        "displayName": "Model A0",
+        "canonical": "#eb6834",
+        "tonalRamp": [
+          "oklch(15% 0.175 40.6)",
+          "oklch(26% 0.175 40.6)",
+          "oklch(38% 0.175 40.6)",
+          "oklch(50% 0.175 40.6)",
+          "oklch(62% 0.175 40.6)",
+          "oklch(74% 0.175 40.6)",
+          "oklch(85% 0.175 40.6)",
+          "oklch(95% 0.175 40.6)"
+        ]
+      },
+      "model-a1": {
+        "role": "tertiary",
+        "displayName": "Model A1",
+        "canonical": "#1baf7a",
+        "tonalRamp": [
+          "oklch(15% 0.141 162.1)",
+          "oklch(26% 0.141 162.1)",
+          "oklch(38% 0.141 162.1)",
+          "oklch(50% 0.141 162.1)",
+          "oklch(62% 0.141 162.1)",
+          "oklch(74% 0.141 162.1)",
+          "oklch(85% 0.141 162.1)",
+          "oklch(95% 0.141 162.1)"
+        ]
+      },
+      "model-a2": {
+        "role": "tertiary",
+        "displayName": "Model A2",
+        "canonical": "#8b5cf6",
+        "tonalRamp": [
+          "oklch(15% 0.219 292.7)",
+          "oklch(26% 0.219 292.7)",
+          "oklch(38% 0.219 292.7)",
+          "oklch(50% 0.219 292.7)",
+          "oklch(62% 0.219 292.7)",
+          "oklch(74% 0.219 292.7)",
+          "oklch(85% 0.219 292.7)",
+          "oklch(95% 0.219 292.7)"
+        ]
+      },
+      "model-a3": {
+        "role": "tertiary",
+        "displayName": "Model A3",
+        "canonical": "#0e9aa7",
+        "tonalRamp": [
+          "oklch(15% 0.105 205.6)",
+          "oklch(26% 0.105 205.6)",
+          "oklch(38% 0.105 205.6)",
+          "oklch(50% 0.105 205.6)",
+          "oklch(62% 0.105 205.6)",
+          "oklch(74% 0.105 205.6)",
+          "oklch(85% 0.105 205.6)",
+          "oklch(95% 0.105 205.6)"
+        ]
+      },
+      "model-a4": {
+        "role": "tertiary",
+        "displayName": "Model A4",
+        "canonical": "#d6409f",
+        "tonalRamp": [
+          "oklch(15% 0.208 346.0)",
+          "oklch(26% 0.208 346.0)",
+          "oklch(38% 0.208 346.0)",
+          "oklch(50% 0.208 346.0)",
+          "oklch(62% 0.208 346.0)",
+          "oklch(74% 0.208 346.0)",
+          "oklch(85% 0.208 346.0)",
+          "oklch(95% 0.208 346.0)"
+        ]
+      },
+      "model-a5": {
+        "role": "tertiary",
+        "displayName": "Model A5",
+        "canonical": "#8a6d3b",
+        "tonalRamp": [
+          "oklch(15% 0.077 79.7)",
+          "oklch(26% 0.077 79.7)",
+          "oklch(38% 0.077 79.7)",
+          "oklch(50% 0.077 79.7)",
+          "oklch(62% 0.077 79.7)",
+          "oklch(74% 0.077 79.7)",
+          "oklch(85% 0.077 79.7)",
+          "oklch(95% 0.077 79.7)"
+        ]
+      },
+      "terminal": {
+        "role": "neutral",
+        "displayName": "Terminal Slab",
+        "canonical": "#0d1014",
+        "tonalRamp": [
+          "oklch(15% 0.010 255.7)",
+          "oklch(26% 0.010 255.7)",
+          "oklch(38% 0.010 255.7)",
+          "oklch(50% 0.010 255.7)",
+          "oklch(62% 0.010 255.7)",
+          "oklch(74% 0.010 255.7)",
+          "oklch(85% 0.010 255.7)",
+          "oklch(95% 0.010 255.7)"
+        ]
+      },
+      "terminal-ink": {
+        "role": "neutral",
+        "displayName": "Terminal Ink",
+        "canonical": "#d7dde3",
+        "tonalRamp": [
+          "oklch(15% 0.010 247.9)",
+          "oklch(26% 0.010 247.9)",
+          "oklch(38% 0.010 247.9)",
+          "oklch(50% 0.010 247.9)",
+          "oklch(62% 0.010 247.9)",
+          "oklch(74% 0.010 247.9)",
+          "oklch(85% 0.010 247.9)",
+          "oklch(95% 0.010 247.9)"
+        ]
+      },
+      "night-paper": {
+        "role": "neutral",
+        "displayName": "Night Paper",
+        "canonical": "#0f1114",
+        "tonalRamp": [
+          "oklch(15% 0.007 258.4)",
+          "oklch(26% 0.007 258.4)",
+          "oklch(38% 0.007 258.4)",
+          "oklch(50% 0.007 258.4)",
+          "oklch(62% 0.007 258.4)",
+          "oklch(74% 0.007 258.4)",
+          "oklch(85% 0.007 258.4)",
+          "oklch(95% 0.007 258.4)"
+        ]
+      },
+      "night-paper-glow": {
+        "role": "neutral",
+        "displayName": "Night Paper Glow",
+        "canonical": "#15181d",
+        "tonalRamp": [
+          "oklch(15% 0.011 260.7)",
+          "oklch(26% 0.011 260.7)",
+          "oklch(38% 0.011 260.7)",
+          "oklch(50% 0.011 260.7)",
+          "oklch(62% 0.011 260.7)",
+          "oklch(74% 0.011 260.7)",
+          "oklch(85% 0.011 260.7)",
+          "oklch(95% 0.011 260.7)"
+        ]
+      },
+      "night-card": {
+        "role": "neutral",
+        "displayName": "Night Card",
+        "canonical": "#1a1d22",
+        "tonalRamp": [
+          "oklch(15% 0.011 260.7)",
+          "oklch(26% 0.011 260.7)",
+          "oklch(38% 0.011 260.7)",
+          "oklch(50% 0.011 260.7)",
+          "oklch(62% 0.011 260.7)",
+          "oklch(74% 0.011 260.7)",
+          "oklch(85% 0.011 260.7)",
+          "oklch(95% 0.011 260.7)"
+        ]
+      },
+      "night-card-recess": {
+        "role": "neutral",
+        "displayName": "Night Card Recess",
+        "canonical": "#23272d",
+        "tonalRamp": [
+          "oklch(15% 0.013 258.4)",
+          "oklch(26% 0.013 258.4)",
+          "oklch(38% 0.013 258.4)",
+          "oklch(50% 0.013 258.4)",
+          "oklch(62% 0.013 258.4)",
+          "oklch(74% 0.013 258.4)",
+          "oklch(85% 0.013 258.4)",
+          "oklch(95% 0.013 258.4)"
+        ]
+      },
+      "night-hairline": {
+        "role": "neutral",
+        "displayName": "Night Hairline",
+        "canonical": "#2c3138",
+        "tonalRamp": [
+          "oklch(15% 0.014 256.8)",
+          "oklch(26% 0.014 256.8)",
+          "oklch(38% 0.014 256.8)",
+          "oklch(50% 0.014 256.8)",
+          "oklch(62% 0.014 256.8)",
+          "oklch(74% 0.014 256.8)",
+          "oklch(85% 0.014 256.8)",
+          "oklch(95% 0.014 256.8)"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "canonical": "#f1f3f5",
+        "tonalRamp": [
+          "oklch(15% 0.003 247.9)",
+          "oklch(26% 0.003 247.9)",
+          "oklch(38% 0.003 247.9)",
+          "oklch(50% 0.003 247.9)",
+          "oklch(62% 0.003 247.9)",
+          "oklch(74% 0.003 247.9)",
+          "oklch(85% 0.003 247.9)",
+          "oklch(95% 0.003 247.9)"
+        ]
+      },
+      "night-ink-soft": {
+        "role": "neutral",
+        "displayName": "Night Ink Soft",
+        "canonical": "#a9b1ba",
+        "tonalRamp": [
+          "oklch(15% 0.016 251.2)",
+          "oklch(26% 0.016 251.2)",
+          "oklch(38% 0.016 251.2)",
+          "oklch(50% 0.016 251.2)",
+          "oklch(62% 0.016 251.2)",
+          "oklch(74% 0.016 251.2)",
+          "oklch(85% 0.016 251.2)",
+          "oklch(95% 0.016 251.2)"
+        ]
+      },
+      "night-ink-quiet": {
+        "role": "neutral",
+        "displayName": "Night Ink Quiet",
+        "canonical": "#878e95",
+        "tonalRamp": [
+          "oklch(15% 0.013 248.0)",
+          "oklch(26% 0.013 248.0)",
+          "oklch(38% 0.013 248.0)",
+          "oklch(50% 0.013 248.0)",
+          "oklch(62% 0.013 248.0)",
+          "oklch(74% 0.013 248.0)",
+          "oklch(85% 0.013 248.0)",
+          "oklch(95% 0.013 248.0)"
+        ]
+      },
+      "night-ours-blue": {
+        "role": "primary",
+        "displayName": "Night Ours Blue",
+        "canonical": "#4b95ee",
+        "tonalRamp": [
+          "oklch(15% 0.152 254.5)",
+          "oklch(26% 0.152 254.5)",
+          "oklch(38% 0.152 254.5)",
+          "oklch(50% 0.152 254.5)",
+          "oklch(62% 0.152 254.5)",
+          "oklch(74% 0.152 254.5)",
+          "oklch(85% 0.152 254.5)",
+          "oklch(95% 0.152 254.5)"
+        ]
+      },
+      "night-agent-violet": {
+        "role": "secondary",
+        "displayName": "Night Agent Violet",
+        "canonical": "#a78bfa",
+        "tonalRamp": [
+          "oklch(15% 0.159 293.5)",
+          "oklch(26% 0.159 293.5)",
+          "oklch(38% 0.159 293.5)",
+          "oklch(50% 0.159 293.5)",
+          "oklch(62% 0.159 293.5)",
+          "oklch(74% 0.159 293.5)",
+          "oklch(85% 0.159 293.5)",
+          "oklch(95% 0.159 293.5)"
+        ]
+      },
+      "night-baseline-amber": {
+        "role": "secondary",
+        "displayName": "Night Baseline Amber",
+        "canonical": "#d99a1a",
+        "tonalRamp": [
+          "oklch(15% 0.146 78.1)",
+          "oklch(26% 0.146 78.1)",
+          "oklch(38% 0.146 78.1)",
+          "oklch(50% 0.146 78.1)",
+          "oklch(62% 0.146 78.1)",
+          "oklch(74% 0.146 78.1)",
+          "oklch(85% 0.146 78.1)",
+          "oklch(95% 0.146 78.1)"
+        ]
+      },
+      "night-good": {
+        "role": "tertiary",
+        "displayName": "Night Verdict Green",
+        "canonical": "#3cc279",
+        "tonalRamp": [
+          "oklch(15% 0.157 155.0)",
+          "oklch(26% 0.157 155.0)",
+          "oklch(38% 0.157 155.0)",
+          "oklch(50% 0.157 155.0)",
+          "oklch(62% 0.157 155.0)",
+          "oklch(74% 0.157 155.0)",
+          "oklch(85% 0.157 155.0)",
+          "oklch(95% 0.157 155.0)"
+        ]
+      },
+      "night-bad": {
+        "role": "tertiary",
+        "displayName": "Night Verdict Red",
+        "canonical": "#ee6b6b",
+        "tonalRamp": [
+          "oklch(15% 0.163 22.3)",
+          "oklch(26% 0.163 22.3)",
+          "oklch(38% 0.163 22.3)",
+          "oklch(50% 0.163 22.3)",
+          "oklch(62% 0.163 22.3)",
+          "oklch(74% 0.163 22.3)",
+          "oklch(85% 0.163 22.3)",
+          "oklch(95% 0.163 22.3)"
+        ]
+      },
+      "night-warn": {
+        "role": "tertiary",
+        "displayName": "Night Verdict Ochre",
+        "canonical": "#dca13a",
+        "tonalRamp": [
+          "oklch(15% 0.135 77.5)",
+          "oklch(26% 0.135 77.5)",
+          "oklch(38% 0.135 77.5)",
+          "oklch(50% 0.135 77.5)",
+          "oklch(62% 0.135 77.5)",
+          "oklch(74% 0.135 77.5)",
+          "oklch(85% 0.135 77.5)",
+          "oklch(95% 0.135 77.5)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page title; 2.6rem on the index hero."
+      },
+      "hero-number": {
+        "displayName": "Hero number",
+        "purpose": "Funnel and tile numbers, coloured by owner, counting up."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Card and section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sub-headings inside cards, in ink-soft."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The one-line brief under a step, max 90ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text on a 15px root (18px under A+); paragraphs max 78ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Hero-number captions and table headers, sentence case."
+      },
+      "data": {
+        "displayName": "Data (mono)",
+        "purpose": "Field names, URLs, codes, paths, commands, numeric columns only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "rest",
+        "value": "0 1px 2px rgba(16,20,26,.05), 0 6px 20px -8px rgba(16,20,26,.12)",
+        "purpose": "Every card and floating control (light)."
+      },
+      {
+        "name": "lifted",
+        "value": "0 2px 4px rgba(16,20,26,.06), 0 14px 32px -10px rgba(16,20,26,.22)",
+        "purpose": "Hover on clickable cards (light)."
+      },
+      {
+        "name": "rest-night",
+        "value": "0 1px 2px rgba(0,0,0,.4), 0 8px 24px -10px rgba(0,0,0,.6)",
+        "purpose": "Rest shadow in the dark theme."
+      },
+      {
+        "name": "lifted-night",
+        "value": "0 2px 4px rgba(0,0,0,.5), 0 16px 36px -10px rgba(0,0,0,.8)",
+        "purpose": "Lifted shadow in the dark theme."
+      },
+      {
+        "name": "focus-halo",
+        "value": "0 0 0 3px color-mix(in srgb, var(--ours) 20%, transparent)",
+        "purpose": "Active form field in the portal sign-in replay."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "House easing for arrivals, growth and lifts."
+      },
+      {
+        "name": "rise",
+        "value": "rise .42s var(--ease); opacity .35 to 1, translateY(8px) to 0",
+        "purpose": "Every pane's arrival; index tiles use .5s staggered 70ms."
+      },
+      {
+        "name": "grow",
+        "value": "grow .9s var(--ease); scaleX(0) to 1, staggered 50ms per row",
+        "purpose": "Bar fills when their pane is shown."
+      },
+      {
+        "name": "pop",
+        "value": "scale(.86) opacity .3 to scale(1) opacity 1",
+        "purpose": "Small arrivals: crumbs, trap cells, rule chips."
+      },
+      {
+        "name": "pulse",
+        "value": "opacity 1 to .35 to 1",
+        "purpose": "Typing dots and the replay caret."
+      },
+      {
+        "name": "count-up",
+        "value": "Kit.countIn on pane arrival",
+        "purpose": "Hero numbers count up."
+      },
+      {
+        "name": "hover-lift",
+        "value": "translateY(-1px) controls, -2px role cards, -4px demo tiles; .15s",
+        "purpose": "Hover affordance."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce -> animation none, transition none",
+        "purpose": "Disables all animation and transition."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "assistant-stack",
+        "value": "760px"
+      },
+      {
+        "name": "split-stack",
+        "value": "860px"
+      },
+      {
+        "name": "stage-stack",
+        "value": "900px"
+      },
+      {
+        "name": "lanes-stack",
+        "value": "980px"
+      },
+      {
+        "name": "container",
+        "value": "1180px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The instrument: every content block sits on one.",
+      "html": "<div class=\"ds-card\"><h2 class=\"ds-card-h\">Fields pulled</h2><p class=\"ds-card-p\">Only what the purpose needs.</p></div>",
+      "css": ".ds-card{background:var(--card,#fff);color:var(--ink,#121417);border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);font-family:\"Segoe UI Variable Text\",system-ui,sans-serif;max-width:320px}.ds-card-h{font-family:\"Segoe UI Variable Display\",system-ui,sans-serif;font-size:1.08rem;font-weight:650;letter-spacing:-0.01em;margin:0 0 6px}.ds-card-p{margin:0;color:var(--ink-2,#4d5560)}"
+    },
+    {
+      "name": "Hero number",
+      "kind": "custom",
+      "refersTo": "hero-number",
+      "description": "Funnel tile: a large tabular number in its owner's hue over a short label; counts up on arrival.",
+      "html": "<div class=\"ds-fn\"><div class=\"ds-fn-v\">32</div><div class=\"ds-fn-l\">page loads · ours</div></div>",
+      "css": ".ds-fn{background:var(--card,#fff);border-radius:14px;padding:12px 14px 11px;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);width:180px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-fn-v{font-family:\"Segoe UI Variable Display\",system-ui,sans-serif;font-size:2.1rem;font-weight:700;letter-spacing:-0.03em;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ours,#266ec4)}.ds-fn-l{font-size:.74rem;font-weight:600;color:var(--ink-2,#4d5560);margin-top:3px}"
+    },
+    {
+      "name": "Site navigation",
+      "kind": "nav",
+      "refersTo": "sitenav",
+      "description": "One pill bar per page; the current page inverts to ink.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Index</a><a href=\"#\" aria-current=\"page\">The portal run</a><a href=\"#\">The dataset</a><a href=\"#\">Ask the assistant</a><a href=\"#\">Rules vs AI</a></nav>",
+      "css": ".ds-nav{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:var(--card,#fff);box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);font:.82rem \"Segoe UI Variable Text\",system-ui,sans-serif}.ds-nav a{color:var(--ink-2,#4d5560);text-decoration:none;padding:5px 13px;border-radius:999px;transition:background .15s,color .15s}.ds-nav a:hover{color:var(--ink,#121417);background:var(--card-2,#f0f2f5)}.ds-nav a:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-nav a[aria-current=page]{color:var(--bg,#f3f4f6);background:var(--ink,#121417);font-weight:650}"
+    },
+    {
+      "name": "Stepper",
+      "kind": "custom",
+      "refersTo": "step",
+      "description": "Pill tabs with numbered circles; selected inverts, visited turns green.",
+      "html": "<div class=\"ds-steps\" role=\"tablist\"><button class=\"ds-step ds-seen\" role=\"tab\"><span class=\"ds-n\">1</span>The portal</button><button class=\"ds-step\" role=\"tab\" aria-selected=\"true\"><span class=\"ds-n\">2</span>Discovery</button><button class=\"ds-step\" role=\"tab\"><span class=\"ds-n\">3</span>The crawl</button></div>",
+      "css": ".ds-steps{display:flex;gap:6px;padding:2px}.ds-step{font:600 .92rem \"Segoe UI Variable Text\",system-ui,sans-serif;background:var(--card,#fff);border:none;border-radius:999px;padding:8px 14px 8px 8px;color:var(--ink-2,#4d5560);cursor:pointer;display:inline-flex;gap:9px;align-items:center;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);transition:background .2s,color .2s,transform .15s}.ds-step:hover{transform:translateY(-1px);color:var(--ink,#121417)}.ds-step:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-n{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--card-2,#f0f2f5);font-size:.8rem;font-weight:750}.ds-step[aria-selected=true]{background:var(--ink,#121417);color:var(--bg,#f3f4f6)}.ds-step[aria-selected=true] .ds-n{background:var(--bg,#f3f4f6);color:var(--ink,#121417)}.ds-seen .ds-n{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}"
+    },
+    {
+      "name": "Segmented control",
+      "kind": "chip",
+      "refersTo": "seg-button",
+      "description": "Recessed pill well; the pressed segment rises as a white pill.",
+      "html": "<div class=\"ds-seg\"><button aria-pressed=\"true\">Told the policy</button><button aria-pressed=\"false\">Unaided</button><button aria-pressed=\"false\">Told the Act</button></div>",
+      "css": ".ds-seg{display:inline-flex;border-radius:999px;background:var(--card-2,#f0f2f5);padding:3px;gap:2px}.ds-seg button{font:600 .86rem \"Segoe UI Variable Text\",system-ui,sans-serif;border:none;background:none;padding:5px 12px;cursor:pointer;color:var(--ink-2,#4d5560);border-radius:999px;transition:background .15s,color .15s}.ds-seg button:hover{color:var(--ink,#121417)}.ds-seg button:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-seg button[aria-pressed=true]{background:var(--card,#fff);color:var(--ink,#121417);box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12)}"
+    },
+    {
+      "name": "Badges",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Verdict pills: solid hue on its own wash.",
+      "html": "<span class=\"ds-badge\">synthetic</span> <span class=\"ds-badge ds-good\">held</span> <span class=\"ds-badge ds-bad\">fell</span> <span class=\"ds-badge ds-warn\">attested</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:6px;font:600 .78rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:3px 10px;border-radius:999px;background:var(--card-2,#f0f2f5);color:var(--ink-2,#4d5560)}.ds-good{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}.ds-bad{background:var(--bad-bg,#fbe5e5);color:var(--bad,#c53232)}.ds-warn{background:var(--warn-bg,#fcf1dd);color:var(--warn,#976419)}"
+    },
+    {
+      "name": "Play button",
+      "kind": "button",
+      "refersTo": "button-play",
+      "description": "The one filled action: starts a page's authored moment.",
+      "html": "<button class=\"ds-play\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M8 5.8v12.4a.6.6 0 0 0 .9.5l10-6.2a.6.6 0 0 0 0-1l-10-6.2a.6.6 0 0 0-.9.5z\" fill=\"currentColor\"/></svg>Run the crawl</button>",
+      "css": ".ds-play{display:inline-flex;align-items:center;gap:7px;font:700 1rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:9px 18px;border-radius:999px;border:none;background:var(--ours,#266ec4);color:#fff;cursor:pointer;box-shadow:0 1px 2px rgba(16,20,26,.05),0 6px 20px -8px rgba(16,20,26,.12);transition:transform .12s}.ds-play:hover{transform:translateY(-1px)}.ds-play:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-play:disabled{opacity:.55;cursor:default;transform:none}"
+    },
+    {
+      "name": "Bar row",
+      "kind": "custom",
+      "refersTo": "track",
+      "description": "Label with identity dot, a pill track whose fill grows in, and a mono value.",
+      "html": "<div class=\"ds-bar\"><span><span class=\"ds-bdot\"></span>ours</span><div class=\"ds-track\"><i></i></div><b>32</b></div>",
+      "css": ".ds-bar{display:grid;grid-template-columns:120px 1fr 48px;gap:10px;align-items:center;font:.88rem \"Segoe UI Variable Text\",system-ui,sans-serif;color:var(--ink,#121417);width:420px}.ds-bdot{display:inline-block;width:.62em;height:.62em;border-radius:50%;background:var(--ours,#266ec4);margin-right:.45em}.ds-track{height:14px;background:var(--card-2,#f0f2f5);border-radius:999px;overflow:hidden}.ds-track i{display:block;height:100%;width:22%;border-radius:999px;background:var(--ours,#266ec4);transform-origin:left center;animation:ds-grow .9s cubic-bezier(.16,1,.3,1) both}.ds-bar b{font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;text-align:right;font-weight:400}@keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){.ds-track i{animation:none}}"
+    },
+    {
+      "name": "Terminal slab",
+      "kind": "custom",
+      "refersTo": "terminal",
+      "description": "Theme-invariant dark mono block for commands and the gate log.",
+      "html": "<pre class=\"ds-term\">python scripts/run_pipeline.py</pre>",
+      "css": ".ds-term{margin:0;font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;font-size:.8rem;background:#0d1014;color:#d7dde3;border-radius:8px;padding:7px 10px;overflow-x:auto}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instrument Panel",
+    "overview": "Every page is a quiet grey desk with a few white instruments laid on it, and the instruments carry the numbers. The page itself says one line; a presenter says the rest. What the eye lands on is a count (page loads, trap runs held, a compliance score), coloured by who produced it, arriving with a small, deliberate motion. Nothing on the page decorates; every coloured mark identifies a technique, a layer, a model or a verdict.\n\nDensity is moderate and laptop-first: one 1180px column, cards that tile with `auto-fit`, a pill navigation bar and a pill stepper that turn each page into a short sequence of panes. The surface is flat paper with soft, low ambient shadows under white cards; there are no borders on cards and no side stripes. Two themes exist and are equal citizens (system preference, overridable by a header switch), plus an A+ switch that lifts the root size from 15px to 18px for a projector.\n\nThe pages are built to open offline by double-click, so the system is deliberately made from what every machine already has: system fonts, inline SVG drawn icons, inline CSS and script. That constraint is a design commitment, not a limitation to work around.",
+    "keyCharacteristics": [
+      "Grey paper, white cards, soft ambient shadow; no card borders, no stripes.",
+      "Fixed technique colours shared with the deck: ours blue, AI agents violet, baseline amber.",
+      "Large tabular hero numbers in the display face; one-line briefs in soft ink.",
+      "Everything rounded: 14px cards, full pills for every control.",
+      "System fonts only; mono only for data, field names, codes and paths.",
+      "One arrival motion for every pane; one authored moment per page."
+    ],
+    "rules": [
+      {
+        "name": "The Fixed Identity Rule",
+        "body": "Ours is blue, AI agents are violet, the baseline is amber, on every page and in the deck. No page may reassign these hues or use them for anything else.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dot, Not Stripe Rule",
+        "body": "Identity colour is carried by a small round dot before a name (0.62em) and by coloured numbers. Never by a coloured side border, top stripe or tinted card background.",
+        "section": "colors"
+      },
+      {
+        "name": "The 4.5 Floor Rule",
+        "body": "Every text colour holds at least 4.5:1 on paper, card and card-recess in both themes. The light ink-quiet, good, bad, warn and the three identity hues were tuned to that floor; a new text colour must be checked the same way before it ships.",
+        "section": "colors"
+      },
+      {
+        "name": "The System Fonts Only Rule",
+        "body": "No downloaded or web fonts, by team decision: the pages must open offline by double-click. Use the three stacks above and nothing else.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono Means Data Rule",
+        "body": "Monospace is for things a machine reads: field names, codes, URLs, paths, commands and numeric columns. Never for headings, briefs or decoration.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Numbers Rule",
+        "body": "Every number that can change or be compared uses tabular figures.",
+        "section": "typography"
+      },
+      {
+        "name": "The One-Line Brief Rule",
+        "body": "A page carries a title, a one-line brief, and a short lead per step. The presenter explains; the page never grows paragraphs of explanation, and every number stays labelled so an offline reader can still read it.",
+        "section": "layout"
+      },
+      {
+        "name": "The Soft Lift Rule",
+        "body": "Shadows are diffuse and offset only downward with negative spread. No hard offset shadows, no coloured glows, no borders standing in for elevation.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do colour a technique by its fixed hue (ours blue, agents violet, baseline amber) through a dot before its name and its numbers.",
+      "Do use only the system font stacks; keep monospace for data, field names, codes and paths.",
+      "Do check every new text colour at 4.5:1 or better on paper, card and card-recess in both themes.",
+      "Do read every number from a committed artefact and give it a label.",
+      "Do draw icons from `Kit.icon` (24 grid, 2.2 stroke, round joins).",
+      "Do give every control a visible 2px Ours Blue focus outline and a keyboard path.",
+      "Do let panes arrive with the shared rise and keep one authored moment per page; honour reduced motion."
+    ],
+    "donts": [
+      "Don't load web fonts, CDNs or any external asset; the pages open offline.",
+      "Don't put an eyebrow or kicker line above a heading.",
+      "Don't add explanatory paragraphs; one-line briefs only, the presenter explains.",
+      "Don't mark identity with side stripes, top borders or tinted card fills.",
+      "Don't use emoji or unicode glyphs as icons.",
+      "Don't use hard offset shadows or borders for elevation.",
+      "Don't reassign or reuse the three technique hues for anything else."
+    ]
+  }
+}

@@ -10,20 +10,19 @@
   .demos { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 26px; }
   .demo { display: grid; gap: 8px; align-content: start; text-decoration: none; color: inherit; position: relative; overflow: hidden; padding: 20px 18px 18px; transition: transform .15s, box-shadow .15s; animation: rise .5s both; }
   .demo:nth-child(2) { animation-delay: .07s; } .demo:nth-child(3) { animation-delay: .14s; } .demo:nth-child(4) { animation-delay: .21s; }
-  .demo::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: var(--c); }
   .demo:hover { transform: translateY(-4px); box-shadow: var(--shadow-up); }
-  .demo .no { font-size: .72rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
   .demo h2 { font-size: 1.3rem; }
   .demo .v { font-size: 2.6rem; font-weight: 780; letter-spacing: -0.04em; line-height: 1; color: var(--c); font-variant-numeric: tabular-nums; margin-top: 6px; }
   .demo .v small { font-size: 1.1rem; color: var(--ink-3); font-weight: 600; letter-spacing: 0; }
-  .demo .vl { font-size: .74rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; font-weight: 650; }
+  .demo .vl { font-size: .8rem; color: var(--ink-2); font-weight: 600; }
   .demo p { font-size: .9rem; margin-top: 4px; }
-  .demo .go { font-weight: 700; color: var(--c); margin-top: 6px; }
+  .demo .go { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--c); margin-top: 6px; transition: gap .2s var(--ease); }
+  .demo:hover .go { gap: 10px; }
   .demo.portal { --c: var(--ours); } .demo.dataset { --c: var(--good); }
   .demo.assistant { --c: var(--agent); } .demo.rules { --c: var(--base); }
   .cmds { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 10px; margin-top: 12px; }
-  .cmd { padding: 12px 14px; animation: rise .5s both .3s; }
-  .cmd .k { font-size: .72rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; font-weight: 650; }
+  .cmd { padding: 12px 14px; }
+  .cmd .k { font-size: .8rem; color: var(--ink-2); font-weight: 600; }
   .cmd pre { margin: 6px 0 0; font-family: var(--mono); font-size: .8rem; background: #0d1014; color: #d7dde3; border-radius: 8px; padding: 7px 10px; overflow-x: auto; }
 </style>
 
@@ -36,7 +35,7 @@
     </div>
     <div class="tools">
       <button id="bigger" title="Larger text for a projector">A+</button>
-      <button id="theme" title="Light / dark">◐</button>
+      <button id="theme"></button>
     </div>
   </div>
 
@@ -62,13 +61,13 @@
   const D = JSON.parse(document.getElementById("data").textContent);
   const c = Kit.count;
   const tiles = [
-    ["portal", "portal-run.html", "1 · the pipeline, live", "The portal run", `${c(D.portal.ours)} <small>vs</small> ${c(D.portal.baseline)}`, "page loads · ours vs baseline", "A real browser signs in, finds every module, and each technique scrapes it."],
-    ["dataset", "dataset-walkthrough.html", "2 · an export we never saw", "The dataset", `${c(D.dataset.ours, 2)} <small>vs</small> ${c(D.dataset.baseline, 2)}`, "compliance · ours vs baseline", "A public export through the real gate, one patient, and its erasure."],
-    ["assistant", "assistant.html", "3 · the staff assistant", "Ask the assistant", `${c(D.assistant.functions)} <small>functions · ${D.assistant.roles} roles</small>`, "gated before anything is asked", "Pick a role and type. Steps, or a refusal with the rule."],
-    ["rules", D.rules_href, "4 · the result", "Rules vs AI", `${c(D.rules.ours_held)}/${D.rules.ours_traps} <small>vs</small> ${c(D.rules.agents_held)}/${D.rules.agents_traps}`, "trap runs held · ours vs AI unaided", `${D.rules.models} public models, every run scored.`],
+    ["portal", "portal-run.html", "The portal run", `${c(D.portal.ours)} <small>vs</small> ${c(D.portal.baseline)}`, "page loads · ours vs baseline", "A real browser signs in, finds every module, and each technique scrapes it."],
+    ["dataset", "dataset-walkthrough.html", "The dataset", `${c(D.dataset.ours, 2)} <small>vs</small> ${c(D.dataset.baseline, 2)}`, "compliance · ours vs baseline", "A public export through the real gate, one patient, and its erasure."],
+    ["assistant", "assistant.html", "Ask the assistant", `${c(D.assistant.functions)} <small>functions · ${D.assistant.roles} roles</small>`, "gated before anything is asked", "Pick a role and type. Steps, or a refusal with the rule."],
+    ["rules", D.rules_href, "Rules vs AI", `${c(D.rules.ours_held)}/${D.rules.ours_traps} <small>vs</small> ${c(D.rules.agents_held)}/${D.rules.agents_traps}`, "trap runs held · ours vs AI unaided", `${D.rules.models} public models, every run scored.`],
   ];
-  document.getElementById("demos").innerHTML = tiles.map(([k, href, no, h, v, vl, p]) =>
-    `<a class="card demo ${k}" href="${href}"><span class="no">${no}</span><h2>${h}</h2><div class="v">${v}</div><div class="vl">${vl}</div><p>${p}</p><span class="go">Open →</span></a>`).join("");
+  document.getElementById("demos").innerHTML = tiles.map(([k, href, h, v, vl, p]) =>
+    `<a class="card demo ${k}" href="${href}"><h2><span class="dot-c"></span>${h}</h2><div class="v">${v}</div><div class="vl">${vl}</div><p>${p}</p><span class="go">Open ${Kit.icon("arrow")}</span></a>`).join("");
   Kit.countIn(document.getElementById("demos"));
 })();
 </script>
