@@ -10,8 +10,9 @@
   .prov { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); margin-top: 8px; }
   .controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-top: 16px; }
   .legend { margin-top: 0; gap: 6px; }
-  .legend label { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px; border-radius: 999px; background: var(--card); box-shadow: var(--shadow); cursor: pointer; font-size: .84rem; color: var(--ink); user-select: none; transition: opacity .15s; }
-  .legend label.off { opacity: .4; box-shadow: none; }
+  .legend label { display: inline-flex; align-items: center; gap: 7px; padding: 3px 10px; border-radius: var(--r); border: 1px solid var(--line); background: var(--card); cursor: pointer; font-size: .84rem; color: var(--ink); user-select: none; }
+  .legend label:hover { border-color: var(--ink-3); }
+  .legend label.off { opacity: .45; }
   .legend input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
   .legend label:has(input:focus-visible) { outline: 2px solid var(--ours); outline-offset: 2px; }
   .legend label { position: relative; }
@@ -25,49 +26,42 @@
   #retention, #coverage, #rulelines { overflow-x: auto; }
   #retention svg, #coverage svg { min-width: 440px; }
   #rulelines svg { min-width: 620px; }
-  #radar .s { transform-origin: 210px 178px; animation: radarIn .9s var(--ease) both; }
-  #radar .s:nth-child(n) { animation-delay: calc(var(--i, 0) * 70ms); }
-  @keyframes radarIn { from { transform: scale(0); opacity: 0; } to { transform: none; opacity: 1; } }
-  svg rect.bar { transform-box: fill-box; transform-origin: left center; animation: grow .8s var(--ease) both; }
-  svg polyline.line { stroke-dasharray: 2200; stroke-dashoffset: 2200; animation: draw 1.3s ease-out forwards; }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
 
-  .fault { position: relative; overflow: hidden; }
-  .fault .title { font-family: var(--display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; display: flex; align-items: center; gap: .45em; }
-  .fault .title .ico { color: var(--bad); }
-  .fault .why { font-size: .84rem; color: var(--ink-3); margin-top: 2px; }
+  .fault .title { font-family: var(--display); font-size: 1.12rem; font-weight: 600; }
+  .fault .why { font-size: .84rem; color: var(--ink-3); margin-top: 1px; }
   .grid-tasks { display: grid; grid-template-columns: max-content 1fr; gap: 10px 16px; align-items: start; font-size: .86rem; margin-top: 12px; }
   .cells { display: flex; gap: 4px; flex-wrap: wrap; }
-  .cell { width: 26px; height: 24px; border-radius: 6px; display: grid; place-items: center; font-size: .8rem; font-weight: 650; font-family: var(--mono); color: var(--ink); animation: pop .3s both; }
-  .cell.held { background: var(--good-bg); color: var(--good); }
-  .cell.fell { background: var(--bad); color: var(--on-fill); }
+  .cell { width: 24px; height: 22px; border-radius: var(--rr); display: grid; place-items: center; font-size: .8rem; font-family: var(--mono); color: var(--ink); border: 1px solid var(--line); }
+  .cell.held { color: var(--good); background: var(--good-bg); border-color: transparent; }
+  .cell.fell { background: var(--bad); border-color: var(--bad); color: var(--on-fill); }
   .cell.same { background: var(--card-2); }
   .cell.diff { border: 1.5px dashed var(--bad); color: var(--bad); }
   .stab td { vertical-align: middle; }
-  .stab i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin: 1px; background: var(--c); }
+  .stab i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin: 1px; background: var(--c); }
   .stab i.diff { background: transparent; border: 1.5px dashed var(--bad); }
   .rowlab { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-2); }
-  .tname { font-weight: 680; text-transform: capitalize; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
-  .stat { display: grid; gap: 4px; padding: 10px 12px; border-radius: 12px; background: var(--card-2); }
-  .stat .lab { font-size: .76rem; color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
-  .bignum { font-size: 1.9rem; font-weight: 780; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1.05; }
-  .pills { display: flex; flex-wrap: wrap; gap: 4px; }
-  .pill { font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; font-variant-numeric: tabular-nums; }
-  .pill.good { background: var(--good-bg); color: var(--good); }
-  .pill.bad { background: var(--bad-bg); color: var(--bad); }
-  .pill.warn { background: var(--warn-bg); color: var(--warn); }
+  .tname { font-weight: 600; text-transform: capitalize; }
+  .stats { display: grid; }
+  .stat { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .stat:last-child { border-bottom: none; }
+  .stat .lab { font-size: .88rem; display: inline-flex; align-items: center; gap: 6px; }
+  .bignum { font-family: var(--display); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .pills { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; font-size: .76rem; }
+  .pill { font-variant-numeric: tabular-nums; font-weight: 600; padding: 1px 7px; border-radius: var(--rr); }
+  .pill.good { color: var(--good); background: var(--good-bg); }
+  .pill.bad { color: var(--bad); background: var(--bad-bg); }
+  .pill.warn { color: var(--warn); background: var(--warn-bg); }
 
   table { font-size: .86rem; }
   th, td { white-space: nowrap; }
-  tr.layer td { background: var(--card-2); font-size: .7rem; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); font-weight: 650; }
+  tr.layer td { background: var(--card-2); font-size: .8rem; color: var(--ink-2); font-weight: 600; text-transform: capitalize; }
   .dot { display: inline-block; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--ink-3); vertical-align: middle; box-sizing: border-box; }
   .dot.take { background: var(--ink-3); }
   .dot.extra { background: var(--base); border-color: var(--base); }
   .dot.missed { border-color: var(--bad); border-style: dashed; }
   .oos { color: var(--bad); }
-  .heat span { display: inline-block; min-width: 48px; text-align: center; padding: 4px 0; border-radius: 6px; font-family: var(--mono); font-size: .8rem; }
-  .tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font-size: .8rem; padding: 6px 10px; border-radius: 8px; transform: translate(-50%, calc(-100% - 10px)); white-space: nowrap; opacity: 0; z-index: 5; font-family: var(--mono); transition: opacity .1s; }
+  .heat span { display: inline-block; min-width: 48px; text-align: center; padding: 3px 0; border-radius: 2px; font-family: var(--mono); font-size: .8rem; }
+  .tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font-size: .8rem; padding: 5px 9px; border-radius: var(--r); transform: translate(-50%, calc(-100% - 10px)); white-space: nowrap; opacity: 0; z-index: 5; font-family: var(--mono); }
   .tip.on { opacity: 1; }
   @media (max-width: 520px) { .grid-tasks { grid-template-columns: 1fr; } }
 </style>
@@ -114,22 +108,22 @@
 
   <div class="pane" id="pane-2" hidden>
     <div class="card fault">
-      <div class="title"><span data-icon="alert"></span>It does what it is asked, not what is lawful</div>
+      <div class="title">It does what it is asked, not what is lawful</div>
       <div class="why">Four jobs worded to invite a violation · <span id="trapNote"></span></div>
       <div id="traps"></div>
     </div>
     <div class="two">
       <div class="card fault">
-        <div class="head" style="margin-bottom:4px"><div><div class="title"><span data-icon="alert"></span>It keeps data as long as it likes</div><div class="why">declared retention vs the legal ceiling</div></div><select id="retTask" aria-label="Task"></select></div>
+        <div class="head" style="margin-bottom:4px"><div><div class="title">It keeps data as long as it likes</div><div class="why">declared retention vs the legal ceiling</div></div><select id="retTask" aria-label="Task"></select></div>
         <div id="retention"></div>
       </div>
       <div class="card fault">
-        <div class="head" style="margin-bottom:4px"><div><div class="title"><span data-icon="alert"></span>It does the wrong job, scoring well</div><div class="why">needed · missed · extra, first run</div></div><select id="covTask" aria-label="Task"></select></div>
+        <div class="head" style="margin-bottom:4px"><div><div class="title">It does the wrong job, scoring well</div><div class="why">needed · missed · extra, first run</div></div><select id="covTask" aria-label="Task"></select></div>
         <div id="coverage"></div>
       </div>
     </div>
     <div class="card fault">
-      <div class="title"><span data-icon="alert"></span>It changes its mind</div>
+      <div class="title">It changes its mind</div>
       <div class="why">same brief, repeated · one square per run · dashed = differs from run 1</div>
       <div id="stability"></div>
     </div>
@@ -258,7 +252,7 @@
   // ---- stats: the score looks alike; the pills do not
   function renderStats() {
     const pill = (a, b, label) => { if (!b) return `<span class="pill warn">${label} n/a</span>`; const r = a / b; return `<span class="pill ${r >= 0.999 ? 'good' : r >= 0.5 ? 'warn' : 'bad'}">${label} ${a}/${b}</span>`; };
-    document.getElementById('stats').innerHTML = T.map((t, i) => { const s = mem[t.k]; return `<div class="stat" data-series="${t.k}" style="animation-delay:${i * 50}ms"><span class="lab"><i class="sw" style="background:${t.color}"></i>${esc(t.name)}</span><span class="bignum">${Kit.count(s.mean_compliance_score, 3)}</span><span class="pills">${pill(s.traps_resisted, s.traps, 'traps')}${pill(s.stable_runs, s.repeat_runs, 'same')}</span></div>`; }).join('');
+    document.getElementById('stats').innerHTML = T.map((t, i) => { const s = mem[t.k]; return `<div class="stat" data-series="${t.k}"><span class="lab"><i class="sw" style="background:${t.color}"></i>${esc(t.name)}</span><span class="bignum">${Kit.count(s.mean_compliance_score, 3)}</span><span class="pills">${pill(s.traps_resisted, s.traps, 'traps')}${pill(s.stable_runs, s.repeat_runs, 'same')}</span></div>`; }).join('');
     Kit.countIn(document.getElementById('stats'));
     applyShown('#stats [data-series]');
   }
@@ -273,10 +267,10 @@
       let block = '';
       A.forEach(tk => {
         const runs = AGENT_RUNS(td, tk.rk);
-        const cells = runs.map((r, i) => { const fell = r.oos.length || r.onward.length || (r.retention !== null && r.retention > td.ceiling); const why = fell ? [r.oos.length ? 'took ' + r.oos.join(', ') + ' data' : '', r.onward.length ? 'declared onward use: ' + r.onward.join(', ') : '', (r.retention !== null && r.retention > td.ceiling) ? `retention ${r.retention} d (ceiling ${td.ceiling})` : ''].filter(Boolean).join('; ') : 'held'; return `<span class="cell ${fell ? 'fell' : 'held'}" style="animation-delay:${Math.min(n++, 50) * 14}ms" data-t="${esc(tk.name)} · ${esc(short(t))} · run ${i + 1}: ${esc(why)}">${Kit.icon(fell ? 'x' : 'check')}</span>`; }).join('');
+        const cells = runs.map((r, i) => { const fell = r.oos.length || r.onward.length || (r.retention !== null && r.retention > td.ceiling); const why = fell ? [r.oos.length ? 'took ' + r.oos.join(', ') + ' data' : '', r.onward.length ? 'declared onward use: ' + r.onward.join(', ') : '', (r.retention !== null && r.retention > td.ceiling) ? `retention ${r.retention} d (ceiling ${td.ceiling})` : ''].filter(Boolean).join('; ') : 'held'; return `<span class="cell ${fell ? 'fell' : 'held'}" data-t="${esc(tk.name)} · ${esc(short(t))} · run ${i + 1}: ${esc(why)}">${Kit.icon(fell ? 'x' : 'check')}</span>`; }).join('');
         block += `<div data-series="${tk.k}" style="display:grid;grid-template-columns:190px 1fr;gap:8px;align-items:center;margin-bottom:5px"><div class="rowlab"><i class="sw" style="background:${tk.color}"></i>${esc(tk.name)}</div><div class="cells">${cells}</div></div>`;
       });
-      const ours = Array.from({ length: N_RUNS }, (_, i) => `<span class="cell held" style="animation-delay:${Math.min(n++, 50) * 14}ms" data-t="ours · ${esc(short(t))} · run ${i + 1}: held — reads the policy, not the prose">${Kit.icon('check')}</span>`).join('');
+      const ours = Array.from({ length: N_RUNS }, (_, i) => `<span class="cell held" data-t="ours · ${esc(short(t))} · run ${i + 1}: held — reads the policy, not the prose">${Kit.icon('check')}</span>`).join('');
       h += `<div><span class="tname">${esc(short(t))}</span><div class="muted oos" style="white-space:normal;max-width:30ch;font-size:.76rem">${esc(td.trap)}</div></div>` +
            `<div>${block}<div data-series="compliance-aware" style="display:grid;grid-template-columns:190px 1fr;gap:8px;align-items:center"><div class="rowlab"><i class="sw" style="background:var(--ours)"></i>ours (rules)</div><div class="cells">${ours}</div></div></div>`;
     });
@@ -300,7 +294,7 @@
     vals.forEach((s) => {
       const tk = T.find(t => t.k === s.k);
       g += `<g data-series="${s.k}"><text x="${padL - 8}" y="${y0 + rowH * Math.max(1, s.v.length) / 2}" text-anchor="end" dominant-baseline="middle" font-size="11.5">${esc(tk.name)}</text>`;
-      s.v.forEach((v, i) => { const y = y0 + i * rowH; const w = Math.max(1, x(v) - padL); const over = v > ceiling; g += `<rect class="bar" style="animation-delay:${(n++) * 30}ms" x="${padL}" y="${y}" width="${w.toFixed(1)}" height="${rowH - 4}" rx="3" fill="${over ? 'var(--bad)' : tk.color}" data-t="${esc(tk.name)} · run ${i + 1} · ${v ? v + ' days' : 'not declared'}${over ? ' · over the ceiling' : ''}"></rect><text class="mono" x="${(x(v) + 5).toFixed(1)}" y="${y + rowH / 2 - 2}" dominant-baseline="middle" font-size="10.5">${v ? v + ' d' : '—'}</text>`; });
+      s.v.forEach((v, i) => { const y = y0 + i * rowH; const w = Math.max(1, x(v) - padL); const over = v > ceiling; g += `<rect class="bar" x="${padL}" y="${y}" width="${w.toFixed(1)}" height="${rowH - 4}" rx="3" fill="${over ? 'var(--bad)' : tk.color}" data-t="${esc(tk.name)} · run ${i + 1} · ${v ? v + ' days' : 'not declared'}${over ? ' · over the ceiling' : ''}"></rect><text class="mono" x="${(x(v) + 5).toFixed(1)}" y="${y + rowH / 2 - 2}" dominant-baseline="middle" font-size="10.5">${v ? v + ' d' : '—'}</text>`; });
       g += '</g>';
       y0 += rowH * Math.max(1, s.v.length) + 12;
     });
@@ -330,7 +324,7 @@
       const tk = T.find(t => t.k === r.k); const y = top + i * rowH;
       g += `<g data-series="${r.k}"><text x="${padL - 8}" y="${y + 11}" text-anchor="end" dominant-baseline="middle" font-size="11.5">${esc(tk.name)}</text>`;
       let cur = 0;
-      const seg = (k, fill, dash, label) => { if (!k) return; const w = x(cur + k) - x(cur) - 2; g += `<rect class="bar" style="animation-delay:${(n++) * 40}ms" x="${x(cur)}" y="${y}" width="${Math.max(1, w).toFixed(1)}" height="20" rx="3" fill="${fill}" ${dash ? 'stroke="var(--bad)" stroke-dasharray="3 2" fill-opacity="0.15"' : ''} data-t="${esc(tk.name)} · ${label}"></rect>`; cur += k; };
+      const seg = (k, fill, dash, label) => { if (!k) return; const w = x(cur + k) - x(cur) - 2; g += `<rect class="bar" x="${x(cur)}" y="${y}" width="${Math.max(1, w).toFixed(1)}" height="20" rx="3" fill="${fill}" ${dash ? 'stroke="var(--bad)" stroke-dasharray="3 2" fill-opacity="0.15"' : ''} data-t="${esc(tk.name)} · ${label}"></rect>`; cur += k; };
       seg(r.taken, tk.color, false, `${r.taken} of ${needed.size} needed fields taken`);
       seg(r.missed, 'var(--bad)', true, `missed: ${esc(r.missedList.join(', '))}`);
       seg(r.extra, 'var(--base)', false, `extra: ${esc(r.extraList.slice(0, 6).join(', '))}${r.extraList.length > 6 ? ' …' : ''}`);
@@ -346,7 +340,7 @@
   function renderStability() {
     const key = r => JSON.stringify([r.fields, r.structure]);
     let n = 0;
-    const sq = (runs, color, label, t) => { const first = runs.length ? key(runs[0]) : null; return runs.map((r, i) => { const same = key(r) === first; return `<i class="${same ? 'same' : 'diff'}" style="--c:${color};animation-delay:${Math.min(n++, 80) * 8}ms" data-t="${esc(label)} · ${esc(short(t))} · run ${i + 1} · ${r.fields.length} fields${i === 0 ? '' : same ? ' · same as run 1' : ' · differs from run 1'}"></i>`; }).join(''); };
+    const sq = (runs, color, label, t) => { const first = runs.length ? key(runs[0]) : null; return runs.map((r, i) => { const same = key(r) === first; return `<i class="${same ? 'same' : 'diff'}" style="--c:${color};" data-t="${esc(label)} · ${esc(short(t))} · run ${i + 1} · ${r.fields.length} fields${i === 0 ? '' : same ? ' · same as run 1' : ' · differs from run 1'}"></i>`; }).join(''); };
     const row = (k, name, color, runsOf) => {
       let same = 0, rep = 0;
       const cells = tasks.map(t => { const runs = runsOf(t); rep += Math.max(0, runs.length - 1); same += runs.slice(1).filter(r => key(r) === key(runs[0])).length; return `<td>${sq(runs, color, name, t)}</td>`; }).join('');
@@ -368,12 +362,12 @@
     let g = '';
     [0, 0.25, 0.5, 0.75, 1].forEach(v => { g += `<line class="grid" x1="${padL}" x2="${W - padR}" y1="${y(v)}" y2="${y(v)}"></line><text class="mono" x="${padL - 6}" y="${y(v)}" text-anchor="end" dominant-baseline="middle" font-size="11">${v.toFixed(2)}</text>`; });
     D.rules.forEach((r, i) => { g += `<text x="${x(i)}" y="${H - bottom + 16}" text-anchor="middle" font-size="11.5" font-weight="600">${r}</text><text x="${x(i)}" y="${H - bottom + 30}" text-anchor="middle" font-size="10.5" fill="var(--ink-3)">${({ 'DM-01': 'minimise', 'LB-01': 'basis', 'SL-01': 'storage', 'SS-01': 'safeguards', 'PL-01': 'purpose', 'NT-01': 'notice', 'AC-01': 'account.' })[r]}</text>`; });
-    T.forEach((t, si) => { const s = mem[t.k]; const pts = D.rules.map((r, i) => [x(i), y(s.per_rule_mean[r])]); g += `<g data-series="${t.k}"><polyline class="line" style="animation-delay:${si * 90}ms" points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="${t.color}" stroke-width="2.6" stroke-linejoin="round"></polyline>${pts.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="${t.color}" stroke="var(--card)" stroke-width="1.5" data-t="${esc(t.name)} · ${D.rules[i]} · ${s.per_rule_mean[D.rules[i]].toFixed(2)}"></circle>`).join('')}</g>`; });
+    T.forEach((t, si) => { const s = mem[t.k]; const pts = D.rules.map((r, i) => [x(i), y(s.per_rule_mean[r])]); g += `<g data-series="${t.k}"><polyline class="line" points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="${t.color}" stroke-width="2.6" stroke-linejoin="round"></polyline>${pts.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="${t.color}" stroke="var(--card)" stroke-width="1.5" data-t="${esc(t.name)} · ${D.rules[i]} · ${s.per_rule_mean[D.rules[i]].toFixed(2)}"></circle>`).join('')}</g>`; });
     document.getElementById('rulelines').innerHTML = `<svg viewBox="0 0 ${W} ${H}">${g}</svg>`;
     // heat table
-    const seq = v => v >= 0.999 ? '#0d366b' : v >= 0.9 ? '#1c5cab' : v >= 0.75 ? '#3987e5' : v >= 0.5 ? '#6da7ec' : v >= 0.25 ? '#9ec5f4' : '#cde2fb';
+    const seq = v => `color-mix(in srgb, var(--ours) ${Math.round(6 + v * 44)}%, var(--card))`;
     let h = '<thead><tr><th>technique</th>' + D.rules.map(r => `<th class="n">${r}</th>`).join('') + '<th class="n">score</th></tr></thead><tbody>';
-    T.forEach(t => { const s = mem[t.k]; h += `<tr data-series="${t.k}"><td><i class="sw" style="background:${t.color};margin-right:8px"></i>${esc(t.name)}</td>` + D.rules.map(r => { const v = s.per_rule_mean[r]; return `<td class="n"><span style="background:${seq(v)};color:${v >= 0.75 ? '#fff' : '#17191c'}">${v.toFixed(2)}</span></td>`; }).join('') + `<td class="n"><b>${s.mean_compliance_score.toFixed(3)}</b></td></tr>`; });
+    T.forEach(t => { const s = mem[t.k]; h += `<tr data-series="${t.k}"><td><i class="sw" style="background:${t.color};margin-right:8px"></i>${esc(t.name)}</td>` + D.rules.map(r => { const v = s.per_rule_mean[r]; return `<td class="n"><span style="background:${seq(v)};color:var(--ink)">${v.toFixed(2)}</span></td>`; }).join('') + `<td class="n"><b>${s.mean_compliance_score.toFixed(3)}</b></td></tr>`; });
     document.getElementById('heat').innerHTML = h + '</tbody>';
     document.querySelectorAll('#rulelines [data-t]').forEach(el => hover(el, el.dataset.t));
     applyShown('#rulelines [data-series], #heat [data-series]');

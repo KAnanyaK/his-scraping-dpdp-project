@@ -2,12 +2,11 @@
 name: DPDP-compliant HIS extraction — Review demo pages
 description: Offline, self-contained demo pages that make a compliance benchmark visible at a glance; the presenter explains.
 colors:
-  paper: "#f3f4f6"
-  paper-glow: "#e9ecf1"
+  page: "#f5f6f8"
   card: "#ffffff"
-  card-recess: "#f0f2f5"
-  hairline: "#e1e5ea"
-  ink: "#121417"
+  recess: "#f0f2f5"
+  line: "#e1e4e9"
+  ink: "#14161a"
   ink-soft: "#4d5560"
   ink-quiet: "#686e76"
   ours-blue: "#266ec4"
@@ -31,162 +30,183 @@ colors:
   model-a3: "#0e9aa7"
   model-a4: "#d6409f"
   model-a5: "#8a6d3b"
-  terminal: "#0d1014"
+  terminal: "#111316"
   terminal-ink: "#d7dde3"
-  night-paper: "#0f1114"
-  night-paper-glow: "#15181d"
-  night-card: "#1a1d22"
-  night-card-recess: "#23272d"
-  night-hairline: "#2c3138"
-  night-ink: "#f1f3f5"
+  terminal-ok: "#5fd38d"
+  terminal-no: "#ff7b7b"
+  terminal-dim: "#8b949e"
+  night-page: "#0f1114"
+  night-card: "#181b20"
+  night-recess: "#22262c"
+  night-line: "#2c3138"
+  night-ink: "#eef0f2"
   night-ink-soft: "#a9b1ba"
   night-ink-quiet: "#878e95"
   night-ours-blue: "#4b95ee"
   night-agent-violet: "#a78bfa"
   night-baseline-amber: "#d99a1a"
   night-good: "#3cc279"
+  night-good-wash: "#173527"
   night-bad: "#ee6b6b"
+  night-bad-wash: "#3a2023"
   night-warn: "#dca13a"
+  night-warn-wash: "#3a2f1c"
+  night-on-fill: "#0f1114"
+  night-layer-clinical: "#22b07e"
+  night-layer-ancillary: "#2bb3c0"
+  night-layer-financial: "#e0662f"
+  night-layer-integration: "#b08a5a"
 typography:
-  display:
-    fontFamily: "Segoe UI Variable Display, Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "2.1rem"
-    fontWeight: 700
-    lineHeight: 1.1
-    letterSpacing: "-0.025em"
-  hero-number:
-    fontFamily: "Segoe UI Variable Display, Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "2.1rem"
-    fontWeight: 700
-    lineHeight: 1.1
-    letterSpacing: "-0.03em"
-    fontFeature: "tnum"
   headline:
     fontFamily: "Segoe UI Variable Display, Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.08rem"
-    fontWeight: 650
-    letterSpacing: "-0.01em"
+    fontSize: "2rem"
+    fontWeight: 600
+    lineHeight: 1.15
+    letterSpacing: "-0.022em"
+  key-number:
+    fontFamily: "Segoe UI Variable Display, Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.8rem"
+    fontWeight: 600
+    lineHeight: 1.15
+    letterSpacing: "-0.02em"
+    fontFeature: "tnum"
   title:
+    fontFamily: "Segoe UI Variable Display, Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.06rem"
+    fontWeight: 600
+    letterSpacing: "-0.005em"
+  subtitle:
     fontFamily: "Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
     fontSize: "0.9rem"
-    fontWeight: 650
-  lead:
-    fontFamily: "Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
-    fontSize: "1.05rem"
-    fontWeight: 400
-    lineHeight: 1.45
+    fontWeight: 600
   body:
     fontFamily: "Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.45
+    lineHeight: 1.5
   label:
     fontFamily: "Segoe UI Variable Text, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
-    fontSize: "0.74rem"
-    fontWeight: 600
+    fontSize: "0.8rem"
+    fontWeight: 400
   data:
     fontFamily: "ui-monospace, Cascadia Mono, Consolas, Courier New, monospace"
     fontSize: "0.8rem"
     fontWeight: 400
     fontFeature: "tnum"
 rounded:
-  hairline: "3px"
-  cell: "6px"
-  field: "8px"
-  inset: "10px"
-  card: "14px"
-  pill: "999px"
+  mark: "2px"
+  chip: "4px"
+  box: "6px"
 spacing:
-  xs: "6px"
-  sm: "10px"
-  md: "14px"
-  lg: "18px"
-  card: "16px"
+  xs: "4px"
+  sm: "8px"
+  md: "12px"
+  lg: "16px"
+  xl: "18px"
   page-bottom: "48px"
 components:
   card:
     backgroundColor: "{colors.card}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.card}"
-    padding: "16px"
-  hero-number:
+    rounded: "{rounded.box}"
+    padding: "16px 18px"
+  funnel:
+    backgroundColor: "{colors.card}"
+    rounded: "{rounded.box}"
+  funnel-cell:
     backgroundColor: "{colors.card}"
     textColor: "{colors.ink}"
-    typography: "{typography.hero-number}"
-    rounded: "{rounded.card}"
-    padding: "12px 14px 11px"
-  sitenav:
-    backgroundColor: "{colors.card}"
-    rounded: "{rounded.pill}"
-    padding: "4px"
+    typography: "{typography.key-number}"
+    padding: "12px 16px"
   sitenav-link:
     textColor: "{colors.ink-soft}"
-    rounded: "{rounded.pill}"
-    padding: "5px 13px"
+    padding: "4px 0"
   sitenav-link-current:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.pill}"
-    padding: "5px 13px"
-  step:
-    backgroundColor: "{colors.card}"
-    textColor: "{colors.ink-soft}"
-    rounded: "{rounded.pill}"
-    padding: "8px 14px 8px 8px"
-  step-selected:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.pill}"
-    padding: "8px 14px 8px 8px"
-  seg-button:
-    backgroundColor: "{colors.card-recess}"
-    textColor: "{colors.ink-soft}"
-    rounded: "{rounded.pill}"
-    padding: "5px 12px"
-  seg-button-pressed:
-    backgroundColor: "{colors.card}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.pill}"
-    padding: "5px 12px"
-  badge:
-    backgroundColor: "{colors.card-recess}"
+    padding: "4px 0"
+  step:
     textColor: "{colors.ink-soft}"
-    rounded: "{rounded.pill}"
-    padding: "3px 10px"
+    padding: "8px 0"
+  step-selected:
+    textColor: "{colors.ink}"
+    padding: "8px 0"
+  seg-button:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.ink-soft}"
+    padding: "4px 11px"
+  seg-button-pressed:
+    textColor: "{colors.ink}"
+    padding: "4px 11px"
+  badge:
+    backgroundColor: "{colors.recess}"
+    textColor: "{colors.ink-soft}"
+    rounded: "{rounded.chip}"
+    padding: "2px 8px"
   badge-good:
     backgroundColor: "{colors.good-wash}"
     textColor: "{colors.good}"
-    rounded: "{rounded.pill}"
-    padding: "3px 10px"
+    rounded: "{rounded.chip}"
+    padding: "2px 8px"
   badge-bad:
     backgroundColor: "{colors.bad-wash}"
     textColor: "{colors.bad}"
-    rounded: "{rounded.pill}"
-    padding: "3px 10px"
+    rounded: "{rounded.chip}"
+    padding: "2px 8px"
   badge-warn:
     backgroundColor: "{colors.warn-wash}"
     textColor: "{colors.warn}"
-    rounded: "{rounded.pill}"
-    padding: "3px 10px"
-  button-play:
+    rounded: "{rounded.chip}"
+    padding: "2px 8px"
+  chip-fail:
+    backgroundColor: "{colors.bad}"
+    textColor: "{colors.on-fill}"
+    rounded: "{rounded.chip}"
+  button-primary:
     backgroundColor: "{colors.ours-blue}"
     textColor: "{colors.on-fill}"
-    rounded: "{rounded.pill}"
-    padding: "9px 18px"
+    rounded: "{rounded.box}"
+    padding: "5px 12px"
+  button-plain:
+    backgroundColor: "{colors.page}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.box}"
+    padding: "5px 12px"
+  button-plain-hover:
+    backgroundColor: "{colors.recess}"
   tool-button:
     backgroundColor: "{colors.card}"
     textColor: "{colors.ink-soft}"
-    rounded: "{rounded.pill}"
-    size: "2.4rem"
+    rounded: "{rounded.box}"
+    height: "2rem"
+  select:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.box}"
+    padding: "4px 8px"
   track:
-    backgroundColor: "{colors.card-recess}"
-    rounded: "{rounded.pill}"
-    height: "14px"
+    backgroundColor: "{colors.recess}"
+    rounded: "{rounded.chip}"
+    height: "12px"
+  note:
+    backgroundColor: "{colors.recess}"
+    textColor: "{colors.ink-soft}"
+    rounded: "{rounded.box}"
+    padding: "8px 12px"
+  verdict-ok:
+    backgroundColor: "{colors.good-wash}"
+    textColor: "{colors.good}"
+    rounded: "{rounded.box}"
+    padding: "10px 14px"
+  verdict-no:
+    backgroundColor: "{colors.bad-wash}"
+    textColor: "{colors.bad}"
+    rounded: "{rounded.box}"
+    padding: "10px 14px"
   terminal:
     backgroundColor: "{colors.terminal}"
     textColor: "{colors.terminal-ink}"
     typography: "{typography.data}"
-    rounded: "{rounded.field}"
+    rounded: "{rounded.box}"
     padding: "8px 10px"
 ---
 
@@ -194,52 +214,56 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Instrument Panel"**
+**Creative North Star: "The Ruled Page"**
 
-Every page is a quiet grey desk with a few white instruments laid on it, and the instruments carry the numbers. The page itself says one line; a presenter says the rest. What the eye lands on is a count (page loads, trap runs held, a compliance score), coloured by who produced it, arriving with a small, deliberate motion. Nothing on the page decorates; every coloured mark identifies a technique, a layer, a model or a verdict.
+Each page reads like a well-set lab report laid on a soft grey desk: white panels with a thin rule round them, a title in a display cut and one line under it, and numbers set large and tabular. Colour marks data (which technique produced a number, which HIS layer a field belongs to, which model a series is, whether a rule held or fell) and one thing more: where you are and what you chose, in our blue. The presenter explains; the page shows the point and lets a panel member click, type or flip a switch.
 
-Density is moderate and laptop-first: one 1180px column, cards that tile with `auto-fit`, a pill navigation bar and a pill stepper that turn each page into a short sequence of panes. The surface is flat paper with soft, low ambient shadows under white cards; there are no borders on cards and no side stripes. Two themes exist and are equal citizens (system preference, overridable by a header switch), plus an A+ switch that lifts the root size from 15px to 18px for a projector.
+Density is moderate and laptop-first: one centred 1140px column, a row of plain text links for navigation, a strip of key numbers inside one white panel, then underlined text tabs whose panes hold white panels and tables. Nothing floats and nothing moves on its own except the demos themselves (the portal's sign-in replay and crawl playback, the dataset's retention playback, the assistant's scripted scenes, the login caret). Two themes are equal citizens (system preference, overridable by a header switch), and an A+ switch lifts the root size from 15px to 18px for a projector.
 
-The pages are built to open offline by double-click, so the system is deliberately made from what every machine already has: system fonts, inline SVG drawn icons, inline CSS and script. That constraint is a design commitment, not a limitation to work around.
+The pages open offline by double-click, so the system is made from what every machine already has: the system's own Segoe UI Variable faces (Display for titles and figures, Text for everything else), a monospace stack, inline SVG icons, inline CSS and script. Minimal, quiet, and a little elegant; never decorated.
 
 **Key Characteristics:**
-- Grey paper, white cards, soft ambient shadow; no card borders, no stripes.
-- Fixed technique colours shared with the deck: ours blue, AI agents violet, baseline amber.
-- Large tabular hero numbers in the display face; one-line briefs in soft ink.
-- Everything rounded: 14px cards, full pills for every control.
-- System fonts only; mono only for data, field names, codes and paths.
-- One arrival motion for every pane; one authored moment per page.
+- Soft grey page, white panels with a 1px rule; no shadows, no gradients, no pills.
+- Colour for data (technique, layer, model, verdict) and for the current place and choice, in ours blue.
+- States are tinted washes, not outlines: green, red and ochre washes for verdicts, a light blue tint for a selection.
+- A display cut for the title, card headings and key figures; the text cut for everything else; mono only for data.
+- Navigation and steps are underlined text; the one filled button is the demo's primary action.
+- Numbers are written in place; only the demos animate.
 
 ## Colors
 
-A cool neutral ground with a small, fixed set of identity hues; colour means *who* or *what verdict*, never decoration.
+A cool grey desk with white panels and a small, fixed set of hues; a hue means *who*, *which layer*, *which model*, *what verdict*, or *you are here*.
 
 ### Primary
-- **Ours Blue** (ours-blue; night-ours-blue in dark): our compliance-aware technique, everywhere it appears. Also the system's working accent: focus rings, selection tint, caret, the play button, the active crumb, the user's chat bubble.
+- **Ours Blue** (ours-blue; night-ours-blue in dark): our compliance-aware technique wherever it appears, and the system's working accent: the underline under the current nav link and the selected step (with that step's number), the fill of the primary buttons (Play, Send), the light tint of a selected segment, tile, role or patient (7–12% mixed into the card), the rules page's heat map, focus outlines, links, text selection, caret and form accent.
 
 ### Secondary
 - **Agent Violet** (agent-violet; night-agent-violet): the publicly available AI agents, as a group.
-- **Baseline Amber** (baseline-amber; night-baseline-amber): the coverage-optimised baseline.
+- **Baseline Amber** (baseline-amber; night-baseline-amber): the coverage-optimised baseline. In the light theme it reaches only 3.4:1 on white, so it colours fills, dots and large figures (1.4rem at 600 and up), never small text.
 
 ### Tertiary
-- **Verdict Green / Red / Ochre** (good, bad, warn, each with a pale wash): held / fell / caution. Text in the solid hue sits on its own wash for badges, pills and chips; a solid red fill with on-fill text marks a fallen trap cell or a cited rule chip. Text on any solid fill uses `--on-fill`: white in the light theme, near-black (#0f1114) in the dark theme, where the lighter identity and verdict hues cannot carry white at 4.5:1.
-- **Layer hues** (layer-patient-admin, layer-clinical, layer-ancillary, layer-financial, layer-integration): the five HIS layers, used in legends, swatches and heat tables.
-- **Model palette** (model-a0 to model-a5): the rules page's per-model series, one hue per recorded model, with lighter dark-theme twins in that page's stylesheet.
+- **Verdict Green / Red / Ochre** (good, bad, warn, each with a wash): held / fell / caution. Badges, pills, category chips, rule chips, field chips, verdict bars and matrix cells take the wash as background with text in the solid hue and no border. A failure that matters (a fallen trap cell, an out-of-scope field, a failed rule) is a solid red fill with on-fill text. A declined answer and a closed gate row sit on the red wash.
+- **Layer hues** (layer-patient-admin, layer-clinical, layer-ancillary, layer-financial, layer-integration; the lighter four have night-layer twins): the five HIS layers, as small square swatches, legend keys, dots and bar fills. Only patient-admin and integration are dark enough for text; the rest are fills.
+- **Model palette** (model-a0 to model-a5): the rules page's per-model series, with lighter dark-theme twins declared in that page's stylesheet.
+- **On-fill** (on-fill; night-on-fill): text on any solid fill; white in light, near-black in dark, where the lighter hues cannot carry white.
 
 ### Neutral
-- **Paper** (paper) with **Paper Glow** (paper-glow) as a soft radial wash at the top of the page (1200 by 420px, fading by 70%).
-- **Card** (card) for every instrument; **Card Recess** (card-recess) for inset regions, tracks, segmented-control wells, inactive chips and stat tiles.
-- **Hairline** (hairline): table rules and the few internal dividers only.
-- **Ink / Ink Soft / Ink Quiet** (ink, ink-soft, ink-quiet): headings and values / body and briefs / footers, legends, secondary labels.
-- **Terminal** (terminal, terminal-ink): a theme-invariant dark slab for command lines and the gate log, identical in both themes.
-- Dark theme: the night-* keys replace their light twins one for one.
+- **Page** (page): the soft grey behind everything; also the plain buttons and the fake browser's address bar.
+- **Card** (card): the white of every panel, the key-number strip, the segmented control, tiles, inputs and selects.
+- **Recess** (recess): neutral badges, notes, code blocks, bar tracks, table layer rows, the fake browser chrome, a plain button's hover.
+- **Line** (line): every rule and panel border.
+- **Ink / Ink Soft / Ink Quiet** (ink, ink-soft, ink-quiet): headings and values / body, briefs and labels / footers, unselected step numbers, secondary metadata.
+- **Terminal** (terminal, terminal-ink, terminal-ok, terminal-no, terminal-dim): a theme-invariant dark slab for command output and the gate log, identical in both themes.
+- Dark theme: the night-* keys replace their light twins one for one; the page goes near-black and the panels one step lighter.
 
 ### Named Rules
-**The Fixed Identity Rule.** Ours is blue, AI agents are violet, the baseline is amber, on every page and in the deck. No page may reassign these hues or use them for anything else.
+**The Meaning or Place Rule.** A hue on the page must mean a technique, a layer, a model or a verdict, or mark the current place or choice in ours blue. Structure and emphasis are carried by ink, weight, rules and the grey-to-white step.
 
-**The Dot, Not Stripe Rule.** Identity colour is carried by a small round dot before a name (0.62em) and by coloured numbers. Never by a coloured side border, top stripe or tinted card background.
+**The Fixed Identity Rule.** Ours is blue, AI agents are violet, the baseline is amber, on every page and in the deck. No chart, strip, lane or table may reassign these hues. Ours blue alone doubles as the accent for place, selection and the primary action.
 
-**The 4.5 Floor Rule.** Every text colour holds at least 4.5:1 on paper, card and card-recess in both themes. The light ink-quiet, good, bad, warn and the three identity hues were tuned to that floor; a new text colour must be checked the same way before it ships.
+**The Wash Rule.** A state is a tinted wash with text in its solid hue, not an outline: good-wash, bad-wash and warn-wash for verdicts, a 7–12% ours tint for a selection. Only a failure that matters goes solid.
+
+**The 4.5 Floor Rule.** Small text holds at least 4.5:1 on its own background in both themes, including a verdict hue on its own wash (the washes are tuned to sit exactly there). Baseline amber and the lighter layer hues do not hold it and stay on fills and large figures.
 
 ## Typography
 
@@ -247,20 +271,23 @@ A cool neutral ground with a small, fixed set of identity hues; colour means *wh
 **Body Font:** Segoe UI Variable Text (with system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif)
 **Label/Mono Font:** ui-monospace (with Cascadia Mono, Consolas, Courier New, monospace)
 
-**Character:** One humanist system family in two optical sizes: the Display cut is tight and heavy for titles and numbers, the Text cut is open and calm for briefs. Mono appears only where the content is literally data.
+**Character:** Two optical cuts of one humanist family. The display cut, slightly tightened, carries the title, panel headings and every large number; the text cut carries the reading. Hierarchy comes from size, the display cut and 600 weight, never from capitals or letter-spacing. Mono appears only where the content is literally data.
 
 ### Hierarchy
-- **Display** (700, 2.1rem, 1.1, -0.025em, balanced wrap): the page title. The index hero lifts it to 2.6rem.
-- **Hero number** (700, 2.1rem, -0.03em, tabular figures): the funnel numbers; demo tiles and big counts run 1.8–2.6rem at 750–780.
-- **Headline** (650, 1.08rem, -0.01em): card and section titles.
-- **Title** (650, 0.9rem, ink-soft): sub-headings inside cards.
-- **Lead** (400, 1.05rem, max 90ch): the one-line brief under a step.
-- **Body** (400, 1rem on a 15px root, 1.45, paragraphs capped at 78ch).
-- **Label** (600, 0.74rem, ink-soft): hero-number captions and table headers, sentence case.
-- **Data** (mono, 0.7–0.88rem, tabular): field names, URLs, codes, paths, terminal text and right-aligned numeric table cells.
+- **Headline** (display, 600, 2rem, 1.15, -0.022em, balanced): the page title, once per page.
+- **Title** (display, 600, 1.06rem, -0.005em): panel and section headings; index entries 1.12rem; module layers and fault titles 1.12rem; role names 1.1rem.
+- **Subtitle** (text, 600, 0.9rem, ink-soft): sub-headings inside panels.
+- **Key number** (display, 600, 1.8rem, 1.15, -0.02em, tabular): the key-number strip. Per-technique counts in the crawl lanes 2.3rem and in the patient columns 2.2rem; secondary figures (layer rows, day counter, stat numbers, index figures, module confidence) 1.35–1.6rem, all display 600 tabular.
+- **Body** (text, 400, 1rem on a 15px root, 1.5): paragraphs capped at 78ch, step leads at 90ch; the page brief 1.02rem in ink-soft.
+- **Label** (text, 400, 0.76–0.84rem, ink-soft or ink-quiet, sentence case): number captions (0.8rem), table headers (0.8rem, 600), legends, footers (0.78rem).
+- **Data** (mono, 0.7–0.88rem, tabular): field names, URLs, codes, rule ids, paths, terminal text and right-aligned numeric cells.
 
 ### Named Rules
-**The System Fonts Only Rule.** No downloaded or web fonts, by team decision: the pages must open offline by double-click. Use the three stacks above and nothing else.
+**The Offline Faces Rule.** No downloaded or web fonts: the pages open offline, so only faces the machine already has are named, each with a full fallback stack.
+
+**The Display Is for Titles and Figures Rule.** The display cut sets the page title, panel headings and large numbers only; body, labels, buttons and tables stay in the text cut.
+
+**The Sentence Case Rule.** No uppercase, letter-spaced labels and no eyebrow line above a heading; a label is a short sentence-case caption in ink-soft.
 
 **The Mono Means Data Rule.** Monospace is for things a machine reads: field names, codes, URLs, paths, commands and numeric columns. Never for headings, briefs or decoration.
 
@@ -268,89 +295,110 @@ A cool neutral ground with a small, fixed set of identity hues; colour means *wh
 
 ## Layout
 
-A single centred column (max 1180px, padded 18px 16px 48px). The header row puts the page title and its one-line brief on the left and the tool buttons (A+, theme) on the right, above a pill navigation bar with one link per page. Below it, a funnel of hero numbers (`auto-fit`, min 140px) and then a pill stepper whose panes hold the content.
+A single centred column (max 1140px, padded 16px 20px 48px) on the grey page. The navigation links sit first; below them (18px) the header row puts the title and its one-line brief on the left and the tool buttons (A+, theme) on the right, closed by a 1px rule. Then the key-number strip, then the stepper whose panes hold the content, each 18px apart.
 
-Inside panes, cards tile in fluid grids (`auto-fit` with 260–320px minimums) at a 14px gap; paired views use a 5:7 or 7:5 split that collapses to one column at 860–900px. Gaps step 6 / 10 / 14 / 18px; cards pad 16px. Wide tables sit in a horizontal scroller. The root font size is the only density knob: 15px normally, 18px under A+, and everything scales in rem with it.
+Inside panes, panels tile in fluid grids (`auto-fit`, 300px minimum) at a 16px gap; paired views use a 5:7 or 7:5 split that collapses to one column at 860–900px; the three technique lanes collapse at 980px; role, index and command rows collapse at 760px; the rules page's task grid stacks at 520px. Gaps step 4 / 8 / 12 / 16px; panels pad 16px 18px. Wide tables sit in a horizontal scroller. The root font size is the only density knob: 15px normally, 18px under A+, everything in rem.
+
+The index is a plain list on the grey page: each demo is one ruled row of a coloured dot and name, a key number in the demo's colour with its caption, one line and an arrow (the portal row in ours blue, the dataset in green, the assistant in violet, the rules page in amber). Below it, a white panel of terminal commands (a label column and a mono command column).
 
 ### Named Rules
 **The One-Line Brief Rule.** A page carries a title, a one-line brief, and a short lead per step. The presenter explains; the page never grows paragraphs of explanation, and every number stays labelled so an offline reader can still read it.
 
 ## Elevation & Depth
 
-Flat paper with ambient lift. Cards, the navigation bar, steps, tool buttons and the pressed segment sit on one soft two-layer shadow; interactive tiles lift to a deeper one on hover with a small upward move. Depth is also tonal: card-recess insets sit *into* a card without shadow. Dark theme deepens the same two shadows rather than adding glow.
-
-### Shadow Vocabulary
-- **Rest** (`box-shadow: 0 1px 2px rgba(16,20,26,.05), 0 6px 20px -8px rgba(16,20,26,.12)`): every card and floating control.
-- **Lifted** (`box-shadow: 0 2px 4px rgba(16,20,26,.06), 0 14px 32px -10px rgba(16,20,26,.22)`): hover on clickable cards (demo tiles, role cards).
+Flat, with one tonal step. There are no shadows anywhere and no gradients. Depth is the step from the grey page up to a white panel, held by a 1px line border; inside a panel, rules separate rows and cells and the recess grey sinks notes, tracks and code. The one layered element is the rules page's hover tooltip, an ink box with page-colour text and no shadow.
 
 ### Named Rules
-**The Soft Lift Rule.** Shadows are diffuse and offset only downward with negative spread. No hard offset shadows, no coloured glows, no borders standing in for elevation.
+**The Ruled, Not Lifted Rule.** A panel is separated by its white-on-grey step and its 1px rule, never by a shadow, a glow or a hover lift. Tints mark state, never structure.
 
 ## Shapes
 
-Everything is rounded, and every control is a full pill. Cards use a 14px radius; inset tiles and notes 10–12px; terminals and form fields 8px; small data cells 6px; legend keys and kbd 3–4px; buttons, chips, badges, tracks, the navigation bar and the stepper are fully rounded (999px). Round markers (dots, step numbers, tool buttons) are circles. Hairline borders appear only as table rules, the chat divider, dashed outlines for "missed" or "differs" states, and the kbd key.
+Corners are small and consistent: 6px on panels, controls, fields, notes, verdict bars and terminals; 4px on chips, badges, field names, rule ids, bar tracks, matrix cells, the gate switch and the address bar; 2px on thin progress and life tracks, legend keys, swatches and inline highlights; 3px on kbd keys. Round shapes are reserved for markers that are dots by meaning: technique and demo dots, the rules page's model swatches and field dots, the fake browser's window dots, search squares in the crawl map, and the assistant's check marks. Borders are 1px line throughout; a dashed border marks "missed", "only in detail pages", "not this file" or "differs".
 
 ## Components
 
 ### Buttons
-- **Shape:** full pill (999px); tool buttons are 2.4rem circles.
-- **Primary (play):** Ours Blue fill, on-fill bold text, 9px 18px, rest shadow; lifts 1px on hover; 55% opacity when disabled.
-- **Tool buttons (A+, theme):** card circles with the rest shadow; pressed state inverts to ink on paper.
-- **Hover / Focus:** hover lifts 1px (translateY) and darkens text to ink; focus is a 2px Ours Blue outline at 2px offset on every control.
+- **Shape:** 6px corners, 1px border.
+- **Primary (Play, Send):** solid ours blue with on-fill text at 600, 5px 12px; hover mixes 15% ink into the blue; 55% opacity when disabled (50% for Send).
+- **Plain:** page-grey with a line border and ink text at 600 (New, Scenes); hover takes the recess fill. The assistant's option buttons are the same on card, hover darkening the border to ink-quiet.
+- **Tool buttons (A+, theme):** 2rem-high white bordered boxes in ink-soft; hover darkens text to ink and border to ink-quiet; pressed takes an ink border and ink text.
+- **Focus:** a 2px Ours Blue outline at 2px offset on every control.
 
 ### Segmented control
-- **Style:** a card-recess pill well with 3px padding; segments are text-only pills.
-- **State:** the pressed segment becomes a white card pill with the rest shadow and ink text.
+- **Style:** one white bordered 6px box with 1px dividers between text buttons (0.86rem, 4px 11px).
+- **State:** the pressed segment takes an 11% ours tint over the card, ink text and 600 weight.
+
+### Selectable tiles
+- **Style:** white bordered boxes (files, patients, roles) with a mono name or a display role name and a small ink-quiet caption.
+- **State:** hover darkens the border to ink-quiet; pressed takes an ours border and a 7% ours tint; unavailable is ink-quiet text with a dashed border on no fill.
 
 ### Chips and badges
-- **Style:** small pills (0.7–0.78rem, 600–700 weight). Neutral chips on card-recess in ink-soft; verdict chips in the solid verdict hue on its wash. Field-name chips are mono.
-- **State:** "only in detail pages" or "missed" is a dashed outline, never a new colour.
+- **Style:** 4px, no border, 600 weight, 0.7–0.8rem; neutral badges sit on recess in ink-soft; field-name and rule chips are mono.
+- **State:** verdict, category, rule and field states are the matching wash with text in the solid hue; a failure that matters is a solid red fill with on-fill text; a missing item is dashed, a blank one struck through; the current breadcrumb is a 14% ours tint in ours text. The assistant's cited rule is the one outlined chip, red on the page.
 
 ### Cards / Containers
-- **Corner Style:** 14px.
-- **Background:** card on paper; insets in card-recess.
-- **Shadow Strategy:** Rest; clickable cards take Lifted on hover (see Elevation & Depth).
-- **Border:** none.
-- **Internal Padding:** 16px (tiles 18–20px).
+- **Corner Style:** 6px.
+- **Background:** card white on the grey page; recess for notes and code blocks.
+- **Shadow Strategy:** none (see Elevation & Depth).
+- **Border:** 1px line.
+- **Internal Padding:** 16px 18px; a panel heading sits 10px above its content.
+
+### Verdicts
+A full-width 6px bar at 600: held or allowed on the green wash in green, declined or refused on the red wash in red, no border. The assistant's check marks are 1.6rem circles on the same washes.
 
 ### Inputs / Fields
-- **Style:** borderless card-recess pills for selects; the portal replay's login fields are 8px-radius outlined mono fields on paper.
-- **Focus:** the active field takes an Ours Blue border and a 3px blue halo at 20% mix.
+- **Style:** 1px line border, 6px, card background, ink text (the assistant's input, selects).
+- **Focus:** the global 2px Ours Blue outline; in the portal's sign-in replay the active field takes an Ours Blue border.
+- **Disabled:** 50% opacity.
 
 ### Navigation
-- **Style:** one pill bar per page (0.82rem), a link per demo page; links are ink-soft pills that take card-recess on hover. The current page inverts to ink on paper, weight 650. Scrolls horizontally without a scrollbar on narrow screens.
+- **Style:** a row of plain text links (0.86rem, ink-soft, 20px apart). Hover darkens to ink; the current page is ink at 600 with a 2px Ours Blue underline. Scrolls horizontally without a scrollbar on narrow screens.
 
 ### Stepper (signature)
-A row of pill tabs with a numbered circle each, driven by `Kit.steps` with tab semantics: number keys and arrows move between panes, the hash records the step. The selected step inverts to ink; steps already visited mark their number circle in verdict green on its wash.
+Underlined text tabs over a 1px rule: each tab is its label with a small tabular step number (0.8rem, ink-quiet) before it. The selected tab is ink at 600 with a 2px Ours Blue underline, and its number turns Ours Blue. Driven by `Kit.steps` with tab semantics: number keys and arrows move between panes, the hash records the step. Panes switch instantly.
 
-### Hero numbers (signature)
-White tiles in an auto-fit funnel: a large tabular display number coloured by its owner (identity or verdict hue) over a short label. Numbers count up when their pane arrives (`Kit.countIn`).
+### Key-number strip (signature)
+One white bordered 6px panel split into equal cells (`auto-fit`, 130px minimum) by 1px dividers. Each cell is a 1.8rem display number over a 0.8rem ink-soft caption; the number takes its owner's hue (technique or verdict) or stays ink.
 
 ### Bars and tracks
-A 14px card-recess pill track with a rounded fill in the owner's hue; fills grow from the left (0.9s, staggered 50ms per row) whenever their pane is shown.
+A 12px recess track with 4px corners and a flat fill in the owner's hue, in a three-column row of label, track and value. Thinner 3–6px tracks at 2px corners carry progress, confidence and retention life.
+
+### Heat maps
+The rules page's per-rule table sets each value in a chip of ours blue mixed into the card by the score (6% at 0 to 50% at 1), ink text, so it reads in both themes. The dataset page's rule table mixes green into the red wash by the score.
+
+### Tables
+Collapsed, full-width, 0.86–0.88rem tabular; 1px line under each row, none under the last; headers 0.8rem 600 ink-soft; numeric cells right-aligned in mono.
+
+### Terminal slab
+A theme-invariant dark block (terminal, terminal-ink) in mono at 0.78–0.82rem, 6px corners, with terminal-ok, terminal-no and terminal-dim for pass, fail and quiet lines.
 
 ### Icons
-One drawn stroke family in `Kit.icon`: 24-unit grid, 2.2 stroke, round caps and joins, `currentColor`, sized 1em. Check, x, play, pause, replay, lock, grid, ban, file, alert, stop, shield, theme, arrow, flag.
+One drawn stroke family in `Kit.icon`: 24-unit grid, 2 stroke, round caps and joins, `currentColor`, sized 1em. Check, x, play, pause, replay, lock, grid, ban, file, alert, stop, shield, theme, arrow, flag.
 
 ### Motion
-One pane arrival for every page: rise from opacity .35 and 8px down over 0.42s on the house ease (cubic-bezier(.16,1,.3,1)). Bars grow, hero numbers count up, small elements pop in (scale .86 to 1). Each page keeps exactly one authored moment: the portal page's sign-in replay and crawl, the dataset page's gate terminal, the assistant's three checks ticking in, the rules page's trap results revealing, the index tiles counting up. Reduced motion switches every animation and transition off.
+Nothing animates on its own except the demos: the portal's sign-in replay and crawl playback, the dataset page's retention playback, the assistant's scripted scenes, and the login caret (a 1s stepped blink). Numbers are written in place (`Kit.count` returns plain text; `Kit.countIn` does nothing), panes appear without an entrance, controls have no hover lift, and the assistant's replies appear at once. Reduced motion switches every CSS animation and transition off; the portal then completes its sign-in replay at once and waits for Play before the crawl.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** colour a technique by its fixed hue (ours blue, agents violet, baseline amber) through a dot before its name and its numbers.
-- **Do** use only the system font stacks; keep monospace for data, field names, codes and paths.
-- **Do** check every new text colour at 4.5:1 or better on paper, card and card-recess in both themes.
+- **Do** set white panels on the grey page with a 1px line border at 6px corners, and chips at 4px.
+- **Do** put a page's key numbers in one ruled strip, 1.8rem display at 600, each with a caption.
+- **Do** mark the current nav link and the selected step with a 2px ours-blue underline, and a selection with a light ours tint.
+- **Do** show verdict, category, rule and field states as a wash with text in the solid hue; go solid red only for a failure that matters.
+- **Do** keep the display cut for the title, panel headings and large numbers, the text cut for everything else, and monospace for data.
+- **Do** check every small text colour at 4.5:1 or better on its own background in both themes, and use on-fill for text on solid fills.
 - **Do** read every number from a committed artefact and give it a label.
-- **Do** draw icons from `Kit.icon` (24 grid, 2.2 stroke, round joins).
-- **Do** give every control a visible 2px Ours Blue focus outline and a keyboard path.
-- **Do** let panes arrive with the shared rise and keep one authored moment per page; honour reduced motion.
+- **Do** draw icons from `Kit.icon` and give every control a visible 2px Ours Blue focus outline and a keyboard path.
 
 ### Don't:
+- **Don't** add shadows, gradients, glows or hover lifts.
+- **Don't** use pill shapes or full rounding on controls, chips or tracks.
+- **Don't** outline a state where a wash will do, or fill a button other than the demo's primary action.
+- **Don't** animate numbers, panes or replies; only the demos move.
+- **Don't** use colour for structure or decoration; it is reserved for data meaning and the current place.
+- **Don't** use uppercase letter-spaced labels or an eyebrow or kicker line.
 - **Don't** load web fonts, CDNs or any external asset; the pages open offline.
-- **Don't** put an eyebrow or kicker line above a heading.
 - **Don't** add explanatory paragraphs; one-line briefs only, the presenter explains.
-- **Don't** mark identity with side stripes, top borders or tinted card fills.
 - **Don't** use emoji or unicode glyphs as icons.
-- **Don't** use hard offset shadows or borders for elevation.
-- **Don't** reassign or reuse the three technique hues for anything else.
+- **Don't** reassign the three technique hues inside a chart, strip, lane or table.

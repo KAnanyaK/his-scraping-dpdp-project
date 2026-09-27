@@ -4,31 +4,29 @@
 <title>Review-II Demos</title>
 <style>
 /*__BASE__*/
-  .hero { margin-top: 26px; }
-  .hero h1 { font-size: 2.6rem; }
-  .hero p { font-size: 1.1rem; margin-top: 10px; }
-  .demos { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 26px; }
-  .demo { display: grid; gap: 8px; align-content: start; text-decoration: none; color: inherit; position: relative; overflow: hidden; padding: 20px 18px 18px; transition: transform .15s, box-shadow .15s; animation: rise .5s both; }
-  .demo:nth-child(2) { animation-delay: .07s; } .demo:nth-child(3) { animation-delay: .14s; } .demo:nth-child(4) { animation-delay: .21s; }
-  .demo:hover { transform: translateY(-4px); box-shadow: var(--shadow-up); }
-  .demo h2 { font-size: 1.3rem; }
-  .demo .v { font-size: 2.6rem; font-weight: 780; letter-spacing: -0.04em; line-height: 1; color: var(--c); font-variant-numeric: tabular-nums; margin-top: 6px; }
-  .demo .v small { font-size: 1.1rem; color: var(--ink-3); font-weight: 600; letter-spacing: 0; }
-  .demo .vl { font-size: .8rem; color: var(--ink-2); font-weight: 600; }
-  .demo p { font-size: .9rem; margin-top: 4px; }
-  .demo .go { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--c); margin-top: 6px; transition: gap .2s var(--ease); }
-  .demo:hover .go { gap: 10px; }
+  .demos { margin-top: 2px; }
+  .demo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.6fr) auto; gap: 6px 24px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit; }
+  .demo:hover h2 { text-decoration: underline; text-underline-offset: .2em; }
+  .demo h2 { font-size: 1.12rem; }
+  .demo .v { font-family: var(--display); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.015em; color: var(--c); font-variant-numeric: tabular-nums; }
   .demo.portal { --c: var(--ours); } .demo.dataset { --c: var(--good); }
   .demo.assistant { --c: var(--agent); } .demo.rules { --c: var(--base); }
-  .cmds { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 10px; margin-top: 12px; }
-  .cmd { padding: 12px 14px; }
-  .cmd .k { font-size: .8rem; color: var(--ink-2); font-weight: 600; }
-  .cmd pre { margin: 6px 0 0; font-family: var(--mono); font-size: .8rem; background: #0d1014; color: #d7dde3; border-radius: 8px; padding: 7px 10px; overflow-x: auto; }
+  .demo .v small { font-size: .85rem; color: var(--ink-3); font-weight: 400; }
+  .demo .vl { font-size: .8rem; color: var(--ink-2); }
+  .demo p { font-size: .9rem; }
+  .demo .go { color: var(--ink-3); }
+  @media (max-width: 760px) { .demo { grid-template-columns: 1fr auto; } .demo p { grid-column: 1 / -1; } .demo .go { display: none; } }
+  .cmds { margin-top: 8px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); }
+  .cmd { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 4px 16px; align-items: baseline; padding: 8px 14px; border-bottom: 1px solid var(--line); }
+  .cmd:last-child { border-bottom: none; }
+  .cmd .k { font-size: .86rem; color: var(--ink-2); }
+  .cmd code { font-size: .84rem; overflow-x: auto; white-space: nowrap; }
+  @media (max-width: 760px) { .cmd { grid-template-columns: 1fr; } }
 </style>
 
 <div class="wrap">
   <!--__NAV__-->
-  <div class="top hero">
+  <div class="top">
     <div>
       <h1>DPDP-compliant HIS extraction</h1>
       <p>Four live demos. Offline, from real runs, no raw patient identifier on any page.</p>
@@ -41,12 +39,12 @@
 
   <div class="demos" id="demos"></div>
 
-  <h2 style="margin-top:30px">In the terminal</h2>
+  <h2 style="margin-top:32px">In the terminal</h2>
   <div class="cmds">
-    <div class="card cmd"><div class="k">The whole chain · ~2 min</div><pre>python scripts/run_pipeline.py</pre></div>
-    <div class="card cmd"><div class="k">Hand over the keyboard</div><pre>python scripts/ask_agent.py --interactive</pre></div>
-    <div class="card cmd"><div class="k">Day-one rehearsal · 5 s</div><pre>python scripts/rehearse_day_one.py</pre></div>
-    <div class="card cmd"><div class="k">Rebuild these pages</div><pre>python tools/build_review_pages.py</pre></div>
+    <div class="cmd"><div class="k">The whole chain · ~2 min</div><code>python scripts/run_pipeline.py</code></div>
+    <div class="cmd"><div class="k">Hand over the keyboard</div><code>python scripts/ask_agent.py --interactive</code></div>
+    <div class="cmd"><div class="k">Day-one rehearsal · 5 s</div><code>python scripts/rehearse_day_one.py</code></div>
+    <div class="cmd"><div class="k">Rebuild these pages</div><code>python tools/build_review_pages.py</code></div>
   </div>
 
   <footer>Built by <code>tools/build_review_pages.py</code> · numbers read from <code>docs/benchmark_results/</code></footer>
@@ -67,7 +65,6 @@
     ["rules", D.rules_href, "Rules vs AI", `${c(D.rules.ours_held)}/${D.rules.ours_traps} <small>vs</small> ${c(D.rules.agents_held)}/${D.rules.agents_traps}`, "trap runs held · ours vs AI unaided", `${D.rules.models} public models, every run scored.`],
   ];
   document.getElementById("demos").innerHTML = tiles.map(([k, href, h, v, vl, p]) =>
-    `<a class="card demo ${k}" href="${href}"><h2><span class="dot-c"></span>${h}</h2><div class="v">${v}</div><div class="vl">${vl}</div><p>${p}</p><span class="go">Open ${Kit.icon("arrow")}</span></a>`).join("");
-  Kit.countIn(document.getElementById("demos"));
+    `<a class="demo ${k}" href="${href}"><h2><span class="dot-c"></span>${h}</h2><div><div class="v">${v}</div><div class="vl">${vl}</div></div><p>${p}</p><span class="go">${Kit.icon("arrow")}</span></a>`).join("");
 })();
 </script>
