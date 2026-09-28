@@ -188,6 +188,16 @@ The line to end on: "This page follows the rules it shows. No raw identifier is
 on it, and built from the hospital's export it would show structure only, never
 values, and would refuse to be saved anywhere git could commit it."
 
+### Beat 3c — the journey of one entry (browser, ~60 s; if asked "show me one record")
+
+`docs/review/journey.html`: line 2 of `patients.csv` and the same patient's first
+diagnosis line, through the seven stages the terminal just ran. Click `SSN` in the
+rail's picker: stopped at stage 2, never read. Click `Id`: read as `mrn`, taken,
+exported as `PSN-2222d3953a23`, erased on the day its retention ends. Then choose
+*claim reconciliation*, the agent `gemini-3.1-flash-lite`, and follow
+`DESCRIPTION`: the diagnosis is taken for a billing job, and the rail turns red at
+Extract and Purpose. `Walk the journey` steps through on its own.
+
 ### Beat 4 — both directions (terminal, 20 s)
 
 ```
@@ -274,7 +284,7 @@ is one column map, and that one slide rebuilds itself.
 | `scripts/ask_agent.py [--interactive]` | The assistant: four scripted scenes, or live typing | 1 s |
 | `scripts/run_synthetic_extraction.py` | One method, three configurations — why a score moves | 1 s |
 | `scripts/score_extraction_run.py` | The seven rules on hand-built runs, no data involved | 1 s |
-| `scripts/trace_one_patient.py` | One record through every stage | 1 s |
+| `scripts/trace_journey.py [--row N] [--task ID]` | One line of the export through all seven stages, every column's fate (the page: `docs/review/journey.html`) | 30 s |
 | `scripts/generate_dataset.py` | Writes a synthetic export the dataset adapter reads | 2 s |
 | `python -m tools.mock_portal --records 500` | The portal alone, to browse by hand | — |
 

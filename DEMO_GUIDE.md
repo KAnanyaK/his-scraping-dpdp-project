@@ -141,7 +141,7 @@ First run on a new machine needs the browser: `python -m playwright install chro
 
 ### The demo pages (interactive; start at `docs/review/index.html`)
 
-Four self-contained pages, each built from a real run and committed, offline,
+Five self-contained pages, each built from a real run and committed, offline,
 with no raw identifier on any of them. `python tools/build_review_pages.py`
 rebuilds them all (~90 s; `--skip-portal` where there is no browser).
 
@@ -157,6 +157,7 @@ rebuilds them all (~90 s; `--skip-portal` where there is no browser).
   function table plays any conversation on click; `▶ Scenes` plays the
   pipeline's four.
 - **`dataset-walkthrough.html`**: Demo F below.
+- **`journey.html`**: Demo 0 above — one line of the export through all seven stages, any column's fate on the rail.
 - **`../benchmark_results/rules-vs-just-ai.html`**: the AI-agent comparison.
 
 ### Demo F: an export we never saw, in the browser (interactive; hand the panel the mouse)
@@ -199,23 +200,37 @@ python tools/build_dataset_page.py data/public_synthea --column-map data/public_
 That writes `docs/benchmark_results/dataset-walkthrough.html` (git-ignored). The
 committed copy in `docs/review/` is the fallback for the room.
 
-### Demo 0 — one patient, end to end (show this first)
+### Demo 0 — the journey of one entry (show this first)
 
-```
-python scripts/trace_one_patient.py
-```
+Open `docs/review/journey.html` (or, in the terminal, `python scripts/trace_journey.py`).
 
-Takes a **single** synthetic patient and walks it through every stage of the
-pipeline, printing each one: the raw record as the source holds it (25 fields
-across 4 HIS layers) -> the task's declared minimum field set -> a field-by-field
-table mapping each field to its DPDP category and whether it is in scope ->
-the compliance manifest each technique emits -> all seven rules with a written
-reason each -> the score.
+One line of the export's registration file (`patients.csv`, line 2 of Synthea's
+public sample), and the same patient's first diagnosis line, followed through
+the seven stages `run_pipeline.py` runs, with the real code at every stage:
 
-The same patient is run through both our compliance-aware technique (**1.000**)
-and the coverage-optimised baseline (**0.131**), so the gap is visible field by
-field. Use this to explain *how* the score is produced; use Demo A to show that
-it holds at scale.
+1. **Dataset:** the row as the file holds it; the handling gate.
+2. **Understand:** each column read as a catalogue field with its DPDP category,
+   dropped by the column map, or never understood; the value as the adapter
+   holds it; this patient across the whole export (658 rows in 9 files).
+3. **Extract:** one job about this patient through ours, each AI agent told the
+   policy, and the baseline; what each took; the seven rules.
+4. **Normalise:** the HL7 v2 / FHIR export; the record number becomes
+   `PSN-2222d3953a23`; the export audit.
+5. **Purpose:** the same pull judged under every purpose.
+6. **Assist:** which staff role may be walked through each field.
+7. **Retain:** the audit log the harness wrote, the retention sidecar, and the
+   purge on the day it falls due.
+
+The rail across the top shows the fate of whichever column is followed. Click
+`SSN`: dropped by the column map at stage 2, never read again. Click `Id`: read as
+`mrn`, taken, exported as a pseudonym, erased after 30 days. Choose
+*claim reconciliation* and the agent `gemini-3.1-flash-lite`, then follow
+`DESCRIPTION`: the diagnosis is taken for a billing job, in red. `Walk the
+journey` steps through the stages on its own. Direct identifiers, contact details and
+every column the pipeline never reads are masked; the rest are Synthea's
+synthetic values. `--row N` follows another patient; `--task` chooses the job
+in the terminal. Use this to explain *how* the result is produced; use Demo A to
+show that it holds at scale.
 
 ### Demo A — compare scraping methods (the headline)
 
@@ -416,9 +431,10 @@ say, anticipated questions, and the code behind each moment — is
 A five-minute walkthrough. Have a terminal open in the project folder with the
 environment activated.
 
-1. **The mechanism, on one record:** `python scripts/trace_one_patient.py`.
-   Walk the panel down the stages — the record, the task, the category table,
-   the manifest, the seven rules, the score. This answers "what is actually
+1. **The mechanism, on one record:** `docs/review/journey.html` (or
+   `python scripts/trace_journey.py`). Walk the panel down the seven stages —
+   the row, the gate and the column map, what each technique took, the export
+   and its pseudonym, the purposes, the roles, the audit log and the purge. This answers "what is actually
    happening" before any aggregate number is shown.
 
 2. **The one-page explanation.** Open

@@ -114,7 +114,7 @@ The public export: `python scripts/fetch_public_dataset.py`, then
 `python scripts/run_pipeline.py --dataset data/public_synthea --column-map data/public_synthea/column_map.json`.
 Every demo page: `python tools/build_review_pages.py`. Every table in the report:
 `python tools/report_tables.py`. Other demos: `run_benchmark.py`,
-`trace_one_patient.py`, `compare_purposes.py`, `show_role_access.py`,
+`trace_journey.py` (one entry through every stage), `compare_purposes.py`, `show_role_access.py`,
 `ask_agent.py`, `rehearse_day_one.py`. Plain-language guide:
 [`DEMO_GUIDE.md`](DEMO_GUIDE.md).
 
@@ -138,7 +138,7 @@ src/
   data_synthetic/   field catalogue (field -> layer -> DPDP category), generator, schemas, export
   interop/          five-layer HIS model, layer <-> standard map, HL7 v2 / FHIR shapers, export audit
   agent/            rule-based staff assistant: registry, session (recognise -> gate -> collect), guidance
-scripts/            run_pipeline, run_benchmark, trace_one_patient, record_ai_agents, purge_exports, check_source,
+scripts/            run_pipeline, run_benchmark, trace_journey, record_ai_agents, purge_exports, check_source,
                     rehearse_day_one (the real-data procedure on a hospital-shaped export, with a leak audit), ...
 tools/              mock_portal/ (the login-gated portal fixture, Flask, TLS); the demo pages, the deck and the
                     report tables, each built from the artefacts (build_review_pages, build_review_deck, report_tables)

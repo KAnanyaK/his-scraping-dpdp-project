@@ -240,8 +240,8 @@ def _field_view(task, rows: dict[str, list[dict]]) -> list[dict]:
     return out
 
 
-def _export_view(output, key: str, values_shown: bool) -> dict:
-    shaped = normalise(output, key=key)
+def _export_view(output, key: str, values_shown: bool, shaped=None) -> dict:
+    shaped = shaped or normalise(output, key=key)
     check = audit_export(output, shaped)
     replace = _sensitive_values(output.rows, values_shown)
     hl7, fhir = [], []
