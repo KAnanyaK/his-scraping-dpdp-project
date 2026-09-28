@@ -1,6 +1,6 @@
 """Rebuild every Review-II demo page in docs/review/, in one command.
 
-    python tools/build_review_pages.py                  # index, rules vs AI, assistant, portal run, dataset (Synthea)
+    python tools/build_review_pages.py                  # index, rules vs AI, assistant, portal run, dataset and journey (Synthea)
     python tools/build_review_pages.py --skip-portal    # no browser on this machine
 
 The portal run needs Chromium (``python -m playwright install chromium``) and
@@ -82,8 +82,11 @@ def main() -> int:
         column_map, file_maps = load_column_map(SYNTHEA / "column_map.json")
         build_dataset_page.build(SYNTHEA, column_map=column_map, file_maps=file_maps, out=out)
         print(f"  wrote {out.relative_to(ROOT)}")
+        from tools import build_journey_page
+        build_journey_page.build(SYNTHEA, column_map=column_map, file_maps=file_maps)
+        print(f"  wrote {build_journey_page.DEFAULT_OUT.relative_to(ROOT)}")
     else:
-        print("  dataset page: no Synthea sample here (scripts/fetch_public_dataset.py); committed copy kept")
+        print("  dataset and journey pages: no Synthea sample here (scripts/fetch_public_dataset.py); committed copies kept")
     return 0
 
 

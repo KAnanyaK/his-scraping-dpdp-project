@@ -389,7 +389,7 @@ AXE remains related work; nothing agentic is *ours*.
 
 **Done 2026-09-16.** Recordings exist for Gemini (`gemini-3.1-flash-lite`,
 both briefings, five runs per task); the benchmark, the pipeline and
-`trace_one_patient` replay them; chapters 4 and 7 carry the real numbers.
+`trace_one_patient` (since replaced by `trace_journey`) replay them; chapters 4 and 7 carry the real numbers.
 Result: the agent is within a few hundredths of ours on the compliance score —
 it declares a near-complete manifest even unaided — but obtains 74–78% of the
 fields the tasks need (it substitutes a name for the record number, an e-mail
