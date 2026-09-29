@@ -482,6 +482,9 @@ Roughly in the order they block work.
 9. **Deck finishing.** `Review-II.pptx` is built on the institution's Review-2
    template by `tools/build_review_deck.py`; slide 1 must be replaced by the
    guide-signed scan, and the deck opened once to check fit (no renderer here).
+   2026-09-28: the team removed the instruction slide and set the names by hand;
+   the builder now writes the names that way and `--without-instruction-slide`
+   leaves the instruction slide out (numbering still starts at 2 for the scan).
 
 ## 9. Known risks
 
