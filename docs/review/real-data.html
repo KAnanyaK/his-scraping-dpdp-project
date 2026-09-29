@@ -155,6 +155,28 @@
   .mixbar i:last-child { border-right: none; }
   .q { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; }
   .q b { font-family: var(--display); font-size: 1.3rem; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .pcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .pcard { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+  .pcard.ok { border-color: color-mix(in srgb, var(--good) 45%, var(--line)); background: color-mix(in srgb, var(--good) 5%, var(--card)); }
+  .pcard .pn { font-weight: 600; }
+  .pcard .ps { font-family: var(--display); font-size: 2.2rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .pcard.ok .ps { color: var(--good); } .pcard.no .ps { color: var(--bad); }
+  .pcard .pv { font-size: .88rem; color: var(--ink-2); }
+  .rules { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .rules span { font-family: var(--mono); font-size: .76rem; padding: 1px 7px; border-radius: var(--rr); background: var(--good-bg); color: var(--good); }
+  .rules span.f { background: var(--bad-bg); color: var(--bad); font-weight: 600; }
+  .qrow { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .qrow:last-child { border-bottom: none; padding-bottom: 0; }
+  .qrow:first-of-type { padding-top: 0; }
+  .qrow .qq { font-weight: 600; color: var(--ink); }
+  .qrow .qa { font-family: var(--display); font-size: 1.15rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--good); }
+  .qrow .qw { font-size: .84rem; color: var(--ink-2); }
+  .qrow .chips { margin: 2px 0; }
+  .chip.miss { background: var(--bad-bg); color: var(--bad); border-color: transparent; text-decoration: line-through; }
+  .chip.have { background: var(--good-bg); color: var(--good); border-color: transparent; }
+  .tag { font-size: .78rem; font-weight: 600; padding: 1px 8px; border-radius: var(--rr); display: inline-block; }
+  .tag.no { background: var(--bad-bg); color: var(--bad); }
+  .tag.warn { background: var(--warn-bg); color: var(--warn); }
 </style>
 
 <div class="wrap">
@@ -173,9 +195,9 @@
 
   <nav class="steps" role="tablist" id="steps">
     <button role="tab" data-step="1" aria-selected="true"><span class="n">1</span>Arrives</button>
-    <button role="tab" data-step="2"><span class="n">2</span>The pipeline</button>
-    <button role="tab" data-step="3"><span class="n">3</span>The register</button>
-    <button role="tab" data-step="4"><span class="n">4</span>Data quality</button>
+    <button role="tab" data-step="2"><span class="n">2</span>The purpose test</button>
+    <button role="tab" data-step="3"><span class="n">3</span>Ask the register</button>
+    <button role="tab" data-step="4"><span class="n">4</span>The register</button>
   </nav>
 
   <section class="pane" id="pane-1">
@@ -186,14 +208,20 @@
 
   <section class="pane" id="pane-2" hidden>
     <p class="lead" id="lead2"></p>
-    <div class="card"><div class="gauge" id="gauge"></div></div>
-    <div class="card scroll"><table id="ptable"></table></div>
-    <p class="note">The eight that pull only what the tasks need tie at 1.000; the baseline asks for every field of every layer and fails all seven rules. The ranking rests on the synthetic, portal and public runs; this run shows the pipeline holding on data it did not expect.</p>
-    <div class="card"><div id="tasks"></div></div>
+    <div class="pcards" id="pcards"></div>
+    <p class="note" id="note2"></p>
   </section>
 
   <section class="pane" id="pane-3" hidden>
     <p class="lead" id="lead3"></p>
+    <div class="cols">
+      <div class="card"><div class="head"><h2>It answers, with nobody in the data</h2><span class="badge good" id="nyes"></span></div><div id="yes"></div></div>
+      <div class="card"><div class="head"><h2>It cannot, and the policy says why</h2><span class="badge bad" id="nno"></span></div><div id="no"></div></div>
+    </div>
+  </section>
+
+  <section class="pane" id="pane-4" hidden>
+    <p class="lead" id="lead4"></p>
     <div class="cols">
       <div class="card"><div class="head"><h2>How receipts arrive</h2><span class="muted">share of each side's takings</span></div><div id="mix"></div><div class="legend" id="mixlegend"></div></div>
       <div class="card"><div class="head"><h2>Card and online, by quarter</h2><span class="muted">share of cash + card + online</span></div><div id="digital"></div></div>
@@ -202,17 +230,13 @@
       <div class="card"><div class="head"><h2>By month</h2><span class="muted">100 = the busiest full month</span></div><div id="months"></div></div>
       <div class="card"><div class="head"><h2>By weekday</h2><span class="muted">100 = the average day</span></div><div id="weekdays"></div></div>
     </div>
-  </section>
-
-  <section class="pane" id="pane-4" hidden>
-    <p class="lead" id="lead4"></p>
-    <div class="card"><div class="q" id="quality"></div></div>
+    <div class="card"><div class="head"><h2>What it says about itself</h2></div><div class="q" id="quality"></div></div>
   </section>
 
   <footer>Built by <code>tools/build_real_page.py</code> · counts, ratios and indices only — no amount, no day's figure, no hospital or system name</footer>
 </div>
 
-<script id="data" type="application/json">{"meta":{"built":"2026-09-29"},"intake":{"checks":[{"name":"under data/","ok":true},{"name":"git-ignored","ok":true},{"name":"provenance note","ok":true},{"name":"de-identification stated","ok":true}],"files":[{"name":"register.json","rows":731,"layer":"administrative_financial","in":[{"h":"total","to":"billed_amount"}],"blank":33,"columns":34}],"layers":["administrative_financial"],"fields":{"administrative_financial":["billed_amount"]}},"pipeline":{"rows":[{"kind":"ours","name":"compliance-aware (ours)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":3.62,"model":null,"briefing":null},{"kind":"agent","name":"gemini-3.1-flash-lite (unaided)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.286,"model":"gemini-3.1-flash-lite","briefing":"unaided"},{"kind":"agent","name":"gemini-3.1-flash-lite (informed)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.1,"model":"gemini-3.1-flash-lite","briefing":"informed"},{"kind":"agent","name":"gemini-3.1-flash-lite (policy)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.16,"model":"gemini-3.1-flash-lite","briefing":"policy"},{"kind":"agent","name":"claude-haiku-4-5 (unaided)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.617,"model":"claude-haiku-4-5","briefing":"unaided"},{"kind":"agent","name":"claude-sonnet-5 (unaided)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":3.82,"model":"claude-sonnet-5","briefing":"unaided"},{"kind":"agent","name":"claude-haiku-4-5 (policy)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":5.638,"model":"claude-haiku-4-5","briefing":"policy"},{"kind":"agent","name":"claude-sonnet-5 (policy)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.264,"model":"claude-sonnet-5","briefing":"policy"},{"kind":"baseline","name":"unconstrained (baseline)","score":0.084,"rules":"0/7","records":2924,"fields":4,"excess":0.222,"ms":14.826,"model":null,"briefing":null}],"needed":18,"carried":1,"tasks":[{"id":"patient-summary","purpose":"care_coordination","needs":["mrn, date_of_birth, sex @ patient_administration","primary_diagnosis, medication, allergy @ clinical_ehr"]},{"id":"ward-census","purpose":"care_coordination","needs":["mrn, admission_ward @ patient_administration","encounter_datetime @ clinical_ehr"]},{"id":"appointment-reminder","purpose":"patient_registration","needs":["mrn, full_name, phone, admission_datetime @ patient_administration"]},{"id":"claim-reconciliation","purpose":"billing_settlement","needs":["mrn, full_name @ patient_administration","invoice_id, billed_amount, payer_name @ administrative_financial"]}],"elapsed_ms":92.4,"audit_events":36,"generated":"2026-09-29"},"register":{"days":731,"first":"14 Jun 2024","last":"14 Jun 2026","span_days":731,"distinct_days":731,"columns":24,"op_share":0.4771,"ip_share":0.5229,"mix":{"op":{"cash":0.3716,"card":0.1183,"online":0.5008,"cheque":-0.0001,"credit":0.0094},"ip":{"cash":0.252,"card":0.2046,"online":0.3392,"cheque":0.0968,"credit":0.1074}},"digital_first":0.5886,"digital_last":0.7111,"quarters":[{"label":"2024 Q2","digital":0.5886,"days":17},{"label":"2024 Q3","digital":0.6374,"days":92},{"label":"2024 Q4","digital":0.6451,"days":92},{"label":"2025 Q1","digital":0.6158,"days":90},{"label":"2025 Q2","digital":0.6309,"days":91},{"label":"2025 Q3","digital":0.6679,"days":92},{"label":"2025 Q4","digital":0.6599,"days":92},{"label":"2026 Q1","digital":0.677,"days":90},{"label":"2026 Q2","digital":0.7111,"days":75}],"months":[{"label":"Jun 24","index":66.0,"days":17,"part":true},{"label":"Jul 24","index":75.1,"days":31,"part":false},{"label":"Aug 24","index":82.9,"days":31,"part":false},{"label":"Sep 24","index":97.0,"days":30,"part":false},{"label":"Oct 24","index":70.3,"days":31,"part":false},{"label":"Nov 24","index":79.2,"days":30,"part":false},{"label":"Dec 24","index":83.0,"days":31,"part":false},{"label":"Jan 25","index":79.6,"days":31,"part":false},{"label":"Feb 25","index":100.0,"days":28,"part":false},{"label":"Mar 25","index":87.8,"days":31,"part":false},{"label":"Apr 25","index":64.2,"days":30,"part":false},{"label":"May 25","index":59.1,"days":31,"part":false},{"label":"Jun 25","index":54.2,"days":30,"part":false},{"label":"Jul 25","index":76.8,"days":31,"part":false},{"label":"Aug 25","index":74.6,"days":31,"part":false},{"label":"Sep 25","index":67.3,"days":30,"part":false},{"label":"Oct 25","index":63.3,"days":31,"part":false},{"label":"Nov 25","index":80.0,"days":30,"part":false},{"label":"Dec 25","index":86.9,"days":31,"part":false},{"label":"Jan 26","index":74.1,"days":31,"part":false},{"label":"Feb 26","index":85.4,"days":28,"part":false},{"label":"Mar 26","index":87.0,"days":31,"part":false},{"label":"Apr 26","index":76.6,"days":30,"part":false},{"label":"May 26","index":52.7,"days":31,"part":false},{"label":"Jun 26","index":62.9,"days":14,"part":true}],"weekdays":[{"label":"Mon","index":114.0},{"label":"Tue","index":103.4},{"label":"Wed","index":110.4},{"label":"Thu","index":97.5},{"label":"Fri","index":94.7},{"label":"Sat","index":96.7},{"label":"Sun","index":83.6}],"cancel_share":0.002,"busiest_weekday":"Mon","quietest_weekday":"Sun","windows":105,"windows_reconciled":105,"total_is_three_modes":669,"negative_cells":8,"zero_days":0,"rows_per_window":{"max":7,"min":3}}}</script>
+<script id="data" type="application/json">{"purpose":{"task":{"id":"register-summary","purpose":"billing_settlement","needs":["billed_amount"]},"records":731,"categories":["financial"],"verdicts":[{"purpose":"billing_settlement","declared":true,"score":1.0,"passed":7,"total":7,"failed":[],"out_of_scope":[],"retention":365,"verdict":"lawful for this purpose"},{"purpose":"care_coordination","declared":false,"score":0.786,"passed":5,"total":7,"failed":["DM-01","NT-01"],"out_of_scope":["financial"],"retention":90,"verdict":"out of scope: financial"},{"purpose":"patient_registration","declared":false,"score":0.786,"passed":5,"total":7,"failed":["DM-01","NT-01"],"out_of_scope":["financial"],"retention":180,"verdict":"out of scope: financial"}]},"rules":["DM-01","LB-01","SL-01","SS-01","PL-01","NT-01","AC-01"],"blocked":[{"q":"Which patients have an invoice outstanding?","purpose":"billing_settlement","fields":["mrn","invoice_id","billed_amount","payer_name"],"categories":["direct_identifier","financial"],"missing":["mrn","invoice_id","payer_name"],"out_of_scope":[]},{"q":"Which diagnoses drive our costs?","purpose":"billing_settlement","fields":["primary_diagnosis","billed_amount"],"categories":["clinical","financial"],"missing":["primary_diagnosis"],"out_of_scope":["clinical"]},{"q":"Who should be reminded of tomorrow's appointment?","purpose":"patient_registration","fields":["mrn","full_name","phone","admission_datetime"],"categories":["administrative","direct_identifier"],"missing":["mrn","full_name","phone","admission_datetime"],"out_of_scope":[]},{"q":"Who is on which ward right now?","purpose":"care_coordination","fields":["mrn","admission_ward","encounter_datetime"],"categories":["administrative","direct_identifier"],"missing":["mrn","admission_ward","encounter_datetime"],"out_of_scope":[]}],"meta":{"built":"2026-09-29"},"intake":{"checks":[{"name":"under data/","ok":true},{"name":"git-ignored","ok":true},{"name":"provenance note","ok":true},{"name":"de-identification stated","ok":true}],"files":[{"name":"register.json","rows":731,"layer":"administrative_financial","in":[{"h":"total","to":"billed_amount"}],"blank":33,"columns":34}],"layers":["administrative_financial"],"fields":{"administrative_financial":["billed_amount"]}},"pipeline":{"rows":[{"kind":"ours","name":"compliance-aware (ours)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":3.62,"model":null,"briefing":null},{"kind":"agent","name":"gemini-3.1-flash-lite (unaided)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.286,"model":"gemini-3.1-flash-lite","briefing":"unaided"},{"kind":"agent","name":"gemini-3.1-flash-lite (informed)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.1,"model":"gemini-3.1-flash-lite","briefing":"informed"},{"kind":"agent","name":"gemini-3.1-flash-lite (policy)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.16,"model":"gemini-3.1-flash-lite","briefing":"policy"},{"kind":"agent","name":"claude-haiku-4-5 (unaided)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.617,"model":"claude-haiku-4-5","briefing":"unaided"},{"kind":"agent","name":"claude-sonnet-5 (unaided)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":3.82,"model":"claude-sonnet-5","briefing":"unaided"},{"kind":"agent","name":"claude-haiku-4-5 (policy)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":5.638,"model":"claude-haiku-4-5","briefing":"policy"},{"kind":"agent","name":"claude-sonnet-5 (policy)","score":1.0,"rules":"6/7","records":731,"fields":1,"excess":0.056,"ms":4.264,"model":"claude-sonnet-5","briefing":"policy"},{"kind":"baseline","name":"unconstrained (baseline)","score":0.084,"rules":"0/7","records":2924,"fields":4,"excess":0.222,"ms":14.826,"model":null,"briefing":null}],"needed":18,"carried":1,"tasks":[{"id":"patient-summary","purpose":"care_coordination","needs":["mrn, date_of_birth, sex @ patient_administration","primary_diagnosis, medication, allergy @ clinical_ehr"]},{"id":"ward-census","purpose":"care_coordination","needs":["mrn, admission_ward @ patient_administration","encounter_datetime @ clinical_ehr"]},{"id":"appointment-reminder","purpose":"patient_registration","needs":["mrn, full_name, phone, admission_datetime @ patient_administration"]},{"id":"claim-reconciliation","purpose":"billing_settlement","needs":["mrn, full_name @ patient_administration","invoice_id, billed_amount, payer_name @ administrative_financial"]}],"elapsed_ms":92.4,"audit_events":36,"generated":"2026-09-29"},"register":{"days":731,"first":"14 Jun 2024","last":"14 Jun 2026","span_days":731,"distinct_days":731,"columns":24,"op_share":0.4771,"ip_share":0.5229,"mix":{"op":{"cash":0.3716,"card":0.1183,"online":0.5008,"cheque":-0.0001,"credit":0.0094},"ip":{"cash":0.252,"card":0.2046,"online":0.3392,"cheque":0.0968,"credit":0.1074}},"digital_first":0.5886,"digital_last":0.7111,"quarters":[{"label":"2024 Q2","digital":0.5886,"days":17},{"label":"2024 Q3","digital":0.6374,"days":92},{"label":"2024 Q4","digital":0.6451,"days":92},{"label":"2025 Q1","digital":0.6158,"days":90},{"label":"2025 Q2","digital":0.6309,"days":91},{"label":"2025 Q3","digital":0.6679,"days":92},{"label":"2025 Q4","digital":0.6599,"days":92},{"label":"2026 Q1","digital":0.677,"days":90},{"label":"2026 Q2","digital":0.7111,"days":75}],"months":[{"label":"Jun 24","index":66.0,"days":17,"part":true},{"label":"Jul 24","index":75.1,"days":31,"part":false},{"label":"Aug 24","index":82.9,"days":31,"part":false},{"label":"Sep 24","index":97.0,"days":30,"part":false},{"label":"Oct 24","index":70.3,"days":31,"part":false},{"label":"Nov 24","index":79.2,"days":30,"part":false},{"label":"Dec 24","index":83.0,"days":31,"part":false},{"label":"Jan 25","index":79.6,"days":31,"part":false},{"label":"Feb 25","index":100.0,"days":28,"part":false},{"label":"Mar 25","index":87.8,"days":31,"part":false},{"label":"Apr 25","index":64.2,"days":30,"part":false},{"label":"May 25","index":59.1,"days":31,"part":false},{"label":"Jun 25","index":54.2,"days":30,"part":false},{"label":"Jul 25","index":76.8,"days":31,"part":false},{"label":"Aug 25","index":74.6,"days":31,"part":false},{"label":"Sep 25","index":67.3,"days":30,"part":false},{"label":"Oct 25","index":63.3,"days":31,"part":false},{"label":"Nov 25","index":80.0,"days":30,"part":false},{"label":"Dec 25","index":86.9,"days":31,"part":false},{"label":"Jan 26","index":74.1,"days":31,"part":false},{"label":"Feb 26","index":85.4,"days":28,"part":false},{"label":"Mar 26","index":87.0,"days":31,"part":false},{"label":"Apr 26","index":76.6,"days":30,"part":false},{"label":"May 26","index":52.7,"days":31,"part":false},{"label":"Jun 26","index":62.9,"days":14,"part":true}],"weekdays":[{"label":"Mon","index":114.0},{"label":"Tue","index":103.4},{"label":"Wed","index":110.4},{"label":"Thu","index":97.5},{"label":"Fri","index":94.7},{"label":"Sat","index":96.7},{"label":"Sun","index":83.6}],"cancel_share":0.002,"busiest_weekday":"Mon","quietest_weekday":"Sun","windows":105,"windows_reconciled":105,"total_is_three_modes":669,"negative_cells":8,"zero_days":0,"rows_per_window":{"max":7,"min":3}}}</script>
 <script>
 /* Shared by every demo page (inlined at build time): the header buttons, the
    stepper, and one drawn icon family. */
@@ -317,38 +341,54 @@ window.Kit = (() => {
   const label = { patient_administration: "Patient Administration", clinical_ehr: "Clinical / EHR", ancillary_departmental: "Ancillary", administrative_financial: "Administrative / Financial", infrastructure_integration: "Infrastructure" };
   const COL = { cash: "var(--l1)", card: "var(--ours)", online: "var(--agent)", cheque: "var(--l4)", credit: "var(--l3)" };
 
-  $("sub").innerHTML = `<span>A hospital's daily collection register, through the same gate, adapter and rules.</span> <span class="badge bad">real export · shapes only</span> <span class="badge good">no patient-level row</span>`;
+  const PU = D.purpose, BQ = D.blocked;
+  const pname = (p) => p.replace(/_/g, " ");
+  $("sub").innerHTML = `<span>A hospital's daily collection register: what a finished minimisation looks like.</span> <span class="badge bad">real export · shapes only</span> <span class="badge good">no patient-level row</span>`;
+
+  const yes = [
+    ["Is more of the money arriving digitally?", `${pct(R.digital_first)} → ${pct(R.digital_last)}`, `card + online, of cash + card + online, first to last quarter`],
+    ["How do takings split between outpatient and inpatient?", `${pct(R.op_share)} / ${pct(R.ip_share)}`, `OP / IP share of everything received`],
+    ["Which weekday is busiest?", `${R.busiest_weekday}`, `${R.quietest_weekday} is the quietest`],
+    ["Which full month was quietest?", (() => { const m = R.months.filter((x) => !x.part).sort((a, b) => a.index - b.index)[0]; return `${m.label} · ${Math.round(m.index)}`; })(), `index against the busiest full month (100)`],
+    ["How much is cancelled?", pct(R.cancel_share, 2), `of receipts`],
+    ["Does every weekly total add up?", `${R.windows_reconciled}/${R.windows}`, `run totals equal to the sum of their days`],
+  ];
+  const nyes = yes.length, nno = BQ.length;
+  const lawfulFor = PU.verdicts.filter((v) => v.score === 1).length;
   $("funnel").innerHTML = [
     [num(R.days), "daily records"],
-    [num(file.columns), "columns"],
-    [`${num(P.carried)}/${num(P.needed)}`, "fields the tasks need, carried", "var(--warn)"],
+    [`${num(file.blank)}/${num(file.columns)}`, "columns stopped at the door", "var(--bad)"],
     ["0", "direct identifiers in it", "hero"],
-    [pct(ours.score, 0), "our score, same seven rules", "var(--ours)"],
-    [pct(base.score, 0), "baseline's score", "var(--base)"],
+    [`${lawfulFor} of ${PU.verdicts.length}`, "purposes it is lawful for", "var(--ours)"],
+    [`${nyes}`, "questions it answers", "var(--good)"],
+    [`${nno}`, "it cannot answer", "var(--bad)"],
   ].map(([v, l, c]) => `<div class="fn${c === "hero" ? " hero" : ""}"${c && c !== "hero" ? ` style="--c:${c}"` : ""}><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`).join("");
 
   /* 1 -- arrives */
-  $("lead1").innerHTML = `Real hospital data. <b>Four checks before a byte is read.</b>`;
+  $("lead1").innerHTML = `Real hospital data. <b>Four checks before a byte is read.</b> Ours scores ${ours.score.toFixed(3)} on it; the take-everything baseline ${base.score.toFixed(3)}.`;
   $("checks").innerHTML = I.checks.map((c) => `<div class="check">${Kit.icon(c.ok ? "shield" : "stop")}<span>${esc(c.name)}</span></div>`).join("");
   const layer = label[file.layer] || file.layer;
   $("cols").innerHTML = `<div class="head"><h2>${esc(file.name)}</h2><span class="badge">${esc(layer)}</span></div>`
-    + `<div class="bigcount"><div><b>${num(file.rows)}</b><span>rows</span></div><div><b style="color:var(--good)">${file.in.length}</b><span>let in</span></div><div><b style="color:var(--ink-3)">${num(file.blank)}</b><span>set aside</span></div></div>`
+    + `<div class="bigcount"><div><b>${num(file.rows)}</b><span>rows</span></div><div><b style="color:var(--good)">${file.in.length}</b><span>let in</span></div><div><b style="color:var(--ink-3)">${num(file.blank)}</b><span>stopped</span></div></div>`
     + `<div class="chips">${file.in.map((c) => `<span class="chip in">${esc(c.h)} → ${esc(c.to)}</span>`).join("")}<span class="chip">+ ${num(file.blank)} columns the catalogue does not model</span></div>`;
 
-  /* 2 -- pipeline */
-  $("lead2").innerHTML = `Every technique, the same seven rules. <b>One field of the eighteen the tasks need is in this export.</b>`;
-  const share = P.carried / P.needed;
-  $("gauge").innerHTML = `<div class="lab"><span>Fields the four tasks need that this export carries</span><b>${P.carried} of ${P.needed}</b></div>`
-    + `<div class="track"><i style="width:${share * 100}%;background:var(--warn)"></i></div>`;
-  const kcol = (k) => k === "ours" ? "var(--ours)" : k === "baseline" ? "var(--base)" : "var(--agent)";
-  $("ptable").innerHTML = `<tr><th>Technique</th><th class="n">Score</th><th class="n">Rules</th><th class="n">Records</th><th class="n">Fields</th><th class="n">Excess</th></tr>`
-    + P.rows.map((r) => `<tr class="${r.kind}"><td class="name"><span class="kind" style="background:${kcol(r.kind)}"></span>${esc(r.kind === "ours" ? "ours (rules)" : r.kind === "baseline" ? "baseline (take all)" : r.name)}</td>`
-      + `<td class="n">${r.score.toFixed(3)}</td><td class="n">${esc(r.rules)}</td><td class="n">${num(r.records)}</td><td class="n">${r.fields}</td><td class="n">${r.excess === null ? "–" : r.excess.toFixed(2) + "×"}</td></tr>`).join("");
-  $("tasks").innerHTML = `<div class="head"><h2>What each task asked for</h2><span class="muted">${P.audit_events} audit events written</span></div>`
-    + P.tasks.map((t) => `<p style="margin:4px 0"><b class="mono" style="color:var(--ink)">${esc(t.id)}</b> <span class="muted">· ${esc(t.purpose.replace(/_/g, " "))}</span> — <span class="mono" style="font-size:.8rem">${esc(t.needs.join(" · "))}</span></p>`).join("");
+  /* 2 -- the purpose test */
+  $("lead2").innerHTML = `One pull of <b>${num(PU.records)} records</b> — <span class="mono">${esc(PU.task.needs.join(", "))}</span>, category ${esc(PU.categories.join(", "))} — judged under every purpose. <b>Only the one it was taken for accepts it.</b>`;
+  $("pcards").innerHTML = PU.verdicts.map((v) => `<div class="pcard ${v.score === 1 ? "ok" : "no"}"><div class="pn">${esc(pname(v.purpose))}${v.declared ? ` <span class="badge">declared</span>` : ""}</div>`
+    + `<div class="ps">${v.score.toFixed(3)}</div><div class="pv">${v.score === 1 ? "lawful for this purpose" : "not lawful: " + esc(v.verdict)} · keep ≤ ${v.retention} days</div>`
+    + `<div class="rules">${D.rules.map((r) => `<span class="${v.failed.includes(r) ? "f" : ""}">${esc(r)}</span>`).join("")}</div></div>`).join("");
+  $("note2").textContent = "The notice given to the Data Principal named one purpose, so it cannot cover another: NT-01 fails wherever the declared purpose differs. DM-01 fails where the category is out of scope. Nothing about the pull changed, only what it was for.";
 
-  /* 3 -- register */
-  $("lead3").innerHTML = `${num(R.days)} days, ${esc(R.first)} to ${esc(R.last)}. <b>${pct(R.op_share)} outpatient, ${pct(R.ip_share)} inpatient.</b> Digital receipts rose from ${pct(R.digital_first)} to ${pct(R.digital_last)}.`;
+  /* 3 -- ask the register */
+  $("lead3").innerHTML = `Minimisation is not a loss of use. <b>${nyes} questions a hospital asks are answered from totals</b>; the ${nno} that need a person are the ones the policy gates.`;
+  $("nyes").textContent = `${nyes} answered`; $("nno").textContent = `${nno} gated`;
+  $("yes").innerHTML = yes.map(([q, a, w]) => `<div class="qrow"><div class="qq">${esc(q)}</div><div class="qa">${esc(a)}</div><div class="qw">${esc(w)}</div></div>`).join("");
+  $("no").innerHTML = BQ.map((b) => `<div class="qrow"><div class="qq">${esc(b.q)}</div>`
+    + `<div class="chips">${b.fields.map((f) => `<span class="chip ${b.missing.includes(f) ? "miss" : "have"}">${esc(f)}</span>`).join("")}</div>`
+    + `<div class="qw">${b.out_of_scope.length ? `<span class="tag no">blocked under ${esc(pname(b.purpose))}</span> ${esc(b.out_of_scope.join(", "))} is out of its scope` : `<span class="tag warn">needs a person</span> lawful only as ${esc(pname(b.purpose))}, with a notice and a retention date`} · ${b.missing.length}/${b.fields.length} fields not in this export</div></div>`).join("");
+
+  /* 4 -- the register */
+  $("lead4").innerHTML = `${num(R.days)} days, ${esc(R.first)} to ${esc(R.last)}. <b>${pct(R.op_share)} outpatient, ${pct(R.ip_share)} inpatient.</b> Digital receipts rose from ${pct(R.digital_first)} to ${pct(R.digital_last)}.`;
   const MODES = ["cash", "card", "online", "cheque", "credit"];
   $("mix").innerHTML = ["op", "ip"].map((s) => `<div class="mixrow"><b>${s.toUpperCase()}</b><div class="mixbar">${MODES.map((m) => `<i style="width:${R.mix[s][m] * 100}%;background:${COL[m]}" title="${m} ${pct(R.mix[s][m], 1)}"></i>`).join("")}</div></div>`).join("");
   $("mixlegend").innerHTML = MODES.map((m) => `<span><span class="lk" style="background:${COL[m]}"></span>${m} <span class="mono">${pct(R.mix.op[m])} / ${pct(R.mix.ip[m])}</span></span>`).join("") + `<span class="muted">(OP / IP)</span>`;
@@ -377,16 +417,12 @@ window.Kit = (() => {
   bars($("months"), R.months.map((m) => ({ l: m.label, v: m.index, part: m.part })), 100, "var(--l1)");
   bars($("weekdays"), R.weekdays.map((w) => ({ l: w.label, v: w.index })), 100, "var(--l2)");
 
-  /* 4 -- data quality */
-  $("lead4").innerHTML = `What the register says about itself. <b>Every weekly total reconciles.</b>`;
   const rows = [
     [`${R.windows_reconciled}/${R.windows}`, `weekly capture windows whose run total equals the sum of their days`],
     [`${num(R.distinct_days)}/${num(R.span_days)}`, `calendar days present, none twice, none missing`],
     [`${num(R.total_is_three_modes)}/${num(R.days)}`, `days whose total is exactly cash + card + online (${pct(R.total_is_three_modes / R.days, 1)}); cheque and credit explain some of the rest`],
-    [`${R.negative_cells}`, `negative cells — refunds or corrections posted against a payment mode`],
+    [`${R.negative_cells}`, `negative cells: refunds or corrections posted against a payment mode`],
     [`${R.zero_days}`, `days with no receipts at all`],
-    [pct(R.cancel_share, 2), `of receipts cancelled`],
-    [`${R.busiest_weekday} / ${R.quietest_weekday}`, `busiest and quietest weekday`],
     [`${R.rows_per_window.min}–${R.rows_per_window.max}`, `days per capture window (the last is the tail of the period)`],
   ];
   $("quality").innerHTML = rows.map(([v, l]) => `<b>${esc(v)}</b><span>${l}</span>`).join("");
