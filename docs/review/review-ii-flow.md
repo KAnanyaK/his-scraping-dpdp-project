@@ -19,8 +19,9 @@ installed; `run_pipeline.py` ran clean end to end in **2 min 0 s** (88 s of it
 the benchmark, most of that the baseline's 440 page loads); every stage's
 numbers matched the committed artefacts to the millisecond column. The deck
 (`Review-II.pptx`) was rebuilt from those artefacts the same day — rebuild it
-after any regeneration (`REVIEW_TEMPLATE=… python tools/build_review_deck.py`;
-the template lives outside the repository).
+after any regeneration (`REVIEW_TEMPLATE=… python tools/build_review_deck.py --without-instruction-slide`;
+the template lives outside the repository; the flag keeps the template's instruction slide out,
+as the team removed it — the guide-signed scan goes in by hand as page 1).
 
 ---
 
@@ -157,7 +158,7 @@ by the harness at the metering boundary — a technique cannot log itself.)*
 **Slide 10, "Live Demonstration"**, carries a picture of each page in the state
 worth pointing at. If the room's browser fails, stay on that slide and talk
 over the pictures. After rebuilding the pages, refresh the pictures and the deck:
-`python tools/capture_demo_pages.py`, then `REVIEW_TEMPLATE=… python tools/build_review_deck.py`.
+`python tools/capture_demo_pages.py`, then `REVIEW_TEMPLATE=… python tools/build_review_deck.py --without-instruction-slide`.
 
 **Then switch to the portal page** (`docs/review/portal-run.html`) and press `3`:
 the crawl plays by itself (`space` replays it). Every page each technique loaded plays out on a map of the portal:

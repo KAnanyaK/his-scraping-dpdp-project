@@ -4,7 +4,8 @@
 
 Each page is opened from disk in headless Chromium at a projector-like size,
 driven into the moment the presenter points at -- the crawl finished, the
-billing trap on one patient, a refusal with its three checks -- and captured.
+billing trap on one patient, the diagnosis followed into the trap, a refusal
+with its three checks -- and captured.
 The deck (``tools/build_review_deck.py``) places these on its demonstration
 slide, so the pictures are there even if the room's browser is not. Rebuild
 after ``tools/build_review_pages.py``.
@@ -36,6 +37,12 @@ SHOTS = {
         document.querySelector('#steps button[data-step="3"]').click();
         document.querySelector('#taskseg button[data-t="claim-reconciliation"]').click();
     """, "#who", "#who .fchips"),
+    "journey-follow": (REVIEW / "journey.html", """
+        document.querySelector('#steps button[data-step="3"]').click();
+        document.querySelector('#lensseg button[data-k^="agent:gemini"]').click();
+        await new Promise(r => setTimeout(r, 100));
+        [...document.querySelectorAll('#quick button')].find(b => b.textContent.trim() === 'DESCRIPTION').click();
+    """, ".controls", "#techs tr.on"),
     "assistant-refusal": (REVIEW / "assistant.html", """
         const box = document.getElementById('input');
         box.value = "what is the patient's diagnosis";

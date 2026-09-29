@@ -8,7 +8,9 @@ template's paragraph styles, fills its literature table, duplicates the
 literature and results slides where the content needs more room, draws the
 working-blocks diagram as shapes on the (deliberately empty) architecture slide,
 and renumbers the page-number boxes. Slide 1 stays the template's instruction
-slide until the team replaces it with the guide-signed scan, as the template says.
+slide until the team replaces it with the guide-signed scan, as the template says;
+``--without-instruction-slide`` leaves it out (after numbering, so the deck still
+starts at page 2 and the scan goes in as page 1).
 
 Content facts (dates, marks, focus, mark split) come from the template itself.
 The numbers come from the artefacts the demo writes: the results table from
@@ -17,7 +19,7 @@ briefing), the dataset slide from ``benchmark-dataset.json`` when it exists
 (the rehearsal writes one; the day the hospital's export lands the same file
 is written from the real run and the slide swaps itself), the test count from
 the suite, and the demonstration slide's pictures from ``docs/review/img/``
-(``tools/capture_demo_pages.py`` photographs the four interactive pages; the
+(``tools/capture_demo_pages.py`` photographs the five interactive pages; the
 slide is left out if they are missing). Rebuild after every regeneration;
 nothing here is typed in twice.
 
@@ -54,10 +56,13 @@ DEMOS = [
     ("dataset-patient.png", "2 · An export we never saw",
      "Synthea's public sample, one patient's bill: the agent takes the diagnosis; ours takes three fields; the "
      "baseline reads 180,570 records.", "dataset-walkthrough.html"),
-    ("assistant-refusal.png", "3 · Ask the assistant",
+    ("journey-follow.png", "3 · The journey of one entry",
+     "One line of patients.csv through all seven stages. Follow the diagnosis through the agent on the billing "
+     "job: the rail turns red at Extract and Purpose.", "journey.html"),
+    ("assistant-refusal.png", "4 · Ask the assistant",
      "The panel types; reception asking for a diagnosis is refused before any detail is asked, with the three "
      "checks shown. Verified against the Python assistant on load.", "assistant.html"),
-    ("rules-vs-ai.png", "4 · Rules vs just AI",
+    ("rules-vs-ai.png", "5 · Rules vs just AI",
      "Eight tasks, five repeats, every repeat scored: close on the score, apart on traps, coverage, minimisation "
      "and repeatability.", "rules-vs-just-ai.html"),
 ]
@@ -420,14 +425,21 @@ _BEHAVIOUR = {
 
 
 def draw_demo(slide) -> None:
-    """Four pictures of the interactive pages, each fitted to its cell with a caption beneath."""
+    """The interactive pages, each fitted to its cell with a caption beneath: three on the
+    first row and the rest centred on the second (two by two for four)."""
 
     from PIL import Image
 
-    cell_w, img_h, left0, top0, gap_x, row_h = 5.95, 2.05, 0.6, 1.3, 0.23, 2.72
+    per_row = 2 if len(DEMOS) <= 4 else 3
+    width, left0, top0, gap_x, row_h = 12.1, 0.6, 1.3, 0.23, 2.72
+    cell_w = (width - (per_row - 1) * gap_x) / per_row
+    img_h = 2.05 if per_row == 2 else 1.8
+    caption = 10 if per_row == 2 else 9.5
     for i, (name, title, blurb, page) in enumerate(DEMOS):
-        col, row = i % 2, i // 2
-        x, y = left0 + col * (cell_w + gap_x), top0 + row * row_h
+        row, col = divmod(i, per_row)
+        in_row = min(per_row, len(DEMOS) - row * per_row)
+        indent = (width - (in_row * cell_w + (in_row - 1) * gap_x)) / 2
+        x, y = left0 + indent + col * (cell_w + gap_x), top0 + row * row_h
         with Image.open(DEMO_IMG / name) as im:
             w, h = im.size
         scale = min(cell_w / w, img_h / h)
@@ -436,7 +448,7 @@ def draw_demo(slide) -> None:
                                        Inches(pw), Inches(ph))
         pic.line.color.rgb = GREY
         pic.line.width = Pt(0.5)
-        add_text(slide, x, y + img_h + 0.04, cell_w, 0.62, [f"{title}  —  {blurb}"], size=10, bold_first=False)
+        add_text(slide, x, y + img_h + 0.04, cell_w, 0.8, [f"{title}  —  {blurb}"], size=caption, bold_first=False)
         # The title in bold, the page name in grey: one paragraph, three runs.
         para = slide.shapes[-1].text_frame.paragraphs[0]
         text = para.runs[0].text
@@ -445,10 +457,10 @@ def draw_demo(slide) -> None:
         para.runs[0].font.color.rgb = NAVY
         r2 = para.add_run()
         r2.text = text[len(title):]
-        r2.font.size = Pt(10)
+        r2.font.size = Pt(caption)
         r3 = para.add_run()
         r3.text = f"  [{page}]"
-        r3.font.size = Pt(9)
+        r3.font.size = Pt(caption - 1)
         r3.font.color.rgb = GREY
     add_text(slide, 0.6, 6.78, 12.1, 0.35, [
         "Open docs/review/index.html — every page is offline, built from a real run of the pipeline "
@@ -639,7 +651,15 @@ def public_ceiling() -> tuple[int, int, int] | None:
             d["coverage_in_source"] - d["coverage_reachable"])
 
 
-def build() -> Path:
+def drop_first_slide(prs) -> None:
+    """Remove slide 1 (the template's instruction slide) and its relationship."""
+
+    first = prs.slides._sldIdLst[0]
+    prs.part.drop_rel(first.rId)
+    prs.slides._sldIdLst.remove(first)
+
+
+def build(*, without_instruction_slide: bool = False) -> Path:
     if not TEMPLATE.exists():
         sys.exit(f"template not found: {TEMPLATE}. Set REVIEW_TEMPLATE to the path of "
                  f"'{TEMPLATE_NAME}' (kept outside the repository) or copy it to the repo root.")
@@ -651,8 +671,14 @@ def build() -> Path:
 
     # ---- slide 2: title slide fields ----
     rewrite_plain(shape_named(s[1], "Text 3"), ["AI-Driven HIS Management Agent with DPDP-Compliant Web Scraping"], size=26)
-    rewrite_plain(shape_named(s[1], "Text 5"), ["Avanindra (23BLC1089) · Ananya (23BLC1017)"], size=13)
+    # The team's own layout of the names (edited by hand in the deck, 2026-09-28): one per line, full names.
+    rewrite_plain(shape_named(s[1], "Text 5"), ["Ananya Karmakar        23BLC1017", "Avanindra Kushwah  23BLC1089"], size=13)
+    _run_font(shape_named(s[1], "Text 5").text_frame.paragraphs[1].runs[0]._r, size=14)
     rewrite_plain(shape_named(s[1], "Text 8"), ["Dr. Manoj Kumar, SENSE"])
+    # The template's "approval is mandatory ... scan this slide" note: the team removed it (the signed scan replaces the slide).
+    for sh in list(s[1].shapes):
+        if sh.has_text_frame and sh.text_frame.text.startswith("Approval is mandatory"):
+            sh._element.getparent().remove(sh._element)
 
     # ---- slide 4: Introduction & Problem Recap ----
     rewrite_body(shape_named(s[3], "Text 2"), [
@@ -979,12 +1005,21 @@ def build() -> Path:
         print("  demonstration slide left out: run tools/capture_demo_pages.py for its pictures")
 
     renumber(prs)
+    if without_instruction_slide:
+        # After numbering: the deck starts at page 2, the guide-signed scan goes in as page 1.
+        drop_first_slide(prs)
     prs.save(TARGET)
     return TARGET
 
 
 if __name__ == "__main__":
-    out = build()
+    import argparse
+    parser = argparse.ArgumentParser(description="Build Review-II.pptx on the Review-2 template.")
+    parser.add_argument("--without-instruction-slide", action="store_true",
+                        help="leave out the template's slide 1 (the team inserts the guide-signed scan by hand)")
+    args = parser.parse_args()
+    out = build(without_instruction_slide=args.without_instruction_slide)
     print(f"wrote {out}")
-    print("Slide 1 is the template's instruction slide: replace it with the guide-signed Review-II scan.")
+    print("Slide 1 left out: insert the guide-signed Review-II scan as page 1." if args.without_instruction_slide
+          else "Slide 1 is the template's instruction slide: replace it with the guide-signed Review-II scan.")
     print("Literature review has 15 rows over three slides, meeting the template minimum.")
