@@ -37,6 +37,9 @@ SHOTS = {
         document.querySelector('#steps button[data-step="3"]').click();
         document.querySelector('#taskseg button[data-t="claim-reconciliation"]').click();
     """, "#who", "#who .fchips"),
+    "real-questions": (REVIEW / "real-data.html", """
+        document.querySelector('#steps button[data-step="2"]').click();
+    """, "#funnel", "#pcards"),
     "journey-follow": (REVIEW / "journey.html", """
         document.querySelector('#steps button[data-step="3"]').click();
         document.querySelector('#lensseg button[data-k^="agent:gemini"]').click();
