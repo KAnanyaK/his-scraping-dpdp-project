@@ -1,6 +1,6 @@
 """File-backed ``HISDataSource``: a hospital export read through the same interface.
 
-The expected export is a directory of tabular files -- CSV or Excel -- one per
+The expected export is a directory of tabular files -- CSV, Excel or JSON records -- one per
 HIS layer or one per module, plus optionally a ``manifest.json``. Nothing here
 depends on the files being ours: every file is classified by its *content*.
 
@@ -76,7 +76,27 @@ from data_synthetic.catalogue import FIELD_CATALOGUE, infer_layer, subject_key
 from extraction.base import HISDataSource
 from interop.layers import HISLayer
 
-READABLE = (".csv", ".xlsx", ".xls")
+READABLE = (".csv", ".xlsx", ".xls", ".json")
+# JSON files that sit beside an export without being part of it.
+_NOT_EXPORT = ("manifest.json", "column_map.json")
+
+
+def is_export_file(path: Path) -> bool:
+    """A file of the export itself: a table, or a JSON list of records. The
+    manifest and the column map are JSON too, and are not read as data."""
+
+    suffix = path.suffix.lower()
+    if suffix not in READABLE:
+        return False
+    if suffix != ".json":
+        return True
+    if path.name.lower() in _NOT_EXPORT:
+        return False
+    try:
+        with path.open(encoding="utf-8") as handle:
+            return handle.read(1).lstrip("﻿") == "["
+    except OSError:
+        return False
 
 # Catalogue fields that carry a date or a timestamp, and the ISO form each is
 # emitted in. The shapers (HL7 PID-7, FHIR birthDate, ...) rely on ISO input.
@@ -97,9 +117,23 @@ SHARED_FIELDS = frozenset(
 def read_table(path: Path, *, nrows: int | None = None) -> pd.DataFrame:
     """Read one export file with every cell as text, blanks as missing."""
 
-    if path.suffix.lower() == ".csv":
+    suffix = path.suffix.lower()
+    if suffix == ".csv":
         return pd.read_csv(path, dtype=str, nrows=nrows)
+    if suffix == ".json":
+        return read_json_records(path, nrows=nrows)
     return pd.read_excel(path, dtype=str, nrows=nrows)
+
+
+def read_json_records(path: Path, *, nrows: int | None = None) -> pd.DataFrame:
+    """A JSON export -- a list of flat records, as a report scraped to JSON is --
+    read like a table: one row per record, nested objects flattened to
+    ``outer.inner`` headers, every value as text (a number keeps the digits it
+    was written with), null as missing."""
+
+    records = json.loads(path.read_text(encoding="utf-8"))
+    frame = pd.json_normalize(records[:nrows] if nrows else records)
+    return frame.astype(object).where(frame.isna(), frame.astype(str))
 
 
 def load_column_map(path: str | Path | None) -> tuple[dict[str, str], dict[str, dict[str, str]]]:
@@ -254,7 +288,7 @@ class DatasetHISDataSource(HISDataSource):
             raise FileNotFoundError(f"export directory not found: {self.directory}")
         parts: dict[HISLayer, list[tuple[Path, pd.DataFrame]]] = {}
         for path in sorted(self.directory.iterdir()):
-            if path.suffix.lower() not in READABLE:
+            if not is_export_file(path):
                 continue
             frame = read_table(path)
             reading = read_columns(list(frame.columns), self.map_for(path.name), min_confidence=self.min_confidence)

@@ -1,6 +1,6 @@
 """Rebuild every Review-II demo page in docs/review/, in one command.
 
-    python tools/build_review_pages.py                  # index, rules vs AI, assistant, portal run, dataset and journey (Synthea)
+    python tools/build_review_pages.py                  # index, rules vs AI, assistant, portal run, dataset and journey (Synthea), real export
     python tools/build_review_pages.py --skip-portal    # no browser on this machine
 
 The portal run needs Chromium (``python -m playwright install chromium``) and
@@ -39,7 +39,13 @@ def index_data() -> dict:
 
     portal, public, memory = scores("benchmark-portal"), scores("benchmark-public"), scores("benchmark")
     unaided = [s for s in memory.values() if s.get("briefing") == "unaided"]
+    real = {}
+    if (RESULTS / "benchmark-real.json").exists() and (REVIEW_DIR / "real-data.html").exists():
+        r = json.loads((RESULTS / "benchmark-real.json").read_text(encoding="utf-8"))
+        real = {"days": next(s["record_count"] for s in r["scores"] if s["short"] == "compliance-aware"),
+                "carried": r["coverage_in_source"], "needed": r["coverage_needed"]}
     return {
+        "real": real,
         "portal": {"ours": portal["compliance-aware"]["cost"]["page_loads"],
                    "baseline": portal["unconstrained"]["cost"]["page_loads"]},
         "dataset": {"ours": public["compliance-aware"]["mean_compliance_score"],
@@ -56,6 +62,13 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-portal", action="store_true", help="leave the portal page as it is")
     args = parser.parse_args()
+
+    real_dir = ROOT / "data" / "hospital_export"
+    if (real_dir / "PROVENANCE.md").exists() and (RESULTS / "benchmark-real.json").exists():
+        from tools import build_real_page
+        print(f"  wrote {build_real_page.build(real_dir).relative_to(ROOT)}")
+    else:
+        print("  real-data page: no real export here (or no benchmark-real.json); committed copy kept")
 
     index = REVIEW_DIR / "index.html"
     write(index, render(ROOT / "tools" / "review_index.html", index_data(), current="index", out=index))

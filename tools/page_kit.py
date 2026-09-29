@@ -22,6 +22,7 @@ PAGES = [
     ("index", REVIEW_DIR / "index.html", "Demos"),
     ("portal", REVIEW_DIR / "portal-run.html", "Portal run"),
     ("dataset", REVIEW_DIR / "dataset-walkthrough.html", "Dataset"),
+    ("real", REVIEW_DIR / "real-data.html", "Real data"),
     ("journey", REVIEW_DIR / "journey.html", "Journey"),
     ("assistant", REVIEW_DIR / "assistant.html", "Assistant"),
     ("rules", ROOT / "docs" / "benchmark_results" / "rules-vs-just-ai.html", "Rules vs AI"),

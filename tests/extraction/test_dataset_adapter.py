@@ -101,3 +101,20 @@ def test_techniques_and_benchmark_run_unchanged_against_the_export(source):
     assert scores["compliance-aware"].mean_compliance_score == 1.0
     assert scores["unconstrained"].cost.excess_ratio > 1.0
     assert scores["compliance-aware"].cost.records == 2 * RECORDS
+
+
+def test_json_record_export_is_read_and_its_sidecars_are_not(tmp_path):
+    """A report scraped to JSON (a list of flat records) reads like a table; the manifest and the column map beside it are not data."""
+
+    import json
+
+    from extraction.adapters.dataset_his import is_export_file, read_table
+
+    records = [{"day": "01-01-2025", "amount": 100 + i, "totals": {"grand": 5}} for i in range(3)]
+    (tmp_path / "register.json").write_text(json.dumps(records), encoding="utf-8")
+    (tmp_path / "column_map.json").write_text(json.dumps({"amount": "billed_amount"}), encoding="utf-8")
+    (tmp_path / "manifest.json").write_text(json.dumps({"kind": "synthetic"}), encoding="utf-8")
+    assert [p.name for p in sorted(tmp_path.iterdir()) if is_export_file(p)] == ["register.json"]
+    frame = read_table(tmp_path / "register.json")
+    assert list(frame.columns) == ["day", "amount", "totals.grand"] and len(frame) == 3
+    assert frame["amount"].tolist() == ["100", "101", "102"]          # text, as written

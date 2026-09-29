@@ -60,7 +60,7 @@ from compliance.policy import policy_for                                   # noq
 from compliance.pseudonymise import token_for                              # noqa: E402
 from data_synthetic.catalogue import FIELD_CATALOGUE, subject_key          # noqa: E402
 from extraction.adapters.dataset_his import (                              # noqa: E402
-    READABLE, DatasetHISDataSource, load_column_map, read_columns, read_table,
+    is_export_file, DatasetHISDataSource, load_column_map, read_columns, read_table,
 )
 from extraction.base import HISDataSource                                  # noqa: E402
 from extraction.techniques import (                                        # noqa: E402
@@ -178,7 +178,7 @@ def _fhir_shape(resource: Any) -> Any:
 
 def files_section(source: DatasetHISDataSource) -> list[dict]:
     out = []
-    for path in sorted(p for p in source.directory.iterdir() if p.suffix.lower() in READABLE):
+    for path in sorted(p for p in source.directory.iterdir() if is_export_file(p)):
         headers = [str(h) for h in read_table(path, nrows=1).columns]
         reading = read_columns(headers, source.map_for(path.name), min_confidence=source.min_confidence)
         read = path.name in source.file_rows
