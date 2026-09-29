@@ -35,7 +35,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _present as present
 from compliance.handling import check_handling
 from data_synthetic.catalogue import FIELD_CATALOGUE, SUBJECT_KEY
-from extraction.adapters.dataset_his import READABLE, load_column_map, normalise_dates, read_columns, read_table
+from extraction.adapters.dataset_his import is_export_file, load_column_map, normalise_dates, read_columns, read_table
 from interop.layers import HISLayer
 
 
@@ -93,7 +93,7 @@ def check_directory(directory: Path, column_map: dict[str, str], write_map: Path
 
     all_unmatched: list[str] = []
     print()
-    files = sorted(p for p in directory.iterdir() if p.suffix.lower() in READABLE)
+    files = sorted(p for p in directory.iterdir() if is_export_file(p))
     if not files:
         print("  no CSV / Excel files found")
         return 1
