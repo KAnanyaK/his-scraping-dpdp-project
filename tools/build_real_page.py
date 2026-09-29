@@ -31,6 +31,13 @@ sys.path.insert(0, str(ROOT / "src"))
 import pandas as pd                                                         # noqa: E402
 
 from compliance.handling import check_handling                              # noqa: E402
+from compliance.models import Purpose                                       # noqa: E402
+from compliance.policy import PURPOSE_POLICY                                # noqa: E402
+from compliance.purpose_matrix import score_across_purposes                 # noqa: E402
+from data_synthetic.catalogue import FIELD_CATALOGUE                        # noqa: E402
+from extraction.technique import ExtractionTask, LayerFields                # noqa: E402
+from extraction.techniques.compliant import CompliantExtractionTechnique    # noqa: E402
+from interop.layers import HISLayer                                         # noqa: E402
 from extraction.adapters.dataset_his import (                               # noqa: E402
     DatasetHISDataSource, is_export_file, load_column_map, read_columns, read_table,
 )
@@ -147,6 +154,58 @@ def pipeline(result: dict) -> dict:
             "generated": result["generated_at"][:10]}
 
 
+REGISTER_TASK = ExtractionTask(
+    task_id="register-summary",
+    purpose=Purpose.BILLING_SETTLEMENT,
+    description="Summarise what the hospital took in, for settlement and audit",
+    needed=[LayerFields(layer=HISLayer.ADMINISTRATIVE_FINANCIAL, fields=["billed_amount"])],
+)
+
+# Questions a hospital asks that need a person in the data. Each is grounded in the
+# catalogue: the fields it needs, their categories, and which purposes may take them.
+BLOCKED = [
+    ("Which patients have an invoice outstanding?", Purpose.BILLING_SETTLEMENT,
+     [("administrative_financial", ["mrn", "invoice_id", "billed_amount", "payer_name"])]),
+    ("Which diagnoses drive our costs?", Purpose.BILLING_SETTLEMENT,
+     [("clinical_ehr", ["primary_diagnosis"]), ("administrative_financial", ["billed_amount"])]),
+    ("Who should be reminded of tomorrow's appointment?", Purpose.PATIENT_REGISTRATION,
+     [("patient_administration", ["mrn", "full_name", "phone", "admission_datetime"])]),
+    ("Who is on which ward right now?", Purpose.CARE_COORDINATION,
+     [("patient_administration", ["mrn", "admission_ward"]), ("clinical_ehr", ["encounter_datetime"])]),
+]
+
+
+def purpose_test(source: DatasetHISDataSource) -> dict:
+    """The real pull, once, judged under every purpose -- ours reads only what the task needs."""
+
+    output = CompliantExtractionTechnique().extract(source, REGISTER_TASK)
+    matrix = score_across_purposes(output.run, output.records)
+    return {
+        "task": {"id": REGISTER_TASK.task_id, "purpose": REGISTER_TASK.purpose.value, "needs": ["billed_amount"]},
+        "records": matrix.record_count, "categories": matrix.extracted_categories,
+        "verdicts": [{"purpose": v.purpose, "declared": v.is_declared_purpose, "score": v.compliance_score,
+                      "passed": v.rules_passed, "total": v.rules_total, "failed": v.failed_rules,
+                      "out_of_scope": v.out_of_scope_categories, "retention": v.retention_limit_days,
+                      "verdict": v.verdict()} for v in matrix.verdicts],
+    }
+
+
+def blocked_questions(source: DatasetHISDataSource) -> list[dict]:
+    """For each question that needs a person: what it needs, whether this export has it,
+    and whether its own purpose would let it be asked at all (the purpose policy's answer)."""
+
+    rows = []
+    for question, purpose, needs in BLOCKED:
+        pairs = [(HISLayer(layer), f) for layer, fields in needs for f in fields]
+        cats = {FIELD_CATALOGUE[layer][f] for layer, f in pairs}
+        outside = sorted(c.value for c in cats - PURPOSE_POLICY[purpose].allowed_categories)
+        rows.append({"q": question, "purpose": purpose.value, "fields": [f for _, f in pairs],
+                     "categories": sorted(c.value for c in cats),
+                     "missing": [f for layer, f in pairs if f not in source.fields(layer)],
+                     "out_of_scope": outside})
+    return rows
+
+
 def leaks(html: str, records: list[dict]) -> list[str]:
     """What must not be in the page: any daily figure, any address, the scraper session."""
 
@@ -168,7 +227,11 @@ def build(directory: Path = DEFAULT_DIR, *, column_map: dict | None = None, file
     if column_map is None:
         column_map, file_maps = load_column_map(directory / "column_map.json")
     records = records_of(directory)
+    source = DatasetHISDataSource(directory, column_map=column_map, file_maps=file_maps or {})
     data = {
+        "purpose": purpose_test(source),
+        "rules": json.loads(RESULT.read_text(encoding="utf-8"))["rule_ids"],
+        "blocked": blocked_questions(source),
         "meta": {"built": pd.Timestamp.now().strftime("%Y-%m-%d")},
         "intake": gate_and_adapter(directory, column_map, file_maps or {}),
         "pipeline": pipeline(json.loads(RESULT.read_text(encoding="utf-8"))),
