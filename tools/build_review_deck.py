@@ -19,7 +19,7 @@ briefing), the dataset slide from ``benchmark-dataset.json`` when it exists
 (the rehearsal writes one; the day the hospital's export lands the same file
 is written from the real run and the slide swaps itself), the test count from
 the suite, and the demonstration slide's pictures from ``docs/review/img/``
-(``tools/capture_demo_pages.py`` photographs the five interactive pages; the
+(``tools/capture_demo_pages.py`` photographs the six interactive pages; the
 slide is left out if they are missing). Rebuild after every regeneration;
 nothing here is typed in twice.
 
@@ -56,13 +56,16 @@ DEMOS = [
     ("dataset-patient.png", "2 · An export we never saw",
      "Synthea's public sample, one patient's bill: the agent takes the diagnosis; ours takes three fields; the "
      "baseline reads 180,570 records.", "dataset-walkthrough.html"),
-    ("journey-follow.png", "3 · The journey of one entry",
+    ("real-questions.png", "3 · The hospital's own register",
+     "Real hospital data with no patient in it: one pull judged under every purpose — lawful for the one it was "
+     "taken for, refused by the other two with the rule named; six questions answered from totals, four gated.", "real-data.html"),
+    ("journey-follow.png", "4 · The journey of one entry",
      "One line of patients.csv through all seven stages. Follow the diagnosis through the agent on the billing "
      "job: the rail turns red at Extract and Purpose.", "journey.html"),
-    ("assistant-refusal.png", "4 · Ask the assistant",
+    ("assistant-refusal.png", "5 · Ask the assistant",
      "The panel types; reception asking for a diagnosis is refused before any detail is asked, with the three "
      "checks shown. Verified against the Python assistant on load.", "assistant.html"),
-    ("rules-vs-ai.png", "5 · Rules vs just AI",
+    ("rules-vs-ai.png", "6 · Rules vs just AI",
      "Eight tasks, five repeats, every repeat scored: close on the score, apart on traps, coverage, minimisation "
      "and repeatability.", "rules-vs-just-ai.html"),
 ]
@@ -637,6 +640,18 @@ def dataset_rows(name: str = "benchmark-dataset") -> tuple[list[list[str]], str,
     return rows, note, str(data.get("generated_at", ""))[:10]
 
 
+def real_register() -> dict | None:
+    """The hospital register's numbers, read from the committed page's own data block."""
+
+    import json
+    import re
+    page = ROOT / "docs" / "review" / "real-data.html"
+    if not page.exists():
+        return None
+    m = re.search(r'<script id="data" type="application/json">(.*?)</script>', page.read_text(encoding="utf-8"), re.S)
+    return json.loads(m.group(1).replace("<\\/", "</")) if m else None
+
+
 def public_ceiling() -> tuple[int, int, int] | None:
     """(needed, absent from the export, absent from the patient's records) for the public run."""
 
@@ -761,7 +776,7 @@ def build(*, without_instruction_slide: bool = False) -> Path:
             "export audit. agent/ — 13-function registry, session state machine, grounded guidance. "
             "tools/mock_portal — the Flask fixture built as a system we do not control. scripts/rehearse_day_one.py — "
             "the real-data procedure rehearsed on a hospital-shaped export, with a leak audit. tools/build_review_pages.py — "
-            "four offline demo pages built from real runs.",
+            "six offline demo pages built from real runs.",
         ]),
         ("Algorithms implemented:", [
             "Rule scoring: each principle → 0–1 with findings; weighted aggregate (21 alternative weightings never put "
@@ -906,7 +921,7 @@ def build(*, without_instruction_slide: bool = False) -> Path:
                 "The export found five defects our own data had not — identifiers read as numbers, a blanked column counted "
                 "against a file, an empty source still benchmarked, one table kept per layer, a coverage ceiling set by the "
                 "wrong technique — each fixed and tested; a hospital-shaped rehearsal had found four more." + ceiling_txt
-                + " If a hospital export is ever released, this slide is rebuilt from its run and nothing else changes.",
+                + " If a patient-level export is ever released, this slide is rebuilt from its run and nothing else changes.",
             ]
         elif rehearsal:
             intro = [
@@ -950,6 +965,52 @@ def build(*, without_instruction_slide: bool = False) -> Path:
                   f"patient's records for one patient's task."], size=10, color=GREY)
         n_inserted = 4
 
+
+    # ---- slide 9d: Results (contd.) — the hospital's own register (real, aggregate) ----
+    # Read from docs/review/real-data.html's data block (tools/build_real_page.py): the run
+    # of the real export through the gate, the adapter and the purpose policy.
+    reg = real_register()
+    if ds is not None and reg is not None:
+        R_, PU_, I_ = reg["register"], reg["purpose"], reg["intake"]
+        res5 = duplicate_slide(prs, 10)
+        move_slide(prs, res5, 13)
+        for sh in list(res5.shapes):
+            if sh.name not in ("Text 0", "Text 1", "Image 0"):
+                sh._element.getparent().remove(sh._element)
+        rewrite_plain(shape_named(res5, "Text 1"), ["Results & Analysis (contd.) — The Hospital's Own Register"])
+        f0 = I_["files"][0]
+        add_text(res5, 0.7, 1.35, 11.9, 1.3, [
+            f"The hospital's export arrived on 29 September and it is not patient-level: {R_['days']} daily records "
+            f"({R_['first']} to {R_['last']}) of its collection register, receipts by payment mode, outpatient and "
+            f"inpatient. It went through the same four handling checks, the same adapter and the same rules: "
+            f"{f0['blank']} of {f0['columns']} columns were stopped at the door, one (the day total) was mapped to a "
+            f"catalogue field, and no direct identifier existed to reach any technique. One pull of it — "
+            f"{PU_['records']} records of one financial field — was then judged under every purpose.",
+        ], size=11.5)
+        vrows = [[v["purpose"].replace("_", " ") + (" (declared)" if v["declared"] else ""),
+                  f"{v['score']:.3f}", f"{v['passed']}/{v['total']}",
+                  ", ".join(v["failed"]) or "—", f"{v['retention']} d",
+                  "lawful" if v["score"] == 1 else "not lawful: " + v["verdict"]] for v in PU_["verdicts"]]
+        add_table(res5, 0.6, 2.6, 12.13, 0.4 + 0.36 * len(vrows), [
+            ["Purpose", "Score", "Rules met", "Rules failed", "Keep ≤", "Verdict"], *vrows,
+        ], [3.3, 1.1, 1.3, 1.9, 1.1, 3.43], body_size=11)
+        blocked_out = [b for b in reg["blocked"] if b["out_of_scope"]]
+        add_text(res5, 0.7, 4.5, 11.9, 2.0, [
+            f"What a register with no patient in it still answers, from totals alone: digital receipts rose from "
+            f"{R_['digital_first']:.0%} to {R_['digital_last']:.0%} of cash, card and online; outpatient and inpatient split "
+            f"{R_['op_share']:.0%} / {R_['ip_share']:.0%}; { {'Mon':'Monday','Tue':'Tuesday','Wed':'Wednesday','Thu':'Thursday','Fri':'Friday','Sat':'Saturday','Sun':'Sunday'}[R_['busiest_weekday']]} is the busiest weekday; "
+            f"{R_['windows_reconciled']} of {R_['windows']} weekly totals reconcile with the sum of their days.",
+            f"Four questions need a person, and the policy gates them: none can be answered here, since all four need "
+            f"fields this export does not carry, and “{blocked_out[0]['q'].rstrip('?')}” is refused outright under its own "
+            f"purpose ({', '.join(blocked_out[0]['out_of_scope'])} is out of scope for billing). The tasks' 18 fields are "
+            f"1 in this export, so every technique that reads only what a task needs ties at 1.000; the ranking rests on "
+            f"the synthetic, portal and public runs.",
+        ], size=11)
+        add_text(res5, 0.7, 6.75, 11.9, 0.4,
+                 ["docs/review/real-data.html (tools/build_real_page.py); counts, ratios and indices only — no amount, "
+                  "no day's figure, no hospital or system name."], size=10, color=GREY)
+        n_inserted = 5
+
     # ---- Challenges & Remaining Work (after the inserted slides) ----
     chal = s[9 + n_inserted]
     assert shape_named(chal, "Text 1").text_frame.text.startswith("Challenges")
@@ -970,9 +1031,10 @@ def build(*, without_instruction_slide: bool = False) -> Path:
             "recordings replay on the real data unchanged.",
         ]),
         (f"Remaining work (ledger at {ledger_total()}%, PLAN.md §5):", [
-            "Nothing depends on the hospital dataset: the evaluation stands on synthetic data, the live portal and a public "
-            "export we never saw. If an export is released, it is one column map and the same pipeline, and its slide "
-            "rebuilds itself. Report: eight chapters and five appendices written, section references verified against the "
+            "Nothing depends on patient-level hospital data: the evaluation stands on synthetic data, the live portal and a "
+            "public export we never saw, and the hospital's own collection register (real, aggregate, no patient in it) has "
+            "been through the same pipeline. If a patient-level export is released, it is one column map and the same "
+            "pipeline, and its slide rebuilds itself. Report: eight chapters and five appendices written, section references verified against the "
             "Gazette text, every table generated from the results and checked in CI. Manuscript: a complete first draft, "
             "to be fitted to the venue chosen with the guide — the one remaining point on the ledger.",
         ]),
