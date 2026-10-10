@@ -8,7 +8,7 @@ web
 
 ## Users
 
-- **The review panel and later readers.** Dr. Manoj Kumar and the VIT SENSE review panel (Review-II 30.09.2026, Review-III 28.10.2026) see the pipeline demonstrated with a presenter driving. Afterwards the guide, examiners and paper readers open the same material on their own, with nobody to explain it. Viewing is mostly on **laptop screens**; projection is the exception.
+- **The review panel and later readers.** Dr. Manoj Kumar and the VIT SENSE review panel (Review-II held 30.09.2026, Review-III 26.10.2026) see the pipeline demonstrated with a presenter driving. Afterwards the guide, examiners and paper readers open the same material on their own, with nobody to explain it. Viewing is mostly on **laptop screens**; projection is the exception.
 - **The room following the demo pages.** The review pages (`docs/review/*.html`) are shown with a presenter talking over them. Each page carries a one-line brief and leaves the explaining to the presenter (user decision, 2026-09-26); what the page must do is make the point visible and let a panel member click, type or flip a switch themselves. The same pages are opened later, offline, by readers with nobody to explain them, so every number stays labelled.
 - **The watcher of the crawl.** For the mock portal the relevant person is someone watching a real browser log in and crawl it (`python scripts/run_pipeline.py --show`), or looking at captures of it. Their job is to follow what the browser is doing: which module, which page of how many, which record, signed in or not.
 - **The scraper.** The portal's other reader is the Tier 2 Playwright code (`src/extraction/tier2/`), which reads it exactly as it would a real hospital portal. Any design change is judged by both readers.

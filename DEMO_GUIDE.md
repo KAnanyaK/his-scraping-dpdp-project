@@ -95,10 +95,13 @@ There are **four demo programs**. Each prints a scorecard and saves report files
 python scripts/run_pipeline.py
 python scripts/run_pipeline.py --show        # watch the browser do it
 python scripts/run_pipeline.py --records 200 # a longer, larger run
+python scripts/run_pipeline.py --repeats 1   # the room: one sample per AI model, ~2 min
 ```
 
-About a minute and a half on a laptop — most of it is the baseline technique
-loading several hundred pages, which is the point. Seven stages print in turn:
+About seven minutes on a laptop at the default, which replays each AI model's
+five recorded samples on the portal (the committed artefacts are made this way);
+`--repeats 1` takes about two -- most of it the baseline technique loading
+several hundred pages, which is the point. Seven stages print in turn:
 
 1. **Portal** — a login-gated hospital portal starts on your machine, over TLS
    with a throwaway certificate (the scraper trusts it on loopback only).
@@ -106,13 +109,14 @@ loading several hundred pages, which is the point. Seven stages print in turn:
    it found: five modules, how many pages each has, which fields are in the list
    and which only on a record's page — and **which HIS layer each module is, worked
    out from the field names**, not read from the URL.
-3. **Benchmark** — every scraping method (ours, the AI agents replaying their
+3. **Benchmark** — every scraping method (ours, the AI models replaying their
    recorded decisions, the baseline) runs against the portal, unchanged from the
    in-memory version, and is scored on the same seven rules. The cost table has
    a **pages** column with real page loads: for the two single-patient tasks the
    compliant method goes through the search box — 32 page loads against the
-   baseline's 440 over the four tasks, at identical coverage. The connection was
-   **observed** to be encrypted, and every run was written to the **audit log**
+   baseline's 440 over the four tasks, at identical coverage. The browser
+   **observed** the TLS session it negotiated (protocol and issuer; the fixture's self-signed
+   certificate is accepted on loopback only and the output says it was not verified), and every run was written to the **audit log**
    by the harness — the last three events are printed.
 4. **Normalise** — the compliant pull is shaped into HL7 v2 messages and FHIR
    resources, the way a downstream system would receive it, with the patient's
@@ -131,7 +135,9 @@ loading several hundred pages, which is the point. Seven stages print in turn:
    --erase` does it for real on the day.
 
 The point to make out loud: **nothing is staged.** The browser really logs in; the
-scraper is never told how the portal is laid out; the methods that ran against
+scraper holds only the credentials and an authorisation reference (the portal's robots.txt
+refuses automated access without one) -- the layout it works out by crawling, the layers from
+field names after label mapping; the methods that ran against
 fake in-memory data run against a website with no changes; the export audit
 checks what actually left rather than what the method claimed; the assistant's
 page references come from what the crawler found ten seconds earlier. That is the
@@ -142,7 +148,7 @@ First run on a new machine needs the browser: `python -m playwright install chro
 ### The demo portal (interactive; one file, `docs/review/portal.html`, every demo a tab)
 
 Six tabs (cut from nine on 2026-10-09), each built from a real run and
-committed, offline, with no raw identifier on any of them: Portal run, Rules vs
+committed, offline, with no raw direct identifier on any of them: Portal run, Rules vs
 AI, Journey, Patient rights, Assistant, HIS update. `python
 tools/build_review_pages.py` rebuilds the portal (~90 s; `--skip-portal` where
 there is no browser). The Synthea walkthrough (Demo F) and the hospital-register
@@ -151,8 +157,8 @@ page are built on their own now, outside the portal.
 - **Portal run**: the sign-in and discovery replay on their own (step 1),
   then each module with its URL hidden (step 2; the layers are still inferred
   from field names), and **the crawl**: press `3` and every page each technique
-  loaded plays out on a map of the site (`space` replays; `fast` for a quick run). Ours 32, the AI agent 35, the
-  baseline 440, with each total checked against the meter when the page is built.
+  loaded plays out on a map of the site (`space` replays; `fast` for a quick run). Ours, each AI model (its five
+  recorded samples replayed), and the baseline, with each total checked against the meter when the page is built.
 - **Assistant**: laid out for staff (2026-10-07): pick a role, then a task from
   that role's list or type it in plain words; answers are numbered steps with
   the screen each happens on, or a refusal naming who can do it. Each answer's
@@ -166,7 +172,7 @@ page are built on their own now, outside the portal.
 - **Rules vs AI**: the AI-agent comparison; step 6 is the planted-instruction set.
 - **Patient rights**: an access request and a leaked export, both answered from the audit log.
 - **HIS update**: a vendor release in three steps — each old screen beside its
-  new one(s), all 29 tasks as tiles (25 placed by themselves, 4 withheld until
+  new one(s), every one of the assistant's tasks as a tile (most placed by themselves, a few withheld until
   *Confirm both*), and the scraper's 14 of 14 identical results.
 
 ### Demo F: an export we never saw, in the browser (interactive; hand the panel the mouse)
@@ -185,7 +191,7 @@ them, `A+` enlarges the text for a projector.
    every file by what its columns *are*; 29 of 258 columns were let in."
 2. **The gate.** Let someone switch off "provenance note". The page shows the
    exact refusal the adapter prints, and nothing is read.
-3. **One patient.** Choose *claim reconciliation* (⚠). The AI agent, told the
+3. **One patient.** Choose *claim reconciliation* (⚠). The AI model, told the
    policy, still takes the diagnosis for a billing job (red chip, DM-01 fails)
    and keeps it for 365 days. Ours takes three fields for 30 days. The baseline
    reads 180,570 records to answer for one patient. Under "What left the
@@ -223,7 +229,7 @@ the seven stages `run_pipeline.py` runs, with the real code at every stage:
 2. **Understand:** each column read as a catalogue field with its DPDP category,
    dropped by the column map, or never understood; the value as the adapter
    holds it; this patient across the whole export (658 rows in 9 files).
-3. **Extract:** one job about this patient through ours, each AI agent told the
+3. **Extract:** one job about this patient through ours, each AI model told the
    policy, and the baseline; what each took; the seven rules.
 4. **Normalise:** the HL7 v2 / FHIR export; the record number becomes
    `PSN-2222d3953a23`; the export audit.
@@ -258,7 +264,8 @@ This runs **three different scraping methods** against the same fake hospital
 | ai agent: claude / openai / gemini (unaided, and told the Act) | a real public model is given the job, the purpose and the field names, and decides what to pull and what to declare | **~0.96–0.99** — but coverage 0.74 and stable 2–3 of 5 |
 | unconstrained (baseline) | grabs everything on the page, documents nothing | **~0.13** |
 
-The **AI agents** are the ones to explain. Each is a publicly available model
+The **AI models** are the ones to explain. Each is a publicly available model, called once per job
+(a structured decision, not an agent with tools)
 (Claude, GPT, Gemini) handed exactly what a developer would hand an extraction
 agent: the job in words, the purpose, and the field names each module exposes —
 never a patient value. It decides which fields to fetch and fills in the run
@@ -299,9 +306,11 @@ guard rail — it catches any agent that leaves out data the task lawfully needs
 by what feels private tends to withhold them). A **stable** column follows: runs
 that reproduced the first run's decision. The takeaway line names both.
 
-The point to make out loud: **the baseline's surplus is not just waste, it is
-precisely the overreach the law objects to.** Here, compliance is the cheap
-option.
+The point to make out loud: **for the baseline, the surplus is not just waste, it
+is the overreach the minimisation rule objects to** -- compliance and cost move
+together there. For the models it is subtler: excess is measured against our
+expert field list, a field-level refinement the category rule cannot see, so a
+model can pass DM-01 and still pull fields the job did not need.
 
 **This is the main thing to show** — the core argument: compliance is a number
 that separates good methods from bad ones.
@@ -392,7 +401,7 @@ python scripts/check_ui_update.py
 The fixture portal is crawled as every benchmark crawls it, then served again as
 a simulated vendor release: modules renamed and moved, billing split in two, fields
 moved onto the record page, headers relabelled, every button renamed. The two
-crawls are compared and every one of the assistant's 29 tasks is placed on both.
+crawls are compared and every one of the assistant's 31 tasks is placed on both.
 25 re-word themselves ("Check eligibility" on *Billing & Accounts* becomes "Verify
 coverage" on *Insurance & Payers*). Four have a step **withheld**, because the release did
 two things nothing could predict -- a header the alias file does not map, a button
@@ -482,8 +491,13 @@ python -m tools.mock_portal --records 500
 ```
 
 Then open <https://127.0.0.1:8765/> in a browser (accept the self-signed
-certificate; `--no-tls` serves plain http) and sign in as **frontdesk /
-letmein**. You will see a plain hospital-style portal: five modules (Registration,
+certificate; `--no-tls` serves plain http) and sign in as **extraction /
+svc-dpdp-2026** -- the service account the hospital authorised for automated
+extraction, which sees every module. The staff accounts see only their role's
+modules (the portal's own access control): **frontdesk / letmein** registration
+only, **nurse / ward-round** registration, clinical and departmental orders,
+**accounts / settle-up** registration and billing. Signed in as the service
+account you see five modules (Registration,
 Clinical Records, Departmental Orders, Billing & Accounts, Audit Log), each a paginated table
 with a search box and an "Open" link per record that shows the fields the table
 does not.

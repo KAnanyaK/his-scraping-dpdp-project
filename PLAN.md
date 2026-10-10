@@ -474,7 +474,7 @@ Roughly in the order they block work.
 3. **Hospital dataset** (§4) — not required (planning case 2026-09-23: it may never be
    released). If it is, the de-identification question is settled *before* it arrives,
    and `docs/access/when-access-lands.md` is the procedure.
-4. ~~Confirm W7~~ — **done**; the LLM agent is dropped and `anthropic` is removed from `requirements.txt`.
+4. ~~Confirm W7~~ — **done**; the LLM *extraction* agent was dropped. (`anthropic` later returned as a recorder-only SDK, now in `requirements-record.txt`, for the AI-model comparison.)
 5. ~~Review-II date~~ — the team tracks dates and timeline; the plan is ordered, not
    calendared, and that is by design.
 6. **Guide input — login-gated versus public-documentation priority.** Formally still
