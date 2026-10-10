@@ -1035,7 +1035,7 @@ def build(*, without_instruction_slide: bool = False) -> Path:
             "Gazette text, every table generated from the results and checked in CI. Manuscript: a complete first draft, "
             "to be fitted to the venue chosen with the guide — the one remaining point on the ledger.",
         ]),
-        ("Timeline for completion by Review-III (28.10.2026):", [
+        ("Timeline for completion by Review-III (26.10.2026):", [
             "Week 1: venue chosen with the guide; the manuscript to its template and page budget. Weeks 2–3: the report "
             "assembled — front matter, cross-references, a final read for length. Week 4: every result regenerated from a "
             "clean checkout, rehearsal.",

@@ -137,6 +137,8 @@ def build(out: Path = DEFAULT_OUT) -> dict:
             "unchanged": len(counts["unchanged"]), "tasks": len(REGISTRY),
             "restored": sum(1 for t in rechecked.impact if t.status != "withheld"),
             "scraper_same": sum(1 for r in scraper["rows"] if r["same"]), "scraper_rows": len(scraper["rows"]),
+            # The cost the release added, said beside the "unchanged" figure (review: honesty is credibility).
+            "ours_pages": next((r["pages"] for r in scraper["rows"] if r["kind"] == "ours"), [None, None]),
         },
     }
     write(out, render(TEMPLATE, data, current="update", out=out))

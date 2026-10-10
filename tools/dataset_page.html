@@ -168,7 +168,7 @@
     <div class="card controls">
       <div class="row"><span class="lab">Job</span><div class="seg" id="taskseg"></div><span id="taskdesc"></span></div>
       <div class="row"><span class="lab">Patient</span><div class="row" id="patients" style="gap:8px"></div></div>
-      <div class="row" id="agentrow"><span class="lab">AI agent</span><div class="seg" id="agentseg"></div></div>
+      <div class="row" id="agentrow"><span class="lab">AI model</span><div class="seg" id="agentseg"></div></div>
     </div>
     <div class="who" id="who"></div>
     <div class="card">
@@ -231,12 +231,12 @@
   const lcol = (l) => `var(--l${Math.max(0, LAYERS.indexOf(l))})`;
   const AGENTS = D.meta.agents || [];
   const base = (k) => (k && k.startsWith("agent") ? "agent" : k);
-  const agentName = (k) => (AGENTS.find((a) => a.key === k) || {}).name || "AI agent";
+  const agentName = (k) => (AGENTS.find((a) => a.key === k) || {}).name || "AI model";
   const KIND = (k) => ({ ours: "Ours · reads the policy", baseline: "Baseline · takes everything" }[k] || `${agentName(k)} · told the policy`);
   const KSHORT = (k) => ({ ours: "Ours", baseline: "Baseline" }[k] || agentName(k));
   const kcol = (k) => `var(--${base(k) === "baseline" ? "base" : base(k)})`;
   const TASKLABEL = (id) => id.replace(/-/g, " ");
-  const rowName = (r) => r.kind === "ours" ? "ours (rules)" : r.kind === "baseline" ? "baseline (take all)" : r.name.replace(/^ai agent: /, "");
+  const rowName = (r) => r.kind === "ours" ? "ours (reference)" : r.kind === "baseline" ? "baseline (take all)" : r.name.replace(/^ai model: /, "");
 
   /* ------------------------------------------------------------- header */
   const m = D.meta;
@@ -453,6 +453,6 @@
   });
   steps.start();
 
-  $("foot").innerHTML = `Built ${esc(m.generated)} by <code>tools/build_dataset_page.py</code> from a real run of the dataset path · the page was searched for every identifier in the export before it was written · <kbd>1</kbd>–<kbd>5</kbd> <kbd>←</kbd> <kbd>→</kbd>`;
+  $("foot").innerHTML = `<details><summary>How this page was built</summary><p>Built ${esc(m.generated)} by <code>tools/build_dataset_page.py</code> from a real run of the dataset path · the page was searched for every identifier in the export before it was written</p><p>Keys: <kbd>1</kbd>–<kbd>5</kbd> <kbd>←</kbd> <kbd>→</kbd></p></details>`;
 })();
 </script>

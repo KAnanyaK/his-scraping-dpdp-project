@@ -186,7 +186,7 @@
     [`${changed} / ${screens.length}`, "screens renamed, moved or split", ""],
     [`${M.reworded + M.unchanged} / ${M.tasks}`, "tasks placed again by themselves", ""],
     [`${M.restored} / ${M.tasks}`, "after two confirmations", "var(--good)"],
-    ...(D.scraper.available ? [[`${M.scraper_same} / ${M.scraper_rows}`, "scraper results unchanged", "var(--good)"]] : []),
+    ...(D.scraper.available ? [[`${M.scraper_same} / ${M.scraper_rows}`, `scraper results unchanged${M.ours_pages && M.ours_pages[0] != null ? ` · cost +${M.ours_pages[1] - M.ours_pages[0]} page loads for ours (${M.ours_pages[0]} → ${M.ours_pages[1]})` : ""}`, "var(--good)"]] : []),
   ].map(([v, l, c]) => `<div class="fn"${c ? ` style="--c:${c}"` : ""}><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
 
   /* ---------------------------------------------------- 1. the release */
@@ -300,14 +300,14 @@
     $("verdict").innerHTML = `${Kit.icon("check")}<span class="big">${M.scraper_same} / ${M.scraper_rows}</span><span><span class="lab">results identical on the new screens</span><br><span class="sub2">compliance, coverage, traps held and fields taken — only the page loads moved, because the release put fields on record pages</span></span>`;
     // One row per technique: ours, each model at its headline briefing, the baseline.
     const pick = [...S.rows.filter((r) => r.kind === "ours"), ...S.rows.filter((r) => r.kind === "agent" && r.briefing === "policy"), ...S.rows.filter((r) => r.kind === "baseline")];
-    const color = (k) => (k === "ours" ? "var(--ours)" : k === "baseline" ? "var(--base)" : "var(--agent)");
-    const name = (r) => r.kind === "agent" ? r.name.replace(/^ai agent: /, "").replace(/ \(told the policy\)$/, "") : r.kind === "ours" ? "ours (rules)" : "baseline (take all)";
+    const color = (k, nm) => (k === "ours" ? "var(--ours)" : k === "baseline" ? "var(--base)" : Kit.modelColor(nm));
+    const name = (r) => r.kind === "agent" ? r.name.replace(/^ai model: /, "").replace(/ \(told the policy\)$/, "") : r.kind === "ours" ? "ours (reference)" : "baseline (take all)";
     const max = Math.max(...pick.flatMap((r) => r.pages));
     const w = (v) => `${Math.max(1.5, 100 * v / max).toFixed(1)}%`;
     $("srows").innerHTML = `<div class="srow head"><span>Technique</span><span class="sc">Compliance</span><span class="h-bar">Page loads, before and after</span><span class="pl">Before → after</span></div>`
-      + pick.map((r) => `<div class="srow"><span class="nm"><span class="dot-c" style="--c:${color(r.kind)}"></span>${esc(name(r))}</span>`
+      + pick.map((r) => `<div class="srow"><span class="nm"><span class="dot-c" style="--c:${color(r.kind, r.name)}"></span>${esc(name(r))}</span>`
         + `<span class="sc">${r.score[1].toFixed(3)} ${r.same ? Kit.icon("check") : ""}</span>`
-        + `<span class="pbar" title="${r.pages[0]} before, ${r.pages[1]} after"><i style="width:${w(r.pages[0])};background:${color(r.kind)}"></i><i class="v2" style="width:${w(r.pages[1])};background:${color(r.kind)}"></i></span>`
+        + `<span class="pbar" title="${r.pages[0]} before, ${r.pages[1]} after"><i style="width:${w(r.pages[0])};background:${color(r.kind, r.name)}"></i><i class="v2" style="width:${w(r.pages[1])};background:${color(r.kind, r.name)}"></i></span>`
         + `<span class="pl">${r.pages[0]} → ${r.pages[1]}</span></div>`).join("")
       + `<p class="muted" style="margin-top:8px">AI models shown told the policy. Solid bar before the release, faint bar after.</p>`;
     const pct = (v) => (v * 100).toFixed(0) + "%";

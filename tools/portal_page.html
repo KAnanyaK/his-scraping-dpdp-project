@@ -95,7 +95,7 @@
   <div class="top">
     <div>
       <h1>The portal run</h1>
-      <p class="sub">A real browser signs in to a portal it was never told about, and each technique scrapes it.</p>
+      <p class="sub">A real browser signs in to a portal it holds only credentials for, and each technique scrapes it.</p>
     </div>
     <div class="tools">
       <button id="bigger" title="Larger text for a projector">A+</button>
@@ -133,7 +133,7 @@
     <div class="card crawlbar">
       <button class="play" id="play"><span data-icon="play"></span> Play</button>
       <select id="task" aria-label="Task"></select>
-      <select id="agent" aria-label="AI agent"></select>
+      <select id="agent" aria-label="AI model"></select>
       <div class="seg" id="speedseg"><button data-v="30" aria-pressed="false">slow</button><button data-v="12" aria-pressed="true">normal</button><button data-v="3" aria-pressed="false">fast</button></div>
       <div class="keyrow"><span><b style="border-radius:2px 2px 5px 5px"></b>list page</span><span><b style="border-radius:50%"></b>search</span><span><b></b>record page</span></div>
     </div>
@@ -170,24 +170,24 @@
   const kcol = (k) => `var(--${k === "baseline" ? "base" : k})`;
   const LAYER = { patient_administration: "Patient administration", clinical_ehr: "Clinical / EHR", ancillary_departmental: "Ancillary / departmental", administrative_financial: "Administrative / financial", infrastructure_integration: "Infrastructure / audit" };
   const LCOL = { patient_administration: "var(--l0)", clinical_ehr: "var(--l1)", ancillary_departmental: "var(--l2)", administrative_financial: "var(--l3)", infrastructure_integration: "var(--l4)" };
-  const shortName = (n) => T[n] && T[n].kind === "ours" ? "ours (rules)" : T[n] && T[n].kind === "baseline" ? "baseline (take all)" : n.replace(/^ai agent: /, "");
+  const shortName = (n) => T[n] && T[n].kind === "ours" ? "ours (reference)" : T[n] && T[n].kind === "baseline" ? "baseline (take all)" : n.replace(/^ai model: /, "");
 
   /* ------------------------------------------------------------- header */
   const ours = D.techniques.find((t) => t.kind === "ours"), base = D.techniques.find((t) => t.kind === "baseline");
   const vs = (a, b) => `<span style="color:var(--ours)">${a}</span> <span class="vs">vs</span> <span style="color:var(--base)">${b}</span>`;
   $("funnel").innerHTML = [
     [vs(Kit.count(ours.pages), Kit.count(base.pages)), "page loads · ours vs the baseline, same coverage"],
-    [vs(Kit.count(ours.score, 2), Kit.count(base.score, 2)), "compliance score · seven DPDP rules"],
-    [Kit.count(D.modules.length), `modules found in ${Kit.count(M.discovery_loads)} page loads · none named in advance`],
+    [vs(Kit.count(ours.score, 2), Kit.count(base.score, 2)), "compliance score on this portal run · seven DPDP rules"],
+    [Kit.count(D.modules.length), `modules found in ${Kit.count(M.discovery_loads)} page loads (2 of them to sign in) · none named in advance`],
   ].map(([v, l]) => `<div class="fn"><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`).join("");
   Kit.countIn($("funnel"));
 
   /* ------------------------------------------------------------- 1 sign in */
   $("facts").innerHTML = [
-    ["lock", "Transport", M.tls ? "TLS, observed at the adapter" : "not encrypted"],
+    ["lock", "Transport", M.tls ? esc(M.transport_note || "TLS, observed by the browser") : "not encrypted"],
     ["grid", "Serves", `${D.modules.length} modules · ${num(M.records)} records each · ${M.page_size} a page`],
     ["ban", "No API, no hooks", "HTML tables, Next links, a search box"],
-    ["file", "robots.txt", `<span class="mono robots">${esc(M.robots).split("\n").join(" · ")}</span>`],
+    ["file", "robots.txt", `<span class="mono robots">${esc(M.robots).split("\n").join(" · ")}</span>${M.authorisation ? ` <span class="robots">entered under the hospital's authorisation ${esc(M.authorisation)}, logged with every run</span>` : ""}`],
   ].map(([i, k, v]) => `<div class="fact"><span class="ic">${Kit.icon(i)}</span><div><div class="k">${esc(k)}</div><div class="v">${v}</div></div></div>`).join("");
   const disc = D.visits.filter((v) => v.who === "discover");
   const label = (v) => v.kind === "login" ? "GET /login" : v.kind === "login-submit" ? "POST sign in" : v.kind === "home" ? "/" : v.kind === "list" ? `/m/${v.module}/${v.n > 1 ? "?page=" + v.n : ""}` : v.kind === "detail" ? `/m/${v.module}/record/${v.n}` : v.kind === "search" ? `/m/${v.module}/?q=${v.q}` : (v.path || v.kind);
@@ -265,7 +265,7 @@
         return `<div class="srow"><span class="sl" title="${esc(m.path)}">${esc(m.slug)}</span><div class="sq">${lists}<b class="srch" id="q-${li}-${m.slug}-search-0" title="search results"></b><b class="sep"></b>${recs}</div></div>`;
       }).join("");
       const total = D.visits.filter((v) => v.who === name && (!task || v.task === task)).length;
-      return `<div class="card lane ${t.kind}"><div class="ln"><span class="dot-c"></span>${esc(LANE[t.kind] || shortName(name))}</div><div class="count" id="c-${li}">0</div><div class="cl">of <span>${num(total)}</span> page loads</div><div class="prog"><i id="p-${li}"></i></div><div class="site">${rows}</div><div class="done" id="d-${li}"></div></div>`;
+      return `<div class="card lane ${t.kind}"><div class="ln"><span class="dot-c"></span>${esc(LANE[t.kind] || shortName(name))}</div><div class="count" id="c-${li}">0</div><div class="cl">of <span>${num(total)}</span> page loads${t.kind === "agent" && t.repeats > 1 ? ` · its first of ${t.repeats} samples` : ""}</div><div class="prog"><i id="p-${li}"></i></div><div class="site">${rows}</div><div class="done" id="d-${li}"></div></div>`;
     }).join("");
     const h = D.visits.filter((v) => v.who === "harness").length;
     $("harness").textContent = `+ ${h} harness page loads, outside the meter — charged to no technique.`;
@@ -333,6 +333,6 @@
   });
   steps.start();
 
-  $("foot").innerHTML = `Built ${esc(M.generated)} by <code>tools/build_portal_page.py</code> from a real run · every load captured at <code>PortalBrowser.goto</code> and checked against the meter · searches shown as pseudonyms · <kbd>1</kbd>–<kbd>4</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>space</kbd>`;
+  $("foot").innerHTML = `<details><summary>How this page was built</summary><p>Built ${esc(M.generated)} by <code>tools/build_portal_page.py</code> from a real run · every load captured at <code>PortalBrowser.goto</code> and checked against the meter · searches shown as pseudonyms</p><p>Keys: <kbd>1</kbd>–<kbd>4</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>space</kbd></p></details>`;
 })();
 </script>

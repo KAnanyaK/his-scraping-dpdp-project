@@ -5,6 +5,7 @@
     --bg: #f5f6f8; --card: #ffffff; --card-2: #f0f2f5; --line: #e1e4e9;
     --ink: #14161a; --ink-2: #4d5560; --ink-3: #686e76;
     --ours: #266ec4; --agent: #7d52dd; --base: #bc7f00;
+    --m0: #c4501a; --m1: #0f8a9b; --m2: #b04f8e; --m3: #6a3fb0; --m4: #7a6a2f; --m5: #3d6b2f;
     --l0: #266ec4; --l1: #1baf7a; --l2: #0e9aa7; --l3: #eb6834; --l4: #8a6d3b;
     --bad: #c53232; --good: #187d43; --warn: #976419; --bad-bg: #fbe5e5; --good-bg: #e1f4e9; --warn-bg: #fcf1dd;
     --on-fill: #ffffff;
@@ -19,6 +20,7 @@
       --bg: #0f1114; --card: #181b20; --card-2: #22262c; --line: #2c3138;
       --ink: #eef0f2; --ink-2: #a9b1ba; --ink-3: #878e95;
       --ours: #4b95ee; --agent: #a78bfa; --base: #d99a1a;
+      --m0: #ef7a45; --m1: #2fbccc; --m2: #e07ab9; --m3: #a98bf0; --m4: #c2ad6a; --m5: #7fbf6b;
       --l0: #4b95ee; --l1: #22b07e; --l2: #2bb3c0; --l3: #e0662f; --l4: #b08a5a;
       --bad: #ee6b6b; --good: #3cc279; --warn: #dca13a; --bad-bg: #3a2023; --good-bg: #173527; --warn-bg: #3a2f1c;
       --on-fill: #0f1114;
@@ -29,6 +31,7 @@
     --bg: #0f1114; --card: #181b20; --card-2: #22262c; --line: #2c3138;
     --ink: #eef0f2; --ink-2: #a9b1ba; --ink-3: #878e95;
     --ours: #4b95ee; --agent: #a78bfa; --base: #d99a1a;
+    --m0: #ef7a45; --m1: #2fbccc; --m2: #e07ab9; --m3: #a98bf0; --m4: #c2ad6a; --m5: #7fbf6b;
     --l0: #4b95ee; --l1: #22b07e; --l2: #2bb3c0; --l3: #e0662f; --l4: #b08a5a;
     --bad: #ee6b6b; --good: #3cc279; --warn: #dca13a; --bad-bg: #3a2023; --good-bg: #173527; --warn-bg: #3a2f1c;
     --on-fill: #0f1114;
@@ -73,6 +76,21 @@
   .fn .v { font-family: var(--display); font-size: 1.8rem; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1.15; color: var(--c-v, var(--c, var(--ink))); }
   .fn .l { font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
   .fn.hero { --c: var(--good); --c-v: var(--good); }
+  /* a figure never breaks mid-number ("5–" / "21/32"); on a phone the strip stacks */
+  .fn .v { white-space: nowrap; }
+  @media (max-width: 480px) {
+    .funnel { grid-template-columns: 1fr; }
+    .fn { border-right: none; border-bottom: 1px solid var(--line); }
+    .fn:last-child { border-bottom: none; }
+    .fn .v { font-size: 1.5rem; }
+  }
+  /* rows that scroll sideways say so: a fade at the edge */
+  .sitenav, .steps { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); padding-right: 28px; }
+  @media (min-width: 900px) { .sitenav, .steps { -webkit-mask-image: none; mask-image: none; padding-right: 0; } }
+  /* the build notes live in a closed fold */
+  footer details summary { cursor: pointer; color: var(--ink-2); }
+  footer details[open] summary { margin-bottom: 6px; }
+  footer details p, footer details ul { margin: 4px 0; }
 
   /* the stepper: underlined tabs */
   .steps { display: flex; gap: 22px; margin-top: 18px; border-bottom: 1px solid var(--line); overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }

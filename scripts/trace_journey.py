@@ -178,9 +178,9 @@ def _find_patient_row(source, layer: HISLayer, field: str, mrn: str):
 
 def _techniques(source, tasks):
     agents = [t for t in default_techniques(tasks, source) if getattr(t, "briefing", None) == "policy"]
-    return [("ours", "Ours", CompliantExtractionTechnique()),
+    return [("ours", "ours (reference)", CompliantExtractionTechnique()),
             *[(f"agent:{a.short_id}", a.model, a) for a in agents],
-            ("baseline", "Baseline", UnconstrainedExtractionTechnique())]
+            ("baseline", "baseline (take all)", UnconstrainedExtractionTechnique())]
 
 
 def _fates(entries, task, runs, token_of_mrn) -> dict[str, list[dict]]:

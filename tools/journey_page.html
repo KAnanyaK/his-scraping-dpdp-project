@@ -212,7 +212,7 @@
   const human = (s) => String(s || "").replace(/_/g, " ");
   const M = D.meta;
   const whose = (r) => r.kind === "ours" ? "Our" : `${esc(r.label)}'s`;
-  const KC = (k) => k === "ours" ? "var(--ours)" : k === "baseline" ? "var(--base)" : "var(--agent)";
+  const KC = (k) => k === "ours" ? "var(--ours)" : k === "baseline" ? "var(--base)" : Kit.modelColor(k);
   const cols = D.entries.flatMap((e) => e.columns.map((c) => ({ ...c, file: e.file, layer: e.layer })));
   const colById = Object.fromEntries(cols.map((c) => [c.id, c]));
 
@@ -419,6 +419,6 @@
   function paintAll() { paintControls(); paintRail(); PAINT[steps.now()](); }
   paintControls(); paintRail(); steps.start();
 
-  $("foot").innerHTML = `Built ${esc(M.generated)} by <code>tools/build_journey_page.py</code> from a real run: the handling gate, <code>DatasetHISDataSource</code>, every technique, the rules, the HL7 / FHIR export and its audit, the purpose matrix, the role policy, the audit log and the purge · the terminal view is <code>python scripts/trace_journey.py</code> · <kbd>1</kbd>–<kbd>7</kbd> <kbd>←</kbd> <kbd>→</kbd>`;
+  $("foot").innerHTML = `<details><summary>How this page was built</summary><p>Built ${esc(M.generated)} by <code>tools/build_journey_page.py</code> from a real run: the handling gate, <code>DatasetHISDataSource</code>, every technique, the rules, the HL7 / FHIR export and its audit, the purpose matrix, the role policy, the audit log and the purge · the terminal view is <code>python scripts/trace_journey.py</code></p><p>Keys: <kbd>1</kbd>–<kbd>7</kbd> <kbd>←</kbd> <kbd>→</kbd></p></details>`;
 })();
 </script>

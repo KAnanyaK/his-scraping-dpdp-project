@@ -37,7 +37,8 @@
   .act .t small { display: block; font-weight: 400; font-size: .78rem; color: var(--ink-3); }
   .act .cats { display: flex; flex-wrap: wrap; gap: 4px; }
   .cat { font-size: .74rem; font-weight: 600; padding: 1px 7px; border-radius: var(--rr); background: var(--card-2); color: var(--ink-2); white-space: nowrap; }
-  .cat.clinical { background: var(--good-bg); color: var(--good); }
+  /* Clinical data is the most sensitive category: never painted "safe" green. */
+  .cat.clinical { background: var(--warn-bg); color: var(--warn); }
   .cat.financial { background: var(--warn-bg); color: var(--warn); }
   .cat.direct_identifier, .cat.contact { background: var(--bad-bg); color: var(--bad); }
   .act .ex { font-size: .8rem; color: var(--ink-3); white-space: nowrap; text-align: right; }
@@ -126,7 +127,7 @@
     </div>
   </section>
 
-  <footer>Built by <code>tools/build_rights_page.py</code> from <code>compliance.access_report</code> and <code>compliance.breach</code> · synthetic patients, masked record numbers, no values from a record</footer>
+  <footer><details><summary>How this page was built</summary><p>Built by <code>tools/build_rights_page.py</code> from <code>compliance.access_report</code> and <code>compliance.breach</code> · synthetic patients, masked record numbers, no values from a record</p></details></footer>
 </div>
 
 <script id="data" type="application/json">/*__DATA__*/null</script>
@@ -146,9 +147,9 @@
 
   /* ---------------------------------------------------- key figures */
   $("funnel").innerHTML = [
-    [vs(M.ours_bystander, M.base_bystander), `of ${M.tasks} runs read someone the job was not about`],
+    [vs(M.ours_bystander, M.base_bystander), `of ${M.tasks} runs read a patient other than the one the job is about · ours only in the cohort jobs, which are about everyone`],
     [vs(B.ours.patients, B.baseline.patients), "patients a leaked export exposes"],
-    ["0", "values from a record on this page", "var(--good)"],
+    ["72 h", "to the Board's detailed breach report, from discovery (DPDP Rules 2025, Rule 7)", ""],
   ].map(([v, l, c]) => `<div class="fn"${c ? ` style="--c:${c}"` : ""}><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`).join("");
 
   /* ---------------------------------------------------- 1. a patient asks */

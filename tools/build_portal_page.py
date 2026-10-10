@@ -67,12 +67,13 @@ class PageTrace:
 
     def __init__(self) -> None:
         self.phase: tuple[str, str | None] = ("discover", None)
+        self.sample = 0                     # which recorded sample of a model is being replayed
         self.visits: list[dict] = []
         self._saved = None
 
     def record(self, browser: PortalBrowser, url: str | None, kind: str | None = None) -> None:
         who, task = self.phase
-        visit = {"who": who, "task": task}
+        visit = {"who": who, "task": task, "sample": self.sample}
         if kind:
             visit.update(kind=kind)
         else:
@@ -123,10 +124,12 @@ def _label(technique, trace: PageTrace) -> None:
 
     def extract(source, task):
         trace.phase = (technique.name, task.task_id)
+        trace.sample = getattr(technique, "sample", 0)
         try:
             return original(source, task)
         finally:
             trace.phase = ("harness", None)
+            trace.sample = 0
 
     technique.extract = extract
 
@@ -145,14 +148,17 @@ def build(out: Path = DEFAULT_OUT, *, audit_log: AuditLog | None = None,
     try:
         with BackgroundPortal(source, page_size=page_size, latency_ms=0) as portal:
             robots = portal.app.test_client().get("/robots.txt").get_data(as_text=True)
-            scraper = PortalHISDataSource(portal.url, portal.username, portal.password)
+            scraper = PortalHISDataSource(portal.url, portal.username, portal.password,
+                                          authorisation=portal.authorisation)
             discovery_loads = len(trace.visits)
             techniques = default_techniques(TASKS, scraper)
             for t in techniques:
                 _label(t, trace)
             trace.phase = ("harness", None)
+            # As the pipeline runs it: every recorded sample of a model replayed,
+            # ours and the baseline once (deterministic).
             result = run_benchmark(techniques, TASKS, scraper, dataset_note=f"portal, {records} records/module",
-                                   audit=audit_log or AuditLog())
+                                   audit=audit_log or AuditLog(), repeats=5, repeat_sampled_only=True)
             nav = scraper.navigation
             scraper.close()
             username = portal.username
@@ -162,7 +168,8 @@ def build(out: Path = DEFAULT_OUT, *, audit_log: AuditLog | None = None,
     # The benchmark's own page-load count per technique must equal what the trace saw.
     for s in result.scores:
         seen = sum(1 for v in trace.visits if v["who"] == s.technique)
-        if s.cost.page_loads is not None and seen != s.cost.page_loads:
+        # The meter reports page loads per pass of the workload; the trace saw every pass.
+        if s.cost.page_loads is not None and round(seen / max(1, s.repeats)) != s.cost.page_loads:
             raise RuntimeError(f"trace saw {seen} page loads for {s.technique}; the meter counted {s.cost.page_loads}")
 
     modules = []
@@ -180,7 +187,8 @@ def build(out: Path = DEFAULT_OUT, *, audit_log: AuditLog | None = None,
 
     techniques_view = [{
         "name": s.technique, "kind": kind(s), "briefing": s.briefing, "score": s.mean_compliance_score,
-        "pages": s.cost.page_loads, "coverage": s.cost.coverage, "excess": s.cost.excess_ratio,
+        "pages": s.cost.page_loads, "repeats": s.repeats,
+        "traced": sum(1 for v in trace.visits if v["who"] == s.technique), "coverage": s.cost.coverage, "excess": s.cost.excess_ratio,
         "record_excess": s.cost.record_excess, "records": s.cost.records, "traps": s.traps_note(),
         "per_task": s.per_task, "rules": s.per_rule_mean,
     } for s in result.scores]
@@ -188,14 +196,17 @@ def build(out: Path = DEFAULT_OUT, *, audit_log: AuditLog | None = None,
 
     data = {
         "meta": {"records": records, "page_size": page_size, "seed": SEED, "generated": result.generated_at.date().isoformat(),
-                 "tls": result.observed_transport, "account": username, "robots": robots.strip(),
+                 "tls": result.observed_transport, "transport_note": result.transport_note,
+                 "authorisation": result.access_authorisation, "account": username, "robots": robots.strip(),
                  "discovery_loads": discovery_loads, "elapsed_s": round((result.elapsed_ms or 0) / 1000, 1)},
         "modules": modules,
         "tasks": [{"id": t.task_id, "purpose": t.purpose.value, "description": t.description,
                    "single": t.single_subject, "trap": t.trap or ""} for t in TASKS],
         "techniques": techniques_view,
         "headline": headline,
-        "visits": trace.visits,
+        # The replay shows one pass of the workload: a model's first recorded sample
+        # (the meter's figure is the mean over all five; the check above covers every pass).
+        "visits": [v for v in trace.visits if v.get("sample", 0) == 0],
         "rule_ids": result.rule_ids,
         "takeaway": result._takeaway(),
         "categories": {layer.value: {f: c.value for f, c in fields.items()} for layer, fields in FIELD_CATALOGUE.items()},

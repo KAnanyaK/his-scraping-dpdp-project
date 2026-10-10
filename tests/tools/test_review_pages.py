@@ -87,9 +87,11 @@ def test_the_portal_page_traces_every_page_load_and_shows_no_record_number(tmp_p
     visits = data["visits"]
     # Discovery signs in the way a person would, before anything else.
     assert [v["kind"] for v in visits[:3]] == ["login", "login-submit", "home"]
-    # The builder refuses a trace that disagrees with the meter; totals are therefore the meter's.
+    # The builder refuses a trace that disagrees with the meter; totals are therefore the meter's
+    # (per pass of the workload: a model's five recorded samples are each replayed).
     for t in data["techniques"]:
-        assert sum(1 for v in visits if v["who"] == t["name"]) == t["pages"]
+        assert round(t["traced"] / t["repeats"]) == t["pages"]
+        assert sum(1 for v in visits if v["who"] == t["name"]) <= t["traced"]      # the replay is one pass
     ours = next(t for t in data["techniques"] if t["kind"] == "ours")
     base = next(t for t in data["techniques"] if t["kind"] == "baseline")
     assert ours["pages"] < base["pages"]

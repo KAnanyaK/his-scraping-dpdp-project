@@ -26,6 +26,21 @@ window.Kit = (() => {
   function hydrate(root) { (root || document).querySelectorAll("[data-icon]").forEach((el) => { el.outerHTML = icon(el.dataset.icon, el.dataset.cls || ""); }); }
 
 
+  // One colour per AI model, the same on every tab: matched by the model id
+  // anywhere in a name ("ai model: claude-opus-5-5 (told the policy)").
+  const MODEL_ORDER = ["gemini-3.1-flash-lite", "claude-haiku-4-5", "claude-sonnet-5-5", "claude-opus-5-5"];
+  const extraModels = [];
+  function modelColor(text) {
+    const t = String(text || "").toLowerCase();
+    let i = MODEL_ORDER.findIndex((m) => t.includes(m) || t.includes(m.replace(/^(gemini|claude)-/, "")));
+    if (i < 0) {
+      const id = (t.match(/[a-z]+-[\w.-]+/) || [t])[0];
+      if (!extraModels.includes(id)) extraModels.push(id);
+      i = MODEL_ORDER.length + extraModels.indexOf(id);
+    }
+    return `var(--m${i % 6})`;
+  }
+
   // Numbers are written in place; nothing counts up (kept as a no-op so the pages' calls stay valid).
   function countIn() {}
   const count = (v, dp = 0, suffix = "") => `${dp ? Number(v).toFixed(dp) : Number(v).toLocaleString("en-US")}${suffix}`;
@@ -84,5 +99,5 @@ window.Kit = (() => {
   }
   tools();
   hydrate();
-  return { countIn, count, steps, still, icon, hydrate };
+  return { countIn, count, steps, still, icon, hydrate, modelColor };
 })();

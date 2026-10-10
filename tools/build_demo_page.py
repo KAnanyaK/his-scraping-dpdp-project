@@ -116,6 +116,39 @@ def _injection() -> dict | None:
     return {"tasks": tasks, "rows": rows}
 
 
+# How each provider's models were reached -- part of what the comparison
+# compares (review G-1): an access path is not a neutral pipe.
+ACCESS_PATH = {
+    "gemini": "public API, free tier, structured output, provider-default sampling",
+    "claude-code": "subscription command line (claude -p), JSON schema, reasoning effort pinned high",
+    "claude": "public API, structured output, provider-default sampling",
+    "openai": "public API, structured output, provider-default sampling",
+}
+
+
+def _model_info(agents: list[dict]) -> list[dict]:
+    """Per model: provider, access path, and the dates its recordings were made (review G-5)."""
+
+    from extraction.techniques.ai_agent import RECORDINGS_DIR
+    out: dict[str, dict] = {}
+    for a in agents:
+        path = RECORDINGS_DIR / f"{a['provider']}--{model_slug(a['model'])}--{a['briefing']}.json"
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        dates = sorted(t.get("recorded_at", "")[:10] for t in data.get("tasks", {}).values() if t.get("recorded_at"))
+        info = out.setdefault(a["model"], {"model": a["model"], "provider": a["provider"],
+                                           "access": ACCESS_PATH.get(a["provider"], ""), "dates": set()})
+        info["dates"] |= set(dates)
+    rows = []
+    for info in out.values():
+        d = sorted(info.pop("dates"))
+        info["recorded"] = (d[0] if d and d[0] == d[-1] else f"{d[0]} to {d[-1]}") if d else ""
+        rows.append(info)
+    return sorted(rows, key=lambda r: r["model"])
+
+
 def build_data() -> dict:
     memory = json.loads((RESULTS / "benchmark.json").read_text(encoding="utf-8"))
     portal = json.loads((RESULTS / "benchmark-portal.json").read_text(encoding="utf-8"))
@@ -157,6 +190,7 @@ def build_data() -> dict:
                                  for m in {s["model"] for s in memory["scores"] if s.get("model")}},
             "tasks": len(memory["task_ids"]),
             "models": sorted({a["model"] for a in agents}),
+            "model_info": _model_info(agents),
             "briefings": [BRIEFING_LABELS[b] for b in BRIEFINGS if any(a["briefing"] == b for a in agents)],
         },
     }
