@@ -11,7 +11,9 @@ class AccountabilityRule(Rule):
     title = "Accountability"
     # DPDP Act 2023 -- accountability principle: the Data Fiduciary can
     # demonstrate compliance (audit trail, named responsibility, records).
-    provision = "DPDP Act 2023 - accountability"
+    # DPDP Rules, 2025 -- Rule 6 (verify): logs of processing are kept, and
+    # retained for at least a year (compliance.audit.LOG_RETENTION_DAYS).
+    provision = "DPDP Act 2023 - accountability (DPDP Rules 2025, Rule 6: logs)"
 
     def evaluate(self, run: ExtractionRun, records: list[ExtractedRecord]) -> RuleResult:
         gov = run.governance

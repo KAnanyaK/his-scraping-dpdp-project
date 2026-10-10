@@ -43,7 +43,7 @@ CARE_TASK = ExtractionTask(
         ),
         LayerFields(
             layer=HISLayer.CLINICAL_EHR,
-            fields=["primary_diagnosis", "medication", "allergy"],
+            fields=["mrn", "primary_diagnosis", "medication", "allergy"],
         ),
     ],
 )
@@ -58,7 +58,7 @@ BILLING_TASK = ExtractionTask(
         ),
         LayerFields(
             layer=HISLayer.ADMINISTRATIVE_FINANCIAL,
-            fields=["invoice_id", "billed_amount", "payer_name"],
+            fields=["mrn", "invoice_id", "billed_amount", "payer_name"],
         ),
     ],
 )

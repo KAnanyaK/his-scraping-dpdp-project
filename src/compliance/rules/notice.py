@@ -21,7 +21,8 @@ class NoticeRule(Rule):
                 ["No privacy notice reference recorded for the Data Principal."],
             )
 
-        findings = [f"Notice reference: {notice.reference}."]
+        findings = [f"Notice reference: {notice.reference} (presence check: the notice's contents "
+                    f"are not read here; veracity checks the reference exists)."]
         score = 1.0
         if notice.covers_purpose:
             findings.append("Notice covers the stated processing purpose.")

@@ -20,6 +20,8 @@ and the difference is the measure.
 
 from __future__ import annotations
 
+import re
+
 from pydantic import BaseModel, Field
 
 from compliance.capabilities import CapabilityRegister, Control
@@ -88,7 +90,8 @@ def _cites(text: str | None, control: Control | None) -> bool:
 
     if not text or control is None:
         return False
-    return control.id.lower() in text.lower()
+    # Whole-token match: an id like "DPO" must not be "cited" by "endpoint".
+    return re.search(rf"(?<![A-Za-z0-9]){re.escape(control.id)}(?![A-Za-z0-9])", text, re.IGNORECASE) is not None
 
 
 def verify(

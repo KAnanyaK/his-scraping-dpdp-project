@@ -68,8 +68,17 @@ class PurposeLimitationRule(Rule):
                 incompatible = True
                 findings.append(
                     f"'{use}' is not a recognised processing purpose, so its "
-                    f"compatibility cannot be assessed."
+                    f"compatibility cannot be assessed; an unassessable use is treated "
+                    f"as incompatible by default."
                 )
+                if "research" in use.lower() or "registry" in use.lower() or "statistic" in use.lower():
+                    # What would make it lawful, not only why it is not.
+                    findings.append(
+                        "A research or registry use could rest on the Act's research exemption "
+                        "(s.17(2)(b)) only if the data is not used for any decision specific to the "
+                        "patient and the processing meets the standards the Rules prescribe -- it needs "
+                        "its own declaration, not a copy kept from a care extract."
+                    )
                 continue
 
             excess = extracted - PURPOSE_POLICY[other].allowed_categories

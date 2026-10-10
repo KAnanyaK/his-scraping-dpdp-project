@@ -82,7 +82,7 @@ def test_compliance_aware_wins_and_baseline_loses():
     scores = {s.technique: s for s in _result().scores}
     assert scores["compliance-aware (ours)"].mean_compliance_score == 1.0
     assert scores["unconstrained (baseline)"].mean_compliance_score < 0.4
-    mid = scores["ai agent: fake-1 (unaided)"].mean_compliance_score
+    mid = scores["ai model: fake-1 (task + register)"].mean_compliance_score
     assert 0.2 < mid < 1.0
 
 
@@ -161,7 +161,11 @@ def test_repeats_do_not_inflate_the_deterministic_counts():
 
 def test_takeaway_reports_cost_alongside_the_compliance_gap():
     takeaway = _result().render_table()
-    assert "x the fields the purpose requires" in takeaway
+    assert "x the fields on the expert list" in takeaway
+    # Ours is the reference, not a competitor: the line must not say it "wins"
+    # or that excess and minimisation are one quantity.
+    assert "Reference:" in takeaway and "upper bound" in takeaway
+    assert "one quantity" not in takeaway.replace("not one quantity", "")
     # The old line asserted the gap was "not coverage or speed"; that claim is
     # now measured rather than asserted, so it must not reappear.
     assert "not coverage or speed" not in takeaway
@@ -205,7 +209,7 @@ def test_takeaway_blames_the_source_when_every_technique_hits_the_same_ceiling()
     text = result._takeaway()
     assert "the source itself lacks 2 of the 10" in text
     assert "not directly comparable" not in text
-    assert "for unconstrained" in text          # the last-ranked technique is named, not assumed
+    assert "unconstrained pulls" in text        # the baseline is named, not assumed
 
 
 def test_takeaway_still_flags_a_technique_that_refused_needed_fields():
@@ -341,3 +345,27 @@ def test_per_pass_counts_use_the_techniques_own_number_of_runs():
     assert score.repeats == 2
     assert score.cost.needed_fields == len(task.field_refs()) == 2      # one pass, not 2 x 2 / 5
     assert score.cost.records == 4
+
+
+def test_every_needed_field_carries_its_reason_and_every_trap_its_policy_choice():
+    # The expert field list is the reference's specification; it must be
+    # inspectable, field by field, and each trap must say why the hospital's
+    # policy (not the Act) draws the line where it does.
+    from scripts.run_benchmark import TASKS as HEADLINE
+    for task in HEADLINE:
+        refs = {f"{layer}/{name}" for layer, name in task.field_refs()}
+        assert refs == set(task.rationale), task.task_id
+        if task.trap:
+            assert task.trap_rationale, task.task_id
+
+
+def test_childrens_records_are_a_finding_not_a_deduction():
+    from datetime import date
+    from compliance.children import age_on, minors_in
+    assert age_on("2015-06-01", date(2026, 10, 10)) == 11 and age_on("1990", date(2026, 10, 10)) == 36
+    assert minors_in({"patient_administration": [{"date_of_birth": "2015-06-01"}, {"date_of_birth": "1970-01-01"},
+                                                 {"mrn": "X"}]}, date(2026, 10, 10)) == 1
+    result = _result()
+    assert all(s.minor_records >= 0 for s in result.scores)
+    if any(s.minor_records for s in result.scores):
+        assert "under 18" in result.render_markdown()

@@ -28,8 +28,16 @@ class DataMinimisationRule(Rule):
             )
 
         # Field axis: are the categories pulled within the purpose's scope?
+        # The penalty is the share of the purpose's *out-of-scope* categories
+        # that were taken -- not the share of what was pulled. Dividing by the
+        # categories pulled made the score compensatory: adding more in-scope
+        # categories diluted the same violation ({clinical, financial} under care
+        # scored 0.5; adding three in-scope categories lifted it to 0.8).
+        # Minimisation is not compensatory, so the denominator is fixed by the
+        # purpose and pulling more can never raise the score.
         excess = extracted - allowed
-        category_score = 1.0 - len(excess) / len(extracted)
+        outside = set(FieldCategory) - allowed
+        category_score = 1.0 - len(excess) / len(outside) if outside else 1.0
         findings: list[str] = []
         if not excess:
             findings.append(
@@ -42,8 +50,8 @@ class DataMinimisationRule(Rule):
                 for category in sorted(excess, key=lambda c: c.value)
             ]
             findings.append(
-                f"{len(excess)} of {len(extracted)} extracted categories exceed the "
-                f"'{run.purpose.value}' purpose scope."
+                f"{len(excess)} of the {len(outside)} categories outside the "
+                f"'{run.purpose.value}' purpose scope were extracted."
             )
 
         # Record axis: for a task about one patient, were only that patient's
@@ -66,7 +74,9 @@ class DataMinimisationRule(Rule):
                     f"Single-patient task: {pulled} records read where {needed} were necessary "
                     f"-- {pulled - needed} other patients' records taken."
                 )
-            score = (category_score + record_score) / 2
+            # Not compensatory either: DM-01 holds only as well as its weaker
+            # axis. Averaging let a clean record axis lift a category breach.
+            score = min(category_score, record_score)
 
         status = RuleStatus.PASS if score >= 1.0 else RuleStatus.FAIL
         return self._result(status, round(score, 6), findings)

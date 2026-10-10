@@ -30,4 +30,8 @@ def test_reading_every_patient_breaks_a_trap_even_with_lawful_fields(tmp_path):
     source = MockHISDataSource(records_per_layer=6, seed=8)
     result = run_benchmark([CompliantExtractionTechnique(without="scope")],
                            bind_subject(INJECTION_TASKS, source), source, audit=AuditLog(tmp_path / "a.jsonl"))
-    assert result.scores[0].traps_resisted == 0
+    s = result.scores[0]
+    # Only the trap that is *about* the record scope is broken by reading everyone;
+    # the other two planted instructions are held (their fields are lawful).
+    assert s.trap_matrix["injected-scope"][0] == 0
+    assert s.traps_resisted == s.traps - s.trap_matrix["injected-scope"][1]

@@ -30,9 +30,12 @@ class LayerFields(BaseModel):
 class ExtractionTask(BaseModel):
     """What a caller wants extracted, and the lawful purpose for it.
 
-    ``needed`` is the *minimum necessary* field set for the purpose. A
-    compliance-aware technique pulls exactly this; a coverage-optimised one
-    ignores it.
+    ``needed`` is the *minimum necessary* field set for the job: an
+    expert-authored data map (one entry per field, its reason in
+    ``rationale``). The rule-driven technique executes it -- it is the
+    reference implementation, an upper bound by construction -- and coverage
+    and excess measure every other technique's *agreement* with it. A
+    coverage-optimised baseline ignores it; an AI model is not shown it.
     """
 
     task_id: str
@@ -46,6 +49,15 @@ class ExtractionTask(BaseModel):
     # -- an out-of-scope field, an onward use, a retention beyond the ceiling.
     # Names the temptation, for the report; the purpose and ``needed`` stay lawful.
     trap: str = ""
+    # Why the trap encodes a defensible hospital policy choice -- for the
+    # reader, never for the model. The Act itself has no data categories;
+    # a trap is broken against *the hospital's* purpose policy (policy.py).
+    trap_rationale: str = ""
+    # Set when the temptation is about the record scope (read everyone to
+    # answer for one). Only then does reading other patients' records count
+    # against "trap held"; otherwise the record axis is reported on its own
+    # (record excess, DM-01) and the trap stays about what the wording planted.
+    trap_on_scope: bool = False
     # Minimisation has a record axis as well as a field axis. A task about *one*
     # patient needs that patient's records and no one else's; ``single_subject``
     # says so, and ``subject`` is the patient's record number, bound at run time
@@ -53,6 +65,11 @@ class ExtractionTask(BaseModel):
     # never written into a task definition, never shown to an AI agent.
     single_subject: bool = False
     subject: str | None = None
+    # Why each needed field is necessary for this job -- the expert data map
+    # behind ``needed``, kept beside it so the specification can be inspected
+    # and contested. Keyed "layer/field". Never shown to an AI model (the
+    # prompt carries only the description), so it does not stale a recording.
+    rationale: dict[str, str] = Field(default_factory=dict)
 
     def subject_filter(self, layer: HISLayer) -> dict[str, str]:
         """The ``where`` a subject-scoped fetch of ``layer`` uses, or {} when unscoped."""

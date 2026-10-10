@@ -217,7 +217,7 @@ def test_the_policy_briefing_hands_the_agent_everything_ours_reads(tmp_path):
     assert "primary_diagnosis, " not in told.split("Fields available")[0]
 
     tech = AIAgentTechnique("gemini", briefing="policy", recordings_dir=tmp_path)
-    assert tech.name == f"ai agent: {tech.model} (told the policy)" and tech.short_id == f"{tech.model_slug}-policy"
+    assert tech.name == f"ai model: {tech.model} (told the policy)" and tech.short_id == f"{tech.model_slug}-policy"
     assert BRIEFING_LABELS["policy"] == "told the policy"
     # Three briefings, three distinct briefs for the same task.
     prints = {b: AIAgentTechnique("gemini", briefing=b, recordings_dir=tmp_path).fingerprint(_source(), task)
@@ -233,7 +233,7 @@ def test_two_models_of_one_provider_are_two_agents_with_two_recordings(tmp_path)
         tech.extract(_source(), _task())
     assert {p.name for p in tmp_path.glob("*.json")} == {"fake--fake-lite--unaided.json", "fake--fake-big-2--unaided.json"}
     assert lite.short_id == "fake-lite-unaided" and big.short_id == "fake-big-2-unaided"
-    assert lite.name == "ai agent: fake-lite (unaided)"
+    assert lite.name == "ai model: fake-lite (task + register)"
     assert model_slug("Gemini 3.8 Flash") == "gemini-3.8-flash"
     assert recorded_models("fake", "unaided", tmp_path) == ["fake-big-2", "fake-lite"]
     # Discovery finds both, by model, from the files -- no key, replay mode.

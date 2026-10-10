@@ -39,6 +39,11 @@ PURPOSE_POLICY: dict[Purpose, PurposePolicy] = {
             FieldCategory.CLINICAL,
             FieldCategory.ADMINISTRATIVE,
         },
+        # A hospital policy assumption, not a statutory figure: the ceiling
+        # governs the *extract* made for coordinating care, not the medical
+        # record itself, which the hospital keeps far longer (the Indian Medical
+        # Council regulations expect in-patient records to be kept at least
+        # three years). Ninety days covers an episode of care and its follow-up.
         max_retention_days=90,
         requires_pseudonymised_identifiers=True,
         # The Act lists no general legitimate use for medical services (its
@@ -57,6 +62,9 @@ PURPOSE_POLICY: dict[Purpose, PurposePolicy] = {
         # ceiling is higher than care coordination's -- a longer retention is not
         # laxity, it is a different necessity. An extraction retained for a year is
         # therefore lawful here and unlawful under care coordination.
+        # A hospital policy assumption: one financial year, the period over
+        # which billing extracts are reconciled and audited. Statutory tax and
+        # audit retention applies to the books themselves, not to this extract.
         max_retention_days=365,
         # Pseudonymisation would defeat the purpose: an invoice that cannot be
         # attributed to a payer cannot be settled. Note that this makes billing
@@ -74,6 +82,7 @@ PURPOSE_POLICY: dict[Purpose, PurposePolicy] = {
         },
         # Registration data identifies the patient across visits, so it outlives a
         # single episode of care; held for the working relationship, not a case.
+        # A hospital policy assumption: two scheduling cycles of six months.
         max_retention_days=180,
         # Identification at the desk is the purpose. Pseudonymising the identity
         # of the person you are trying to identify is not a safeguard here.

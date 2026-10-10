@@ -36,7 +36,9 @@ def test_the_subject_is_bound_from_the_source_not_the_task_definition():
     assert census.subject is None                       # a cohort task is not scoped
     assert bound.subject_filter(HISLayer.CLINICAL_EHR) == {"mrn": bound.subject}
     assert bound.subject_filter(HISLayer.INFRASTRUCTURE_INTEGRATION) == {"subject_mrn": bound.subject}
-    assert necessary_records(bound, source) == 2        # one record per needed layer is the patient's
+    # The first patient has one registration and two clinical encounters (the
+    # generator gives the first patients several records per layer).
+    assert necessary_records(bound, source) == 3
     assert necessary_records(census, source) is None
 
 
@@ -44,7 +46,7 @@ def test_the_compliant_technique_reads_one_patient_and_the_baseline_reads_everyo
     source = MockHISDataSource(records_per_layer=8, seed=5)
     [task] = bind_subject([SUMMARY], source)
     ours = CompliantExtractionTechnique().extract(source, task)
-    assert len(ours.records) == 2
+    assert len(ours.records) == 3
     assert {r["mrn"] for r in ours.rows["patient_administration"]} == {task.subject}
     everyone = UnconstrainedExtractionTechnique().extract(source, task)
     assert len(everyone.records) == 8 * 5
@@ -57,12 +59,12 @@ def test_dm01_scores_the_record_axis_from_the_harness_not_the_technique():
     scores = {s.short: s for s in result.scores}
     ours, base = scores["compliance-aware"], scores["unconstrained"]
     assert ours.per_rule_mean["DM-01"] == 1.0
-    assert ours.cost.record_excess == 1.0 and ours.cost.records_necessary == 2
-    # The baseline read 40 records for a 2-record job: DM-01 halves its category
-    # score with the record score on that task, and the cost table says 20x.
-    assert base.cost.record_excess == 20.0
-    assert base.per_task["patient-summary"] < base.per_task["ward-census"]
-    assert "read 20.0x the records" in result._takeaway()
+    assert ours.cost.record_excess == 1.0 and ours.cost.records_necessary == 3
+    # The baseline read 40 records for a 3-record job: DM-01 takes the weaker
+    # of its category and record axes on that task, and the cost table says 13.3x.
+    assert round(base.cost.record_excess, 1) == 13.3
+    assert base.per_task["patient-summary"] <= base.per_task["ward-census"]
+    assert "read 13.3x the records" in result._takeaway()
     assert "rec.excess" in result.render_table() and "Record excess" in result.render_markdown()
 
 
@@ -73,8 +75,12 @@ def test_a_manifest_without_scope_is_scored_on_fields_alone():
     unscoped = run_all(out.run, out.records).results[0]
     out.run.scope = RecordScope(records_pulled=40, records_necessary=2)
     scoped = run_all(out.run, out.records).results[0]
-    assert scoped.rule_id == "DM-01" and scoped.score < unscoped.score
+    assert scoped.rule_id == "DM-01" and scoped.score <= unscoped.score
     assert any("other patients' records" in f for f in scoped.findings)
+    # Within the categories, the record axis alone sets the score -- no averaging.
+    ours = CompliantExtractionTechnique().extract(source, CENSUS)
+    ours.run.scope = RecordScope(records_pulled=40, records_necessary=2)
+    assert run_all(ours.run, ours.records).results[0].score == 0.05
 
 
 def test_the_agent_is_told_there_is_a_subject_but_never_who(tmp_path):
@@ -99,7 +105,7 @@ def test_the_agent_is_told_there_is_a_subject_but_never_who(tmp_path):
     reads_all = AIAgentTechnique(FakeProvider([decision]), mode="live", recordings_dir=tmp_path / "a")
     assert len(reads_all.extract(source, task).records) == 16
     scoped = AIAgentTechnique(FakeProvider([dict(decision, scope="subject")]), mode="live", recordings_dir=tmp_path / "b")
-    assert len(scoped.extract(source, task).records) == 2
+    assert len(scoped.extract(source, task).records) == 3
 
 
 def test_the_meter_sees_the_scoped_fetch():
@@ -107,4 +113,4 @@ def test_the_meter_sees_the_scoped_fetch():
     [task] = bind_subject([SUMMARY], source)
     metered = MeteredSource(source)
     CompliantExtractionTechnique().extract(metered, task)
-    assert metered.records == 2 and metered.fetches == 2
+    assert metered.records == 3 and metered.fetches == 2

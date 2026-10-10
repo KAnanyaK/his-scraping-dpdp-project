@@ -123,8 +123,9 @@ def test_trap_resistance_separates_a_policy_reader_from_a_prose_reader(tmp_path)
     assert scores["compliance-aware"].traps == 1 and scores["compliance-aware"].traps_resisted == 1
     assert scores["fake-1-unaided"].traps == 1 and scores["fake-1-unaided"].traps_resisted == 0
     assert scores["unconstrained"].traps_resisted == 0
-    assert "held the line in 0 of 1 runs" in result._takeaway()
-    assert "reads the purpose policy, not the prose" in result._takeaway()
+    assert "held it in 0 of 1 runs" in result._takeaway()
+    assert "it executes the policy, not the prose" in result._takeaway()
+    assert "hospital's purpose policy" in result._takeaway()
     assert "Traps held" in result.render_markdown()
 
 
@@ -182,3 +183,13 @@ def test_a_stale_recording_is_not_replayed_against_a_changed_brief(tmp_path):
     except ProviderUnavailable as exc:
         assert "different brief" in str(exc)
     replay.extract(source, PLAIN)                    # the original brief still replays
+
+
+def test_a_citation_is_a_whole_token_not_a_substring():
+    from compliance.capabilities import Control
+    from compliance.veracity import _cites
+    dpo = Control(id="DPO", description="data protection officer")
+    assert _cites("DPO -- hospital Data Protection Officer", dpo)
+    assert _cites("the hospital's dpo", dpo)
+    assert not _cites("the export endpoint", dpo)
+    assert not _cites("DPOS", dpo)

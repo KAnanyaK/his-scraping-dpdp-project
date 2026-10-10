@@ -12,7 +12,10 @@ class SecuritySafeguardsRule(Rule):
     title = "Security safeguards"
     # DPDP Act 2023 -- security safeguards principle: reasonable technical and
     # organisational safeguards protect personal data against breach.
-    provision = "DPDP Act 2023 - security safeguards"
+    # DPDP Rules, 2025 -- Rule 6 (verify): encryption, obfuscation or masking,
+    # or virtual tokens; access control; logs, monitoring and review. The
+    # pseudonymisation check below is Rule 6's "virtual tokens" safeguard.
+    provision = "DPDP Act 2023 - security safeguards (DPDP Rules 2025, Rule 6)"
 
     def evaluate(self, run: ExtractionRun, records: list[ExtractedRecord]) -> RuleResult:
         posture = run.security

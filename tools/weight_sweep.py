@@ -10,6 +10,11 @@ under a family of weightings -- equal; each rule doubled in turn; each rule
 dropped in turn; a minimisation-and-purpose-heavy scheme; a paperwork-heavy
 scheme -- and reports the ranking under each. It writes a Markdown table for
 the report beside the benchmark artefacts.
+
+The reference technique (ours) scores 1.0 on every rule, so no weighting can
+place anything above it: that part of the question is vacuous, and the sweep
+says so instead of claiming it. The ranking checked is the one *among the
+others*. Equal scores print as ``=``, never as a strict order.
 """
 
 from __future__ import annotations
@@ -46,10 +51,25 @@ def weighted(per_rule: dict[str, float | None], weights: dict[str, float]) -> fl
     return round(num / den, 3) if den else 0.0
 
 
+REFERENCE = "compliance-aware"
+
+
+def chain(scored: list[tuple[float, str]]) -> str:
+    """'a 0.990 = b 0.990 > c 0.500' -- ties shown as ties."""
+
+    out = ""
+    for i, (score, short) in enumerate(scored):
+        if i:
+            out += " = " if score == scored[i - 1][0] else " > "
+        out += f"{short} {score:.3f}"
+    return out
+
+
 def sweep(data: dict) -> tuple[list[str], list[list[str]], bool]:
     rule_ids = data["rule_ids"]
-    techs = [(s["short"], s["per_rule_mean"]) for s in data["scores"]]
-    baseline_order = [t for t, _ in techs]           # the committed ranking (sorted by equal weights)
+    techs = [(s["short"], s["per_rule_mean"]) for s in data["scores"] if s["short"] != REFERENCE]
+    baseline_order = [short for _, short in sorted(
+        ((weighted(pr, {r: 1.0 for r in rule_ids}), short) for short, pr in techs), reverse=True)]
     rows: list[list[str]] = []
     stable = True
     for name, weights in schemes(rule_ids).items():
@@ -65,7 +85,7 @@ def sweep(data: dict) -> tuple[list[str], list[list[str]], bool]:
             gap = max(by_short[t] for t in swapped) - min(by_short[t] for t in swapped)
             verdict = f"tie swap (within {gap:.3f})" if gap < 0.01 else "**reordered**"
             stable = stable and gap < 0.01
-        rows.append([name, " > ".join(f"{short} {score:.3f}" for score, short in scored), verdict])
+        rows.append([name, chain(scored), verdict])
     return baseline_order, rows, stable
 
 
@@ -75,9 +95,11 @@ def render(data: dict, order: list[str], rows: list[list[str]], stable: bool, so
         "",
         f"Re-scored from `{source.name}` (generated {data['generated_at'][:10]}): each technique's "
         "per-rule mean scores under alternative weightings of the seven rules. The committed score "
-        "weighs every rule 1.0.",
+        "weighs every rule 1.0. The reference (ours) scores 1.0 on every rule, so no weighting can place "
+        "a technique above it -- that is true by construction and is not tested here; the ranking checked "
+        "is the one among the AI models and the baseline. Equal scores are printed with `=`.",
         "",
-        f"Ranking under equal weights: **{' > '.join(order)}**. "
+        f"Ranking among the others under equal weights: **{' > '.join(order)}**. "
         + ("**No weighting in the family reorders it** (a swap between techniques within 0.01 of each "
            "other is a tie changing sides, and is marked as such)." if stable else "Some weightings reorder it -- see below."),
         "",

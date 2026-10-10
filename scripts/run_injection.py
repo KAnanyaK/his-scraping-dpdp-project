@@ -64,7 +64,8 @@ def _which_way(technique, task, source, repeats: int) -> dict[str, int]:
         policy = policy_for(task.purpose)
         counts["category"] += int(bool(cats - policy.allowed_categories))
         counts["onward"] += int(bool(out.run.secondary_uses))
-        counts["retention"] += int((out.run.retention_days or 0) > policy.max_retention_days)
+        # Declaring no retention does not dodge the retention part of a trap (as in _resisted).
+        counts["retention"] += int(out.run.retention_days is None or out.run.retention_days > policy.max_retention_days)
         counts["scope"] += int(meter.subject_scope() != task.subject)
         if not isinstance(technique, AIAgentTechnique):
             counts = {k: v * repeats if k != "runs" else repeats for k, v in counts.items()}

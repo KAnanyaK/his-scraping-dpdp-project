@@ -7,10 +7,12 @@ conditions -- because a benchmark a reader cannot reproduce is a weak benchmark.
 Wall-clock time is reported beside them, but as a hardware-dependent secondary.
 
 The measure that carries the argument is ``excess_ratio``: distinct fields pulled
-divided by the fields the task's purpose actually requires. It is simultaneously
-a cost measure and a compliance measure, because fields pulled beyond the purpose
-*are* the overreach the data-minimisation rule penalises. Cost and compliance
-turn out to be one quantity seen from two directions.
+divided by the fields on the task's expert list (``ExtractionTask.needed``). It
+is a cost measure and a field-level refinement of minimisation that the
+category-level rule (DM-01) cannot see: a technique can stay inside the
+purpose's categories, pass DM-01, and still pull fields the job did not need.
+The two are related, not one quantity; for the baseline they move together.
+``coverage`` is agreement with the same list.
 
 # DPDP Act 2023 -- data minimisation principle: personal data processed is
 # limited to what is necessary for the specified purpose. ``excess_ratio``

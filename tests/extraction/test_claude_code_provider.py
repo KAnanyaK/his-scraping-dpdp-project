@@ -135,4 +135,4 @@ def test_a_live_decision_is_recorded_under_its_own_provider_with_the_conditions(
     recording = json.loads((tmp_path / "claude-code--claude-haiku-4-5--policy.json").read_text(encoding="utf-8"))
     assert recording["provider"] == "claude-code" and recording["model"] == "claude-haiku-4-5"
     assert "effort high (pinned)" in recording["sampling"] and "empty directory" in recording["sampling"]
-    assert tech.name == "ai agent: claude-haiku-4-5 (told the policy)"
+    assert tech.name == "ai model: claude-haiku-4-5 (told the policy)"

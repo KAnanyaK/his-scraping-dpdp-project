@@ -41,7 +41,7 @@ def _name(s) -> str:
         return "compliance-aware (ours)"
     if s.short == "unconstrained":
         return "unconstrained (baseline)"
-    label = {"policy": "told the policy", "informed": "told the Act", "unaided": "unaided"}[s.briefing]
+    label = {"policy": "told the policy", "informed": "told the Act", "unaided": "task + register"}[s.briefing]
     return f"{s.model}, {label}"
 
 
@@ -58,20 +58,23 @@ def _rx(v) -> str:
 
 
 def table_agents() -> str:
-    from compliance.stats import interval_text
     r = _load("benchmark")
-    rows = ["| Technique | Runs per task | Compliance | Trap runs held | Coverage | Excess | Record excess | Stable |",
-            "|---|---|---|---|---|---|---|---|"]
+    trap_ids = r.trap_task_ids()
+    rows = ["| Technique | Runs per task | Compliance | Behaviour | Trap runs held, per trap job | Agreement with the field list | Excess | Record excess | Stable | Distinct decisions per job |",
+            "|---|---|---|---|---|---|---|---|---|---|"]
     for s, flagged in r.by_model():
-        samples = s.short not in ("compliance-aware", "unconstrained")      # only the models sample
-        traps = f"{s.traps_resisted} / {s.traps}" + (f" ({interval_text(s.traps_resisted, s.traps)})" if samples and s.traps else "")
-        stable = _stable(s) + (f" ({interval_text(s.stable_runs, s.repeat_runs)})" if samples and s.repeat_runs else "")
-        rows.append(f"| {_name(s)}{' *' if flagged else ''} | {s.repeats} | {_bold_ours(s, f'{s.mean_compliance_score:.3f}')} "
+        per = " · ".join(str(s.trap_matrix[t][0]) for t in trap_ids if t in s.trap_matrix)
+        traps = f"{s.traps_resisted} / {s.traps}" + (f" ({per})" if per else "")
+        rows.append(f"| {_name(s)}{' *' if flagged else ''} | {s.repeats} | {_bold_ours(s, f'{s.mean_compliance_score:.2f}')} "
+                    f"| {'—' if s.behaviour_score is None else f'{s.behaviour_score:.2f}'} "
                     f"| {_bold_ours(s, traps)} | {s.cost.coverage:.2f} | "
-                    f"{s.cost.excess_ratio:.2f} | {_rx(s.cost.record_excess)} | {_bold_ours(s, stable)} |")
-    rows += ["", "Brackets: 95% Wilson interval on the share of runs, for the models only -- ours and the baseline do "
-                 "not sample. The interval treats every run as independent; runs share a task, so the honest "
-                 "interval is somewhat wider."]
+                    f"{s.cost.excess_ratio:.2f} | {_rx(s.cost.record_excess)} | {_bold_ours(s, _stable(s))} "
+                    f"| {s.distinct_note() if s.repeat_runs else '—'} |")
+    rows += ["", "Trap runs are counted per job (" + ", ".join(f"`{t}`" for t in trap_ids) + ", five runs each): "
+                 "runs of one job are not independent, so the per-job counts, not a pooled interval, are the "
+                 "evidence. Traps are breaches of the hospital's purpose policy, which only the *told the policy* "
+                 "briefing shows the model. Agreement is the share of the expert field list obtained (ours runs "
+                 "that list); behaviour is DM-01, PL-01 and a retention within the ceiling."]
     return "\n".join(rows) + "\n"
 
 def table_rules() -> str:
@@ -209,7 +212,7 @@ def table_scale() -> str:
 def table_injection() -> str:
     data = json.loads((RESULTS / "injection.json").read_text(encoding="utf-8"))
     ids = [t["task_id"] for t in data["tasks"]]
-    label = {"policy": "told the policy", "informed": "told the Act", "unaided": "unaided"}
+    label = {"policy": "told the policy", "informed": "told the Act", "unaided": "task + register"}
     rows = ["| Technique | Held | " + " | ".join(ids) + " |", "|---|---|" + "---|" * len(ids)]
     for r in data["rows"]:
         name = r["technique"] if not r["model"] else f"{r['model']}, {label.get(r['briefing'], r['briefing'])}"

@@ -41,6 +41,9 @@ EXPLICIT_ONLY = ("claude-code",)
 # connection, and a stall must surface as an error the recorder can retry.
 REQUEST_TIMEOUT_S = 90.0
 
+# Live-mode defaults only: the model a live call would use when none is named.
+# Nothing here says a model was recorded -- the recordings directory does
+# (``ai_agent.recorded_models``); "claude-opus-5" and "gpt-6-astra" never were.
 DEFAULT_MODELS = {
     "claude": "claude-opus-5",
     "openai": "gpt-6-astra",

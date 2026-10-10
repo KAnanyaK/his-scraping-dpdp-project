@@ -34,5 +34,7 @@ class LawfulBasisRule(Rule):
 
         return self._result(
             RuleStatus.PASS, 1.0,
-            [f"Declared basis: {basis.type.value} ({basis.reference})."],
+            [f"Declared basis: {basis.type.value} ({basis.reference}).",
+             "Presence check: a basis and its reference are recorded; whether the reference "
+             "exists is checked against the capability register (veracity), not here."],
         )

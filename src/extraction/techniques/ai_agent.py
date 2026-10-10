@@ -1,7 +1,9 @@
-"""The AI-agent technique: a publicly available model decides what to pull.
+"""The AI-model technique: a publicly available model decides what to pull.
 
-The comparison the guide asked for is ours against *actual* AI agents, not
-against a hand-written stand-in for one. So this technique hands a real model
+The comparison the guide asked for is ours against *actual* AI models, not
+against a hand-written stand-in for one. It is one structured-output call per
+run, not an agent with tools: the model plans the pull and the manifest, and
+the pipeline executes it (no browsing, no observation loop). So this technique hands a real model
 the same brief a developer would give an extraction agent -- the task, its
 purpose, and the fields each module of the HIS exposes -- and lets it decide
 two things: which fields to fetch, and what manifest to declare for the run.
@@ -28,12 +30,15 @@ is:
    agent's decision changed on identical input. Ours is stable by construction.
 
 Three briefings, so that "just AI" can be measured at three levels of being
-told: ``unaided`` gets the task and the fields; ``informed`` also gets the
-seven DPDP obligations in plain words; ``policy`` gets, on top of that, the
-very purpose policy our technique reads -- the categories the purpose permits,
-its retention ceiling, and the category of every field on offer. The last is
-the fairest comparison there is: the agent knows everything the rule-driven
-technique knows, and whether it *holds* to it is then the only question.
+told: ``unaided`` (labelled "task + register") gets the task, the fields and
+the capability register -- so it is told which controls exist, and is not
+unaided in that sense; ``informed`` also gets the seven DPDP obligations in
+plain words; ``policy`` gets, on top of that, the purpose policy -- the
+categories the purpose permits, its retention ceiling, and the category of
+every field on offer. Even told the policy, the model is *not* given the
+task's expert field list (``ExtractionTask.needed``), which the reference
+technique executes; coverage and excess therefore measure agreement with that
+list, not obedience to it.
 
 # DPDP Act 2023 -- data minimisation, purpose limitation: the technique measures
 # whether an unconstrained agent takes only what the purpose requires. It does
@@ -79,7 +84,7 @@ from interop.layers import LAYER_DESCRIPTIONS, HISLayer
 
 RECORDINGS_DIR = Path(__file__).resolve().parent / "recordings"
 BRIEFINGS = ("unaided", "informed", "policy")
-BRIEFING_LABELS = {"unaided": "unaided", "informed": "told the Act", "policy": "told the policy"}
+BRIEFING_LABELS = {"unaided": "task + register", "informed": "told the Act", "policy": "told the policy"}
 MODES = ("replay", "live", "auto")
 # The default mode. ``replay`` is the safe one: nothing in a demo, a test or a
 # benchmark reaches the network, whatever keys the shell happens to carry. Set
@@ -280,7 +285,7 @@ def build_user_prompt(
     The capability register *is* included, in full, so that a declaration
     beyond it is a choice the agent made, not a fact it lacked. With
     ``policy`` the purpose policy and the field categories are included too --
-    everything the rule-driven technique reads, in the agent's prompt.
+    the policy the reference technique follows, though not its per-task field list.
     """
 
     lines = [
@@ -372,7 +377,7 @@ class AIAgentTechnique(ExtractionTechnique):
         self._cache: tuple[float, dict[str, Any]] | None = None     # (mtime, parsed recording)
         self.last_decision: AgentDecision | None = None
         self.last_source: str = ""                     # "replay" or "live"
-        self.name = f"ai agent: {self.model} ({BRIEFING_LABELS[briefing]})"
+        self.name = f"ai model: {self.model} ({BRIEFING_LABELS[briefing]})"
         self.short_id = f"{self.model_slug}-{briefing}"
 
     # --- recordings -------------------------------------------------------
