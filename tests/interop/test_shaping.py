@@ -43,7 +43,7 @@ def test_message_starts_with_a_well_formed_msh():
     msg = Message("ADT^A04", "ctrl-1")
     msh = msg.encode().split("\r")[0].split("|")
     assert msh[0] == "MSH" and msh[1] == "^~\\&"
-    assert msh[8] == "ADT^A04" and msh[9] == "ctrl-1" and msh[11] == "2.5"
+    assert msh[8] == "ADT^A04^ADT_A01" and msh[9] == "ctrl-1" and msh[11] == "2.5"
 
 
 def test_adt_carries_only_the_fields_that_were_extracted():

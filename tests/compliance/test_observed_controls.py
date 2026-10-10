@@ -7,6 +7,8 @@ which of its controls rest on such evidence and which on the deployment's word.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from datetime import datetime, timedelta, timezone
 
 from compliance.audit import AuditLog
@@ -39,10 +41,13 @@ class _PlainHttpSource(MockHISDataSource):
 
 def test_the_register_separates_demonstrated_from_attested():
     ids = {c.id for c in DEFAULT_REGISTER.demonstrated()}
-    assert ids == {"TLS", "PSEUDO-EXPORT", "PURGE-01", "AUDIT-LOG", "ROPA"}
+    assert ids == {"TLS", "PSEUDO-EXPORT", "PURGE-01", "AUDIT-LOG", "ROPA", "AUTH-RPA-2026"}
     assert {c.id for c in DEFAULT_REGISTER.attested()} >= {"ENC-REST", "ACL-STORE", "DPO", "NOTICE-REG-2026"}
     text = "\n".join(DEFAULT_REGISTER.evidence_lines())
     assert "demonstrated by the pipeline" in text and "attested by the deployment" in text
+    assert "not true of the demo machine" in text                    # attested controls, honestly scoped
+    # The access authorisation is checked and logged by the harness, never shown to a technique:
+    assert "AUTH-RPA" not in DEFAULT_REGISTER.describe()
 
 
 def test_every_run_is_audit_logged_by_the_harness_not_the_technique(tmp_path):
@@ -109,17 +114,22 @@ def test_exports_are_scheduled_for_erasure_and_purged_when_due(tmp_path):
     assert sched.retention_days == 30 and sched.delete_after is not None
     assert sched.delete_after - sched.written_at == timedelta(days=30)
     assert [e.event for e in audit.entries()] == ["export"]
+    # The pseudonymisation key is kept apart from the export, with its holder.
+    key_file = Path(sched.key_file)
+    assert key_file.exists() and key_file.parent != tmp_path / "exports"
+    assert "data-protection officer" in sched.key_holder
+    assert all("\"k\"" not in p.read_text(encoding="utf-8") for p in written)
 
-    # Not yet due: nothing goes. Due: everything goes, and the purge is logged.
+    # Not yet due: nothing goes. Due: everything goes -- the key with it -- and the purge is logged.
     assert purge_expired(tmp_path / "exports", audit=audit) == []
     later = datetime.now(timezone.utc) + timedelta(days=31)
     would = purge_expired(tmp_path / "exports", now=later, audit=audit, dry_run=True)
-    assert len(would) == 3 and all(p.exists() for p in would)
+    assert len(would) == 4 and all(p.exists() for p in would) and key_file in would
     erased = purge_expired(tmp_path / "exports", now=later, audit=audit)
-    assert len(erased) == 3 and not any(p.exists() for p in erased)
+    assert len(erased) == 4 and not any(p.exists() for p in erased)
     assert schedules(tmp_path / "exports") == []
     assert [e.event for e in audit.entries()] == ["export", "purge"]
-    assert "erased 3 file(s) after 30 d" in audit.entries()[-1].note
+    assert "erased 4 file(s) after 30 d" in audit.entries()[-1].note
 
 
 def test_an_export_without_a_declared_retention_cannot_be_scheduled(tmp_path):
@@ -130,3 +140,15 @@ def test_an_export_without_a_declared_retention_cannot_be_scheduled(tmp_path):
     [sched] = schedules(tmp_path)
     assert sched.delete_after is None and "cannot be scheduled" in sched.one_line()
     assert purge_expired(tmp_path, now=datetime.now(timezone.utc) + timedelta(days=10_000)) == []
+
+
+def test_the_audit_log_is_hash_chained_and_an_edit_breaks_it(tmp_path):
+    from compliance.audit import AuditEvent
+    log = AuditLog(tmp_path / "audit.jsonl")
+    for n in range(3):
+        log.record(AuditEvent(event="extraction", run_id=f"r{n}"))
+    assert log.verify() == (True, None)
+    lines = log.path.read_text(encoding="utf-8").splitlines()
+    lines[1] = lines[1].replace('"r1"', '"r9"')            # someone edits the second event
+    log.path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    assert log.verify() == (False, 2)                      # the third event's link no longer holds

@@ -75,11 +75,12 @@ def test_day_first_dates_are_emitted_in_iso_form_for_the_shapers(tmp_path):
     frame, unparsed = normalise_dates(pd.DataFrame({"date_of_birth": ["14/03/1988", "1988-03-14", "not a date", None]}))
     assert list(frame["date_of_birth"][:2]) == ["1988-03-14", "1988-03-14"]
     assert frame["date_of_birth"][2] == "not a date" and unparsed == {"date_of_birth": 1}
-    # And the HL7 PID-7 that comes out is eight digits, not a slashed string.
+    # And the HL7 PID-7 that comes out is digits, not a slashed string: eight
+    # for a raw export, the birth year alone once the export generalises it.
     out = CompliantExtractionTechnique().extract(src, bind_subject([TASK], src)[0])
     shaped = normalise(out, key="k")
     pid = next(seg for seg in shaped.hl7["patient_administration"][0].split("\r") if seg.startswith("PID"))
-    assert pid.split("|")[7].isdigit() and len(pid.split("|")[7]) == 8
+    assert pid.split("|")[7].isdigit() and len(pid.split("|")[7]) == (4 if shaped.pseudonymised else 8)
 
 
 def test_nothing_printed_or_written_on_the_dataset_path_carries_a_raw_identifier(tmp_path, capsys):

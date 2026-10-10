@@ -63,12 +63,23 @@ class CapabilityRegister(BaseModel):
     # Lawful bases the deployment can rely on, per purpose. Consent artefacts
     # would be listed here too, when a deployment records them.
     lawful_bases: dict[Purpose, Control] = Field(default_factory=dict)
+    # Who authorised automated access to the HIS, for which purposes, under
+    # which account -- the scraper's own authority (RPA by the fiduciary, or a
+    # processor under contract). Deliberately not part of ``describe()``: no
+    # technique declares it, the harness checks and logs it, and keeping it out
+    # of the brief leaves every AI recording valid.
+    access_authorisation: Control | None = None
+    # What the attested controls describe. They are the hospital's production
+    # store; the demo writes its exports as plain files under data/, so they
+    # are not true of the demo machine, and the evidence lines say so.
+    attested_scope: str = ""
 
     def controls(self) -> list[Control]:
         out = [c for c in (
             self.transport_encrypted, self.at_rest_encrypted, self.access_controlled,
             self.pseudonymisation, self.deletion_mechanism, self.notice,
             self.accountable_party, self.audit_log, self.processing_record,
+            self.access_authorisation,
         ) if c is not None]
         return out + list(self.lawful_bases.values())
 
@@ -83,6 +94,8 @@ class CapabilityRegister(BaseModel):
         lines += [f"  {c.id:<16} {c.evidence}" for c in self.demonstrated()]
         lines.append("attested by the deployment (on the register; not produced by this code):")
         lines += [f"  {c.id:<16} {c.description}" for c in self.attested()]
+        if self.attested_scope:
+            lines.append(f"  note: {self.attested_scope}")
         return lines
 
     def ids(self) -> set[str]:
@@ -123,8 +136,8 @@ class CapabilityRegister(BaseModel):
 DEFAULT_REGISTER = CapabilityRegister(
     transport_encrypted=Control(
         id="TLS", description="portal connection over TLS",
-        evidence="the adapter reports the scheme of the connection it actually made "
-                 "(HISDataSource.transport_secure); a manifest claiming TLS over http is unsubstantiated",
+        evidence="the browser reads the TLS session of the connection it made (protocol, issuer, validity: "
+                 "HISDataSource.transport_secure); a manifest claiming TLS over http is unsubstantiated",
     ),
     at_rest_encrypted=Control(id="ENC-REST", description="extracted store encrypted at rest"),
     access_controlled=Control(id="ACL-STORE", description="role-based access control on the extracted store"),
@@ -149,6 +162,16 @@ DEFAULT_REGISTER = CapabilityRegister(
         evidence="compliance.processing_record: the record is generated from the audit log, per purpose, "
                  "so it cannot fall behind what ran",
     ),
+    access_authorisation=Control(
+        id="AUTH-RPA-2026",
+        description="automated read access to the HIS authorised by the hospital for care coordination, "
+                    "billing settlement and patient registration, under the 'extraction' service account",
+        evidence="the portal adapter refuses a portal whose robots.txt disallows it unless this reference is "
+                 "given, and the harness writes it and the account into every audit event",
+    ),
+    attested_scope=("ENC-REST, ACL-STORE, NOTICE-REG-2026 and DPO describe the hospital's production store and "
+                    "governance; the demo writes its exports as plain files under data/ with no ACL, so they are "
+                    "not true of the demo machine"),
     lawful_bases={
         # Each is the "voluntarily provided for the specified purpose" legitimate
         # use, recorded per purpose; the Act has no general medical-services use.

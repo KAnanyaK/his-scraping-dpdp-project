@@ -14,6 +14,13 @@ the extraction pulled, and the data-minimisation property of the extraction
 survives shaping. Field positions follow the HL7 v2.5 segment definitions for the
 handful of fields the project uses; this is a shaper for our records, not a
 general HL7 library.
+
+Every message carries a PID, so every clinical, departmental and financial row
+stays attributable to its patient -- by record number, or by its token when the
+export is pseudonymised. MSH-9 carries the message structure as v2.5 expects
+(``ADT^A04^ADT_A01``). ORM^O01 is the v2.5 general order; later versions split
+it into order-specific messages (OMP / RDE for pharmacy), which a production
+interface would use.
 """
 
 from __future__ import annotations
@@ -60,6 +67,10 @@ class Segment:
         return FIELD_SEP.join([self.name, *fields])
 
 
+# MSH-9: message code ^ trigger event ^ message structure (v2.5).
+_STRUCTURE = {"ADT^A04": "ADT_A01", "ORM^O01": "ORM_O01", "ORU^R01": "ORU_R01", "DFT^P03": "DFT_P03"}
+
+
 class Message:
     def __init__(self, message_type: str, control_id: str, *, when: datetime | None = None) -> None:
         when = when or datetime.now(timezone.utc)
@@ -69,12 +80,20 @@ class Message:
             Segment("MSH")
             .set(3, SENDING_APP).set(4, SENDING_FACILITY)
             .set(7, when.strftime("%Y%m%d%H%M%S"))
-            .set(9, message_type).set(10, control_id).set(11, "P").set(12, VERSION)
+            .set(9, f"{message_type}{COMPONENT_SEP}{_STRUCTURE[message_type]}" if message_type in _STRUCTURE
+                 else message_type)
+            .set(10, control_id).set(11, "P").set(12, VERSION)
         )
 
     def add(self, segment: Segment) -> "Message":
         if segment.has_data():
             self.segments.append(segment)
+        return self
+
+    def require(self, segment: Segment) -> "Message":
+        """Add a segment the message structure requires, even when it carries only its set-id."""
+
+        self.segments.append(segment)
         return self
 
     def encode(self) -> str:
@@ -118,7 +137,7 @@ def adt_a04(row: dict[str, Any], control_id: str) -> Message:
 
     msg = Message("ADT^A04", control_id)
     msg.add(Segment("EVN").set(1, "A04").set(2, _hl7_date(row.get("admission_datetime"))))
-    msg.add(_pid(row))
+    msg.require(_pid(row))
     msg.add(Segment("PV1").set(1, "1").set(2, "I" if row.get("admission_ward") else None)
             .set(3, row.get("admission_ward")).set(44, _hl7_date(row.get("admission_datetime"))))
     return msg
@@ -128,6 +147,7 @@ def orm_o01(row: dict[str, Any], control_id: str) -> Message:
     """Clinical order with the visit's diagnosis, allergy and medication."""
 
     msg = Message("ORM^O01", control_id)
+    msg.require(_pid(row))
     msg.add(Segment("PV1").set(1, "1").set(7, row.get("attending_clinician"))
             .set(44, _hl7_date(row.get("encounter_datetime"))))
     msg.add(Segment("AL1").set(1, "1").set(3, row.get("allergy")))
@@ -144,6 +164,7 @@ def oru_r01(row: dict[str, Any], control_id: str) -> Message:
     """Departmental result -- Ancillary layer."""
 
     msg = Message("ORU^R01", control_id)
+    msg.require(_pid(row))
     msg.add(Segment("OBR").set(1, "1").set(2, row.get("order_id"))
             .set(4, row.get("imaging_modality")).set(15, row.get("specimen_type")))
     if row.get("result_value") not in (None, ""):
@@ -157,6 +178,7 @@ def dft_p03(row: dict[str, Any], control_id: str) -> Message:
 
     msg = Message("DFT^P03", control_id)
     msg.add(Segment("EVN").set(1, "P03"))
+    msg.require(_pid(row))
     msg.add(Segment("FT1").set(1, "1").set(2, row.get("invoice_id")).set(6, "CG")
             .set(11, row.get("billed_amount")))
     msg.add(Segment("IN1").set(1, "1").set(4, row.get("payer_name"))

@@ -42,7 +42,8 @@ def main() -> None:
 
     print(present.banner("Retention: what is scheduled, what is due, what goes"))
     print(f"  directory : {directory}")
-    print(f"  as of     : {now:%Y-%m-%d}")
+    print(f"  as of     : {now:%Y-%m-%d}" + ("  (a simulated date)" if args.as_of else ""))
+    print("  erasure   : file deletion (not secure erasure); backups and other copies are the deployment's")
     print()
     listed = schedules(directory)
     if not listed:

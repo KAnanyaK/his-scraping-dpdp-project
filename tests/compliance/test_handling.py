@@ -31,7 +31,8 @@ def test_real_looking_directory_outside_data_fails_every_check(tmp_path):
         require_safe_to_read(tmp_path)
 
 
-def test_directory_under_data_with_a_proper_note_passes():
+def test_directory_under_data_with_a_proper_note_passes(monkeypatch):
+    monkeypatch.setenv("DPDP_AUDIT_KEY", "a-deployment-key")
     directory = DATA_DIR / "_handling_test"
     directory.mkdir(parents=True, exist_ok=True)
     try:
@@ -50,16 +51,39 @@ def test_directory_under_data_with_a_proper_note_passes():
         directory.rmdir()
 
 
-def test_note_without_deidentification_statement_is_not_enough():
+def test_note_without_deidentification_statement_is_not_enough(monkeypatch):
+    monkeypatch.setenv("DPDP_AUDIT_KEY", "a-deployment-key")
     directory = DATA_DIR / "_handling_test2"
     directory.mkdir(parents=True, exist_ok=True)
     try:
         (directory / "x.csv").write_text("mrn\nA\n", encoding="utf-8")
-        (directory / PROVENANCE).write_text("Supplied by the hospital.\n", encoding="utf-8")
+        # "identified" in passing is not a statement of de-identification status.
+        (directory / PROVENANCE).write_text("Supplied by the hospital; supplier contact not identified.\n",
+                                            encoding="utf-8")
         report = check_handling(directory)
         assert not report.ok
         failed = [name for name, ok, _ in report.checks if not ok]
         assert failed == ["de-identification stated"]
+    finally:
+        for f in directory.iterdir():
+            f.unlink()
+        directory.rmdir()
+
+
+def test_real_data_is_refused_while_the_audit_key_is_the_public_default(monkeypatch):
+    monkeypatch.delenv("DPDP_AUDIT_KEY", raising=False)
+    directory = DATA_DIR / "_handling_test3"
+    directory.mkdir(parents=True, exist_ok=True)
+    try:
+        (directory / "x.csv").write_text("mrn\nA\n", encoding="utf-8")
+        (directory / PROVENANCE).write_text("De-identification status: none applied, identifiable.\n",
+                                            encoding="utf-8")
+        report = check_handling(directory)
+        assert [name for name, ok, _ in report.checks if not ok] == ["audit key set"]
+        # A note-declared synthetic export does not need the deployment key.
+        (directory / PROVENANCE).write_text("Synthetic: yes\nDe-identification status: synthetic.\n",
+                                            encoding="utf-8")
+        assert check_handling(directory).ok
     finally:
         for f in directory.iterdir():
             f.unlink()

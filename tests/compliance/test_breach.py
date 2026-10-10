@@ -82,3 +82,24 @@ def test_the_meter_sees_a_scoped_run_and_an_unscoped_one():
     assert meter.subject_scope() == "X"
     list(meter.fetch(HISLayer.CLINICAL_EHR, fields=["medication"]))
     assert meter.subject_scope() is None
+
+
+def test_the_notices_carry_what_rule_7_asks_for(leaked):
+    # To the patient: timing, location, likely consequences, safety steps, a contact.
+    # To the Board: the detailed report's deadline (72 h from discovery) and the intimations sent.
+    base = _assess(leaked, "base")
+    base.location = "an external drive taken from the records office"
+    notice = base.to_patient()
+    assert "What this could mean for you" in notice and "What you can do" in notice
+    assert "records office" in notice and "data-protection contact" in notice
+    board = base.to_board()
+    assert base.report_due() - base.discovered_at == timedelta(hours=72)
+    assert f"{base.report_due():%Y-%m-%d %H:%M}" in board and "Rule 7" in board
+    assert f"none yet; {len(base.affected)} due" in board
+    base.record_intimation(base.affected[0])
+    assert f"1 of {len(base.affected)} sent" in base.to_board()
+
+
+def test_the_patient_is_told_who_holds_the_key(leaked):
+    text = _assess(leaked, "ours").to_patient()
+    assert "data-protection officer holds the key" in text and "not with the files" in text

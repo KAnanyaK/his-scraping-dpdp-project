@@ -35,8 +35,13 @@ allergies). Files with different columns are now stacked.
 1. **Put it under `data/`** — e.g. `data/hospital_export/`. Nowhere else: `data/`
    is the only directory the repository ignores.
 2. **Write `data/hospital_export/PROVENANCE.md`** before reading anything: who
-   supplied it, when, on what basis, and — explicitly — whether and how it is
-   de-identified. The adapter refuses to read a real export without this.
+   supplied it, when, on what basis, and — explicitly, on a line of its own,
+   `De-identification status: …` — whether and how it is de-identified. The
+   adapter refuses to read a real export without this.
+   **Set `DPDP_AUDIT_KEY`** in the shell (the data-protection contact chooses and
+   keeps it). The audit log stores patients as keyed tokens; the committed
+   development key is public, so the gate refuses real data until a deployment
+   key is set.
 3. **Run the check.** It reads headers and row counts only, and it will refuse if
    step 1 or 2 is not done:
    ```

@@ -35,6 +35,11 @@ class RetentionSchedule(BaseModel):
     delete_after: datetime | None                # None: no retention declared -- flagged, not scheduled
     files: list[str] = Field(default_factory=list)
     deletion_mechanism: str = ""
+    # Where the pseudonymisation key for this export is kept, and who holds it.
+    # Kept apart from the export (a copied export folder carries no key); erased
+    # with the export, after which the tokens can no longer be re-linked.
+    key_file: str = ""
+    key_holder: str = ""
 
     @property
     def path_name(self) -> str:
@@ -52,7 +57,8 @@ class RetentionSchedule(BaseModel):
                 f"erase on or after {self.delete_after:%Y-%m-%d}")
 
 
-def schedule(run: ExtractionRun, files: list[Path], *, now: datetime | None = None) -> RetentionSchedule | None:
+def schedule(run: ExtractionRun, files: list[Path], *, now: datetime | None = None,
+             key_file: Path | None = None, key_holder: str = "") -> RetentionSchedule | None:
     """Write the sidecar for an export. Returns None when nothing was written."""
 
     if not files:
@@ -63,6 +69,7 @@ def schedule(run: ExtractionRun, files: list[Path], *, now: datetime | None = No
         run_id=run.run_id, purpose=run.purpose.value, retention_days=run.retention_days,
         written_at=now, delete_after=delete_after, files=[p.name for p in files],
         deletion_mechanism=run.deletion_mechanism or "",
+        key_file=str(key_file) if key_file else "", key_holder=key_holder,
     )
     (files[0].parent / sched.path_name).write_text(sched.model_dump_json(indent=2), encoding="utf-8")
     return sched
@@ -86,6 +93,12 @@ def purge_expired(
 
     Returns the paths erased (or, with ``dry_run``, the paths that would be).
     Each erasure is logged as a ``purge`` event naming the run and the files.
+    The export's pseudonymisation key, kept apart from it, goes with it.
+
+    This is file deletion (``unlink``), not secure erasure: the blocks are not
+    overwritten, and backups or other copies are out of its reach. It is the
+    deletion *route* the manifest cites; media sanitisation and backup expiry
+    are the deployment's.
     """
 
     now = now or datetime.now(timezone.utc)
@@ -94,6 +107,8 @@ def purge_expired(
         if not sched.due(now):
             continue
         targets = [directory / name for name in sched.files] + [directory / sched.path_name]
+        if sched.key_file:
+            targets.append(Path(sched.key_file))
         present = [p for p in targets if p.exists()]
         if not dry_run:
             for p in present:

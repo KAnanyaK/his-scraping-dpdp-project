@@ -28,4 +28,4 @@ def test_the_record_matches_what_ran_and_names_no_one(tmp_path):
 
 def test_the_register_now_demonstrates_the_record():
     assert DEFAULT_REGISTER.processing_record.demonstrated
-    assert len(DEFAULT_REGISTER.demonstrated()) == 5
+    assert len(DEFAULT_REGISTER.demonstrated()) == 6        # + the access authorisation (AUTH-RPA)

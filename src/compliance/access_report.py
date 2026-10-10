@@ -101,6 +101,11 @@ class AccessSummary(BaseModel):
             lines.append(f"  The log cannot answer for {self.unattributed_runs} run(s) that read records "
                          f"carrying no patient key; they may or may not include this patient.")
         lines.append("  Values from the record are not reproduced here; the record number is masked.")
+        # DPDP Rules, 2025 (verify against the Gazette): the hospital answers a
+        # principal's request within the period the Rules prescribe and
+        # publishes it; the date received starts that clock.
+        lines.append("  The hospital answers within the period the DPDP Rules, 2025 prescribe for a data "
+                     "principal's request, counted from the date the request was received at the desk.")
         lines.append(f"  Source: {self.log_path}")
         return "\n".join(lines)
 

@@ -59,3 +59,35 @@ def pseudonymise_row(layer: HISLayer, row: dict[str, Any], *, key: str) -> dict[
 
 def is_token(value: Any) -> bool:
     return isinstance(value, str) and value.startswith(TOKEN_PREFIX)
+
+
+# Quasi-identifiers generalised on a pseudonymised export (review F3): date of
+# birth, sex and PIN code together re-identify most people. The date keeps its
+# year (age stays usable clinically), the PIN its first three digits (the
+# sorting district). Sex is kept: it is clinically needed and, without the
+# other two at full precision, far less identifying.
+QUASI_IDENTIFIERS = ("date_of_birth", "sex", "pincode")
+
+
+def generalise_row(row: dict[str, Any]) -> dict[str, Any]:
+    """Return a copy of ``row`` with its quasi-identifiers generalised."""
+
+    out = dict(row)
+    if out.get("date_of_birth"):
+        out["date_of_birth"] = str(out["date_of_birth"])[:4]
+    if out.get("pincode"):
+        digits = "".join(ch for ch in str(out["pincode"]) if ch.isdigit())
+        out["pincode"] = digits[:3] + "XXX" if len(digits) >= 3 else digits
+    return out
+
+
+def k_anonymity(rows: list[dict[str, Any]]) -> int | None:
+    """The smallest group of exported rows sharing one combination of the
+    quasi-identifiers present -- the k in k-anonymity. None when no row carries any."""
+
+    groups: dict[tuple, int] = {}
+    for row in rows:
+        key = tuple(row.get(q) for q in QUASI_IDENTIFIERS)
+        if any(v not in (None, "") for v in key):
+            groups[key] = groups.get(key, 0) + 1
+    return min(groups.values()) if groups else None

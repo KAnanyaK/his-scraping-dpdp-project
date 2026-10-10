@@ -20,7 +20,10 @@ the log says plainly what it cannot answer for.
 Append-only JSON lines, one file, under ``data/`` (git-ignored) by default. A
 deployment would keep it somewhere with its own access control; the point here
 is that the log exists, is produced by the machinery rather than declared by
-the thing being audited, and can be read back to show what ran.
+the thing being audited, and can be read back to show what ran. It is
+tamper-evident: each event carries the SHA-256 of the line before it, so an
+edited or deleted line breaks the chain and ``verify`` says where. It is kept
+for ``LOG_RETENTION_DAYS`` (a year), apart from the exports it describes.
 
 # DPDP Act 2023 -- accountability principle: the Data Fiduciary demonstrates
 # compliance. A run that is logged by the pipeline is demonstrable; a run that
@@ -54,8 +57,22 @@ AUDIT_KEY_ENV = "DPDP_AUDIT_KEY"
 _DEV_AUDIT_KEY = "fixture-audit-key--not-a-secret"
 
 
+# DPDP Rules, 2025 -- Rule 6 (reasonable security safeguards; verify against the
+# Gazette): logs of processing are retained for at least a year. The audit log
+# therefore has its own retention, distinct from an export's (30 days for ours):
+# an export is erased when its purpose is served; the record that it existed
+# is not.
+LOG_RETENTION_DAYS = 365
+
+
 def audit_key() -> str:
     return os.environ.get(AUDIT_KEY_ENV) or _DEV_AUDIT_KEY
+
+
+def audit_key_is_set() -> bool:
+    """True when the deployment has set its own audit key (not the public dev default)."""
+
+    return bool(os.environ.get(AUDIT_KEY_ENV))
 
 
 def subject_token(value: Any) -> str:
@@ -105,6 +122,9 @@ class AuditEvent(BaseModel):
     scoped: bool = False                                         # every fetch filtered to one patient (metered)
     manifest_sha256: str = ""
     note: str = ""
+    account: str = ""                                            # the portal account the run used, if any
+    authorisation: str = ""                                      # the authority automated access rested on
+    prev_sha256: str = ""                                        # hash of the previous line: the chain
 
     def one_line(self) -> str:
         n = sum(len(v) for v in self.fields.values())
@@ -127,11 +147,50 @@ class AuditLog:
         directory = Path(os.environ.get(AUDIT_DIR_ENV) or DEFAULT_AUDIT_DIR)
         return directory / AUDIT_FILE
 
+    def _last_line(self) -> str:
+        """The last non-empty line, read from the end (the log can be long)."""
+
+        if not self.path.exists():
+            return ""
+        with self.path.open("rb") as fh:
+            fh.seek(0, os.SEEK_END)
+            end = fh.tell()
+            size = min(end, 65536)
+            while True:
+                fh.seek(end - size)
+                lines = [l for l in fh.read(size).splitlines() if l.strip()]
+                if not lines:
+                    return ""
+                if len(lines) > 1 or size == end:
+                    return lines[-1].decode("utf-8")
+                size = min(end, size * 2)
+
     def record(self, event: AuditEvent) -> AuditEvent:
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        last = self._last_line()
+        event.prev_sha256 = hashlib.sha256(last.encode("utf-8")).hexdigest() if last else ""
         with self.path.open("a", encoding="utf-8") as fh:
             fh.write(event.model_dump_json() + "\n")
         return event
+
+    def verify(self) -> tuple[bool, int | None]:
+        """Walk the chain. Returns (intact, index of the first event whose link is broken)."""
+
+        if not self.path.exists():
+            return True, None
+        prev = ""
+        lines = [l for l in self.path.read_text(encoding="utf-8").splitlines() if l.strip()]
+        for i, line in enumerate(lines):
+            want = hashlib.sha256(prev.encode("utf-8")).hexdigest() if prev else ""
+            if json.loads(line).get("prev_sha256", "") != want:
+                return False, i
+            prev = line
+        return True, None
+
+    @staticmethod
+    def retention_note() -> str:
+        return (f"audit log kept {LOG_RETENTION_DAYS} days (DPDP Rules, 2025, Rule 6), "
+                f"apart from the exports it records")
 
     def extraction(
         self,
@@ -143,13 +202,15 @@ class AuditLog:
         source: str = "",
         rows: dict[str, list[dict[str, Any]]] | None = None,
         scoped_to: str | None = None,
+        account: str = "",
+        authorisation: str = "",
     ) -> AuditEvent:
         subjects, unattributed = subjects_in(rows, scoped_to) if rows is not None else ([], 0)
         return self.record(AuditEvent(
             event="extraction", run_id=run.run_id, technique=technique,
             purpose=run.purpose.value, source=source, fields=fields, records=records,
             subjects=subjects, unattributed=unattributed, scoped=bool(scoped_to),
-            manifest_sha256=manifest_digest(run),
+            manifest_sha256=manifest_digest(run), account=account, authorisation=authorisation,
         ))
 
     def touching(self, token: str) -> list[AuditEvent]:
@@ -194,4 +255,4 @@ def fields_by_layer(pulled: set[tuple[str, str]]) -> dict[str, list[str]]:
 
 
 __all__ = ["AuditEvent", "AuditLog", "manifest_digest", "fields_by_layer", "AUDIT_DIR_ENV", "DEFAULT_AUDIT_DIR",
-           "AUDIT_KEY_ENV", "audit_key", "subject_token", "subjects_in"]
+           "AUDIT_KEY_ENV", "audit_key", "audit_key_is_set", "subject_token", "subjects_in", "LOG_RETENTION_DAYS"]

@@ -15,6 +15,16 @@ the resources carry exactly what the extraction pulled and no more.
 These are the resource types ``compliance.roles.ARTEFACTS`` names, so what a role
 may be instructed to touch and what an export actually produces share one
 vocabulary.
+
+Every resource about a patient references the patient (``subject`` /
+``patient`` / ``beneficiary``) by a logical identifier reference -- the record
+number, or its token when the export is pseudonymised -- so the export stays
+attributable and linkable. Where FHIR R4 makes an element mandatory (1..1) and
+the extraction did not pull it, the element is present and says so (a
+``display`` of "not in extract", or the NullFlavor ``UNK``) rather than
+inventing a value. ``tests/interop/test_fhir_structure.py`` checks the
+required elements; the HL7 FHIR validator is the stronger check before any
+production use.
 """
 
 from __future__ import annotations
@@ -25,6 +35,17 @@ from interop.layers import HISLayer
 
 IDENTIFIER_SYSTEM = "urn:his:mrn"
 _GENDER = {"F": "female", "M": "male", "O": "other"}
+_ACT_CODE = "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+_NULL_FLAVOR = "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+NOT_IN_EXTRACT = "not in extract"
+
+
+def _subject(row: dict[str, Any], key: str = "mrn") -> dict[str, Any]:
+    """A logical reference to the row's patient, or an explicit 'not in extract'."""
+
+    if row.get(key):
+        return {"identifier": {"system": IDENTIFIER_SYSTEM, "value": row[key]}}
+    return {"display": NOT_IN_EXTRACT}
 
 
 def _present(row: dict[str, Any], *names: str) -> bool:
@@ -59,12 +80,16 @@ def _patient(row: dict[str, Any]) -> dict[str, Any]:
 
 
 def _encounter(row: dict[str, Any]) -> dict[str, Any]:
-    res: dict[str, Any] = {"resourceType": "Encounter", "status": "in-progress"}
+    res: dict[str, Any] = {"resourceType": "Encounter", "status": "in-progress",
+                           "subject": _subject(row)}
     start = row.get("admission_datetime") or row.get("encounter_datetime")
     if start:
         res["period"] = {"start": start}
+    # class is 1..1 in R4: inpatient when a ward was pulled, otherwise unknown -- not guessed.
+    res["class"] = ({"system": _ACT_CODE, "code": "IMP", "display": "inpatient encounter"}
+                    if row.get("admission_ward") else
+                    {"system": _NULL_FLAVOR, "code": "UNK", "display": "unknown"})
     if row.get("admission_ward"):
-        res["class"] = {"code": "IMP", "display": "inpatient encounter"}
         res["location"] = [{"location": {"display": row["admission_ward"]}}]
     if row.get("attending_clinician"):
         res["participant"] = [{"individual": {"display": row["attending_clinician"]}}]
@@ -86,14 +111,16 @@ def shape_clinical(row: dict[str, Any]) -> list[dict[str, Any]]:
     if _present(row, "encounter_datetime", "attending_clinician"):
         out.append(_encounter(row))
     if row.get("primary_diagnosis"):
-        out.append({"resourceType": "Condition", "code": {"text": row["primary_diagnosis"]}})
+        out.append({"resourceType": "Condition", "subject": _subject(row),
+                    "code": {"text": row["primary_diagnosis"]}})
     if row.get("medication"):
         out.append({"resourceType": "MedicationRequest", "status": "active", "intent": "order",
-                    "medicationCodeableConcept": {"text": row["medication"]}})
+                    "subject": _subject(row), "medicationCodeableConcept": {"text": row["medication"]}})
     if row.get("allergy"):
-        out.append({"resourceType": "AllergyIntolerance", "code": {"text": row["allergy"]}})
+        out.append({"resourceType": "AllergyIntolerance", "patient": _subject(row),
+                    "code": {"text": row["allergy"]}})
     if row.get("lab_result") not in (None, ""):
-        out.append({"resourceType": "Observation", "status": "final",
+        out.append({"resourceType": "Observation", "status": "final", "subject": _subject(row),
                     "code": {"text": "laboratory result"},
                     "valueQuantity": {"value": row["lab_result"]}})
     return out
@@ -102,7 +129,8 @@ def shape_clinical(row: dict[str, Any]) -> list[dict[str, Any]]:
 def shape_ancillary(row: dict[str, Any]) -> list[dict[str, Any]]:
     out = []
     if _present(row, "order_id", "specimen_type", "imaging_modality"):
-        req: dict[str, Any] = {"resourceType": "ServiceRequest", "status": "active", "intent": "order"}
+        req: dict[str, Any] = {"resourceType": "ServiceRequest", "status": "active", "intent": "order",
+                               "subject": _subject(row)}
         if row.get("order_id"):
             req["identifier"] = [{"value": row["order_id"]}]
         if row.get("imaging_modality"):
@@ -111,13 +139,13 @@ def shape_ancillary(row: dict[str, Any]) -> list[dict[str, Any]]:
             req["specimen"] = [{"display": row["specimen_type"]}]
         out.append(req)
     if row.get("result_value") not in (None, ""):
-        out.append({"resourceType": "Observation", "status": "final",
+        out.append({"resourceType": "Observation", "status": "final", "subject": _subject(row),
                     "code": {"text": "result"}, "valueQuantity": {"value": row["result_value"]}})
     if _present(row, "report_text", "imaging_modality") and row.get("report_text"):
         rep: dict[str, Any] = {"resourceType": "DiagnosticReport", "status": "final",
-                               "conclusion": row["report_text"]}
-        if row.get("imaging_modality"):
-            rep["code"] = {"text": row["imaging_modality"]}
+                               "subject": _subject(row), "conclusion": row["report_text"],
+                               # code is 1..1: the modality when pulled, else the report itself.
+                               "code": {"text": row.get("imaging_modality") or "diagnostic report"}}
         out.append(rep)
     return out
 
@@ -125,18 +153,19 @@ def shape_ancillary(row: dict[str, Any]) -> list[dict[str, Any]]:
 def shape_financial(row: dict[str, Any]) -> list[dict[str, Any]]:
     out = []
     if _present(row, "invoice_id", "billed_amount"):
-        inv: dict[str, Any] = {"resourceType": "Invoice", "status": "issued"}
+        inv: dict[str, Any] = {"resourceType": "Invoice", "status": "issued", "subject": _subject(row)}
         if row.get("invoice_id"):
             inv["identifier"] = [{"value": row["invoice_id"]}]
         if row.get("billed_amount") not in (None, ""):
             inv["totalGross"] = {"value": row["billed_amount"], "currency": "INR"}
         out.append(inv)
     if _present(row, "insurance_policy_no", "payer_name"):
-        cov: dict[str, Any] = {"resourceType": "Coverage", "status": "active"}
+        cov: dict[str, Any] = {"resourceType": "Coverage", "status": "active",
+                               "beneficiary": _subject(row),
+                               # payor is 1..*: the payer when pulled, else said to be absent.
+                               "payor": [{"display": row.get("payer_name") or NOT_IN_EXTRACT}]}
         if row.get("insurance_policy_no"):
             cov["subscriberId"] = row["insurance_policy_no"]
-        if row.get("payer_name"):
-            cov["payor"] = [{"display": row["payer_name"]}]
         out.append(cov)
     return out
 
@@ -145,7 +174,14 @@ def shape_audit(row: dict[str, Any]) -> list[dict[str, Any]]:
     if not _present(row, "audit_event_id", "event_timestamp", "actor_role", "action",
                     "source_system", "subject_mrn"):
         return []
-    ev: dict[str, Any] = {"resourceType": "AuditEvent"}
+    # type, recorded, agent (with requestor) and source.observer are required in R4.
+    ev: dict[str, Any] = {
+        "resourceType": "AuditEvent",
+        "type": {"system": "http://dicom.nema.org/resources/ontology/DCM", "code": "110110",
+                 "display": "Patient Record"},
+        "source": {"observer": {"display": row.get("source_system") or NOT_IN_EXTRACT}},
+        "agent": [{"requestor": True}],
+    }
     if row.get("audit_event_id"):
         ev["id"] = row["audit_event_id"]
     if row.get("action"):
@@ -153,13 +189,10 @@ def shape_audit(row: dict[str, Any]) -> list[dict[str, Any]]:
             str(row["action"]).lower(), str(row["action"]))
     if row.get("event_timestamp"):
         ev["recorded"] = row["event_timestamp"]
-    if row.get("actor_role") or row.get("source_system"):
-        agent: dict[str, Any] = {}
-        if row.get("actor_role"):
-            agent["role"] = [{"text": row["actor_role"]}]
-        if row.get("source_system"):
-            agent["name"] = row["source_system"]
-        ev["agent"] = [agent]
+    if row.get("actor_role"):
+        ev["agent"][0]["role"] = [{"text": row["actor_role"]}]
+    if row.get("source_system"):
+        ev["agent"][0]["name"] = row["source_system"]
     if row.get("subject_mrn"):
         ev["entity"] = [{"what": {"identifier": {"system": IDENTIFIER_SYSTEM,
                                                   "value": row["subject_mrn"]}}}]
@@ -182,9 +215,17 @@ def shape_fhir(layer: HISLayer, row: dict[str, Any]) -> list[dict[str, Any]]:
     return shaper(row) if shaper else []
 
 
-def bundle(resources: list[dict[str, Any]]) -> dict[str, Any]:
-    return {"resourceType": "Bundle", "type": "collection",
-            "entry": [{"resource": r} for r in resources]}
+def bundle(resources: list[dict[str, Any]], *, namespace: str = "export") -> dict[str, Any]:
+    """A collection Bundle; each entry gets a stable ``urn:uuid`` fullUrl and the resource an id."""
+
+    import uuid
+    entries = []
+    for n, r in enumerate(resources):
+        rid = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{namespace}/{n}"))
+        res = dict(r)
+        res.setdefault("id", rid)
+        entries.append({"fullUrl": f"urn:uuid:{rid}", "resource": res})
+    return {"resourceType": "Bundle", "type": "collection", "entry": entries}
 
 
 __all__ = ["shape_fhir", "bundle", "shape_patient_administration", "shape_clinical",
