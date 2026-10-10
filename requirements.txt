@@ -22,18 +22,13 @@ pytest>=8.0,<9.0
 flask>=3.0,<4.0
 
 # --- Tier 2 headless browser automation ---
-# Installed now so the extraction skeleton can be written; exercised only once
-# credentialed live-HIS access is usable (build step 7, currently blocked).
+# Drives the login-gated fixture portal today (tools/mock_portal); the same code
+# would read a real portal once credentialed access is usable (build step 7).
 playwright>=1.47,<2.0
 
-# --- AI-agent comparison (guide's request, 2026-09-16) ---
-# The benchmark compares our technique against publicly available AI agents
-# (extraction/techniques/ai_agent.py). Each provider's official SDK is imported
-# lazily and needed only to *record* decisions live (scripts/record_ai_agents.py);
-# the demos and tests replay committed recordings and run without any of these.
-anthropic>=0.125
-openai>=1.0
-google-genai>=1.0
+# --- AI-model comparison: provider SDKs live in requirements-record.txt ---
+# They are needed only to *record* decisions (scripts/record_ai_agents.py); the
+# demos and tests replay committed recordings and run without any of them.
 
 # --- review deck builder (tools/build_review_deck.py) ---
 # Fills the mandatory VIT/SENSE template from the benchmark artefacts. Tooling,

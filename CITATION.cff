@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software or its benchmark, please cite it as below."
+title: "DPDP-compliant extraction from hospital information systems: an executable compliance benchmark"
+type: software
+authors:
+  - given-names: Avanindra
+    affiliation: "Vellore Institute of Technology (SENSE)"
+  - given-names: Ananya
+    affiliation: "Vellore Institute of Technology (SENSE)"
+license: MIT
+repository-code: "https://github.com/aysk1209/his-scraping-dpdp-project"
+date-released: 2026-10-26
+version: 1.0.0
+keywords:
+  - DPDP Act 2023
+  - data protection
+  - hospital information systems
+  - data minimisation
+  - LLM evaluation

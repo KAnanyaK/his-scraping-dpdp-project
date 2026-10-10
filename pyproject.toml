@@ -1,0 +1,22 @@
+# Minimal packaging so `pip install -e .` makes the src/ packages importable
+# without sys.path edits. Dependencies stay in requirements*.txt (ranges) and
+# requirements-lock.txt (exact versions); pytest settings stay in pytest.ini.
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "his-dpdp-extraction"
+version = "1.0.0"
+description = "DPDP Act 2023 compliance benchmarking for hospital information system data extraction"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Avanindra" }, { name = "Ananya" }]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["compliance*", "data_synthetic*", "extraction*", "agent*", "interop*"]
+
+[tool.setuptools.package-data]
+"extraction.techniques" = ["recordings/*.json"]

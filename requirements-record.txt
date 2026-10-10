@@ -1,0 +1,9 @@
+# Provider SDKs for recording AI-model decisions (scripts/record_ai_agents.py).
+# Not needed to run the pipeline, the demos or the tests: those replay the
+# committed recordings. Each SDK is imported lazily by
+# src/extraction/techniques/ai_providers.py. Bounded to the major versions the
+# recordings were made with; exact versions are in requirements-record-lock.txt.
+-r requirements.txt
+anthropic>=0.125,<1.0
+openai>=1.0,<4.0
+google-genai>=1.0,<3.0

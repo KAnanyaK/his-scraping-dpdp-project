@@ -73,3 +73,9 @@ Review-* Template.pptx
 
 # staging for the demo portal (tools/build_review_pages.py assembles docs/review/portal.html)
 /build/
+
+# final-review working checklist (local only)
+/REVIEW-CHECKLIST.md
+
+# pseudonymisation keys written beside an export folder (interop.normalise)
+*.keys/
