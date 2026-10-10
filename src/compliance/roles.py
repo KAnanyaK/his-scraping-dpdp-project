@@ -391,7 +391,8 @@ def authorise(
             rule_id="DM-01", provision="DPDP Act 2023 - data minimisation",
             reasons=[
                 f"The action would touch {', '.join(listed)} data, which is not "
-                f"necessary for '{purpose.value}'.",
+                f"necessary for '{purpose.value}' (DM-01 at the gate: category necessity "
+                f"for the role's purpose).",
             ],
             denied_categories=listed,
         )
@@ -407,7 +408,8 @@ def authorise(
             rule_id="SS-01", provision="DPDP Act 2023 - security safeguards",
             reasons=[
                 f"{role.value} does not handle {described} under the "
-                f"interoperability standards; access control declines it.",
+                f"interoperability standards; access control declines it (SS-01 at the gate: "
+                f"role-based access to artefacts, not a run's security posture).",
             ],
             denied_artefacts=outside,
         )

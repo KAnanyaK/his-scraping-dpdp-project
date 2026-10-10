@@ -64,8 +64,48 @@ CHANGES_WORDS = {"what changed", "what has changed", "what s new", "whats new", 
                  "changes", "update notes", "release notes", "what changed in the update"}
 
 
+def stem(word: str) -> str:
+    """A light suffix strip, so "registering", "registered" and "registers" meet "register".
+
+    Deliberately crude and deterministic (the page's engine repeats it
+    character for character): no dictionary, no language model.
+    """
+
+    if len(word) > 5 and word.endswith("ing"):
+        return word[:-3]
+    if len(word) > 4 and word.endswith("ed"):
+        return word[:-2]
+    if len(word) > 4 and word.endswith("ies"):
+        return word[:-3] + "y"
+    if len(word) > 3 and word.endswith("s") and not word.endswith("ss"):
+        return word[:-1]
+    return word
+
+
+def near(a: str, b: str) -> bool:
+    """One typo apart (one letter added, dropped or changed), for words of five letters or more."""
+
+    if a == b:
+        return True
+    if min(len(a), len(b)) < 5 or abs(len(a) - len(b)) > 1:
+        return False
+    if len(a) == len(b):
+        return sum(x != y for x, y in zip(a, b)) == 1
+    short, long_ = (a, b) if len(a) < len(b) else (b, a)
+    i = 0
+    while i < len(short) and short[i] == long_[i]:
+        i += 1
+    return short[i:] == long_[i + 1:]
+
+
 def _tokens(text: str) -> set[str]:
-    return {w for w in _WORD.findall(text.lower()) if w not in _STOPWORDS}
+    return {stem(w) for w in _WORD.findall(text.lower()) if w not in _STOPWORDS}
+
+
+def _overlap(request: set[str], spec: set[str]) -> int:
+    """Request words the function knows -- exactly, or one typo away."""
+
+    return sum(1 for w in request if w in spec or any(near(w, s) for s in spec))
 
 
 def _spec_tokens(spec: FunctionSpec) -> set[str]:
@@ -89,8 +129,10 @@ PHRASE_WEIGHT = 2
 def recognise(text: str) -> list[FunctionSpec]:
     """Functions the request could mean, best first. Empty if nothing overlaps.
 
-    A function scores one per token it shares with the request, plus
+    A function scores one per token it shares with the request -- after a light
+    stem, and allowing one typo in a word of five letters or more -- plus
     ``PHRASE_WEIGHT`` per multi-word name of it the request contains whole.
+    English only: the vocabulary is the registry's labels and synonyms.
     Everything tied with the best score is returned so the caller can ask which
     was meant; a clear winner returns alone.
     """
@@ -100,7 +142,7 @@ def recognise(text: str) -> list[FunctionSpec]:
         return []
     said = f" {normalise(text)} "
     scored = [
-        (len(request & _SPEC_TOKENS[spec.id])
+        (_overlap(request, _SPEC_TOKENS[spec.id])
          + PHRASE_WEIGHT * sum(1 for p in _SPEC_PHRASES[spec.id] if f" {p} " in said), spec)
         for spec in REGISTRY
     ]

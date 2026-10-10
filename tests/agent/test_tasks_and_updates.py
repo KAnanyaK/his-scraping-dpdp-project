@@ -95,7 +95,7 @@ def test_every_group_is_reachable_and_every_function_has_one():
 def test_privacy_requests_belong_to_the_desk_roles_and_never_to_the_ward():
     privacy = [spec for spec in REGISTRY if spec.group == "Privacy requests"]
     assert {s.id for s in privacy} == {"access_request", "erasure_request", "withdraw_consent",
-                                       "privacy_grievance"}
+                                       "privacy_grievance", "correction_request", "nominate_representative"}
     for spec in privacy:
         assert spec.permitted_for(StaffRole.RECEPTION) and spec.permitted_for(StaffRole.ADMINISTRATOR)
         assert not spec.permitted_for(StaffRole.NURSE)
@@ -327,7 +327,8 @@ def test_the_crawler_sees_what_the_unit_tests_assume(layout, aliases):
 
     with BackgroundPortal(MockHISDataSource(records_per_layer=4, seed=5), page_size=2,
                           layout=layout.name) as portal:
-        with PortalBrowser(portal.url, portal.username, portal.password, field_aliases=aliases) as browser:
+        with PortalBrowser(portal.url, portal.username, portal.password, field_aliases=aliases,
+                           authorisation=portal.authorisation) as browser:
             browser.login()
             real = discover(browser)
     assumed = crawled(layout, aliases)

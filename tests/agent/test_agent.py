@@ -227,3 +227,18 @@ def test_guidance_renders_its_own_compliance_footer():
     assert "retain       : no longer than 365 days" in text
     md = replies[-1].guidance.render_markdown()
     assert md.startswith("**How to generate an invoice**")
+
+
+def test_recognition_tolerates_inflection_and_a_typo():
+    from agent.session import recognise
+    for said in ("registering a new patient", "regster a new patient", "register new patients"):
+        assert [s.id for s in recognise(said)][:1] == ["register_patient"], said
+
+
+def test_nomination_and_correction_are_their_own_privacy_requests():
+    from agent.session import recognise
+    from agent.functions import REGISTRY
+    ids = {s.id for s in REGISTRY}
+    assert {"nominate_representative", "correction_request"} <= ids
+    assert [s.id for s in recognise("I want to nominate someone")] == ["nominate_representative"]
+    assert recognise("the allergy on my record is wrong")[0].id == "correction_request"

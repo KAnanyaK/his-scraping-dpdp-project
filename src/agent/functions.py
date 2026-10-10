@@ -177,7 +177,8 @@ REGISTRY: list[FunctionSpec] = [
                  caution="Collect only what registration needs; do not fill optional fields speculatively."),
             Step(text="Read the privacy notice to the patient and tick Notice Acknowledged before saving.",
                  layer=_PA, artefact="fhir:Consent", continues=True,
-                 caution="DPDP transparency / notice -- the acknowledgement is what the compliance rule NT-01 later checks for."),
+                 caution="DPDP transparency / notice -- the acknowledgement is what the compliance rule NT-01 later checks for. "
+                         "For a patient under 18, a parent or guardian hears the notice and acknowledges it (DPDP s.9)."),
             Step(text="Save. The system assigns the {label.mrn}; read it back to the patient and "
                       "note it on their slip.",
                  layer=_PA, artefact="hl7:ADT", fields=["mrn"], continues=True),
@@ -418,6 +419,60 @@ REGISTRY: list[FunctionSpec] = [
                       "they may take it to the Data Protection Board.",
                  layer=_PA, artefact="fhir:Task", offscreen=True,
                  caution="DPDP grievance redressal: the hospital's own process comes first, then the Board."),
+        ],
+    ),
+    FunctionSpec(
+        id="correction_request",
+        label="log a patient's request to correct their record",
+        group=PRIVACY,
+        synonyms=["my record is wrong", "wrong diagnosis on my record", "incorrect information",
+                  "dispute my record", "inaccurate record", "right to correction", "complete my record"],
+        purpose=_REG,
+        artefacts={"fhir:Patient", "fhir:Task"},
+        inputs=[
+            _MRN,
+            InputSlot(name="what", prompt="What does the patient say is wrong or missing, in their words?",
+                      example="the allergy listed is not mine", category=_AD),
+        ],
+        steps=[
+            _open_record(_PA, "fhir:Patient"),
+            _confirm_identity(),
+            Step(text="Press {button} and log a correction request: today's date, the {label.mrn} "
+                      "and what the patient says, as they put it: {what}.",
+                 layer=_PA, artefact="fhir:Task", fields=["mrn"], action="privacy_request"),
+            Step(text="Tell the patient the request goes to the data-protection contact, who has the "
+                      "record checked with the clinician who made it. Change nothing yourself -- "
+                      "contact details are \"update or correct a patient's details\"; anything clinical "
+                      "is corrected only by the clinical team.",
+                 layer=_PA, artefact="fhir:Task", offscreen=True,
+                 caution="DPDP right to correction, completion and updating: the hospital answers it; "
+                         "a clinical record is corrected by its author, never at the desk."),
+        ],
+    ),
+    FunctionSpec(
+        id="nominate_representative",
+        label="record a patient's nominee for their data rights",
+        group=PRIVACY,
+        synonyms=["nominate someone", "nominee", "nomination", "if I die", "if I am unable",
+                  "someone to act for me", "right to nominate"],
+        purpose=_REG,
+        artefacts={"fhir:Patient", "fhir:Task"},
+        inputs=[
+            _MRN,
+            InputSlot(name="nominee", prompt="Who is the patient nominating, and how are they related?",
+                      example="spouse, Anil Raman", category=_AD),
+        ],
+        steps=[
+            _open_record(_PA, "fhir:Patient"),
+            _confirm_identity("Only the patient can nominate; a relative cannot nominate on their behalf."),
+            Step(text="Press {button} and log a nomination: today's date, the {label.mrn} and the "
+                      "nominee as the patient gives it: {nominee}.",
+                 layer=_PA, artefact="fhir:Task", fields=["mrn"], action="privacy_request"),
+            Step(text="Tell the patient the nominee can exercise their data rights only if they die "
+                      "or become unable to, and that they can change the nominee at any time.",
+                 layer=_PA, artefact="fhir:Task", offscreen=True,
+                 caution="DPDP right to nominate: a nominee acts for the patient's data rights only in "
+                         "death or incapacity -- not a next-of-kin record, and not consent to treatment."),
         ],
     ),
     # ========================================================= ward care

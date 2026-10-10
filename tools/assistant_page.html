@@ -170,7 +170,7 @@
   <div class="top">
     <div>
       <h1>Staff assistant</h1>
-      <p class="sub">Say what you need to do. You get the steps for your role, or who can do it instead.</p>
+      <p class="sub">Say what you need to do. You get the steps for your role, or who can do it instead. It works by rules, not a language model, so it cannot invent a step.</p>
     </div>
     <div class="tools">
       <button id="bigger" title="Larger text for a projector">A+</button>
@@ -239,12 +239,28 @@
   const SPEC = Object.fromEntries(Object.entries(D.tokens).map(([k, v]) => [k, new Set(v)]));
   const words = (t) => t.toLowerCase().match(/[a-z0-9]+/g) || [];
   const norm = (t) => words(t).join(" ");
-  const tokens = (t) => new Set(words(t).filter((w) => !STOP.has(w)));
+  const stem = (w) => {
+    if (w.length > 5 && w.endsWith("ing")) return w.slice(0, -3);
+    if (w.length > 4 && w.endsWith("ed")) return w.slice(0, -2);
+    if (w.length > 4 && w.endsWith("ies")) return w.slice(0, -3) + "y";
+    if (w.length > 3 && w.endsWith("s") && !w.endsWith("ss")) return w.slice(0, -1);
+    return w;
+  };
+  const near = (a, b) => {
+    if (a === b) return true;
+    if (Math.min(a.length, b.length) < 5 || Math.abs(a.length - b.length) > 1) return false;
+    if (a.length === b.length) { let d = 0; for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) d++; return d === 1; }
+    const [s, l] = a.length < b.length ? [a, b] : [b, a];
+    let i = 0;
+    while (i < s.length && s[i] === l[i]) i++;
+    return s.slice(i) === l.slice(i + 1);
+  };
+  const tokens = (t) => new Set(words(t).filter((w) => !STOP.has(w)).map(stem));
   function recognise(text) {
     const req = [...tokens(text)];
     if (!req.length) return [];
     const said = ` ${norm(text)} `;
-    const scored = D.order.map((id) => [req.filter((w) => SPEC[id].has(w)).length
+    const scored = D.order.map((id) => [req.filter((w) => SPEC[id].has(w) || [...SPEC[id]].some((s) => near(w, s))).length
       + D.phraseWeight * D.phrases[id].filter((p) => said.includes(` ${p} `)).length, id]);
     const best = Math.max(...scored.map((s) => s[0]));
     if (best === 0) return [];
@@ -615,6 +631,6 @@
   if (matchMedia("(max-width: 900px)").matches) $("tasks").open = false;
   setRole(role); paintTech(); lock(false);
   document.body.dataset.ready = "1";
-  $("foot").innerHTML = `Built by <code>tools/build_assistant_page.py</code> from <code>src/agent/</code> and the portal's navigation map · checked against ${D.vectors.length} recorded Python conversations on every open`;
+  $("foot").innerHTML = `<details><summary>How this page was built</summary><p>Built by <code>tools/build_assistant_page.py</code> from <code>src/agent/</code> and the portal's navigation map · checked against ${D.vectors.length} recorded Python conversations on every open</p><p>Rules, not a language model, by design: it can only give steps it was written with, so it cannot invent one. English only; it tolerates a typo and word endings.${D.screensAsOf ? ` Steps worded from the portal as crawled on ${esc(D.screensAsOf)} (layout v1).` : ""}</p></details>`;
 })();
 </script>
