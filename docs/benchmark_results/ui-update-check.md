@@ -1,6 +1,6 @@
 <!-- Written by scripts/check_ui_update.py: layout v1 against v2 of the fixture portal. -->
 
-### HIS update check — screens of 2026-10-05 against 2026-10-05
+### HIS update check — screens of 2026-10-10 against 2026-10-10
 
 **Modules**
 
@@ -57,9 +57,9 @@
 
 | Role | Tasks | Unchanged | Re-worded | Withheld |
 |---|---|---|---|---|
-| reception | 11 | 0 | 11 | 0 |
+| reception | 13 | 0 | 13 | 0 |
 | nurse | 10 | 0 | 10 | 0 |
-| administrator | 16 | 0 | 12 | 4 |
+| administrator | 18 | 0 | 14 | 4 |
 
 **Withheld until confirmed**
 
@@ -73,6 +73,6 @@
 
 | Role | Tasks | Unchanged | Re-worded | Withheld |
 |---|---|---|---|---|
-| reception | 11 | 0 | 11 | 0 |
+| reception | 13 | 0 | 13 | 0 |
 | nurse | 10 | 0 | 10 | 0 |
-| administrator | 16 | 0 | 16 | 0 |
+| administrator | 18 | 0 | 18 | 0 |

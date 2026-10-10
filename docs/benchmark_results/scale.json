@@ -4,19 +4,19 @@
       "records": 20,
       "page_size": 10,
       "discovery_loads": 11,
-      "seconds": 90.8,
+      "seconds": 55.5,
       "ours": {
         "score": 1.0,
-        "page_loads": 32,
-        "ms": 6161,
+        "page_loads": 33,
+        "ms": 5023,
         "record_excess": 1.0,
         "coverage": 1.0
       },
       "baseline": {
-        "score": 0.114,
+        "score": 0.042,
         "page_loads": 440,
-        "ms": 68337,
-        "record_excess": 50.0,
+        "ms": 40559,
+        "record_excess": 33.333,
         "coverage": 1.0
       }
     },
@@ -24,19 +24,19 @@
       "records": 40,
       "page_size": 10,
       "discovery_loads": 11,
-      "seconds": 172.8,
+      "seconds": 124.8,
       "ours": {
         "score": 1.0,
-        "page_loads": 58,
-        "ms": 11856,
+        "page_loads": 59,
+        "ms": 5808,
         "record_excess": 1.0,
         "coverage": 1.0
       },
       "baseline": {
-        "score": 0.114,
+        "score": 0.042,
         "page_loads": 880,
-        "ms": 150623,
-        "record_excess": 100.0,
+        "ms": 112426,
+        "record_excess": 66.667,
         "coverage": 1.0
       }
     },
@@ -44,19 +44,19 @@
       "records": 80,
       "page_size": 10,
       "discovery_loads": 11,
-      "seconds": 231.8,
+      "seconds": 344.5,
       "ours": {
         "score": 1.0,
-        "page_loads": 110,
-        "ms": 23525,
+        "page_loads": 111,
+        "ms": 23661,
         "record_excess": 1.0,
         "coverage": 1.0
       },
       "baseline": {
-        "score": 0.114,
+        "score": 0.042,
         "page_loads": 1760,
-        "ms": 198256,
-        "record_excess": 200.0,
+        "ms": 310142,
+        "record_excess": 133.333,
         "coverage": 1.0
       }
     },
@@ -64,19 +64,19 @@
       "records": 160,
       "page_size": 10,
       "discovery_loads": 11,
-      "seconds": 562.2,
+      "seconds": 758.6,
       "ours": {
         "score": 1.0,
-        "page_loads": 214,
-        "ms": 40075,
+        "page_loads": 215,
+        "ms": 44558,
         "record_excess": 1.0,
         "coverage": 1.0
       },
       "baseline": {
-        "score": 0.113,
+        "score": 0.042,
         "page_loads": 3520,
-        "ms": 515233,
-        "record_excess": 400.0,
+        "ms": 703424,
+        "record_excess": 266.667,
         "coverage": 1.0
       }
     }

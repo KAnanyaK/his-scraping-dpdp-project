@@ -1,6 +1,6 @@
 ### Navigation map
 
-Discovered by the browser in 11 page loads, starting from the home page after login. The HIS layer of each module is **inferred from the field names found on its pages**, matched against the field catalogue -- never from the URL. Confidence is the share of the fields seen that the inferred layer's catalogue explains.
+Discovered by the browser in 11 page loads after signing in (the two sign-in loads are not counted here). The HIS layer of each module is **inferred from the field names found on its pages** (after any label mapping), matched against the field catalogue -- not from the URL or the module's name. Confidence is the share of the fields seen that the inferred layer's catalogue explains.
 
 | Module | Path | Pages | Records | Inferred layer | Confidence |
 |---|---|---|---|---|---|
@@ -20,4 +20,4 @@ Discovered by the browser in 11 page loads, starting from the home page after lo
 | Billing & Accounts | `mrn`, `invoice_id`, `billed_amount`, `payer_name` | `insurance_policy_no` |
 | Audit Log | `audit_event_id`, `event_timestamp`, `actor_role`, `action` | `source_system`, `subject_mrn` |
 
-*Discovered 2026-10-06.*
+*Discovered 2026-10-10.*

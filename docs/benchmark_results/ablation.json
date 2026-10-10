@@ -16,25 +16,25 @@
       "technique": "ours without scope",
       "without": "scope",
       "serves": "data minimisation (records)",
-      "score": 0.948,
+      "score": 0.896,
       "rules_lost": {
-        "DM-01": 0.63
+        "DM-01": 0.27
       },
       "excess": 1.0,
-      "record_excess": 50.0,
+      "record_excess": 34.375,
       "coverage": 1.0,
-      "traps": "0/4",
+      "traps": "4/4",
       "leaked": "0/50"
     },
     {
       "technique": "ours without field list",
       "without": "field_list",
       "serves": "data minimisation (fields)",
-      "score": 0.988,
+      "score": 0.947,
       "rules_lost": {
-        "DM-01": 0.91
+        "DM-01": 0.62
       },
-      "excess": 3.43,
+      "excess": 2.93,
       "record_excess": 1.0,
       "coverage": 1.0,
       "traps": "1/4",
@@ -67,7 +67,7 @@
       "excess": 1.0,
       "record_excess": 1.0,
       "coverage": 1.0,
-      "traps": "4/4",
+      "traps": "0/4",
       "leaked": "0/1"
     },
     {
@@ -88,18 +88,18 @@
       "technique": "unconstrained (baseline)",
       "without": null,
       "serves": "--",
-      "score": 0.1,
+      "score": 0.041,
       "rules_lost": {
+        "DM-01": 0.0,
         "LB-01": 0.0,
         "SL-01": 0.0,
         "PL-01": 0.0,
         "NT-01": 0.0,
         "AC-01": 0.0,
-        "SS-01": 0.28,
-        "DM-01": 0.42
+        "SS-01": 0.28
       },
-      "excess": 7.77,
-      "record_excess": 136.364,
+      "excess": 6.63,
+      "record_excess": 93.75,
       "coverage": 1.0,
       "traps": "0/4",
       "leaked": "150/150"

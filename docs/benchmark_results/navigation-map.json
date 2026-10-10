@@ -1,12 +1,12 @@
 {
-  "base_url": "https://127.0.0.1:61078",
-  "discovered_at": "2026-10-06T12:10:54.296464Z",
+  "base_url": "https://127.0.0.1:57647",
+  "discovered_at": "2026-10-10T15:01:07.909243Z",
   "login_path": "/login",
   "page_loads": 11,
   "modules": [
     {
       "title": "Patient Registration",
-      "list_url": "https://127.0.0.1:61078/m/registration/",
+      "list_url": "https://127.0.0.1:57647/m/registration/",
       "list_path": "/m/registration/",
       "columns": [
         "mrn",
@@ -47,11 +47,13 @@
         "Discharge",
         "Record consent withdrawal",
         "Log privacy request"
-      ]
+      ],
+      "search_url": "https://127.0.0.1:57647/m/registration/",
+      "search_param": "q"
     },
     {
       "title": "Clinical Records",
-      "list_url": "https://127.0.0.1:61078/m/clinical/",
+      "list_url": "https://127.0.0.1:57647/m/clinical/",
       "list_path": "/m/clinical/",
       "columns": [
         "mrn",
@@ -78,11 +80,13 @@
         "Record dose given",
         "Add allergy",
         "Ready for discharge"
-      ]
+      ],
+      "search_url": "https://127.0.0.1:57647/m/clinical/",
+      "search_param": "q"
     },
     {
       "title": "Departmental Orders",
-      "list_url": "https://127.0.0.1:61078/m/departments/",
+      "list_url": "https://127.0.0.1:57647/m/departments/",
       "list_path": "/m/departments/",
       "columns": [
         "mrn",
@@ -108,11 +112,13 @@
       ],
       "record_controls": [
         "Record observation"
-      ]
+      ],
+      "search_url": "https://127.0.0.1:57647/m/departments/",
+      "search_param": "q"
     },
     {
       "title": "Billing & Accounts",
-      "list_url": "https://127.0.0.1:61078/m/billing/",
+      "list_url": "https://127.0.0.1:57647/m/billing/",
       "list_path": "/m/billing/",
       "columns": [
         "mrn",
@@ -140,11 +146,13 @@
         "Post charge",
         "Generate invoice",
         "Record settlement"
-      ]
+      ],
+      "search_url": "https://127.0.0.1:57647/m/billing/",
+      "search_param": "q"
     },
     {
       "title": "Audit Log",
-      "list_url": "https://127.0.0.1:61078/m/integration/",
+      "list_url": "https://127.0.0.1:57647/m/integration/",
       "list_path": "/m/integration/",
       "columns": [
         "audit_event_id",
@@ -166,7 +174,9 @@
       "layer_confidence": 1.0,
       "labels": {},
       "list_controls": [],
-      "record_controls": []
+      "record_controls": [],
+      "search_url": "https://127.0.0.1:57647/m/integration/",
+      "search_param": "q"
     }
   ]
 }
