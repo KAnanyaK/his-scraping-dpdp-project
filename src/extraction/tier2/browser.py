@@ -9,8 +9,11 @@ page the browser loads, because that is the cost.
 
 Nothing here knows the portal is ours. It uses generic selectors -- ``table``,
 ``thead th``, ``tbody tr``, ``a`` -- and text, not ids or data attributes, so it
-transfers to a real portal as a change of selectors and credentials rather than of
-approach.
+transfers to a real server-rendered portal as a change of selectors and
+credentials rather than of approach. It does not handle what the fixture does not
+have: client-rendered (SPA) grids, virtualised scrolling, iframes, session
+timeouts, lockout or MFA -- a portal built that way needs a different reading
+strategy, not just new selectors.
 """
 
 from __future__ import annotations
@@ -28,6 +31,10 @@ _RECORDS = re.compile(r"(\d+)\s+records?\b", re.IGNORECASE)
 
 class LoginFailed(RuntimeError):
     pass
+
+
+class AccessNotAuthorised(RuntimeError):
+    """robots.txt disallows automated access and no authorisation reference was given."""
 
 
 @dataclass
@@ -56,7 +63,16 @@ class PortalBrowser:
     # ``mrn``; this is where that portal-specific knowledge lives. Matching is
     # case- and whitespace-insensitive; unmapped headers pass through unchanged.
     field_aliases: dict[str, str] = field(default_factory=dict)
+    # The reference under which automated access is authorised (the register's
+    # AUTH-RPA control). A portal whose robots.txt disallows automated access
+    # is not entered without one.
+    authorisation: str | None = None
     page_loads: int = 0
+    # The TLS session of the first secure page, as the browser saw it
+    # (protocol, issuer, subject, validity) -- observed, not configured.
+    security: dict[str, Any] | None = None
+    certificate_verified: bool = True
+    robots_txt: str = ""
     _pw: Playwright | None = field(default=None, repr=False)
     _browser: Browser | None = field(default=None, repr=False)
     _context: BrowserContext | None = field(default=None, repr=False)
@@ -79,8 +95,36 @@ class PortalBrowser:
         # would for a real portal.
         host = urlsplit(self.base_url).hostname or ""
         loopback = host in ("127.0.0.1", "localhost", "::1")
+        self.certificate_verified = not loopback
         self._context = self._browser.new_context(ignore_https_errors=loopback)
         self._page = self._context.new_page()
+
+    # ------------------------------------------------------------------ robots
+
+    def read_robots(self) -> str:
+        """Fetch the portal's robots.txt (a request, not a page a person loads)."""
+
+        try:
+            response = self._context.request.get(urljoin(self.base_url, "/robots.txt"))
+            self.robots_txt = response.text() if response.ok else ""
+        except Exception:                      # no robots.txt is not a refusal
+            self.robots_txt = ""
+        return self.robots_txt
+
+    def robots_disallow_all(self) -> bool:
+        """True when robots.txt shuts every user agent out of the whole site."""
+
+        agent_all = False
+        for raw in self.robots_txt.splitlines():
+            line = raw.split("#", 1)[0].strip()
+            if not line or ":" not in line:
+                continue
+            key, value = (p.strip() for p in line.split(":", 1))
+            if key.lower() == "user-agent":
+                agent_all = value == "*"
+            elif key.lower() == "disallow" and agent_all and value == "/":
+                return True
+        return False
 
     def close(self) -> None:
         for closer in (self._context, self._browser):
@@ -109,13 +153,30 @@ class PortalBrowser:
     def goto(self, url: str) -> Page:
         """Load a URL (absolute or portal-relative) and count it."""
 
-        self.page.goto(urljoin(self.base_url, url), wait_until="domcontentloaded")
+        response = self.page.goto(urljoin(self.base_url, url), wait_until="domcontentloaded")
         self.page_loads += 1
+        if self.security is None and response is not None and response.url.lower().startswith("https://"):
+            try:
+                self.security = response.security_details() or None
+            except Exception:
+                self.security = None
         return self.page
 
     def login(self, login_path: str = "/login") -> None:
-        """Submit the login form the way a person would; the browser carries the token."""
+        """Submit the login form the way a person would; the browser carries the token.
 
+        robots.txt is read first. A portal that disallows automated access is
+        entered only under a recorded authorisation (``authorisation``); without
+        one the browser stops here. # DPDP Act 2023 -- accountability (and the
+        IT Act's bar on access without the owner's permission): automated
+        access rests on a documented authority, not on holding a password.
+        """
+
+        self.read_robots()
+        if self.robots_disallow_all() and not self.authorisation:
+            raise AccessNotAuthorised(
+                f"{self.base_url} disallows automated access in robots.txt and no access authorisation was "
+                f"given; pass the hospital's authorisation reference (the register's AUTH-RPA control)")
         self.goto(login_path)
         page = self.page
         page.fill("input[name='username']", self.username)
@@ -212,6 +273,26 @@ class PortalBrowser:
                 .map(e => (e.innerText || e.value || "").trim())""",
         )
         return [" ".join(label.split()) for label in labels if label and label.strip()]
+
+    def search_form(self) -> tuple[str, str] | None:
+        """The current page's search form as (action URL, text-input name), if it has one.
+
+        Read from the page, the way a browser builds the request when a person
+        types and presses Enter on a GET form -- the parameter name is the
+        portal's, never assumed.
+        """
+
+        found = self.page.eval_on_selector_all(
+            "main form",
+            """forms => forms
+                .filter(f => (f.method || "get").toLowerCase() === "get")
+                .map(f => [f.getAttribute("action") || "", (f.querySelector("input[type=text], input[type=search]") || {}).name || ""])
+                .filter(([, name]) => name)""",
+        )
+        if not found:
+            return None
+        action, name = found[0]
+        return urljoin(self.page.url, action or self.page.url), name
 
     def iter_table_pages(self, first_url: str, *, max_pages: int | None = None):
         """Yield every list page from ``first_url``, following "Next" until it stops."""

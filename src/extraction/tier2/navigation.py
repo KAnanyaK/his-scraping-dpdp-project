@@ -1,6 +1,6 @@
 """Discover a portal's structure by crawling it, then work out what it holds.
 
-The scraper is never told how the portal is laid out. From the home page it
+The scraper is told only how to sign in. From the home page it
 follows the module links it finds; on each module it reads the table's column
 names, the page count, and one detail record to learn the fields the list does
 not show. That is the **navigation map**.
@@ -9,9 +9,13 @@ Then it infers, for each module, which HIS layer it is -- by matching the field
 names it saw against the field catalogue and taking the layer with the most
 overlap. The portal's URL says ``/m/registration/``; the scraper concludes
 "patient administration" from the fact that the fields are ``mrn``,
-``full_name``, ``date_of_birth``. Content, not labels. This is the answer to the
-Review-1 panel's heterogeneity question expressed as code: point it at a portal
-with different names and the map re-derives itself.
+``full_name``, ``date_of_birth``. Field identity, not the URL or the module's
+name -- *after* label mapping: the benchmarked layout shows catalogue names as
+headers, which makes that step near-trivial there; a real portal shows display
+labels ("UHID", "Patient Name"), and the alias file that maps them
+(``field_aliases``) is the one piece of portal-specific knowledge the crawler is
+given. With it, point the crawler at a portal with different names and the map
+re-derives itself (``layouts.V2`` is that case).
 
 The map has two consumers. ``PortalHISDataSource`` uses it to know where a layer's
 records live and which fields need a detail page. The staff-guidance agent uses
@@ -53,6 +57,10 @@ class ModuleMap(BaseModel):
     labels: dict[str, str] = Field(default_factory=dict)
     list_controls: list[str] = Field(default_factory=list)
     record_controls: list[str] = Field(default_factory=list)
+    # The list page's own search form, as read from the page: where it submits
+    # and the name of its text box. A scoped pull uses it as the form would.
+    search_url: str = ""
+    search_param: str = ""
 
     def all_fields(self) -> list[str]:
         seen: list[str] = []
@@ -142,11 +150,12 @@ class NavigationMap(BaseModel):
         lines = [
             "### Navigation map",
             "",
-            f"Discovered by the browser in {self.page_loads} page loads, starting from "
-            f"the home page after login. The HIS layer of each module is **inferred "
-            f"from the field names found on its pages**, matched against the field "
-            f"catalogue -- never from the URL. Confidence is the share of the fields "
-            f"seen that the inferred layer's catalogue explains.",
+            f"Discovered by the browser in {self.page_loads} page loads after signing in "
+            f"(the two sign-in loads are not counted here). The HIS layer of each module "
+            f"is **inferred from the field names found on its pages** (after any label "
+            f"mapping), matched against the field catalogue -- not from the URL or the "
+            f"module's name. Confidence is the share of the fields seen that the "
+            f"inferred layer's catalogue explains.",
             "",
             "| Module | Path | Pages | Records | Inferred layer | Confidence |",
             "|---|---|---|---|---|---|",
@@ -209,6 +218,7 @@ def discover(browser: PortalBrowser, *, home_path: str = "/") -> NavigationMap:
 
         labels = {name: shown for shown, name in zip(table.headers, table.columns) if shown != name}
         list_controls = browser.controls()
+        search = browser.search_form()
         detail_fields: list[str] = []
         record_controls: list[str] = []
         first_link = next((l for l in table.row_links if l), None)
@@ -236,6 +246,8 @@ def discover(browser: PortalBrowser, *, home_path: str = "/") -> NavigationMap:
                 labels=labels,
                 list_controls=list_controls,
                 record_controls=record_controls,
+                search_url=search[0] if search else "",
+                search_param=search[1] if search else "",
             )
         )
 

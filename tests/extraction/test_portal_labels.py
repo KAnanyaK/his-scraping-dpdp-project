@@ -32,7 +32,8 @@ def labelled_portal():
 
 
 def test_without_aliases_the_labelled_module_is_not_understood(labelled_portal):
-    src = PortalHISDataSource(labelled_portal.url, labelled_portal.username, labelled_portal.password)
+    src = PortalHISDataSource(labelled_portal.url, labelled_portal.username, labelled_portal.password,
+                              authorisation=labelled_portal.authorisation)
     try:
         module = next(m for m in src.navigation.modules if m.list_path == "/m/registration/")
         # Six of ten headers are display labels the catalogue does not know.
@@ -45,7 +46,7 @@ def test_without_aliases_the_labelled_module_is_not_understood(labelled_portal):
 def test_with_aliases_the_same_portal_is_fully_understood(labelled_portal):
     src = PortalHISDataSource(
         labelled_portal.url, labelled_portal.username, labelled_portal.password,
-        field_aliases=ALIASES,
+        field_aliases=ALIASES, authorisation=labelled_portal.authorisation,
     )
     try:
         module = src.navigation.module_for(HISLayer.PATIENT_ADMINISTRATION)

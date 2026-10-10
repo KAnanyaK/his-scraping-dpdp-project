@@ -27,7 +27,7 @@ pytestmark = pytest.mark.usefixtures("browser_available")
 
 @pytest.fixture(scope="module")
 def scraper(portal):
-    source = PortalHISDataSource(portal.url, portal.username, portal.password)
+    source = PortalHISDataSource(portal.url, portal.username, portal.password, authorisation=portal.authorisation)
     yield source
     source.close()
 
@@ -35,7 +35,7 @@ def scraper(portal):
 # --- login is real -----------------------------------------------------------
 
 def test_wrong_password_is_refused_by_the_portal(portal):
-    with PortalBrowser(portal.url, portal.username, "wrong") as browser:
+    with PortalBrowser(portal.url, portal.username, "wrong", authorisation=portal.authorisation) as browser:
         with pytest.raises(LoginFailed):
             browser.login()
 
@@ -195,7 +195,7 @@ def test_transport_is_observed_from_the_connection_not_declared(scraper, portal)
     plain = BackgroundPortal(MockHISDataSource(records_per_layer=1), tls=False)
     assert plain.url.startswith("http://")
     unopened = PortalHISDataSource.__new__(PortalHISDataSource)
-    unopened._browser = SimpleNamespace(base_url=plain.url)
+    unopened._browser = SimpleNamespace(base_url=plain.url, security=None, certificate_verified=True)
     assert unopened.transport_secure is False
 
 
@@ -212,7 +212,7 @@ def test_a_scoped_fetch_uses_the_search_box_and_costs_one_page(scraper, portal):
     assert subject and subject.startswith("MRN")
     before = scraper.page_loads
     rows = list(scraper.fetch(HISLayer.CLINICAL_EHR, fields=["mrn", "primary_diagnosis"], where={"mrn": subject}))
-    assert [r["mrn"] for r in rows] == [subject]
+    assert rows and {r["mrn"] for r in rows} == {subject}  # every encounter of this patient, no one else's
     assert scraper.page_loads - before == 1                 # the search result page, nothing else
 
     task = ExtractionTask(
@@ -224,7 +224,34 @@ def test_a_scoped_fetch_uses_the_search_box_and_costs_one_page(scraper, portal):
     before = scraper.page_loads
     ours = CompliantExtractionTechnique().extract(scraper, task)
     ours_pages = scraper.page_loads - before
-    assert len(ours.records) == 2 and ours_pages == 2
+    assert len(ours.records) == 1 + len(rows) and ours_pages == 2
     before = scraper.page_loads
     UnconstrainedExtractionTechnique().extract(scraper, task)
     assert scraper.page_loads - before > ours_pages * 3       # every page of every module
+
+
+def test_the_tls_session_is_observed_from_the_browser(scraper):
+    # Not the configured scheme: the protocol the browser negotiated, and an
+    # honest note that the fixture's self-signed certificate was not verified.
+    assert scraper._browser.security and scraper._browser.security["protocol"].startswith("TLS")
+    assert "observed" in scraper.transport_note and "not verified" in scraper.transport_note
+
+
+def test_a_portal_that_disallows_robots_is_not_entered_without_an_authorisation(portal, scraper):
+    from extraction.tier2.browser import AccessNotAuthorised
+    # Without a reference the browser stops before the login page (no second
+    # browser needed to show it: robots.txt is read first).
+    unauthorised = PortalBrowser(portal.url, portal.username, portal.password)
+    unauthorised.read_robots = lambda: setattr(unauthorised, "robots_txt", "User-agent: *\nDisallow: /\n")
+    with pytest.raises(AccessNotAuthorised):
+        unauthorised.login()
+    assert unauthorised.page_loads == 0
+    # With one it is: the module's scraper signed in under the register's reference.
+    assert scraper._browser.robots_disallow_all() and scraper.authorisation == portal.authorisation
+
+
+def test_the_search_uses_the_form_the_page_offers(scraper):
+    # The crawl read each list page's own search form: where it submits, and
+    # its text box's name -- the scraper never assumes a parameter.
+    module = scraper.navigation.module_for(HISLayer.CLINICAL_EHR)
+    assert module.search_param == "q" and module.search_url.endswith(module.list_path)

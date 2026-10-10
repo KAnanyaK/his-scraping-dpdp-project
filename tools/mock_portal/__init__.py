@@ -46,7 +46,7 @@ from flask import (
 )
 
 from extraction.base import HISDataSource
-from interop.layers import LAYER_DESCRIPTIONS, HISLayer
+from interop.layers import HISLayer
 from tools.mock_portal.layouts import LAYOUTS, V1, ModuleLayout, PortalLayout
 
 # Columns shown on the list page, per layer, in the default layout. Everything
@@ -62,7 +62,28 @@ LIST_COLUMNS: dict[HISLayer, list[str]] = {m.layer: list(m.list_columns) for m i
 MODULE_SLUGS: dict[HISLayer, str] = {m.layer: m.slug for m in V1.modules}
 MODULE_TITLES: dict[HISLayer, str] = {m.layer: m.title for m in V1.modules}
 
-DEFAULT_USERS = {"frontdesk": "letmein"}
+# Accounts, as the hospital's portal administrator would set them up. The first
+# is the service account the hospital authorised for automated extraction (the
+# register's AUTH-RPA control): it reads every module, for the authorised
+# purposes, and the harness records that authority with every run. The others
+# are staff accounts, each limited to the modules its role works in -- the
+# portal's own access control, matching the roles the staff assistant serves.
+DEFAULT_USERS = {"extraction": "svc-dpdp-2026", "frontdesk": "letmein", "nurse": "ward-round", "accounts": "settle-up"}
+DEFAULT_ACCESS: dict[str, set[HISLayer] | None] = {
+    "extraction": None,                                                     # every module
+    "frontdesk": {HISLayer.PATIENT_ADMINISTRATION},
+    "nurse": {HISLayer.PATIENT_ADMINISTRATION, HISLayer.CLINICAL_EHR, HISLayer.ANCILLARY_DEPARTMENTAL},
+    "accounts": {HISLayer.PATIENT_ADMINISTRATION, HISLayer.ADMINISTRATIVE_FINANCIAL},
+}
+# What the home page says about each module: a portal's own words, not our
+# five-layer vocabulary (the scraper must not be handed that for free).
+MODULE_BLURBS: dict[HISLayer, str] = {
+    HISLayer.PATIENT_ADMINISTRATION: "Register patients; admit, transfer and discharge.",
+    HISLayer.CLINICAL_EHR: "Visits, problems, prescriptions and allergies.",
+    HISLayer.ANCILLARY_DEPARTMENTAL: "Lab and radiology orders and their results.",
+    HISLayer.ADMINISTRATIVE_FINANCIAL: "Invoices, payments and payer details.",
+    HISLayer.INFRASTRUCTURE_INTEGRATION: "Who opened which record, and when.",
+}
 
 
 def create_app(
@@ -74,6 +95,7 @@ def create_app(
     secret_key: str | None = None,
     labels: dict[str, str] | None = None,
     layout: str | PortalLayout = "v1",
+    access: dict[str, set[HISLayer] | None] | None = None,
 ) -> Flask:
     """Build the portal over ``source``. Records are snapshotted at creation.
 
@@ -96,6 +118,8 @@ def create_app(
         USERS=dict(users or DEFAULT_USERS),
         LABELS={**layout.labels, **(labels or {})},
         LAYOUT=layout,
+        # Which modules (by layer) each account may open; an account not listed sees everything.
+        ACCESS=dict(DEFAULT_ACCESS if access is None else access),
     )
 
     # Snapshot: one pass through the adapter, then in-memory pages.
@@ -117,10 +141,16 @@ def create_app(
             return view(*args, **kwargs)
         return wrapped
 
+    def visible(module: ModuleLayout) -> bool:
+        allowed = app.config["ACCESS"].get(session.get("user"))
+        return allowed is None or module.layer in allowed
+
     def module_or_404(slug: str) -> ModuleLayout:
         module = by_slug.get(slug)
         if module is None:
             abort(404)
+        if not visible(module):
+            abort(403)                       # the account's role does not work in this module
         return module
 
     @app.before_request
@@ -134,7 +164,7 @@ def create_app(
     def _inject():
         labels = app.config["LABELS"]
         return {
-            "modules": [(m.slug, m.title) for m in app.config["MODULES"]],
+            "modules": [(m.slug, m.title) for m in app.config["MODULES"] if visible(m)],
             "user": session.get("user"),
             "label": lambda name: labels.get(name, name),
         }
@@ -175,8 +205,8 @@ def create_app(
     @login_required
     def home():
         cards = [
-            (m.slug, m.title, LAYER_DESCRIPTIONS[m.layer], len(data[m.layer]))
-            for m in app.config["MODULES"]
+            (m.slug, m.title, MODULE_BLURBS.get(m.layer, ""), len(data[m.layer]))
+            for m in app.config["MODULES"] if visible(m)
         ]
         return render_template("home.html", cards=cards)
 
@@ -249,5 +279,5 @@ def create_app(
 
 
 __all__ = [
-    "create_app", "DEFAULT_USERS", "LIST_COLUMNS", "MODULE_SLUGS", "MODULE_TITLES", "LAYOUTS",
+    "create_app", "DEFAULT_USERS", "DEFAULT_ACCESS", "MODULE_BLURBS", "LIST_COLUMNS", "MODULE_SLUGS", "MODULE_TITLES", "LAYOUTS",
 ]

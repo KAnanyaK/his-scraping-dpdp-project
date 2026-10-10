@@ -53,14 +53,23 @@ class PortalHISDataSource(HISDataSource):
         headless: bool = True,
         max_records: int | None = None,
         field_aliases: dict[str, str] | None = None,
+        authorisation: str | None = None,
     ) -> None:
         self._browser = PortalBrowser(
             base_url, username, password, headless=headless,
-            field_aliases=dict(field_aliases or {}),
+            field_aliases=dict(field_aliases or {}), authorisation=authorisation,
         )
+        # Recorded with every run by the harness (compliance.audit): the account
+        # and the authority automated access rests on.
+        self.account = username
+        self.authorisation = authorisation or ""
         self._browser.open()
-        self._browser.login()
-        self.navigation = navigation or discover(self._browser)
+        try:
+            self._browser.login()
+            self.navigation = navigation or discover(self._browser)
+        except BaseException:
+            self._browser.close()           # a refused or failed sign-in leaves no browser running
+            raise
         self.max_records = max_records
 
     # ---------------------------------------------------------------- source
@@ -73,9 +82,30 @@ class PortalHISDataSource(HISDataSource):
 
     @property
     def transport_secure(self) -> bool | None:
-        """Observed, not declared: the scheme of the URL the browser was pointed at."""
+        """Observed, not declared: the TLS session the browser actually negotiated.
 
-        return self._browser.base_url.lower().startswith("https://")
+        True when the browser reported a TLS protocol for the connection; False
+        over plain http; None when the scheme was https but the browser gave no
+        session details (not assumed either way).
+        """
+
+        sec = self._browser.security
+        if sec and str(sec.get("protocol", "")).upper().startswith("TLS"):
+            return True
+        if not self._browser.base_url.lower().startswith("https://"):
+            return False
+        return None
+
+    @property
+    def transport_note(self) -> str:
+        """What was observed about the connection, for the benchmark's evidence lines."""
+
+        sec = self._browser.security
+        if not sec:
+            return "plain http" if self.transport_secure is False else "https, no session details reported"
+        verified = ("certificate verified" if self._browser.certificate_verified
+                    else "certificate not verified (loopback fixture, self-signed)")
+        return f"{sec.get('protocol', 'TLS')} observed, issuer '{sec.get('issuer', '?')}'; {verified}"
 
     def layers(self) -> tuple[HISLayer, ...]:
         return self.navigation.layers()
@@ -149,11 +179,16 @@ class PortalHISDataSource(HISDataSource):
 
         # A scoped pull goes through the portal's search box, the way a person
         # would: one value, one (usually one-page) result, then an exact match
-        # on the field so a substring hit on another column is not taken.
+        # on the field so a substring hit on another column is not taken. The
+        # request is the one the module's own search form submits -- its action
+        # and its text box's name, read from the page during the crawl, not a
+        # parameter we assume. A module with no search box is read page by page.
         where = dict(where or {})
         first_url = module.list_url
-        if where:
-            first_url = f"{module.list_url}{'&' if '?' in module.list_url else '?'}q={quote(str(next(iter(where.values()))))}"
+        if where and module.search_param:
+            base = module.search_url or module.list_url
+            first_url = (f"{base}{'&' if '?' in base else '?'}"
+                         f"{quote(module.search_param)}={quote(str(next(iter(where.values()))))}")
 
         yielded = 0
         for table in self._browser.iter_table_pages(first_url):

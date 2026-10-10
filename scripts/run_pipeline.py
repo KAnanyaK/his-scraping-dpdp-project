@@ -43,6 +43,7 @@ scraper does not know that.
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
 import tempfile
@@ -81,7 +82,7 @@ TASKS = [
         description="Prepare a clinical summary of a patient for the care team",
         needed=[
             LayerFields(layer=HISLayer.PATIENT_ADMINISTRATION, fields=["mrn", "date_of_birth", "sex"]),
-            LayerFields(layer=HISLayer.CLINICAL_EHR, fields=["primary_diagnosis", "medication", "allergy"]),
+            LayerFields(layer=HISLayer.CLINICAL_EHR, fields=["mrn", "primary_diagnosis", "medication", "allergy"]),
         ],
     ),
     ExtractionTask(
@@ -90,7 +91,7 @@ TASKS = [
         description="List who is currently on each ward and when they were last seen",
         needed=[
             LayerFields(layer=HISLayer.PATIENT_ADMINISTRATION, fields=["mrn", "admission_ward"]),
-            LayerFields(layer=HISLayer.CLINICAL_EHR, fields=["encounter_datetime"]),
+            LayerFields(layer=HISLayer.CLINICAL_EHR, fields=["mrn", "encounter_datetime"]),
         ],
     ),
     ExtractionTask(
@@ -116,7 +117,7 @@ TASKS = [
         needed=[
             LayerFields(layer=HISLayer.PATIENT_ADMINISTRATION, fields=["mrn", "full_name"]),
             LayerFields(layer=HISLayer.ADMINISTRATIVE_FINANCIAL,
-                        fields=["invoice_id", "billed_amount", "payer_name"]),
+                        fields=["mrn", "invoice_id", "billed_amount", "payer_name"]),
         ],
     ),
 ]
@@ -164,24 +165,35 @@ def dataset_shortfall(source: DatasetHISDataSource, tasks: list[ExtractionTask])
     return None
 
 
-def run_downstream(scraper, navigation, dataset_note: str, artefact: str | None = None) -> None:
+REPEATS = 5
+
+
+def run_downstream(scraper, navigation, dataset_note: str, artefact: str | None = None,
+                   repeats: int = REPEATS) -> None:
     """Stages 3-6: identical whatever the source was."""
 
     techniques = default_techniques(TASKS, scraper)
     n = len(techniques)
-    agents = [t.name for t in techniques if t.name.startswith("ai agent")]
+    agents = [t.name for t in techniques if t.name.startswith("ai model")]
     stage(3, f"BENCHMARK -- {n} techniques; same seven rules; real cost")
     if agents:
-        print("  AI agents replaying recorded decisions: " + ", ".join(agents))
+        print(f"  AI models replaying recorded decisions ({repeats} sample(s) per task each): " + ", ".join(agents))
         print()
     else:
-        print("  (no AI-agent recordings: ours against the baseline only -- see scripts/record_ai_agents.py)")
+        print("  (no AI-model recordings: ours against the baseline only -- see scripts/record_ai_agents.py)")
         print()
     log = AuditLog()
-    result = run_benchmark(techniques, TASKS, scraper, dataset_note=dataset_note, audit=log)
+    # Every recorded sample of every model is replayed (five), so the models'
+    # page loads and traps rest on all their samples, not one; ours and the
+    # baseline are deterministic and run once -- repeating them is only cost.
+    result = run_benchmark(techniques, TASKS, scraper, dataset_note=dataset_note, audit=log,
+                           repeats=repeats, repeat_sampled_only=True)
     print(result.render_table())
     print()
     name = artefact or ("benchmark-portal" if isinstance(scraper, PortalHISDataSource) else "benchmark-dataset")
+    if repeats != REPEATS:
+        # A quick run must not overwrite the committed artefact made at the default.
+        name += "-quick"
     print(present.wrote(result.to_json_file(name=name)))
     print(present.wrote(result.to_markdown_file(name=name)))
     print()
@@ -199,7 +211,8 @@ def run_downstream(scraper, navigation, dataset_note: str, artefact: str | None 
     for technique_name, out in (("compliance-aware", output), ("unconstrained", baseline)):
         log.extraction(out.run, technique=technique_name, records=len(out.records),
                        fields=fields_by_layer({(lv, f) for lv, rows in out.rows.items() for r in rows for f in r}),
-                       source=dataset_note, rows=out.rows, scoped_to=meters[technique_name].subject_scope())
+                       source=dataset_note, rows=out.rows, scoped_to=meters[technique_name].subject_scope(),
+                       account=getattr(scraper, "account", ""), authorisation=getattr(scraper, "authorisation", ""))
     shaped_compliant = None
     for label, out in (("compliance-aware", output), ("baseline", baseline)):
         shaped = normalise(out)
@@ -249,13 +262,23 @@ def run_downstream(scraper, navigation, dataset_note: str, artefact: str | None 
             day_after = sched.delete_after + timedelta(days=1)
             print(f"  today: nothing due -- {sched.one_line()}")
             erased = purge_expired(export_dir, now=day_after, audit=log, dry_run=True)
-            print(f"  as of {day_after:%Y-%m-%d}: {len(erased)} file(s) would be erased "
+            print(f"  as of {day_after:%Y-%m-%d} (a simulated date -- the retention has not really run out): "
+                  f"{len(erased)} file(s) would be erased, the pseudonymisation key with them "
                   f"({', '.join(p.name for p in erased)})")
             print("  scripts/purge_exports.py --erase does it for real on the day; --as-of DATE rehearses it.")
+            print("  the erasure is file deletion, not secure erasure; backups and other copies are the deployment's;")
+            print(f"  the {log.retention_note()}.")
             # Rehearse for real on a copy, so the demo shows an erasure and keeps its export.
+            # The sidecar's key path is pointed at the copy too: the rehearsal must
+            # never erase the real key.
             with tempfile.TemporaryDirectory() as tmp:
                 for p in erased:
                     shutil.copy(p, tmp)
+                for side in Path(tmp).glob("*.retention.json"):
+                    data = json.loads(side.read_text(encoding="utf-8"))
+                    if data.get("key_file"):
+                        data["key_file"] = str(Path(tmp) / Path(data["key_file"]).name)
+                        side.write_text(json.dumps(data, indent=2), encoding="utf-8")
                 gone = purge_expired(Path(tmp), now=day_after, audit=log)
                 print(f"  rehearsed on a copy: erased {len(gone)} file(s); the purge is in the audit log:")
                 print("  " + log.entries()[-1].one_line())
@@ -270,6 +293,9 @@ def main() -> int:
     parser.add_argument("--page-size", type=int, default=10)
     parser.add_argument("--latency-ms", type=int, default=0)
     parser.add_argument("--show", action="store_true", help="run the browser visibly")
+    parser.add_argument("--repeats", type=int, default=REPEATS,
+                        help=f"samples of each AI model to replay (default {REPEATS}, every recorded sample; "
+                             "1 for a quick live demo -- the committed artefacts use the default)")
     parser.add_argument("--dataset", help="directory of exported CSV/Excel files (real or synthetic)")
     parser.add_argument("--column-map", help="JSON header -> field map for --dataset")
     parser.add_argument("--artefact", help="name the benchmark files (default benchmark-dataset / benchmark-portal); "
@@ -278,6 +304,8 @@ def main() -> int:
     parser.add_argument("--user")
     parser.add_argument("--password")
     parser.add_argument("--aliases", help="JSON header -> field map for --portal")
+    parser.add_argument("--authorisation", help="the hospital's reference for authorising automated access "
+                        "(needed when the portal's robots.txt disallows it)")
     parser.add_argument("--layout", choices=["v1", "v2"], default="v1",
                         help="the fixture's layout: v1 (benchmarked) or v2 (after a simulated vendor release; "
                              "crawled with the hospital's alias file plus the one header the update check "
@@ -300,7 +328,7 @@ def main() -> int:
             print(f"  STOPPED: {shortfall}. Nothing was benchmarked and nothing was written.")
             print(f"  Run scripts/check_source.py {args.dataset} --write-map <file>, fill the map, and re-run.")
             return 2
-        run_downstream(scraper, None, f"dataset {args.dataset}", artefact=args.artefact)
+        run_downstream(scraper, None, f"dataset {args.dataset}", artefact=args.artefact, repeats=args.repeats)
 
     elif args.portal:
         if not (args.user and args.password):
@@ -310,13 +338,13 @@ def main() -> int:
         stage(2, "DISCOVER -- a browser logs in and works out what is where")
         scraper = PortalHISDataSource(
             args.portal, args.user, args.password, headless=not args.show,
-            field_aliases=_load_map(args.aliases),
+            field_aliases=_load_map(args.aliases), authorisation=args.authorisation,
         )
         print(scraper.navigation.render_table())
         print()
         print(present.wrote(scraper.navigation.to_json_file()))
         print(present.wrote(scraper.navigation.to_markdown_file()))
-        run_downstream(scraper, scraper.navigation, f"portal {args.portal}")
+        run_downstream(scraper, scraper.navigation, f"portal {args.portal}", repeats=args.repeats)
         scraper.close()
 
     else:
@@ -332,14 +360,16 @@ def main() -> int:
                               layout=args.layout) as portal:
             stage(1, "PORTAL -- a login-gated HIS portal, served locally over TLS"
                      + (" -- after a vendor release (layout v2)" if updated else ""))
-            print(f"  {portal.url}/   account {portal.username} / {portal.password}")
+            print(f"  {portal.url}/   account {portal.username} / {portal.password} "
+                  f"(the hospital's service account for automated extraction)")
             print(f"  {args.records} records per module, {args.page_size} per page, "
-                  f"{args.latency_ms} ms latency; robots.txt disallows all; self-signed certificate")
+                  f"{args.latency_ms} ms latency; robots.txt disallows all, entered under authorisation "
+                  f"{portal.authorisation}; self-signed certificate")
 
             stage(2, "DISCOVER -- a browser logs in and works out what is where")
             scraper = PortalHISDataSource(
                 portal.url, portal.username, portal.password, headless=not args.show,
-                field_aliases=aliases,
+                field_aliases=aliases, authorisation=portal.authorisation,
             )
             print(scraper.navigation.render_table())
             print()
@@ -349,7 +379,8 @@ def main() -> int:
             run_downstream(scraper, scraper.navigation,
                            f"portal{' (layout v2)' if updated else ''}, {args.records} records/module, "
                            f"seed {args.seed}",
-                           artefact=args.artefact or ("benchmark-portal-v2" if updated else None))
+                           artefact=args.artefact or ("benchmark-portal-v2" if updated else None),
+                           repeats=args.repeats)
             scraper.close()
 
     elapsed = time.perf_counter() - started

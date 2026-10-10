@@ -18,6 +18,7 @@ def client():
         users={"frontdesk": "letmein"},
         page_size=PAGE,
         secret_key="test",
+        access={},                      # every account sees every module (role limits tested below)
     )
     app.config["TESTING"] = True
     return app.test_client()
@@ -122,8 +123,32 @@ def test_search_filters_the_list(client):
 def test_portal_serves_whatever_source_it_is_given():
     # A different source is a different portal, with no code change: the point
     # of building on the adapter boundary.
-    small = create_app(MockHISDataSource(records_per_layer=3, seed=1), secret_key="t").test_client()
+    small = create_app(MockHISDataSource(records_per_layer=3, seed=1), secret_key="t", access={}).test_client()
     _login(small)
     html = small.get("/m/billing/").data.decode()
     assert "3 records" in html
     assert html.count('">Open</a>') == 3
+
+
+def test_staff_accounts_see_only_their_roles_modules_and_the_service_account_sees_all():
+    from tools.mock_portal import DEFAULT_USERS
+    app = create_app(MockHISDataSource(records_per_layer=4, seed=7), page_size=PAGE, secret_key="t")
+    app.config["TESTING"] = True
+    for user, allowed, refused in (("frontdesk", "/m/registration/", "/m/clinical/"),
+                                   ("accounts", "/m/billing/", "/m/clinical/"),
+                                   ("nurse", "/m/clinical/", "/m/billing/")):
+        c = app.test_client()
+        assert _login(c, user, DEFAULT_USERS[user]).status_code == 302
+        assert c.get(allowed).status_code == 200
+        assert c.get(refused).status_code == 403          # the portal's own access control
+        assert refused.encode() not in c.get("/").data     # and the home page does not offer it
+    svc = app.test_client()
+    _login(svc, "extraction", DEFAULT_USERS["extraction"])
+    assert all(svc.get(p).status_code == 200 for p in ("/m/registration/", "/m/clinical/", "/m/billing/"))
+
+
+def test_the_home_page_does_not_hand_out_our_layer_vocabulary(client):
+    from interop.layers import LAYER_DESCRIPTIONS
+    _login(client)
+    home = client.get("/").data.decode()
+    assert not any(d in home for d in LAYER_DESCRIPTIONS.values())

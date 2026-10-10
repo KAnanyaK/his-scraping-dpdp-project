@@ -32,6 +32,7 @@ class RunningPortal:
     url: str
     username: str
     password: str
+    authorisation: str
     records_per_layer: int
     page_size: int
 
@@ -44,6 +45,7 @@ def portal():
             url=running.url,
             username=running.username,
             password=running.password,
+            authorisation=running.authorisation,
             records_per_layer=PORTAL_RECORDS,
             page_size=PORTAL_PAGE,
         )

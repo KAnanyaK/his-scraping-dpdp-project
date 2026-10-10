@@ -58,7 +58,7 @@ def _crawl(layout: str, field_aliases: dict[str, str]):
     source = MockHISDataSource(records_per_layer=6, seed=42)
     with BackgroundPortal(source, page_size=3, layout=layout) as portal:
         with PortalBrowser(portal.url, portal.username, portal.password,
-                           field_aliases=field_aliases) as browser:
+                           field_aliases=field_aliases, authorisation=portal.authorisation) as browser:
             browser.login()
             return discover(browser)
 

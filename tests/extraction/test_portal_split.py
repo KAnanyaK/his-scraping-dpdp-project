@@ -26,7 +26,8 @@ ALIASES = {**V2_FIELD_ALIASES, "Unit": "admission_ward"}
 def sources():
     data = MockHISDataSource(records_per_layer=5, seed=11)
     with BackgroundPortal(data, page_size=3, secret_key="t", layout="v2") as portal:
-        scraper = PortalHISDataSource(portal.url, portal.username, portal.password, field_aliases=ALIASES)
+        scraper = PortalHISDataSource(portal.url, portal.username, portal.password, field_aliases=ALIASES,
+                                     authorisation=portal.authorisation)
         yield data, scraper
         scraper.close()
 
@@ -62,4 +63,5 @@ def test_a_scoped_pull_goes_through_both_search_boxes(sources):
     data, scraper = sources
     mrn = next(iter(data.fetch(FIN, fields=["mrn"])))["mrn"]
     rows = list(scraper.fetch(FIN, fields=["invoice_id", "payer_name"], where={"mrn": mrn}))
-    assert len(rows) == 1 and set(rows[0]) == {"invoice_id", "payer_name"}
+    own = [r for r in data.fetch(FIN, fields=["mrn"]) if r["mrn"] == mrn]
+    assert len(rows) == len(own) and set(rows[0]) == {"invoice_id", "payer_name"}

@@ -50,7 +50,8 @@ def measure(records: int, page_size: int) -> dict:
     source = MockHISDataSource(records_per_layer=records, seed=42)
     with BackgroundPortal(source, page_size=page_size) as portal, tempfile.TemporaryDirectory() as tmp:
         started = time.perf_counter()
-        scraper = PortalHISDataSource(portal.url, portal.username, portal.password)
+        scraper = PortalHISDataSource(portal.url, portal.username, portal.password,
+                                      authorisation=portal.authorisation)
         discovery = scraper.navigation.page_loads
         result = run_benchmark([CompliantExtractionTechnique(), UnconstrainedExtractionTechnique()],
                                PORTAL_TASKS, scraper, dataset_note=f"scale {records}",

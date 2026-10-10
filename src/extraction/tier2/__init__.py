@@ -11,11 +11,11 @@ The adapter that puts these behind ``HISDataSource`` is
 
 from __future__ import annotations
 
-from extraction.tier2.browser import LoginFailed, PortalBrowser, TablePage
+from extraction.tier2.browser import AccessNotAuthorised, LoginFailed, PortalBrowser, TablePage
 from data_synthetic.catalogue import infer_layer
 from extraction.tier2.navigation import ModuleMap, NavigationMap, discover
 
 __all__ = [
-    "LoginFailed", "PortalBrowser", "TablePage",
+    "AccessNotAuthorised", "LoginFailed", "PortalBrowser", "TablePage",
     "ModuleMap", "NavigationMap", "discover", "infer_layer",
 ]

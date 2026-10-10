@@ -150,15 +150,20 @@ def check_directory(directory: Path, column_map: dict[str, str], write_map: Path
     return 0
 
 
-def check_portal(url: str, user: str, password: str, aliases: dict[str, str], write_map: Path | None) -> int:
+def check_portal(url: str, user: str, password: str, aliases: dict[str, str], write_map: Path | None,
+                 authorisation: str | None = None) -> int:
     print(present.banner(f"Source check -- portal {url}"))
     from extraction.tier2 import LoginFailed, PortalBrowser, discover
+    from extraction.tier2.browser import AccessNotAuthorised
     all_unmatched: list[str] = []
-    with PortalBrowser(url, user, password, field_aliases=aliases) as browser:
+    with PortalBrowser(url, user, password, field_aliases=aliases, authorisation=authorisation) as browser:
         try:
             browser.login()
         except LoginFailed as exc:
             print(f"  login failed: {exc}")
+            return 2
+        except AccessNotAuthorised as exc:
+            print(f"  refused: {exc}")
             return 2
         print(f"  logged in as {user}")
         nav = discover(browser)
@@ -186,13 +191,15 @@ def main() -> int:
     parser.add_argument("--aliases", help="JSON: portal header -> catalogue field")
     parser.add_argument("--user")
     parser.add_argument("--password")
+    parser.add_argument("--authorisation", help="the hospital's reference authorising automated access")
     parser.add_argument("--write-map", type=Path, help="write a mapping template for the unrecognised headers")
     args = parser.parse_args()
 
     if args.source.startswith(("http://", "https://")):
         if not (args.user and args.password):
             parser.error("--user and --password are required for a portal")
-        return check_portal(args.source, args.user, args.password, _load_map(args.aliases), args.write_map)
+        return check_portal(args.source, args.user, args.password, _load_map(args.aliases), args.write_map,
+                            args.authorisation)
     column_map, file_maps = load_column_map(args.column_map)
     return check_directory(Path(args.source), column_map, args.write_map, file_maps=file_maps)
 

@@ -1,7 +1,7 @@
 """Run the portal in a background thread, for tests and demo scripts.
 
     with BackgroundPortal(source) as portal:
-        PortalHISDataSource(portal.url, portal.username, portal.password)
+        PortalHISDataSource(portal.url, portal.username, portal.password, authorisation=portal.authorisation)
 """
 
 from __future__ import annotations
@@ -36,6 +36,11 @@ class BackgroundPortal:
         **app_kwargs: Any,
     ) -> None:
         self.users = dict(users or DEFAULT_USERS)
+        # The hospital's authorisation for automated access -- the register's
+        # AUTH-RPA control. The fixture's robots.txt disallows everything, so a
+        # scraper without it does not get past the door.
+        from compliance.capabilities import DEFAULT_REGISTER
+        self.authorisation = DEFAULT_REGISTER.access_authorisation.id
         self.app = create_app(source, users=self.users, **app_kwargs)
         self.port = port or free_port()
         # Served over TLS by default with a throwaway self-signed certificate, so
