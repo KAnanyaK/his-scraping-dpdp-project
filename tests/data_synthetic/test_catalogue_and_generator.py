@@ -76,5 +76,25 @@ def test_every_record_bearing_layer_names_its_patient_and_the_layers_join():
     for layer, rows in data.items():
         key = subject_key(layer)
         assert key is not None and all(key in r for r in rows)
-        # Record i of every layer is patient i's.
-        assert [r[key] for r in rows] == mrns
+        # Record i of every layer is patient (i mod k)'s, k about 70% of the
+        # patients: the first have several records, the last none yet.
+        if layer is HISLayer.PATIENT_ADMINISTRATION:
+            continue
+        k = max(1, round(len(mrns) * 0.7))
+        assert [r[key] for r in rows] == [mrns[i % k] for i in range(len(rows))]
+
+
+def test_the_synthetic_records_are_plausible_for_an_indian_hospital():
+    import re
+    from data_synthetic.generators.records import CLINICAL_TABLE, build_dataset
+    data = build_dataset(40, seed=7)
+    for row in data[HISLayer.PATIENT_ADMINISTRATION]:
+        assert re.fullmatch(r"\+91-[6-9]\d{9}", row["phone"]), row["phone"]          # a valid Indian mobile
+        assert re.fullmatch(r"[1-8]\d{5}", row["pincode"]), row["pincode"]          # a PIN never starts with 0 or 9
+        first = row["full_name"].lower().split()[0]
+        assert row["email"].startswith(first)                                       # the address is theirs
+    by_dx = {f"{dx} ({code})": (drug, contra) for code, dx, drug, contra, _ in CLINICAL_TABLE}
+    for row in data[HISLayer.CLINICAL_EHR]:
+        drug, contra = by_dx[row["primary_diagnosis"]]
+        assert row["medication"] == drug                                            # the usual drug for it
+        assert contra is None or row["allergy"] != contra                           # never one it is allergic to

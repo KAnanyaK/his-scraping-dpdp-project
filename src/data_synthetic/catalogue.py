@@ -31,6 +31,13 @@ FIELD_CATALOGUE: dict[HISLayer, dict[str, FieldCategory]] = {
     HISLayer.PATIENT_ADMINISTRATION: {
         "mrn": FieldCategory.DIRECT_IDENTIFIER,
         "full_name": FieldCategory.DIRECT_IDENTIFIER,
+        # Why phone is a direct identifier but email and address are contact
+        # data (review D-R3): in an Indian hospital the mobile number is how the
+        # patient is looked up and matched at the desk and in ABHA-linked
+        # systems -- it identifies; email and postal address are used to reach
+        # the patient, not to find them. The split has consequences (care
+        # coordination may take the phone, not the email) and it is kept
+        # deliberately; changing it would also change every AI model's brief.
         "phone": FieldCategory.DIRECT_IDENTIFIER,
         "email": FieldCategory.CONTACT,
         "street_address": FieldCategory.CONTACT,
