@@ -1,4 +1,4 @@
-"""Build the Report, docs/review/report.html, and the Portal, docs/review/portal-v1.html (v1), portal-v2.html (v2), portal-v3.html (v3), portal-v4.html (v4) and portal-v5.html (v5), in one command.
+"""Build the Report, docs/review/report.html, the Portal, docs/review/portal-v1.html (v1), portal-v2.html (v2), portal-v3.html (v3), portal-v4.html (v4) and portal-v5.html (v5), and the HIS Staff Assistant portal, agent-portal.html, in one command.
 
     python tools/build_review_pages.py                  # every demo that can be built here
     python tools/build_review_pages.py --skip-portal    # no browser on this machine
@@ -111,12 +111,13 @@ def main() -> int:
             print(f"  removed {old.relative_to(ROOT)} (now part of the report)")
 
     # The Portal replays the same parts (the staged ones, else the Report just written).
-    from tools import build_portal_app, build_portal_v2, build_portal_v3, build_portal_v4, build_portal_v5
+    from tools import build_agent_portal, build_portal_app, build_portal_v2, build_portal_v3, build_portal_v4, build_portal_v5
     build_portal_app.main()            # version 1, the metro line map
     build_portal_v2.main()             # version 2, the live data flow
     build_portal_v3.main()             # version 3, the catalogue
     build_portal_v4.main()             # version 4, the datasheets
     build_portal_v5.main()             # version 5, the redacted record
+    build_agent_portal.main()          # the HIS Staff Assistant portal
     return 0
 
 

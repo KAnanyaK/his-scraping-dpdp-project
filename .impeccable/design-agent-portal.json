@@ -1,0 +1,735 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-16T00:00:00Z",
+  "title": "Design System: HIS Staff Assistant",
+  "extensions": {
+    "colorMeta": {
+      "wall": {
+        "role": "neutral",
+        "displayName": "Corridor Wall",
+        "canonical": "#e6eaee",
+        "tonalRamp": [
+          "oklch(15% 0.007 247.9)",
+          "oklch(26% 0.007 247.9)",
+          "oklch(38% 0.007 247.9)",
+          "oklch(50% 0.007 247.9)",
+          "oklch(62% 0.007 247.9)",
+          "oklch(74% 0.007 247.9)",
+          "oklch(85% 0.007 247.9)",
+          "oklch(95% 0.007 247.9)"
+        ]
+      },
+      "wall-2": {
+        "role": "neutral",
+        "displayName": "Wall 2",
+        "canonical": "#dbe1e7",
+        "tonalRamp": [
+          "oklch(15% 0.010 247.9)",
+          "oklch(26% 0.010 247.9)",
+          "oklch(38% 0.010 247.9)",
+          "oklch(50% 0.010 247.9)",
+          "oklch(62% 0.010 247.9)",
+          "oklch(74% 0.010 247.9)",
+          "oklch(85% 0.010 247.9)",
+          "oklch(95% 0.010 247.9)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Panel",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(38% 0.000 89.9)",
+          "oklch(50% 0.000 89.9)",
+          "oklch(62% 0.000 89.9)",
+          "oklch(74% 0.000 89.9)",
+          "oklch(85% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      },
+      "panel-2": {
+        "role": "neutral",
+        "displayName": "Panel 2",
+        "canonical": "#f4f6f8",
+        "tonalRamp": [
+          "oklch(15% 0.003 247.9)",
+          "oklch(26% 0.003 247.9)",
+          "oklch(38% 0.003 247.9)",
+          "oklch(50% 0.003 247.9)",
+          "oklch(62% 0.003 247.9)",
+          "oklch(74% 0.003 247.9)",
+          "oklch(85% 0.003 247.9)",
+          "oklch(95% 0.003 247.9)"
+        ]
+      },
+      "navy": {
+        "role": "primary",
+        "displayName": "Sign Navy",
+        "canonical": "#14315c",
+        "tonalRamp": [
+          "oklch(15% 0.084 258.3)",
+          "oklch(26% 0.084 258.3)",
+          "oklch(38% 0.084 258.3)",
+          "oklch(50% 0.084 258.3)",
+          "oklch(62% 0.084 258.3)",
+          "oklch(74% 0.084 258.3)",
+          "oklch(85% 0.084 258.3)",
+          "oklch(95% 0.084 258.3)"
+        ]
+      },
+      "navy-2": {
+        "role": "primary",
+        "displayName": "Sign Navy Light",
+        "canonical": "#1d4174",
+        "tonalRamp": [
+          "oklch(15% 0.097 257.5)",
+          "oklch(26% 0.097 257.5)",
+          "oklch(38% 0.097 257.5)",
+          "oklch(50% 0.097 257.5)",
+          "oklch(62% 0.097 257.5)",
+          "oklch(74% 0.097 257.5)",
+          "oklch(85% 0.097 257.5)",
+          "oklch(95% 0.097 257.5)"
+        ]
+      },
+      "navy-3": {
+        "role": "primary",
+        "displayName": "Band Navy",
+        "canonical": "#0f2647",
+        "tonalRamp": [
+          "oklch(15% 0.068 257.7)",
+          "oklch(26% 0.068 257.7)",
+          "oklch(38% 0.068 257.7)",
+          "oklch(50% 0.068 257.7)",
+          "oklch(62% 0.068 257.7)",
+          "oklch(74% 0.068 257.7)",
+          "oklch(85% 0.068 257.7)",
+          "oklch(95% 0.068 257.7)"
+        ]
+      },
+      "on-navy": {
+        "role": "primary",
+        "displayName": "On Navy",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(38% 0.000 89.9)",
+          "oklch(50% 0.000 89.9)",
+          "oklch(62% 0.000 89.9)",
+          "oklch(74% 0.000 89.9)",
+          "oklch(85% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      },
+      "on-navy-2": {
+        "role": "primary",
+        "displayName": "On Navy 2",
+        "canonical": "#c8d3e2",
+        "tonalRamp": [
+          "oklch(15% 0.024 256.1)",
+          "oklch(26% 0.024 256.1)",
+          "oklch(38% 0.024 256.1)",
+          "oklch(50% 0.024 256.1)",
+          "oklch(62% 0.024 256.1)",
+          "oklch(74% 0.024 256.1)",
+          "oklch(85% 0.024 256.1)",
+          "oklch(95% 0.024 256.1)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#13202d",
+        "tonalRamp": [
+          "oklch(15% 0.031 249.2)",
+          "oklch(26% 0.031 249.2)",
+          "oklch(38% 0.031 249.2)",
+          "oklch(50% 0.031 249.2)",
+          "oklch(62% 0.031 249.2)",
+          "oklch(74% 0.031 249.2)",
+          "oklch(85% 0.031 249.2)",
+          "oklch(95% 0.031 249.2)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2",
+        "canonical": "#3c4957",
+        "tonalRamp": [
+          "oklch(15% 0.029 250.5)",
+          "oklch(26% 0.029 250.5)",
+          "oklch(38% 0.029 250.5)",
+          "oklch(50% 0.029 250.5)",
+          "oklch(62% 0.029 250.5)",
+          "oklch(74% 0.029 250.5)",
+          "oklch(85% 0.029 250.5)",
+          "oklch(95% 0.029 250.5)"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink 3",
+        "canonical": "#55616f",
+        "tonalRamp": [
+          "oklch(15% 0.027 252.4)",
+          "oklch(26% 0.027 252.4)",
+          "oklch(38% 0.027 252.4)",
+          "oklch(50% 0.027 252.4)",
+          "oklch(62% 0.027 252.4)",
+          "oklch(74% 0.027 252.4)",
+          "oklch(85% 0.027 252.4)",
+          "oklch(95% 0.027 252.4)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#c9d1d9",
+        "tonalRamp": [
+          "oklch(15% 0.014 248.0)",
+          "oklch(26% 0.014 248.0)",
+          "oklch(38% 0.014 248.0)",
+          "oklch(50% 0.014 248.0)",
+          "oklch(62% 0.014 248.0)",
+          "oklch(74% 0.014 248.0)",
+          "oklch(85% 0.014 248.0)",
+          "oklch(95% 0.014 248.0)"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "Rule 2",
+        "canonical": "#e0e5ea",
+        "tonalRamp": [
+          "oklch(15% 0.009 247.9)",
+          "oklch(26% 0.009 247.9)",
+          "oklch(38% 0.009 247.9)",
+          "oklch(50% 0.009 247.9)",
+          "oklch(62% 0.009 247.9)",
+          "oklch(74% 0.009 247.9)",
+          "oklch(85% 0.009 247.9)",
+          "oklch(95% 0.009 247.9)"
+        ]
+      },
+      "unlit": {
+        "role": "neutral",
+        "displayName": "Unlit",
+        "canonical": "#b8c2cc",
+        "tonalRamp": [
+          "oklch(15% 0.018 248.0)",
+          "oklch(26% 0.018 248.0)",
+          "oklch(38% 0.018 248.0)",
+          "oklch(50% 0.018 248.0)",
+          "oklch(62% 0.018 248.0)",
+          "oklch(74% 0.018 248.0)",
+          "oklch(85% 0.018 248.0)",
+          "oklch(95% 0.018 248.0)"
+        ]
+      },
+      "you-slip": {
+        "role": "neutral",
+        "displayName": "Your Slip",
+        "canonical": "#e4ebf4",
+        "tonalRamp": [
+          "oklch(15% 0.014 254.6)",
+          "oklch(26% 0.014 254.6)",
+          "oklch(38% 0.014 254.6)",
+          "oklch(50% 0.014 254.6)",
+          "oklch(62% 0.014 254.6)",
+          "oklch(74% 0.014 254.6)",
+          "oklch(85% 0.014 254.6)",
+          "oklch(95% 0.014 254.6)"
+        ]
+      },
+      "go": {
+        "role": "tertiary",
+        "displayName": "Clear Green",
+        "canonical": "#1d7740",
+        "tonalRamp": [
+          "oklch(15% 0.120 151.8)",
+          "oklch(26% 0.120 151.8)",
+          "oklch(38% 0.120 151.8)",
+          "oklch(50% 0.120 151.8)",
+          "oklch(62% 0.120 151.8)",
+          "oklch(74% 0.120 151.8)",
+          "oklch(85% 0.120 151.8)",
+          "oklch(95% 0.120 151.8)"
+        ]
+      },
+      "go-wash": {
+        "role": "tertiary",
+        "displayName": "Clear Green Wash",
+        "canonical": "#e1f1e6",
+        "tonalRamp": [
+          "oklch(15% 0.022 155.9)",
+          "oklch(26% 0.022 155.9)",
+          "oklch(38% 0.022 155.9)",
+          "oklch(50% 0.022 155.9)",
+          "oklch(62% 0.022 155.9)",
+          "oklch(74% 0.022 155.9)",
+          "oklch(85% 0.022 155.9)",
+          "oklch(95% 0.022 155.9)"
+        ]
+      },
+      "stop": {
+        "role": "tertiary",
+        "displayName": "No Entry Red",
+        "canonical": "#c8102e",
+        "tonalRamp": [
+          "oklch(15% 0.207 22.3)",
+          "oklch(26% 0.207 22.3)",
+          "oklch(38% 0.207 22.3)",
+          "oklch(50% 0.207 22.3)",
+          "oklch(62% 0.207 22.3)",
+          "oklch(74% 0.207 22.3)",
+          "oklch(85% 0.207 22.3)",
+          "oklch(95% 0.207 22.3)"
+        ]
+      },
+      "stop-wash": {
+        "role": "tertiary",
+        "displayName": "No Entry Wash",
+        "canonical": "#fbe5e8",
+        "tonalRamp": [
+          "oklch(15% 0.024 8.2)",
+          "oklch(26% 0.024 8.2)",
+          "oklch(38% 0.024 8.2)",
+          "oklch(50% 0.024 8.2)",
+          "oklch(62% 0.024 8.2)",
+          "oklch(74% 0.024 8.2)",
+          "oklch(85% 0.024 8.2)",
+          "oklch(95% 0.024 8.2)"
+        ]
+      },
+      "amber": {
+        "role": "tertiary",
+        "displayName": "Wayfinding Amber",
+        "canonical": "#e8a400",
+        "tonalRamp": [
+          "oklch(15% 0.159 78.8)",
+          "oklch(26% 0.159 78.8)",
+          "oklch(38% 0.159 78.8)",
+          "oklch(50% 0.159 78.8)",
+          "oklch(62% 0.159 78.8)",
+          "oklch(74% 0.159 78.8)",
+          "oklch(85% 0.159 78.8)",
+          "oklch(95% 0.159 78.8)"
+        ]
+      },
+      "amber-ink": {
+        "role": "tertiary",
+        "displayName": "Amber Ink",
+        "canonical": "#2b1d00",
+        "tonalRamp": [
+          "oklch(15% 0.050 83.0)",
+          "oklch(26% 0.050 83.0)",
+          "oklch(38% 0.050 83.0)",
+          "oklch(50% 0.050 83.0)",
+          "oklch(62% 0.050 83.0)",
+          "oklch(74% 0.050 83.0)",
+          "oklch(85% 0.050 83.0)",
+          "oklch(95% 0.050 83.0)"
+        ]
+      },
+      "d-patient-administration": {
+        "role": "secondary",
+        "displayName": "Registration Blue",
+        "canonical": "#1f63c0",
+        "tonalRamp": [
+          "oklch(15% 0.161 257.8)",
+          "oklch(26% 0.161 257.8)",
+          "oklch(38% 0.161 257.8)",
+          "oklch(50% 0.161 257.8)",
+          "oklch(62% 0.161 257.8)",
+          "oklch(74% 0.161 257.8)",
+          "oklch(85% 0.161 257.8)",
+          "oklch(95% 0.161 257.8)"
+        ]
+      },
+      "d-clinical-ehr": {
+        "role": "secondary",
+        "displayName": "Clinical Teal",
+        "canonical": "#0b7a85",
+        "tonalRamp": [
+          "oklch(15% 0.089 206.1)",
+          "oklch(26% 0.089 206.1)",
+          "oklch(38% 0.089 206.1)",
+          "oklch(50% 0.089 206.1)",
+          "oklch(62% 0.089 206.1)",
+          "oklch(74% 0.089 206.1)",
+          "oklch(85% 0.089 206.1)",
+          "oklch(95% 0.089 206.1)"
+        ]
+      },
+      "d-ancillary-departmental": {
+        "role": "secondary",
+        "displayName": "Orders Violet",
+        "canonical": "#6a44b8",
+        "tonalRamp": [
+          "oklch(15% 0.174 294.1)",
+          "oklch(26% 0.174 294.1)",
+          "oklch(38% 0.174 294.1)",
+          "oklch(50% 0.174 294.1)",
+          "oklch(62% 0.174 294.1)",
+          "oklch(74% 0.174 294.1)",
+          "oklch(85% 0.174 294.1)",
+          "oklch(95% 0.174 294.1)"
+        ]
+      },
+      "d-administrative-financial": {
+        "role": "secondary",
+        "displayName": "Billing Amber-Brown",
+        "canonical": "#a8650a",
+        "tonalRamp": [
+          "oklch(15% 0.125 65.1)",
+          "oklch(26% 0.125 65.1)",
+          "oklch(38% 0.125 65.1)",
+          "oklch(50% 0.125 65.1)",
+          "oklch(62% 0.125 65.1)",
+          "oklch(74% 0.125 65.1)",
+          "oklch(85% 0.125 65.1)",
+          "oklch(95% 0.125 65.1)"
+        ]
+      },
+      "d-infrastructure-integration": {
+        "role": "secondary",
+        "displayName": "Audit Slate",
+        "canonical": "#4b5b6b",
+        "tonalRamp": [
+          "oklch(15% 0.033 248.5)",
+          "oklch(26% 0.033 248.5)",
+          "oklch(38% 0.033 248.5)",
+          "oklch(50% 0.033 248.5)",
+          "oklch(62% 0.033 248.5)",
+          "oklch(74% 0.033 248.5)",
+          "oklch(85% 0.033 248.5)",
+          "oklch(95% 0.033 248.5)"
+        ]
+      },
+      "replica-chrome": {
+        "role": "neutral",
+        "displayName": "Replica Chrome",
+        "canonical": "#2c3238",
+        "tonalRamp": [
+          "oklch(15% 0.014 248.3)",
+          "oklch(26% 0.014 248.3)",
+          "oklch(38% 0.014 248.3)",
+          "oklch(50% 0.014 248.3)",
+          "oklch(62% 0.014 248.3)",
+          "oklch(74% 0.014 248.3)",
+          "oklch(85% 0.014 248.3)",
+          "oklch(95% 0.014 248.3)"
+        ]
+      },
+      "replica-ground": {
+        "role": "neutral",
+        "displayName": "Replica Ground",
+        "canonical": "#f3f4f5",
+        "tonalRamp": [
+          "oklch(15% 0.002 247.8)",
+          "oklch(26% 0.002 247.8)",
+          "oklch(38% 0.002 247.8)",
+          "oklch(50% 0.002 247.8)",
+          "oklch(62% 0.002 247.8)",
+          "oklch(74% 0.002 247.8)",
+          "oklch(85% 0.002 247.8)",
+          "oklch(95% 0.002 247.8)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "atkinson-hyperlegible-next": {
+        "family": "Atkinson Hyperlegible Next",
+        "stack": "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif",
+        "role": "Everything: band, signs, boards, desk, replica, foot. SIL OFL; embedded latin WOFF2 (tools/agent_portal/fonts/AtkinsonHyperlegibleNext-latin-wght.woff2), variable weight 200-800, font-display: block; user-approved 2026-10-16."
+      },
+      "rootScale": {
+        "value": "clamp(16px, 0.6vw + 8px, 19px)",
+        "purpose": "Everything is in rem off this root; the 13px floor is .8125rem."
+      },
+      "figures": {
+        "value": "font-variant-numeric: tabular-nums lining-nums on body",
+        "purpose": "Counts, rule ids and dates align."
+      },
+      "departmentInk": {
+        "value": "color-mix(in srgb, var(--d-<layer>) 82%, #000) as --dc-ink",
+        "purpose": "Text in a department colour (a step's module, a board's step label)."
+      }
+    },
+    "shadows": [
+      {
+        "name": "band",
+        "value": "0 1px 0 rgba(255, 255, 255, .06), 0 6px 14px -10px rgba(15, 38, 71, .7)",
+        "purpose": "The sign band over the floor."
+      },
+      {
+        "name": "panel",
+        "value": "0 1px 1px rgba(19, 32, 45, .08), 0 8px 20px -14px rgba(19, 32, 45, .45)",
+        "purpose": "The desk and the board standing off the wall."
+      },
+      {
+        "name": "replica",
+        "value": "0 1px 1px rgba(19, 32, 45, .08), 0 10px 24px -16px rgba(19, 32, 45, .55); border 1px #c4cbd2",
+        "purpose": "The hospital's screen."
+      },
+      {
+        "name": "sign-lit",
+        "value": "0 3px 8px -5px rgba(15, 38, 71, .8); stopped: 0 3px 8px -5px rgba(120, 10, 25, .8)",
+        "purpose": "A passed or shut stage sign."
+      },
+      {
+        "name": "badge-pressed",
+        "value": "0 2px 6px -2px rgba(0, 0, 0, .45)",
+        "purpose": "The badge being worn."
+      },
+      {
+        "name": "tour-lip",
+        "value": "inset 0 -2px 0 rgba(0, 0, 0, .14)",
+        "purpose": "The flat amber Tour key."
+      },
+      {
+        "name": "rings",
+        "value": "pin 0 0 0 2px #e8a400; pressed step 0 0 0 1px var(--dc); pressed replica button 0 0 0 3px color-mix(var(--dc) 22%); ask focus 0 0 0 3px rgba(232, 164, 0, .45)",
+        "purpose": "State rings, not elevation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Every transition and animation."
+      },
+      {
+        "name": "land",
+        "value": "later() timer table + land(): clears every pending timer and runs it now, finishes every finite animation",
+        "purpose": "A new turn, a badge change or Space lands what was playing; in a tour Space also moves to the next turn."
+      },
+      {
+        "name": "walk",
+        "value": "changed signs apply one after another, 190ms apart; each settles from scale(.97) in 220ms; colours transition .22s",
+        "purpose": "The route lights in the order the engine decided."
+      },
+      {
+        "name": "arrow-draw",
+        "value": "clip-path inset(0 100% 0 0) -> inset(0 0 0 0) on the next li's ::before, 180ms",
+        "purpose": "The arrow into a sign is drawn when the sign before it passes."
+      },
+      {
+        "name": "pending",
+        "value": "board and replica opacity .45 (.15s) during the walk; then repainted from the new state",
+        "purpose": "The board and replica go quiet while the route walks."
+      },
+      {
+        "name": "rise",
+        "value": "opacity 0, translateY(4px) -> none, 220ms; board lines 60ms apart; no overshoot",
+        "purpose": "Messages on the desk and the board's lines."
+      },
+      {
+        "name": "replica",
+        "value": "page fade 200ms; pin opacity + translateX(6px) 240ms at +140ms; pressed-button halo 0 -> 3px, 280ms ease-out at +200ms, once",
+        "purpose": "The step's screen, its pin and its button."
+      },
+      {
+        "name": "tour",
+        "value": "types at 26ms a character, waits 380ms, asks; 1800ms after an answer, 1500ms otherwise; steps walked 1700ms apart; Space skips, Esc stops",
+        "purpose": "One recorded conversation per badge."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all animation and transition off; timers fire at once; tour waits capped at 300ms",
+        "purpose": "Every state lands at once."
+      },
+      {
+        "name": "at-rest",
+        "value": "nothing moves",
+        "purpose": "Motion explains a decision and stops."
+      },
+      {
+        "name": "keys",
+        "value": "/ to type, 1 2 3 a badge, T a tour, Space lands what is moving (in a tour, the next turn), Esc to stop it",
+        "purpose": "The presenter's path."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "projector-target",
+        "value": "1366x768"
+      },
+      {
+        "name": "compact-signs",
+        "value": "max-width 1680px and min-width 861px"
+      },
+      {
+        "name": "no-source-line",
+        "value": "max-width 1320px"
+      },
+      {
+        "name": "badge-no-count",
+        "value": "max-width 1180px"
+      },
+      {
+        "name": "short",
+        "value": "max-height 760px and min-width 861px (board-h 12rem, signs 3.375rem)"
+      },
+      {
+        "name": "phone",
+        "value": "max-width 860px"
+      },
+      {
+        "name": "short-placeholder",
+        "value": "max-width 520px"
+      }
+    ],
+    "geometry": [
+      {
+        "name": "sign",
+        "value": "height 3.75rem (3.375rem short; auto, min 2.75rem on a phone); status -webkit-line-clamp 2 (1 on a phone)",
+        "purpose": "Signs never resize as answers change."
+      },
+      {
+        "name": "board-h",
+        "value": "--board-h: 12.5rem; 12rem at max-height 760px; overflow-y auto as a fallback only",
+        "purpose": "One route geometry per screen size, measured over every task and probe at 1280/1366/1440/1600/1920."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Staff Badges",
+      "kind": "nav",
+      "refersTo": "badge",
+      "description": "The three staff badges on the navy band; the pressed one turns white with navy text.",
+      "html": "<div class=\"ds-band\"><button class=\"ds-badge\" aria-pressed=\"true\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><rect x=\"5.5\" y=\"4.5\" width=\"13\" height=\"16\" rx=\"2\"/><path d=\"M10 4.5v2h4v-2\"/><circle cx=\"12\" cy=\"11.5\" r=\"2.3\"/><path d=\"M8.6 17.2a3.6 3.6 0 0 1 6.8 0\"/></svg><b>Reception</b><small>13 tasks</small></button><button class=\"ds-badge\" aria-pressed=\"false\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><rect x=\"5.5\" y=\"4.5\" width=\"13\" height=\"16\" rx=\"2\"/><path d=\"M10 4.5v2h4v-2\"/><circle cx=\"12\" cy=\"11.5\" r=\"2.3\"/><path d=\"M8.6 17.2a3.6 3.6 0 0 1 6.8 0\"/></svg><b>Nurse</b><small>10 tasks</small></button><button class=\"ds-badge\" aria-pressed=\"false\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><rect x=\"5.5\" y=\"4.5\" width=\"13\" height=\"16\" rx=\"2\"/><path d=\"M10 4.5v2h4v-2\"/><circle cx=\"12\" cy=\"11.5\" r=\"2.3\"/><path d=\"M8.6 17.2a3.6 3.6 0 0 1 6.8 0\"/></svg><b>Administrator</b><small>18 tasks</small></button></div>",
+      "css": "svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.ds-band{display:flex;gap:.5rem;padding:10px 20px;background:#0f2647;font-family:'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif}.ds-badge{display:grid;grid-template-columns:auto auto;align-items:center;column-gap:.5rem;height:2.5rem;padding:0 .75rem 0 .5rem;border-radius:6px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#c8d3e2;text-align:left;cursor:pointer;font-family:inherit;transition:background-color .2s cubic-bezier(.16,1,.3,1),color .2s cubic-bezier(.16,1,.3,1),border-color .2s cubic-bezier(.16,1,.3,1)}.ds-badge svg{width:1.375rem;height:1.375rem;grid-row:span 2}.ds-badge b{font-weight:700;font-size:15px;line-height:1.1}.ds-badge small{font-size:13px;line-height:1.1;opacity:.9}.ds-badge:hover{background:rgba(255,255,255,.08);color:#fff}.ds-badge:focus-visible{outline:3px solid #e8a400;outline-offset:2px}.ds-badge[aria-pressed=true]{background:#fff;color:#14315c;border-color:#fff;box-shadow:0 2px 6px -2px rgba(0,0,0,.45)}"
+    },
+    {
+      "name": "Tour Button",
+      "kind": "button",
+      "refersTo": "tour-button",
+      "description": "The amber Tour key on the band; it plays the badge's recorded tour.",
+      "html": "<div class=\"ds-band\"><button class=\"ds-tour\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M8 5.5v13l10.5-6.5z\" fill=\"currentColor\"/></svg><span>Tour</span><span class=\"for\">&#183; Reception</span></button></div>",
+      "css": "svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.ds-band{padding:10px 20px;background:#0f2647}.ds-tour{display:inline-flex;align-items:center;gap:.5rem;height:2.5rem;padding:0 .875rem 0 .75rem;border-radius:6px;border:0;background:#e8a400;color:#2b1d00;font:700 15px 'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14);cursor:pointer;transition:filter .2s cubic-bezier(.16,1,.3,1),transform .12s cubic-bezier(.16,1,.3,1)}.ds-tour svg{width:1rem;height:1rem}.ds-tour .for{font-weight:400}.ds-tour:hover{filter:brightness(1.06)}.ds-tour:active{transform:translateY(1px)}.ds-tour:focus-visible{outline:3px solid #e8a400;outline-offset:2px}"
+    },
+    {
+      "name": "Stage Signs",
+      "kind": "custom",
+      "refersTo": "stage-sign",
+      "description": "The route's fixed signs joined by drawn arrows: passed (navy, green tick), stopped (red, no entry), waiting (wall); the shown board's sign outlined in amber.",
+      "html": "<ol class=\"ds-stages\"><li class=\"lit\"><span class=\"ds-sign\" data-state=\"passed\"><span class=\"ds-tile\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M5 12.5l4.4 4.4L19 7.3\"/></svg></span><span class=\"sl\"><b>Enquiry</b><span>Understood</span></span></span></li><li><span class=\"ds-sign\" data-state=\"stopped\" aria-current=\"true\"><span class=\"ds-tile\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8.2\"/><path d=\"M7.4 12h9.2\" stroke-width=\"3\"/></svg></span><span class=\"sl\"><b>Staff only</b><span>No entry &#183; PL&#8209;01</span></span></span></li><li><span class=\"ds-sign\" data-state=\"waiting\"><span class=\"ds-tile\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><rect x=\"5.5\" y=\"4.5\" width=\"13\" height=\"16\" rx=\"1.5\"/><path d=\"M9 4.5V3.5h6v1M8.5 10h7M8.5 13.5h7M8.5 17h4\"/></svg></span><span class=\"sl\"><b>Details</b><span>Waiting</span></span></span></li></ol>",
+      "css": "svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.ds-tile{flex:none;display:inline-grid;place-items:center;width:1.75rem;height:1.75rem;border-radius:5px;background:#14315c;color:#fff}.ds-tile svg{width:74%;height:74%;stroke-width:2.1}.ds-stages{list-style:none;margin:0;padding:20px;display:grid;grid-template-columns:repeat(3,10rem);gap:1.375rem;background:#e6eaee;font-family:'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif}.ds-stages li{position:relative}.ds-stages li+li::before{content:'';position:absolute;left:-1.25rem;top:50%;width:1.125rem;height:1.125rem;margin-top:-.5625rem;background:#c9d1d9;-webkit-mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 12h15M12.5 5.5 19 12l-6.5 6.5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") center/contain no-repeat;mask:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 12h15M12.5 5.5 19 12l-6.5 6.5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") center/contain no-repeat}.ds-stages li.lit+li::before{background:#14315c}.ds-sign{height:3.75rem;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:.5rem;padding:.4375rem .5rem;border-radius:6px;border:1.5px solid #c9d1d9;background:#dbe1e7;color:#55616f;transition:background-color .22s cubic-bezier(.16,1,.3,1),border-color .22s cubic-bezier(.16,1,.3,1),color .22s cubic-bezier(.16,1,.3,1)}.ds-sign .ds-tile{background:#b8c2cc}.ds-sign b{display:block;font-size:15px;font-weight:700;line-height:1.15}.ds-sign .sl>span{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:13px;line-height:1.2}.ds-sign:hover{border-color:#14315c}.ds-sign[data-state=passed]{background:#14315c;border-color:#14315c;color:#fff;box-shadow:0 3px 8px -5px rgba(15,38,71,.8)}.ds-sign[data-state=passed] .ds-tile{background:#1d7740}.ds-sign[data-state=passed] .sl>span{color:#c8d3e2}.ds-sign[data-state=stopped]{background:#c8102e;border-color:#c8102e;color:#fff;box-shadow:0 3px 8px -5px rgba(120,10,25,.8)}.ds-sign[data-state=stopped] .ds-tile{background:#fff;color:#c8102e}.ds-sign[data-state=stopped] .sl>span{color:#ffe3e7}.ds-sign[aria-current=true]{outline:2px solid #e8a400;outline-offset:2px}"
+    },
+    {
+      "name": "Step Signs",
+      "kind": "custom",
+      "refersTo": "step-sign",
+      "description": "The answer as one sign a step, numbered in its department's colour; the pressed step takes its department ring.",
+      "html": "<ol class=\"ds-steps\"><li><button class=\"ds-step\" aria-pressed=\"true\" style=\"--dc:#1f63c0;--dc-ink:#19519d\"><span class=\"num\">1</span><span><span class=\"tx\">Search for the patient by MRN.</span><span class=\"where\"><b>Patient Registration</b><span>list page</span><span>&#8220;Search&#8221;</span></span></span></button></li><li><button class=\"ds-step\" aria-pressed=\"false\" style=\"--dc:#a8650a;--dc-ink:#8a5308\"><span class=\"num\">2</span><span><span class=\"tx\">Open the bill and record the payment.</span><span class=\"where\"><b>Billing &amp; Accounts</b><span>record page</span><span>&#8220;Record payment&#8221;</span></span></span></button></li></ol>",
+      "css": ".ds-steps{list-style:none;margin:0;padding:16px;width:440px;display:grid;gap:.375rem;background:#fff;font:400 16px/1.45 'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif;color:#13202d}.ds-step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.625rem;align-items:start;width:100%;padding:.5rem .625rem;border-radius:6px;border:1px solid #e0e5ea;background:#fff;text-align:left;font:inherit;color:inherit;cursor:pointer;transition:border-color .2s cubic-bezier(.16,1,.3,1),background-color .2s cubic-bezier(.16,1,.3,1),box-shadow .2s cubic-bezier(.16,1,.3,1)}.ds-step:hover{border-color:#c9d1d9;background:#f4f6f8}.ds-step:focus-visible{outline:3px solid #e8a400;outline-offset:2px}.ds-step[aria-pressed=true]{border-color:var(--dc);background:color-mix(in srgb,var(--dc) 7%,#fff);box-shadow:0 0 0 1px var(--dc)}.ds-step .num{display:inline-grid;place-items:center;width:1.625rem;height:1.625rem;border-radius:5px;background:var(--dc);color:#fff;font-weight:700;font-size:15px}.ds-step .tx{display:block}.ds-step .where{display:flex;flex-wrap:wrap;gap:.25rem .5rem;margin-top:.25rem;font-size:13px;color:#55616f}.ds-step .where b{color:var(--dc-ink);font-weight:700}"
+    },
+    {
+      "name": "Refusal",
+      "kind": "card",
+      "refersTo": "refusal",
+      "description": "The staff-only door shut: a no-entry wash, the reason, who can do it instead, and that no detail was asked.",
+      "html": "<div class=\"ds-msg\"><span class=\"ds-tile stop\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8.2\"/><path d=\"M7.4 12h9.2\" stroke-width=\"3\"/></svg></span><div class=\"ds-refusal\"><h3>Not for Reception: look up a patient&#8217;s diagnosis</h3><p>I can&#8217;t walk you through how to look up a patient&#8217;s diagnosis as reception.</p><p class=\"who\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M4.5 12h14M13.5 6.5 19 12l-5.5 5.5\"/></svg><span>This is something nurse can do; please hand it to them.</span></p><p class=\"none\">No patient details were asked for.</p></div></div>",
+      "css": "svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.ds-tile{flex:none;display:inline-grid;place-items:center;width:1.75rem;height:1.75rem;border-radius:5px;background:#14315c;color:#fff}.ds-tile svg{width:74%;height:74%;stroke-width:2.1}.ds-tile.stop{background:#c8102e}.ds-msg{display:flex;gap:.625rem;align-items:flex-start;width:480px;padding:16px;background:#fff;font:400 16px/1.45 'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif;color:#13202d}.ds-refusal{flex:1;padding:.625rem .75rem;border-radius:6px;background:#fbe5e8;border:1px solid #efc2c9}.ds-refusal h3{margin:0 0 .25rem;font-size:16px;font-weight:700;color:#c8102e}.ds-refusal p{margin:0 0 .375rem}.ds-refusal .who{display:flex;align-items:center;gap:.375rem;font-weight:700}.ds-refusal .who svg{width:1rem;height:1rem;flex:none}.ds-refusal .none{margin:0;font-size:13px;color:#55616f}"
+    },
+    {
+      "name": "Task Chips",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "The task strip: a label column and chips; All tasks bold; a task outside the role dashed with a red no-entry pictogram.",
+      "html": "<div class=\"ds-tasks\"><span class=\"lab\">Common</span><span class=\"row\"><button class=\"ds-chip\">Register a new patient</button><button class=\"ds-chip\">Book an appointment</button><button class=\"ds-chip all\">All tasks</button></span><span class=\"lab\">Outside your role</span><span class=\"row\"><button class=\"ds-chip out\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8.2\"/><path d=\"M7.4 12h9.2\" stroke-width=\"3\"/></svg>Look up a patient&#8217;s diagnosis</button></span></div>",
+      "css": "svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.ds-tasks{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:.375rem .75rem;width:520px;padding:.625rem 1.125rem;background:#fff;border-top:1px solid #e0e5ea;font-family:'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif}.ds-tasks .lab{font-size:13px;font-weight:700;color:#55616f;line-height:2rem;white-space:nowrap}.ds-tasks .row{display:flex;flex-wrap:wrap;gap:.375rem}.ds-chip{display:inline-flex;align-items:center;gap:.375rem;min-height:2rem;padding:.25rem .625rem;border-radius:6px;border:1px solid #c9d1d9;background:#fff;color:#13202d;font:400 14px 'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif;cursor:pointer;transition:border-color .2s cubic-bezier(.16,1,.3,1),background-color .2s cubic-bezier(.16,1,.3,1)}.ds-chip:hover{border-color:#14315c;background:#f4f6f8}.ds-chip:focus-visible{outline:3px solid #e8a400;outline-offset:2px}.ds-chip.all{font-weight:700}.ds-chip.out{border-style:dashed;color:#3c4957}.ds-chip.out svg{width:.875rem;height:.875rem;color:#c8102e}"
+    },
+    {
+      "name": "Ask Bar",
+      "kind": "input",
+      "refersTo": "ask-input",
+      "description": "The ask box and the navy send key; focus is a navy border with the amber halo.",
+      "html": "<form class=\"ds-ask\" onsubmit=\"return false\"><input type=\"text\" placeholder=\"Ask for an HIS task, in your own words\"><button class=\"ds-send\" type=\"submit\"><span>Ask</span><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M4.5 12h14M13.5 6.5 19 12l-5.5 5.5\"/></svg></button></form>",
+      "css": "svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.ds-ask{display:flex;gap:.5rem;width:480px;padding:.625rem 1rem .875rem;background:#fff}.ds-ask input{flex:1;min-width:0;height:2.75rem;padding:0 .875rem;border-radius:6px;border:1.5px solid #c9d1d9;background:#fff;font:400 16px 'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif;color:#13202d;caret-color:#14315c;transition:border-color .2s cubic-bezier(.16,1,.3,1)}.ds-ask input::placeholder{color:#55616f}.ds-ask input:focus{outline:none;border-color:#14315c;box-shadow:0 0 0 3px rgba(232,164,0,.45)}.ds-send{display:inline-flex;align-items:center;gap:.375rem;height:2.75rem;padding:0 1rem;border-radius:6px;border:0;background:#14315c;color:#fff;font:700 16px 'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif;cursor:pointer;transition:background-color .2s cubic-bezier(.16,1,.3,1),transform .12s cubic-bezier(.16,1,.3,1)}.ds-send svg{width:1.125rem;height:1.125rem}.ds-send:hover{background:#1d4174}.ds-send:active{transform:translateY(1px)}.ds-send:focus-visible{outline:3px solid #e8a400;outline-offset:2px}"
+    },
+    {
+      "name": "Replica Screen",
+      "kind": "custom",
+      "refersTo": "replica",
+      "description": "The hospital portal as crawled, in its own greys: the module's tab, the pin inline on the title line, the pressed button and lit column in the department colour, blank rows.",
+      "html": "<figure class=\"ds-screen\" style=\"--dc:#a8650a\"><div class=\"chrome\"><b>HIS Portal</b><span>Authorised staff only. Access is logged.</span><span class=\"who\">signed in: accounts</span></div><div class=\"tabs\"><span>Patient Registration</span><span>Clinical Records</span><span class=\"on\">Billing &amp; Accounts</span></div><div class=\"page\"><div class=\"ph\"><b>Billing &amp; Accounts</b><span>list page</span><span class=\"pin\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M12 21s6.5-6 6.5-11a6.5 6.5 0 0 0-13 0c0 5 6.5 11 6.5 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.3\"/></svg><span>Step 2: press Record payment</span></span></div><div class=\"tools\"><span>Search</span><span class=\"press\">Record payment</span><span>Export</span></div><table><thead><tr><th>MRN</th><th class=\"use\">Amount</th><th>Status</th></tr></thead><tbody><tr><td></td><td class=\"use\"></td><td></td></tr><tr><td></td><td class=\"use\"></td><td></td></tr></tbody></table><p class=\"nodata\">No patient data is shown here.</p></div></figure>",
+      "css": "svg{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}.ds-screen{margin:0;width:560px;display:flex;flex-direction:column;border-radius:8px;overflow:hidden;background:#f3f4f5;border:1px solid #c4cbd2;box-shadow:0 1px 1px rgba(19,32,45,.08),0 10px 24px -16px rgba(19,32,45,.55);font:400 13px/1.45 'Atkinson Hyperlegible Next','Segoe UI',system-ui,sans-serif}.ds-screen .chrome{display:flex;align-items:center;gap:.75rem;padding:0 .75rem;height:2rem;background:#2c3238;color:#e9ecef}.ds-screen .chrome .who{margin-left:auto;color:#b9c1c9}.ds-screen .tabs{display:flex;gap:.125rem;padding:0 .5rem;background:#e3e6e9;border-bottom:1px solid #c4cbd2}.ds-screen .tabs span{padding:.375rem .625rem;color:#4a535c;border-bottom:2px solid transparent}.ds-screen .tabs span.on{color:#1d2329;font-weight:700;border-bottom-color:var(--dc);background:#f3f4f5}.ds-screen .page{padding:.625rem .875rem .75rem;display:flex;flex-direction:column;gap:.5rem}.ds-screen .ph{display:flex;align-items:center;gap:.625rem}.ds-screen .ph b{font-size:15px;color:#1d2329}.ds-screen .ph>span:not(.pin){color:#5a636c}.ds-screen .pin{display:inline-flex;align-items:center;gap:.3125rem;margin-left:auto;padding:.1875rem .5rem .1875rem .3125rem;border-radius:5px;background:#14315c;color:#fff;font-weight:700;box-shadow:0 0 0 2px #e8a400}.ds-screen .pin svg{width:1rem;height:1rem}.ds-screen .tools{display:flex;gap:.375rem}.ds-screen .tools span{display:inline-flex;align-items:center;height:1.75rem;padding:0 .625rem;border-radius:4px;border:1px solid #b7bfc7;background:#fff;color:#2c343c}.ds-screen .tools span.press{border:2px solid var(--dc);color:#111;font-weight:700;box-shadow:0 0 0 3px color-mix(in srgb,var(--dc) 22%,transparent)}.ds-screen table{width:100%;border-collapse:collapse;table-layout:fixed;background:#fff;border:1px solid #d3d8dd}.ds-screen th{text-align:left;font-weight:700;color:#3a434c;background:#eceff1;padding:.3125rem .5rem;border-bottom:1px solid #d3d8dd}.ds-screen td{padding:.3125rem .5rem;border-bottom:1px solid #e8ebee;height:1.625rem}.ds-screen th.use,.ds-screen td.use{background:color-mix(in srgb,var(--dc) 11%,#fff)}.ds-screen th.use{color:#111;box-shadow:inset 0 -2px 0 var(--dc)}.ds-screen .nodata{margin:0;color:#5a636c}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Enquiry Desk",
+    "overview": "The HIS Staff Assistant shows a request as a route through the hospital's own screens. The visitor puts on a staff badge (Reception, Nurse, Administrator) and asks at the enquiry desk in their own words, or plays that badge's tour. The request then walks five fixed stage signs: Enquiry (understood, from which words), Staff only (the DPDP check for this badge, before any detail is asked), Details (each one shape-checked), Department (the modules the steps need) and Screen (each step placed on the screen where it happens). Under the signs, the active stage's board, and under that a replica of the hospital's portal that lights the column and the button the step uses. It refuses the chatbot with a side panel and the node-graph \"AI pipeline\".\n\nThe world is hospital wayfinding signage. The ground is a pale cool corridor wall (Wall). Signs are navy panels set in white Atkinson Hyperlegible Next. The five HIS modules are departments, each with its own colour on a square pictogram tile, drawn in one stroked family; arrows are drawn too. State colours are earned: red for the staff-only door when it stays shut, green for a check passed, amber for \"you are here\". Signs hold fixed positions and only their state changes. The answer on the desk is a set of step signs in their departments' colours. Each pairs with the replica screen that proves where it happens. The replica is the hospital's portal, not ours: a grey chrome bar, tabs, a page with the module's buttons and columns, and blank ruled rows. No patient value appears anywhere.\n\nThe standing bar holds: **elegant and professional.** The system keeps it as restraint. There is no decorative gradient, no glass and no side stripe. A shadow appears only where a sign stands off the wall. Motion is short and explains a decision, then stops: signs light in order, an arrow is drawn into the next sign, the board and replica repaint from the new state. Density is presentation density for the presenting laptop (1366x768). The desk scrolls; the route holds one geometry per screen size, and the presenter explains.",
+    "keyCharacteristics": [
+      "A pale corridor wall, a navy sign band, an enquiry desk (about 42%) beside the route (about 58%).",
+      "Five stage signs in fixed positions, joined by drawn arrows; only their state changes (waiting, current, passed, stopped, unknown).",
+      "Five department colours on square pictogram tiles, one drawn and stroked family, never glyphs.",
+      "Red only for the staff-only door when it stays shut; green only for a check passed; amber for \"you are here\".",
+      "Every step on the desk pairs with a replica of the hospital's screen, its column and button lit, with no patient value shown.",
+      "Atkinson Hyperlegible Next throughout, embedded; 13px floor.",
+      "A new turn lands what is playing; reduced motion lands every state at once."
+    ],
+    "rules": [
+      {
+        "name": "The Earned State Rule",
+        "body": "Red means the staff-only door stayed shut, green means a check passed, amber means \"you are here\". None of the three marks anything else.",
+        "section": "colors"
+      },
+      {
+        "name": "The Department Colour Rule",
+        "body": "A department colour belongs to its module. It appears wherever a step goes to that module (tile, step number, replica tab, column, button), never as decoration. The Department sign takes its module's colour only once passed.",
+        "section": "colors"
+      },
+      {
+        "name": "The Their Screen Rule",
+        "body": "The replica keeps the hospital portal's own greys. Our navy appears on it only as the pin.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Face Rule",
+        "body": "Atkinson Hyperlegible Next sets everything, the replica included. No second face and no monospace.",
+        "section": "typography"
+      },
+      {
+        "name": "The 13px Floor Rule",
+        "body": "Nothing read is set below 0.8125rem of a root that is never below 16px (`clamp(16px, 0.6vw + 8px, 19px)`).",
+        "section": "typography"
+      },
+      {
+        "name": "The Off The Wall Rule",
+        "body": "A shadow appears only where a sign stands off the wall: the band, the panels, a lit stage sign, the pressed badge. No decorative gradient, no glass, no side stripe.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** show every request as a route through five fixed stage signs; change only their state.",
+      "**Do** keep red for the staff-only door when it stays shut, green for a check passed, amber for \"you are here\".",
+      "**Do** give each HIS module its department colour, and use it only where a step goes to that module.",
+      "**Do** pair every step with the replica screen that proves where it happens, its column and button lit and the pin inline on the title line.",
+      "**Do** keep the route's geometry fixed: signs 3.75rem with the status clamped to two lines, the board at `--board-h` (12.5rem; 12rem at ≤760px viewport height).",
+      "**Do** draw every pictogram and arrow in the one stroked family on square tiles.",
+      "**Do** set everything in Atkinson Hyperlegible Next, embedded, at or above the 13px floor.",
+      "**Do** call `land()` before a new turn, and land every state at once under reduced motion.",
+      "**Do** keep the file single and offline."
+    ],
+    "donts": [
+      "**Don't** show a patient value: the replica's rows stay blank and say \"No patient data is shown here.\"",
+      "**Don't** use green for a department; Clinical is teal because green means a check passed.",
+      "**Don't** say \"crawler\", \"Python\" or a URL path in staff-facing text.",
+      "**Don't** let the signs, board or replica resize as answers change.",
+      "**Don't** add a decorative gradient, glass, a side stripe, or a shadow on anything that is not a sign standing off the wall.",
+      "**Don't** use glyphs or an icon font for pictograms or arrows.",
+      "**Don't** overshoot or bounce; rises are 220ms and the press halo grows once.",
+      "**Don't** turn the page into a chatbot with a side panel or a node-graph pipeline.",
+      "**Don't** set anything read below 0.8125rem."
+    ],
+    "principles": [
+      "Elegant and professional (the standing bar): no decorative gradient, glass or side stripe; motion that explains a decision and then stops."
+    ]
+  }
+}

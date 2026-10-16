@@ -66,7 +66,7 @@ def test_the_report_is_one_file_carrying_every_section():
         assert f'id="{fig}"' in html
     review = REPORT.parent
     assert "report.html" in {p.name for p in review.glob("*.html")}
-    assert not {p.name for p in review.glob("*.html")} - {"report.html", "portal-v1.html", "portal-v2.html", "portal-v3.html", "portal-v4.html", "portal-v5.html", "review-i-briefing.html"}
+    assert not {p.name for p in review.glob("*.html")} - {"report.html", "portal-v1.html", "portal-v2.html", "portal-v3.html", "portal-v4.html", "portal-v5.html", "agent-portal.html", "review-i-briefing.html"}
     assert not (review.parent / "benchmark_results" / "rules-vs-just-ai.html").exists()
 
 

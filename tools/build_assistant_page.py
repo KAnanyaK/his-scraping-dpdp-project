@@ -151,7 +151,9 @@ def _gate(role: StaffRole, spec) -> dict:
             "reason": decision.reasons[0] if decision.reasons else "", "checks": checks}
 
 
-def build(out: Path = DEFAULT_OUT) -> dict:
+def collect() -> dict:
+    """The engine's tables, every role's gate, and the recorded Python conversations the page replays."""
+
     nav_map = NavigationMap.model_validate_json(NAV_MAP.read_text(encoding="utf-8"))
     nav = ScreenMap.from_navigation(nav_map)
 
@@ -236,6 +238,11 @@ def build(out: Path = DEFAULT_OUT) -> dict:
         "meta": {"functions": len(REGISTRY), "conversations": len(vectors),
                  "portal_discovered": nav_map.discovered_at.date().isoformat()},
     }
+    return data
+
+
+def build(out: Path = DEFAULT_OUT) -> dict:
+    data = collect()
     write(out, render(TEMPLATE, data, current="assistant", out=out))
     return data
 
