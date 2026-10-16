@@ -1,13 +1,13 @@
-"""Shared by the demo builders: one look, one data block, and one portal that holds them all.
+"""Shared by the demo builders: one look, one data block per demo.
 
 Every demo is built as its own self-contained page (``tools/*_page.html`` with
-``tools/page_base.css`` and ``tools/page_base.js`` inlined), but none of them is
-published on its own any more. The builders write their pages as *parts* into a
-git-ignored staging folder, and ``tools/build_review_pages.py`` assembles the
-parts into a single file, ``docs/review/portal.html``: a slim shell with one tab
-per demo, each demo embedded whole and loaded into its own frame on first open,
-so no demo's script or ids can collide with another's. One file opens by
-double-click, offline.
+``tools/page_base.css`` and ``tools/page_base.js`` inlined) and written as a
+*part* into a git-ignored staging folder; each builder audits its own part. The
+published file, ``docs/review/report.html``, is the Report (the evidence report
+``tools/build_report.py``), which carries each part's data block and draws its
+own figures from it. Until 2026-10-11 the portal was a shell with one tab per
+part; ``parts_in`` still reads that older format, so a part this machine cannot
+rebuild can be carried over from a portal built before the report.
 """
 
 from __future__ import annotations
@@ -21,10 +21,10 @@ BASE_CSS = ROOT / "tools" / "page_base.css"
 BASE_JS = ROOT / "tools" / "page_base.js"
 REVIEW_DIR = ROOT / "docs" / "review"
 PARTS_DIR = ROOT / "build" / "review-parts"            # git-ignored staging
-PORTAL = REVIEW_DIR / "portal.html"
-SHELL = ROOT / "tools" / "portal_shell.html"
+REPORT = REVIEW_DIR / "report.html"          # the Report (renamed from portal.html 2026-10-11)
+LEGACY_PORTAL = REVIEW_DIR / "portal.html"   # the tabbed portal it replaced; that name now belongs to the Portal deliverable
 
-# The portal's tabs, in the order the review shows them: key, label.
+# The demos the report is built from, by key (labels were the old shell's tab names).
 # Cut to six on 2026-10-09 (user: "too many tabs"): the overview, the Synthea walkthrough and
 # the aggregate hospital register left the portal; their builders still run on their own.
 TABS = [
@@ -60,36 +60,14 @@ def write(out: Path, html: str) -> Path:
     return out
 
 
-# Appended to every part inside the portal: the part's own toolbar is hidden (the
-# shell has one), the shell's theme and text size are followed, and a tile marked
-# data-open asks the shell to switch tabs.
-BRIDGE = """
-<style>.tools,.sitenav{display:none!important}</style>
-<script>(()=>{const r=document.documentElement;
-addEventListener("message",(e)=>{const m=e.data||{};if(m.type!=="portal-settings")return;
-if(m.theme)r.dataset.theme=m.theme;else delete r.dataset.theme;r.classList.toggle("big",!!m.big);});
-document.addEventListener("click",(e)=>{const a=e.target.closest("[data-open]");if(!a)return;
-e.preventDefault();parent.postMessage({type:"portal-open",key:a.dataset.open},"*");});
-parent.postMessage({type:"portal-ready"},"*");})();</script>
-"""
-
 _PARTS = re.compile(r'<script id="parts" type="application/json">(.*?)</script>', re.S)
+# The bridge the old shell appended to each part; stripped when a part is carried over.
+_BRIDGE_START = "<style>.tools,.sitenav{display:none!important}</style>"
 
 
-def assemble(parts: dict[str, str]) -> str:
-    """The one portal file: the shell, and every part embedded as data."""
-
-    tabs = [{"key": k, "label": label} for k, label in TABS if k in parts]
-    payload = {k: parts[k] + BRIDGE for k, _ in TABS if k in parts}
-    # No "<" survives inside the script element, so nothing in a part can end it early.
-    data = json.dumps({"tabs": tabs, "parts": payload}, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
-    html = render(SHELL, None)
-    return html.replace("/*__PARTS__*/null", data)
-
-
-def parts_in(portal: Path = PORTAL) -> dict[str, str]:
-    """The parts a previously built portal carries, without their bridge -- for carrying over a
-    demo this machine cannot rebuild (no browser, no public sample, no real export)."""
+def parts_in(portal: Path = LEGACY_PORTAL) -> dict[str, str]:
+    """The parts a portal built before 2026-10-11 (the tabbed shell) carries, without the shell's
+    bridge -- for carrying over a demo this machine cannot rebuild. {} for the report."""
 
     if not portal.exists():
         return {}
@@ -97,7 +75,7 @@ def parts_in(portal: Path = PORTAL) -> dict[str, str]:
     if not m:
         return {}
     parts = json.loads(m.group(1))["parts"]
-    return {k: v[: -len(BRIDGE)] if v.endswith(BRIDGE) else v for k, v in parts.items()}
+    return {k: v.split(_BRIDGE_START)[0] for k, v in parts.items()}
 
 
 def part_data(html: str) -> dict:

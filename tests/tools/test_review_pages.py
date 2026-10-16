@@ -21,7 +21,8 @@ from extraction.tier2.navigation import NavigationMap
 from compliance.audit import AuditLog
 from compliance.roles import StaffRole
 from tools import build_assistant_page, build_portal_page
-from tools.page_kit import BRIDGE, PORTAL, TABS, assemble, parts_in
+from tools.build_report import KEYS, build as build_report, report_data
+from tools.page_kit import REPORT
 
 
 def _data(html: str) -> dict:
@@ -54,30 +55,29 @@ def test_the_recorded_conversations_are_what_the_python_assistant_says(tmp_path)
         assert [session.respond(t).text for t in v["turns"]] == [r["text"] for r in v["replies"]]
 
 
-def test_the_portal_is_one_file_with_every_demo_as_a_tab():
-    assert PORTAL.exists(), "build it with python tools/build_review_pages.py"
-    parts = parts_in(PORTAL)
-    assert [k for k, _ in TABS if k in parts] == [k for k, _ in TABS], f"missing tabs: {set(dict(TABS)) - set(parts)}"
-    review = PORTAL.parent
-    assert sorted(p.name for p in review.glob("*.html")) == ["portal.html", "review-i-briefing.html"]
+def test_the_report_is_one_file_carrying_every_section():
+    assert REPORT.exists(), "build it with python tools/build_review_pages.py"
+    data = report_data(REPORT)
+    assert [k for k in KEYS if data.get(k)] == KEYS, f"missing sections: {set(KEYS) - set(data)}"
+    html = REPORT.read_text(encoding="utf-8")
+    # One file that opens offline: nothing fetched from anywhere.
+    assert not re.search(r'<(script|link|img)[^>]+(src|href)="https?:', html)
+    for fig in ("fig-forest", "fig-traps", "fig-crawl", "fig-journey", "fig-access", "fig-release", "fig-assistant"):
+        assert f'id="{fig}"' in html
+    review = REPORT.parent
+    assert "report.html" in {p.name for p in review.glob("*.html")}
+    assert not {p.name for p in review.glob("*.html")} - {"report.html", "review-i-briefing.html"}
     assert not (review.parent / "benchmark_results" / "rules-vs-just-ai.html").exists()
 
 
-def test_assembly_round_trips_and_nothing_can_break_out_of_the_data_block():
-    parts = {"portal": "<p>a</p><script>x=1</script>", "rules": "<!-- <script> --></script><p>b</p>"}
-    html = assemble(parts)
-    data = html[html.index('<script id="parts"'):]
+def test_the_report_data_round_trips_and_nothing_can_break_out_of_it(tmp_path):
+    sections = {"rules": {"note": "</script><script>alert(1)</script> <!-- x"}, "portal": {"n": [1, 2]}}
+    out = build_report(sections, out=tmp_path / "report.html")
+    html = out.read_text(encoding="utf-8")
+    data = html[html.index('<script id="data"'):]
     data = data[data.index(">") + 1:data.index("</script>")]
     assert "<" not in data                                   # every < escaped inside the script element
-    from tools import page_kit
-    tmp = Path(page_kit.ROOT / "build" / "portal-test.html")
-    tmp.parent.mkdir(exist_ok=True)
-    tmp.write_text(html, encoding="utf-8")
-    try:
-        assert parts_in(tmp) == parts
-    finally:
-        tmp.unlink()
-    assert BRIDGE.strip() in html.replace("\u003c", "<") or "portal-settings" in html
+    assert report_data(out) == sections
 
 
 @pytest.mark.usefixtures("browser_available")

@@ -1,27 +1,12 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-27T09:21:12+00:00",
-  "title": "Design System: DPDP-compliant HIS extraction — Review demo pages",
+  "generatedAt": "2026-10-11T07:47:12+00:00",
+  "title": "Design System: DPDP Evidence Report",
   "extensions": {
     "colorMeta": {
-      "page": {
+      "paper": {
         "role": "neutral",
-        "displayName": "Grey Desk",
-        "canonical": "#f5f6f8",
-        "tonalRamp": [
-          "oklch(15% 0.003 264.5)",
-          "oklch(26% 0.003 264.5)",
-          "oklch(38% 0.003 264.5)",
-          "oklch(50% 0.003 264.5)",
-          "oklch(62% 0.003 264.5)",
-          "oklch(74% 0.003 264.5)",
-          "oklch(85% 0.003 264.5)",
-          "oklch(95% 0.003 264.5)"
-        ]
-      },
-      "card": {
-        "role": "neutral",
-        "displayName": "Panel White",
+        "displayName": "Paper",
         "canonical": "#ffffff",
         "tonalRamp": [
           "oklch(15% 0.000 89.9)",
@@ -34,219 +19,264 @@
           "oklch(95% 0.000 89.9)"
         ]
       },
-      "recess": {
+      "paper-2": {
         "role": "neutral",
-        "displayName": "Recess Grey",
-        "canonical": "#f0f2f5",
+        "displayName": "Paper 2",
+        "canonical": "#f3f5f5",
         "tonalRamp": [
-          "oklch(15% 0.005 258.3)",
-          "oklch(26% 0.005 258.3)",
-          "oklch(38% 0.005 258.3)",
-          "oklch(50% 0.005 258.3)",
-          "oklch(62% 0.005 258.3)",
-          "oklch(74% 0.005 258.3)",
-          "oklch(85% 0.005 258.3)",
-          "oklch(95% 0.005 258.3)"
+          "oklch(15% 0.002 197.1)",
+          "oklch(26% 0.002 197.1)",
+          "oklch(38% 0.002 197.1)",
+          "oklch(50% 0.002 197.1)",
+          "oklch(62% 0.002 197.1)",
+          "oklch(74% 0.002 197.1)",
+          "oklch(85% 0.002 197.1)",
+          "oklch(95% 0.002 197.1)"
         ]
       },
-      "line": {
+      "paper-3": {
         "role": "neutral",
-        "displayName": "Rule Line",
-        "canonical": "#e1e4e9",
+        "displayName": "Paper 3",
+        "canonical": "#e9eded",
         "tonalRamp": [
-          "oklch(15% 0.008 260.7)",
-          "oklch(26% 0.008 260.7)",
-          "oklch(38% 0.008 260.7)",
-          "oklch(50% 0.008 260.7)",
-          "oklch(62% 0.008 260.7)",
-          "oklch(74% 0.008 260.7)",
-          "oklch(85% 0.008 260.7)",
-          "oklch(95% 0.008 260.7)"
+          "oklch(15% 0.004 197.1)",
+          "oklch(26% 0.004 197.1)",
+          "oklch(38% 0.004 197.1)",
+          "oklch(50% 0.004 197.1)",
+          "oklch(62% 0.004 197.1)",
+          "oklch(74% 0.004 197.1)",
+          "oklch(85% 0.004 197.1)",
+          "oklch(95% 0.004 197.1)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#d3d9da",
+        "tonalRamp": [
+          "oklch(15% 0.007 208.8)",
+          "oklch(26% 0.007 208.8)",
+          "oklch(38% 0.007 208.8)",
+          "oklch(50% 0.007 208.8)",
+          "oklch(62% 0.007 208.8)",
+          "oklch(74% 0.007 208.8)",
+          "oklch(85% 0.007 208.8)",
+          "oklch(95% 0.007 208.8)"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "Rule 2",
+        "canonical": "#e6eaea",
+        "tonalRamp": [
+          "oklch(15% 0.004 197.1)",
+          "oklch(26% 0.004 197.1)",
+          "oklch(38% 0.004 197.1)",
+          "oklch(50% 0.004 197.1)",
+          "oklch(62% 0.004 197.1)",
+          "oklch(74% 0.004 197.1)",
+          "oklch(85% 0.004 197.1)",
+          "oklch(95% 0.004 197.1)"
         ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Ink",
-        "canonical": "#14161a",
+        "canonical": "#121417",
         "tonalRamp": [
-          "oklch(15% 0.009 264.4)",
-          "oklch(26% 0.009 264.4)",
-          "oklch(38% 0.009 264.4)",
-          "oklch(50% 0.009 264.4)",
-          "oklch(62% 0.009 264.4)",
-          "oklch(74% 0.009 264.4)",
-          "oklch(85% 0.009 264.4)",
-          "oklch(95% 0.009 264.4)"
+          "oklch(15% 0.007 258.4)",
+          "oklch(26% 0.007 258.4)",
+          "oklch(38% 0.007 258.4)",
+          "oklch(50% 0.007 258.4)",
+          "oklch(62% 0.007 258.4)",
+          "oklch(74% 0.007 258.4)",
+          "oklch(85% 0.007 258.4)",
+          "oklch(95% 0.007 258.4)"
         ]
       },
-      "ink-soft": {
+      "ink-2": {
         "role": "neutral",
-        "displayName": "Ink Soft",
-        "canonical": "#4d5560",
+        "displayName": "Ink 2",
+        "canonical": "#454c51",
         "tonalRamp": [
-          "oklch(15% 0.021 256.4)",
-          "oklch(26% 0.021 256.4)",
-          "oklch(38% 0.021 256.4)",
-          "oklch(50% 0.021 256.4)",
-          "oklch(62% 0.021 256.4)",
-          "oklch(74% 0.021 256.4)",
-          "oklch(85% 0.021 256.4)",
-          "oklch(95% 0.021 256.4)"
+          "oklch(15% 0.012 238.8)",
+          "oklch(26% 0.012 238.8)",
+          "oklch(38% 0.012 238.8)",
+          "oklch(50% 0.012 238.8)",
+          "oklch(62% 0.012 238.8)",
+          "oklch(74% 0.012 238.8)",
+          "oklch(85% 0.012 238.8)",
+          "oklch(95% 0.012 238.8)"
         ]
       },
-      "ink-quiet": {
+      "ink-3": {
         "role": "neutral",
-        "displayName": "Ink Quiet",
-        "canonical": "#686e76",
+        "displayName": "Ink 3",
+        "canonical": "#5f676d",
         "tonalRamp": [
-          "oklch(15% 0.015 255.6)",
-          "oklch(26% 0.015 255.6)",
-          "oklch(38% 0.015 255.6)",
-          "oklch(50% 0.015 255.6)",
-          "oklch(62% 0.015 255.6)",
-          "oklch(74% 0.015 255.6)",
-          "oklch(85% 0.015 255.6)",
-          "oklch(95% 0.015 255.6)"
+          "oklch(15% 0.014 240.1)",
+          "oklch(26% 0.014 240.1)",
+          "oklch(38% 0.014 240.1)",
+          "oklch(50% 0.014 240.1)",
+          "oklch(62% 0.014 240.1)",
+          "oklch(74% 0.014 240.1)",
+          "oklch(85% 0.014 240.1)",
+          "oklch(95% 0.014 240.1)"
         ]
       },
-      "ours-blue": {
+      "teal": {
         "role": "primary",
-        "displayName": "Ours Blue",
-        "canonical": "#266ec4",
+        "displayName": "House Teal",
+        "canonical": "#00737a",
         "tonalRamp": [
-          "oklch(15% 0.151 255.4)",
-          "oklch(26% 0.151 255.4)",
-          "oklch(38% 0.151 255.4)",
-          "oklch(50% 0.151 255.4)",
-          "oklch(62% 0.151 255.4)",
-          "oklch(74% 0.151 255.4)",
-          "oklch(85% 0.151 255.4)",
-          "oklch(95% 0.151 255.4)"
+          "oklch(15% 0.086 202.2)",
+          "oklch(26% 0.086 202.2)",
+          "oklch(38% 0.086 202.2)",
+          "oklch(50% 0.086 202.2)",
+          "oklch(62% 0.086 202.2)",
+          "oklch(74% 0.086 202.2)",
+          "oklch(85% 0.086 202.2)",
+          "oklch(95% 0.086 202.2)"
         ]
       },
-      "agent-violet": {
+      "teal-2": {
+        "role": "primary",
+        "displayName": "Deep Teal",
+        "canonical": "#005a60",
+        "tonalRamp": [
+          "oklch(15% 0.073 202.7)",
+          "oklch(26% 0.073 202.7)",
+          "oklch(38% 0.073 202.7)",
+          "oklch(50% 0.073 202.7)",
+          "oklch(62% 0.073 202.7)",
+          "oklch(74% 0.073 202.7)",
+          "oklch(85% 0.073 202.7)",
+          "oklch(95% 0.073 202.7)"
+        ]
+      },
+      "teal-wash": {
+        "role": "primary",
+        "displayName": "Teal Wash",
+        "canonical": "#e3f1f1",
+        "tonalRamp": [
+          "oklch(15% 0.015 196.9)",
+          "oklch(26% 0.015 196.9)",
+          "oklch(38% 0.015 196.9)",
+          "oklch(50% 0.015 196.9)",
+          "oklch(62% 0.015 196.9)",
+          "oklch(74% 0.015 196.9)",
+          "oklch(85% 0.015 196.9)",
+          "oklch(95% 0.015 196.9)"
+        ]
+      },
+      "ctrl": {
         "role": "secondary",
-        "displayName": "Agent Violet",
-        "canonical": "#7d52dd",
+        "displayName": "Control Grey",
+        "canonical": "#5d666c",
         "tonalRamp": [
-          "oklch(15% 0.202 293.0)",
-          "oklch(26% 0.202 293.0)",
-          "oklch(38% 0.202 293.0)",
-          "oklch(50% 0.202 293.0)",
-          "oklch(62% 0.202 293.0)",
-          "oklch(74% 0.202 293.0)",
-          "oklch(85% 0.202 293.0)",
-          "oklch(95% 0.202 293.0)"
+          "oklch(15% 0.015 236.9)",
+          "oklch(26% 0.015 236.9)",
+          "oklch(38% 0.015 236.9)",
+          "oklch(50% 0.015 236.9)",
+          "oklch(62% 0.015 236.9)",
+          "oklch(74% 0.015 236.9)",
+          "oklch(85% 0.015 236.9)",
+          "oklch(95% 0.015 236.9)"
         ]
       },
-      "baseline-amber": {
-        "role": "secondary",
-        "displayName": "Baseline Amber",
-        "canonical": "#bc7f00",
-        "tonalRamp": [
-          "oklch(15% 0.135 75.2)",
-          "oklch(26% 0.135 75.2)",
-          "oklch(38% 0.135 75.2)",
-          "oklch(50% 0.135 75.2)",
-          "oklch(62% 0.135 75.2)",
-          "oklch(74% 0.135 75.2)",
-          "oklch(85% 0.135 75.2)",
-          "oklch(95% 0.135 75.2)"
-        ]
-      },
-      "good": {
+      "harm": {
         "role": "tertiary",
-        "displayName": "Verdict Green",
-        "canonical": "#187d43",
+        "displayName": "Harm Red",
+        "canonical": "#c0392b",
         "tonalRamp": [
-          "oklch(15% 0.127 152.4)",
-          "oklch(26% 0.127 152.4)",
-          "oklch(38% 0.127 152.4)",
-          "oklch(50% 0.127 152.4)",
-          "oklch(62% 0.127 152.4)",
-          "oklch(74% 0.127 152.4)",
-          "oklch(85% 0.127 152.4)",
-          "oklch(95% 0.127 152.4)"
+          "oklch(15% 0.174 29.7)",
+          "oklch(26% 0.174 29.7)",
+          "oklch(38% 0.174 29.7)",
+          "oklch(50% 0.174 29.7)",
+          "oklch(62% 0.174 29.7)",
+          "oklch(74% 0.174 29.7)",
+          "oklch(85% 0.174 29.7)",
+          "oklch(95% 0.174 29.7)"
         ]
       },
-      "good-wash": {
+      "harm-wash": {
         "role": "tertiary",
-        "displayName": "Green Wash",
-        "canonical": "#e1f4e9",
+        "displayName": "Harm Wash",
+        "canonical": "#fbe9e6",
         "tonalRamp": [
-          "oklch(15% 0.025 160.6)",
-          "oklch(26% 0.025 160.6)",
-          "oklch(38% 0.025 160.6)",
-          "oklch(50% 0.025 160.6)",
-          "oklch(62% 0.025 160.6)",
-          "oklch(74% 0.025 160.6)",
-          "oklch(85% 0.025 160.6)",
-          "oklch(95% 0.025 160.6)"
+          "oklch(15% 0.020 28.9)",
+          "oklch(26% 0.020 28.9)",
+          "oklch(38% 0.020 28.9)",
+          "oklch(50% 0.020 28.9)",
+          "oklch(62% 0.020 28.9)",
+          "oklch(74% 0.020 28.9)",
+          "oklch(85% 0.020 28.9)",
+          "oklch(95% 0.020 28.9)"
         ]
       },
-      "bad": {
+      "held": {
         "role": "tertiary",
-        "displayName": "Verdict Red",
-        "canonical": "#c53232",
+        "displayName": "Held Green",
+        "canonical": "#1d7a4a",
         "tonalRamp": [
-          "oklch(15% 0.184 25.8)",
-          "oklch(26% 0.184 25.8)",
-          "oklch(38% 0.184 25.8)",
-          "oklch(50% 0.184 25.8)",
-          "oklch(62% 0.184 25.8)",
-          "oklch(74% 0.184 25.8)",
-          "oklch(85% 0.184 25.8)",
-          "oklch(95% 0.184 25.8)"
+          "oklch(15% 0.114 155.5)",
+          "oklch(26% 0.114 155.5)",
+          "oklch(38% 0.114 155.5)",
+          "oklch(50% 0.114 155.5)",
+          "oklch(62% 0.114 155.5)",
+          "oklch(74% 0.114 155.5)",
+          "oklch(85% 0.114 155.5)",
+          "oklch(95% 0.114 155.5)"
         ]
       },
-      "bad-wash": {
+      "held-wash": {
         "role": "tertiary",
-        "displayName": "Red Wash",
-        "canonical": "#fbe5e5",
+        "displayName": "Held Wash",
+        "canonical": "#e3f2e9",
         "tonalRamp": [
-          "oklch(15% 0.024 17.6)",
-          "oklch(26% 0.024 17.6)",
-          "oklch(38% 0.024 17.6)",
-          "oklch(50% 0.024 17.6)",
-          "oklch(62% 0.024 17.6)",
-          "oklch(74% 0.024 17.6)",
-          "oklch(85% 0.024 17.6)",
-          "oklch(95% 0.024 17.6)"
+          "oklch(15% 0.020 159.7)",
+          "oklch(26% 0.020 159.7)",
+          "oklch(38% 0.020 159.7)",
+          "oklch(50% 0.020 159.7)",
+          "oklch(62% 0.020 159.7)",
+          "oklch(74% 0.020 159.7)",
+          "oklch(85% 0.020 159.7)",
+          "oklch(95% 0.020 159.7)"
         ]
       },
-      "warn": {
+      "caution": {
         "role": "tertiary",
-        "displayName": "Verdict Ochre",
-        "canonical": "#976419",
+        "displayName": "Caution Ochre",
+        "canonical": "#8a6100",
         "tonalRamp": [
-          "oklch(15% 0.108 71.1)",
-          "oklch(26% 0.108 71.1)",
-          "oklch(38% 0.108 71.1)",
-          "oklch(50% 0.108 71.1)",
-          "oklch(62% 0.108 71.1)",
-          "oklch(74% 0.108 71.1)",
-          "oklch(85% 0.108 71.1)",
-          "oklch(95% 0.108 71.1)"
+          "oklch(15% 0.108 79.7)",
+          "oklch(26% 0.108 79.7)",
+          "oklch(38% 0.108 79.7)",
+          "oklch(50% 0.108 79.7)",
+          "oklch(62% 0.108 79.7)",
+          "oklch(74% 0.108 79.7)",
+          "oklch(85% 0.108 79.7)",
+          "oklch(95% 0.108 79.7)"
         ]
       },
-      "warn-wash": {
+      "caution-wash": {
         "role": "tertiary",
-        "displayName": "Ochre Wash",
-        "canonical": "#fcf1dd",
+        "displayName": "Caution Wash",
+        "canonical": "#fbf1d9",
         "tonalRamp": [
-          "oklch(15% 0.029 82.6)",
-          "oklch(26% 0.029 82.6)",
-          "oklch(38% 0.029 82.6)",
-          "oklch(50% 0.029 82.6)",
-          "oklch(62% 0.029 82.6)",
-          "oklch(74% 0.029 82.6)",
-          "oklch(85% 0.029 82.6)",
-          "oklch(95% 0.029 82.6)"
+          "oklch(15% 0.033 88.1)",
+          "oklch(26% 0.033 88.1)",
+          "oklch(38% 0.033 88.1)",
+          "oklch(50% 0.033 88.1)",
+          "oklch(62% 0.033 88.1)",
+          "oklch(74% 0.033 88.1)",
+          "oklch(85% 0.033 88.1)",
+          "oklch(95% 0.033 88.1)"
         ]
       },
-      "on-fill": {
-        "role": "tertiary",
-        "displayName": "On-Fill",
+      "on": {
+        "role": "neutral",
+        "displayName": "On Fill",
         "canonical": "#ffffff",
         "tonalRamp": [
           "oklch(15% 0.000 89.9)",
@@ -259,67 +289,157 @@
           "oklch(95% 0.000 89.9)"
         ]
       },
-      "layer-patient-admin": {
-        "role": "tertiary",
-        "displayName": "Layer Patient Admin",
-        "canonical": "#266ec4",
+      "model-m0": {
+        "role": "secondary",
+        "displayName": "Model Amber",
+        "canonical": "#b26d12",
         "tonalRamp": [
-          "oklch(15% 0.151 255.4)",
-          "oklch(26% 0.151 255.4)",
-          "oklch(38% 0.151 255.4)",
-          "oklch(50% 0.151 255.4)",
-          "oklch(62% 0.151 255.4)",
-          "oklch(74% 0.151 255.4)",
-          "oklch(85% 0.151 255.4)",
-          "oklch(95% 0.151 255.4)"
+          "oklch(15% 0.128 65.6)",
+          "oklch(26% 0.128 65.6)",
+          "oklch(38% 0.128 65.6)",
+          "oklch(50% 0.128 65.6)",
+          "oklch(62% 0.128 65.6)",
+          "oklch(74% 0.128 65.6)",
+          "oklch(85% 0.128 65.6)",
+          "oklch(95% 0.128 65.6)"
         ]
       },
-      "layer-clinical": {
+      "model-m1": {
+        "role": "secondary",
+        "displayName": "Model Blue",
+        "canonical": "#3a76b8",
+        "tonalRamp": [
+          "oklch(15% 0.121 252.7)",
+          "oklch(26% 0.121 252.7)",
+          "oklch(38% 0.121 252.7)",
+          "oklch(50% 0.121 252.7)",
+          "oklch(62% 0.121 252.7)",
+          "oklch(74% 0.121 252.7)",
+          "oklch(85% 0.121 252.7)",
+          "oklch(95% 0.121 252.7)"
+        ]
+      },
+      "model-m2": {
+        "role": "secondary",
+        "displayName": "Model Plum",
+        "canonical": "#a8457c",
+        "tonalRamp": [
+          "oklch(15% 0.144 348.6)",
+          "oklch(26% 0.144 348.6)",
+          "oklch(38% 0.144 348.6)",
+          "oklch(50% 0.144 348.6)",
+          "oklch(62% 0.144 348.6)",
+          "oklch(74% 0.144 348.6)",
+          "oklch(85% 0.144 348.6)",
+          "oklch(95% 0.144 348.6)"
+        ]
+      },
+      "model-m3": {
+        "role": "secondary",
+        "displayName": "Model Violet",
+        "canonical": "#6a46ad",
+        "tonalRamp": [
+          "oklch(15% 0.158 296.1)",
+          "oklch(26% 0.158 296.1)",
+          "oklch(38% 0.158 296.1)",
+          "oklch(50% 0.158 296.1)",
+          "oklch(62% 0.158 296.1)",
+          "oklch(74% 0.158 296.1)",
+          "oklch(85% 0.158 296.1)",
+          "oklch(95% 0.158 296.1)"
+        ]
+      },
+      "model-m4": {
+        "role": "secondary",
+        "displayName": "Model Moss",
+        "canonical": "#4f8136",
+        "tonalRamp": [
+          "oklch(15% 0.119 136.4)",
+          "oklch(26% 0.119 136.4)",
+          "oklch(38% 0.119 136.4)",
+          "oklch(50% 0.119 136.4)",
+          "oklch(62% 0.119 136.4)",
+          "oklch(74% 0.119 136.4)",
+          "oklch(85% 0.119 136.4)",
+          "oklch(95% 0.119 136.4)"
+        ]
+      },
+      "model-m5": {
+        "role": "secondary",
+        "displayName": "Model Umber",
+        "canonical": "#8a5a3c",
+        "tonalRamp": [
+          "oklch(15% 0.077 52.3)",
+          "oklch(26% 0.077 52.3)",
+          "oklch(38% 0.077 52.3)",
+          "oklch(50% 0.077 52.3)",
+          "oklch(62% 0.077 52.3)",
+          "oklch(74% 0.077 52.3)",
+          "oklch(85% 0.077 52.3)",
+          "oklch(95% 0.077 52.3)"
+        ]
+      },
+      "layer-l0": {
+        "role": "tertiary",
+        "displayName": "Layer Patient Administration",
+        "canonical": "#3a76b8",
+        "tonalRamp": [
+          "oklch(15% 0.121 252.7)",
+          "oklch(26% 0.121 252.7)",
+          "oklch(38% 0.121 252.7)",
+          "oklch(50% 0.121 252.7)",
+          "oklch(62% 0.121 252.7)",
+          "oklch(74% 0.121 252.7)",
+          "oklch(85% 0.121 252.7)",
+          "oklch(95% 0.121 252.7)"
+        ]
+      },
+      "layer-l1": {
         "role": "tertiary",
         "displayName": "Layer Clinical",
-        "canonical": "#1baf7a",
+        "canonical": "#2e8b57",
         "tonalRamp": [
-          "oklch(15% 0.141 162.1)",
-          "oklch(26% 0.141 162.1)",
-          "oklch(38% 0.141 162.1)",
-          "oklch(50% 0.141 162.1)",
-          "oklch(62% 0.141 162.1)",
-          "oklch(74% 0.141 162.1)",
-          "oklch(85% 0.141 162.1)",
-          "oklch(95% 0.141 162.1)"
+          "oklch(15% 0.119 154.9)",
+          "oklch(26% 0.119 154.9)",
+          "oklch(38% 0.119 154.9)",
+          "oklch(50% 0.119 154.9)",
+          "oklch(62% 0.119 154.9)",
+          "oklch(74% 0.119 154.9)",
+          "oklch(85% 0.119 154.9)",
+          "oklch(95% 0.119 154.9)"
         ]
       },
-      "layer-ancillary": {
+      "layer-l2": {
         "role": "tertiary",
         "displayName": "Layer Ancillary",
-        "canonical": "#0e9aa7",
+        "canonical": "#0e8a95",
         "tonalRamp": [
-          "oklch(15% 0.105 205.6)",
-          "oklch(26% 0.105 205.6)",
-          "oklch(38% 0.105 205.6)",
-          "oklch(50% 0.105 205.6)",
-          "oklch(62% 0.105 205.6)",
-          "oklch(74% 0.105 205.6)",
-          "oklch(85% 0.105 205.6)",
-          "oklch(95% 0.105 205.6)"
+          "oklch(15% 0.096 204.9)",
+          "oklch(26% 0.096 204.9)",
+          "oklch(38% 0.096 204.9)",
+          "oklch(50% 0.096 204.9)",
+          "oklch(62% 0.096 204.9)",
+          "oklch(74% 0.096 204.9)",
+          "oklch(85% 0.096 204.9)",
+          "oklch(95% 0.096 204.9)"
         ]
       },
-      "layer-financial": {
+      "layer-l3": {
         "role": "tertiary",
         "displayName": "Layer Financial",
-        "canonical": "#eb6834",
+        "canonical": "#c9622d",
         "tonalRamp": [
-          "oklch(15% 0.175 40.6)",
-          "oklch(26% 0.175 40.6)",
-          "oklch(38% 0.175 40.6)",
-          "oklch(50% 0.175 40.6)",
-          "oklch(62% 0.175 40.6)",
-          "oklch(74% 0.175 40.6)",
-          "oklch(85% 0.175 40.6)",
-          "oklch(95% 0.175 40.6)"
+          "oklch(15% 0.147 45.2)",
+          "oklch(26% 0.147 45.2)",
+          "oklch(38% 0.147 45.2)",
+          "oklch(50% 0.147 45.2)",
+          "oklch(62% 0.147 45.2)",
+          "oklch(74% 0.147 45.2)",
+          "oklch(85% 0.147 45.2)",
+          "oklch(95% 0.147 45.2)"
         ]
       },
-      "layer-integration": {
+      "layer-l4": {
         "role": "tertiary",
         "displayName": "Layer Integration",
         "canonical": "#8a6d3b",
@@ -334,550 +454,511 @@
           "oklch(95% 0.077 79.7)"
         ]
       },
-      "model-a0": {
-        "role": "tertiary",
-        "displayName": "Model A0",
-        "canonical": "#eb6834",
-        "tonalRamp": [
-          "oklch(15% 0.175 40.6)",
-          "oklch(26% 0.175 40.6)",
-          "oklch(38% 0.175 40.6)",
-          "oklch(50% 0.175 40.6)",
-          "oklch(62% 0.175 40.6)",
-          "oklch(74% 0.175 40.6)",
-          "oklch(85% 0.175 40.6)",
-          "oklch(95% 0.175 40.6)"
-        ]
-      },
-      "model-a1": {
-        "role": "tertiary",
-        "displayName": "Model A1",
-        "canonical": "#1baf7a",
-        "tonalRamp": [
-          "oklch(15% 0.141 162.1)",
-          "oklch(26% 0.141 162.1)",
-          "oklch(38% 0.141 162.1)",
-          "oklch(50% 0.141 162.1)",
-          "oklch(62% 0.141 162.1)",
-          "oklch(74% 0.141 162.1)",
-          "oklch(85% 0.141 162.1)",
-          "oklch(95% 0.141 162.1)"
-        ]
-      },
-      "model-a2": {
-        "role": "tertiary",
-        "displayName": "Model A2",
-        "canonical": "#8b5cf6",
-        "tonalRamp": [
-          "oklch(15% 0.219 292.7)",
-          "oklch(26% 0.219 292.7)",
-          "oklch(38% 0.219 292.7)",
-          "oklch(50% 0.219 292.7)",
-          "oklch(62% 0.219 292.7)",
-          "oklch(74% 0.219 292.7)",
-          "oklch(85% 0.219 292.7)",
-          "oklch(95% 0.219 292.7)"
-        ]
-      },
-      "model-a3": {
-        "role": "tertiary",
-        "displayName": "Model A3",
-        "canonical": "#0e9aa7",
-        "tonalRamp": [
-          "oklch(15% 0.105 205.6)",
-          "oklch(26% 0.105 205.6)",
-          "oklch(38% 0.105 205.6)",
-          "oklch(50% 0.105 205.6)",
-          "oklch(62% 0.105 205.6)",
-          "oklch(74% 0.105 205.6)",
-          "oklch(85% 0.105 205.6)",
-          "oklch(95% 0.105 205.6)"
-        ]
-      },
-      "model-a4": {
-        "role": "tertiary",
-        "displayName": "Model A4",
-        "canonical": "#d6409f",
-        "tonalRamp": [
-          "oklch(15% 0.208 346.0)",
-          "oklch(26% 0.208 346.0)",
-          "oklch(38% 0.208 346.0)",
-          "oklch(50% 0.208 346.0)",
-          "oklch(62% 0.208 346.0)",
-          "oklch(74% 0.208 346.0)",
-          "oklch(85% 0.208 346.0)",
-          "oklch(95% 0.208 346.0)"
-        ]
-      },
-      "model-a5": {
-        "role": "tertiary",
-        "displayName": "Model A5",
-        "canonical": "#8a6d3b",
-        "tonalRamp": [
-          "oklch(15% 0.077 79.7)",
-          "oklch(26% 0.077 79.7)",
-          "oklch(38% 0.077 79.7)",
-          "oklch(50% 0.077 79.7)",
-          "oklch(62% 0.077 79.7)",
-          "oklch(74% 0.077 79.7)",
-          "oklch(85% 0.077 79.7)",
-          "oklch(95% 0.077 79.7)"
-        ]
-      },
-      "terminal": {
+      "code-slab": {
         "role": "neutral",
-        "displayName": "Terminal Slab",
-        "canonical": "#111316",
+        "displayName": "Code Slab",
+        "canonical": "#121619",
         "tonalRamp": [
-          "oklch(15% 0.007 258.4)",
-          "oklch(26% 0.007 258.4)",
-          "oklch(38% 0.007 258.4)",
-          "oklch(50% 0.007 258.4)",
-          "oklch(62% 0.007 258.4)",
-          "oklch(74% 0.007 258.4)",
-          "oklch(85% 0.007 258.4)",
-          "oklch(95% 0.007 258.4)"
+          "oklch(15% 0.009 240.4)",
+          "oklch(26% 0.009 240.4)",
+          "oklch(38% 0.009 240.4)",
+          "oklch(50% 0.009 240.4)",
+          "oklch(62% 0.009 240.4)",
+          "oklch(74% 0.009 240.4)",
+          "oklch(85% 0.009 240.4)",
+          "oklch(95% 0.009 240.4)"
         ]
       },
-      "terminal-ink": {
+      "code-ink": {
         "role": "neutral",
-        "displayName": "Terminal Ink",
-        "canonical": "#d7dde3",
+        "displayName": "Code Ink",
+        "canonical": "#d6dde2",
         "tonalRamp": [
-          "oklch(15% 0.010 247.9)",
-          "oklch(26% 0.010 247.9)",
-          "oklch(38% 0.010 247.9)",
-          "oklch(50% 0.010 247.9)",
-          "oklch(62% 0.010 247.9)",
-          "oklch(74% 0.010 247.9)",
-          "oklch(85% 0.010 247.9)",
-          "oklch(95% 0.010 247.9)"
+          "oklch(15% 0.010 238.5)",
+          "oklch(26% 0.010 238.5)",
+          "oklch(38% 0.010 238.5)",
+          "oklch(50% 0.010 238.5)",
+          "oklch(62% 0.010 238.5)",
+          "oklch(74% 0.010 238.5)",
+          "oklch(85% 0.010 238.5)",
+          "oklch(95% 0.010 238.5)"
         ]
       },
-      "terminal-ok": {
+      "dark-paper": {
         "role": "neutral",
-        "displayName": "Terminal Pass",
-        "canonical": "#5fd38d",
+        "displayName": "Dark Paper",
+        "canonical": "#111416",
         "tonalRamp": [
-          "oklch(15% 0.146 154.5)",
-          "oklch(26% 0.146 154.5)",
-          "oklch(38% 0.146 154.5)",
-          "oklch(50% 0.146 154.5)",
-          "oklch(62% 0.146 154.5)",
-          "oklch(74% 0.146 154.5)",
-          "oklch(85% 0.146 154.5)",
-          "oklch(95% 0.146 154.5)"
+          "oklch(15% 0.006 236.9)",
+          "oklch(26% 0.006 236.9)",
+          "oklch(38% 0.006 236.9)",
+          "oklch(50% 0.006 236.9)",
+          "oklch(62% 0.006 236.9)",
+          "oklch(74% 0.006 236.9)",
+          "oklch(85% 0.006 236.9)",
+          "oklch(95% 0.006 236.9)"
         ]
       },
-      "terminal-no": {
+      "dark-paper-2": {
         "role": "neutral",
-        "displayName": "Terminal Fail",
-        "canonical": "#ff7b7b",
+        "displayName": "Dark Paper 2",
+        "canonical": "#181c1f",
         "tonalRamp": [
-          "oklch(15% 0.161 21.8)",
-          "oklch(26% 0.161 21.8)",
-          "oklch(38% 0.161 21.8)",
-          "oklch(50% 0.161 21.8)",
-          "oklch(62% 0.161 21.8)",
-          "oklch(74% 0.161 21.8)",
-          "oklch(85% 0.161 21.8)",
-          "oklch(95% 0.161 21.8)"
+          "oklch(15% 0.008 240.3)",
+          "oklch(26% 0.008 240.3)",
+          "oklch(38% 0.008 240.3)",
+          "oklch(50% 0.008 240.3)",
+          "oklch(62% 0.008 240.3)",
+          "oklch(74% 0.008 240.3)",
+          "oklch(85% 0.008 240.3)",
+          "oklch(95% 0.008 240.3)"
         ]
       },
-      "terminal-dim": {
+      "dark-paper-3": {
         "role": "neutral",
-        "displayName": "Terminal Dim",
-        "canonical": "#8b949e",
+        "displayName": "Dark Paper 3",
+        "canonical": "#20262a",
         "tonalRamp": [
-          "oklch(15% 0.018 250.9)",
-          "oklch(26% 0.018 250.9)",
-          "oklch(38% 0.018 250.9)",
-          "oklch(50% 0.018 250.9)",
-          "oklch(62% 0.018 250.9)",
-          "oklch(74% 0.018 250.9)",
-          "oklch(85% 0.018 250.9)",
-          "oklch(95% 0.018 250.9)"
+          "oklch(15% 0.011 237.1)",
+          "oklch(26% 0.011 237.1)",
+          "oklch(38% 0.011 237.1)",
+          "oklch(50% 0.011 237.1)",
+          "oklch(62% 0.011 237.1)",
+          "oklch(74% 0.011 237.1)",
+          "oklch(85% 0.011 237.1)",
+          "oklch(95% 0.011 237.1)"
         ]
       },
-      "night-page": {
+      "dark-rule": {
         "role": "neutral",
-        "displayName": "Night Grey Desk",
-        "canonical": "#0f1114",
+        "displayName": "Dark Rule",
+        "canonical": "#333b40",
         "tonalRamp": [
-          "oklch(15% 0.007 258.4)",
-          "oklch(26% 0.007 258.4)",
-          "oklch(38% 0.007 258.4)",
-          "oklch(50% 0.007 258.4)",
-          "oklch(62% 0.007 258.4)",
-          "oklch(74% 0.007 258.4)",
-          "oklch(85% 0.007 258.4)",
-          "oklch(95% 0.007 258.4)"
+          "oklch(15% 0.014 235.3)",
+          "oklch(26% 0.014 235.3)",
+          "oklch(38% 0.014 235.3)",
+          "oklch(50% 0.014 235.3)",
+          "oklch(62% 0.014 235.3)",
+          "oklch(74% 0.014 235.3)",
+          "oklch(85% 0.014 235.3)",
+          "oklch(95% 0.014 235.3)"
         ]
       },
-      "night-card": {
+      "dark-rule-2": {
         "role": "neutral",
-        "displayName": "Night Panel White",
-        "canonical": "#181b20",
+        "displayName": "Dark Rule 2",
+        "canonical": "#262d31",
         "tonalRamp": [
-          "oklch(15% 0.011 260.7)",
-          "oklch(26% 0.011 260.7)",
-          "oklch(38% 0.011 260.7)",
-          "oklch(50% 0.011 260.7)",
-          "oklch(62% 0.011 260.7)",
-          "oklch(74% 0.011 260.7)",
-          "oklch(85% 0.011 260.7)",
-          "oklch(95% 0.011 260.7)"
+          "oklch(15% 0.012 232.9)",
+          "oklch(26% 0.012 232.9)",
+          "oklch(38% 0.012 232.9)",
+          "oklch(50% 0.012 232.9)",
+          "oklch(62% 0.012 232.9)",
+          "oklch(74% 0.012 232.9)",
+          "oklch(85% 0.012 232.9)",
+          "oklch(95% 0.012 232.9)"
         ]
       },
-      "night-recess": {
+      "dark-ink": {
         "role": "neutral",
-        "displayName": "Night Recess Grey",
-        "canonical": "#22262c",
+        "displayName": "Dark Ink",
+        "canonical": "#eceff0",
         "tonalRamp": [
-          "oklch(15% 0.013 258.4)",
-          "oklch(26% 0.013 258.4)",
-          "oklch(38% 0.013 258.4)",
-          "oklch(50% 0.013 258.4)",
-          "oklch(62% 0.013 258.4)",
-          "oklch(74% 0.013 258.4)",
-          "oklch(85% 0.013 258.4)",
-          "oklch(95% 0.013 258.4)"
+          "oklch(15% 0.003 219.5)",
+          "oklch(26% 0.003 219.5)",
+          "oklch(38% 0.003 219.5)",
+          "oklch(50% 0.003 219.5)",
+          "oklch(62% 0.003 219.5)",
+          "oklch(74% 0.003 219.5)",
+          "oklch(85% 0.003 219.5)",
+          "oklch(95% 0.003 219.5)"
         ]
       },
-      "night-line": {
+      "dark-ink-2": {
         "role": "neutral",
-        "displayName": "Night Rule Line",
-        "canonical": "#2c3138",
+        "displayName": "Dark Ink 2",
+        "canonical": "#b2babe",
         "tonalRamp": [
-          "oklch(15% 0.014 256.8)",
-          "oklch(26% 0.014 256.8)",
-          "oklch(38% 0.014 256.8)",
-          "oklch(50% 0.014 256.8)",
-          "oklch(62% 0.014 256.8)",
-          "oklch(74% 0.014 256.8)",
-          "oklch(85% 0.014 256.8)",
-          "oklch(95% 0.014 256.8)"
+          "oklch(15% 0.011 228.9)",
+          "oklch(26% 0.011 228.9)",
+          "oklch(38% 0.011 228.9)",
+          "oklch(50% 0.011 228.9)",
+          "oklch(62% 0.011 228.9)",
+          "oklch(74% 0.011 228.9)",
+          "oklch(85% 0.011 228.9)",
+          "oklch(95% 0.011 228.9)"
         ]
       },
-      "night-ink": {
+      "dark-ink-3": {
         "role": "neutral",
-        "displayName": "Night Ink",
-        "canonical": "#eef0f2",
+        "displayName": "Dark Ink 3",
+        "canonical": "#8c959a",
         "tonalRamp": [
-          "oklch(15% 0.003 247.9)",
-          "oklch(26% 0.003 247.9)",
-          "oklch(38% 0.003 247.9)",
-          "oklch(50% 0.003 247.9)",
-          "oklch(62% 0.003 247.9)",
-          "oklch(74% 0.003 247.9)",
-          "oklch(85% 0.003 247.9)",
-          "oklch(95% 0.003 247.9)"
+          "oklch(15% 0.013 231.8)",
+          "oklch(26% 0.013 231.8)",
+          "oklch(38% 0.013 231.8)",
+          "oklch(50% 0.013 231.8)",
+          "oklch(62% 0.013 231.8)",
+          "oklch(74% 0.013 231.8)",
+          "oklch(85% 0.013 231.8)",
+          "oklch(95% 0.013 231.8)"
         ]
       },
-      "night-ink-soft": {
-        "role": "neutral",
-        "displayName": "Night Ink Soft",
-        "canonical": "#a9b1ba",
-        "tonalRamp": [
-          "oklch(15% 0.016 251.2)",
-          "oklch(26% 0.016 251.2)",
-          "oklch(38% 0.016 251.2)",
-          "oklch(50% 0.016 251.2)",
-          "oklch(62% 0.016 251.2)",
-          "oklch(74% 0.016 251.2)",
-          "oklch(85% 0.016 251.2)",
-          "oklch(95% 0.016 251.2)"
-        ]
-      },
-      "night-ink-quiet": {
-        "role": "neutral",
-        "displayName": "Night Ink Quiet",
-        "canonical": "#878e95",
-        "tonalRamp": [
-          "oklch(15% 0.013 248.0)",
-          "oklch(26% 0.013 248.0)",
-          "oklch(38% 0.013 248.0)",
-          "oklch(50% 0.013 248.0)",
-          "oklch(62% 0.013 248.0)",
-          "oklch(74% 0.013 248.0)",
-          "oklch(85% 0.013 248.0)",
-          "oklch(95% 0.013 248.0)"
-        ]
-      },
-      "night-ours-blue": {
+      "dark-teal": {
         "role": "primary",
-        "displayName": "Night Ours Blue",
-        "canonical": "#4b95ee",
+        "displayName": "Dark House Teal",
+        "canonical": "#3fb7bd",
         "tonalRamp": [
-          "oklch(15% 0.152 254.5)",
-          "oklch(26% 0.152 254.5)",
-          "oklch(38% 0.152 254.5)",
-          "oklch(50% 0.152 254.5)",
-          "oklch(62% 0.152 254.5)",
-          "oklch(74% 0.152 254.5)",
-          "oklch(85% 0.152 254.5)",
-          "oklch(95% 0.152 254.5)"
+          "oklch(15% 0.104 199.9)",
+          "oklch(26% 0.104 199.9)",
+          "oklch(38% 0.104 199.9)",
+          "oklch(50% 0.104 199.9)",
+          "oklch(62% 0.104 199.9)",
+          "oklch(74% 0.104 199.9)",
+          "oklch(85% 0.104 199.9)",
+          "oklch(95% 0.104 199.9)"
         ]
       },
-      "night-agent-violet": {
+      "dark-teal-2": {
+        "role": "primary",
+        "displayName": "Dark Deep Teal",
+        "canonical": "#6fd0d4",
+        "tonalRamp": [
+          "oklch(15% 0.092 199.0)",
+          "oklch(26% 0.092 199.0)",
+          "oklch(38% 0.092 199.0)",
+          "oklch(50% 0.092 199.0)",
+          "oklch(62% 0.092 199.0)",
+          "oklch(74% 0.092 199.0)",
+          "oklch(85% 0.092 199.0)",
+          "oklch(95% 0.092 199.0)"
+        ]
+      },
+      "dark-teal-wash": {
+        "role": "primary",
+        "displayName": "Dark Teal Wash",
+        "canonical": "#12302f",
+        "tonalRamp": [
+          "oklch(15% 0.036 192.4)",
+          "oklch(26% 0.036 192.4)",
+          "oklch(38% 0.036 192.4)",
+          "oklch(50% 0.036 192.4)",
+          "oklch(62% 0.036 192.4)",
+          "oklch(74% 0.036 192.4)",
+          "oklch(85% 0.036 192.4)",
+          "oklch(95% 0.036 192.4)"
+        ]
+      },
+      "dark-ctrl": {
         "role": "secondary",
-        "displayName": "Night Agent Violet",
-        "canonical": "#a78bfa",
+        "displayName": "Dark Control Grey",
+        "canonical": "#9aa3a8",
         "tonalRamp": [
-          "oklch(15% 0.159 293.5)",
-          "oklch(26% 0.159 293.5)",
-          "oklch(38% 0.159 293.5)",
-          "oklch(50% 0.159 293.5)",
-          "oklch(62% 0.159 293.5)",
-          "oklch(74% 0.159 293.5)",
-          "oklch(85% 0.159 293.5)",
-          "oklch(95% 0.159 293.5)"
+          "oklch(15% 0.013 231.7)",
+          "oklch(26% 0.013 231.7)",
+          "oklch(38% 0.013 231.7)",
+          "oklch(50% 0.013 231.7)",
+          "oklch(62% 0.013 231.7)",
+          "oklch(74% 0.013 231.7)",
+          "oklch(85% 0.013 231.7)",
+          "oklch(95% 0.013 231.7)"
         ]
       },
-      "night-baseline-amber": {
+      "dark-harm": {
+        "role": "tertiary",
+        "displayName": "Dark Harm Red",
+        "canonical": "#f07263",
+        "tonalRamp": [
+          "oklch(15% 0.158 28.7)",
+          "oklch(26% 0.158 28.7)",
+          "oklch(38% 0.158 28.7)",
+          "oklch(50% 0.158 28.7)",
+          "oklch(62% 0.158 28.7)",
+          "oklch(74% 0.158 28.7)",
+          "oklch(85% 0.158 28.7)",
+          "oklch(95% 0.158 28.7)"
+        ]
+      },
+      "dark-harm-wash": {
+        "role": "tertiary",
+        "displayName": "Dark Harm Wash",
+        "canonical": "#3a1e1b",
+        "tonalRamp": [
+          "oklch(15% 0.044 26.9)",
+          "oklch(26% 0.044 26.9)",
+          "oklch(38% 0.044 26.9)",
+          "oklch(50% 0.044 26.9)",
+          "oklch(62% 0.044 26.9)",
+          "oklch(74% 0.044 26.9)",
+          "oklch(85% 0.044 26.9)",
+          "oklch(95% 0.044 26.9)"
+        ]
+      },
+      "dark-held": {
+        "role": "tertiary",
+        "displayName": "Dark Held Green",
+        "canonical": "#4cc283",
+        "tonalRamp": [
+          "oklch(15% 0.141 156.7)",
+          "oklch(26% 0.141 156.7)",
+          "oklch(38% 0.141 156.7)",
+          "oklch(50% 0.141 156.7)",
+          "oklch(62% 0.141 156.7)",
+          "oklch(74% 0.141 156.7)",
+          "oklch(85% 0.141 156.7)",
+          "oklch(95% 0.141 156.7)"
+        ]
+      },
+      "dark-held-wash": {
+        "role": "tertiary",
+        "displayName": "Dark Held Wash",
+        "canonical": "#143225",
+        "tonalRamp": [
+          "oklch(15% 0.044 163.3)",
+          "oklch(26% 0.044 163.3)",
+          "oklch(38% 0.044 163.3)",
+          "oklch(50% 0.044 163.3)",
+          "oklch(62% 0.044 163.3)",
+          "oklch(74% 0.044 163.3)",
+          "oklch(85% 0.044 163.3)",
+          "oklch(95% 0.044 163.3)"
+        ]
+      },
+      "dark-caution": {
+        "role": "tertiary",
+        "displayName": "Dark Caution Ochre",
+        "canonical": "#e0ad48",
+        "tonalRamp": [
+          "oklch(15% 0.131 81.6)",
+          "oklch(26% 0.131 81.6)",
+          "oklch(38% 0.131 81.6)",
+          "oklch(50% 0.131 81.6)",
+          "oklch(62% 0.131 81.6)",
+          "oklch(74% 0.131 81.6)",
+          "oklch(85% 0.131 81.6)",
+          "oklch(95% 0.131 81.6)"
+        ]
+      },
+      "dark-caution-wash": {
+        "role": "tertiary",
+        "displayName": "Dark Caution Wash",
+        "canonical": "#382c14",
+        "tonalRamp": [
+          "oklch(15% 0.042 83.3)",
+          "oklch(26% 0.042 83.3)",
+          "oklch(38% 0.042 83.3)",
+          "oklch(50% 0.042 83.3)",
+          "oklch(62% 0.042 83.3)",
+          "oklch(74% 0.042 83.3)",
+          "oklch(85% 0.042 83.3)",
+          "oklch(95% 0.042 83.3)"
+        ]
+      },
+      "dark-on": {
+        "role": "neutral",
+        "displayName": "Dark On Fill",
+        "canonical": "#111416",
+        "tonalRamp": [
+          "oklch(15% 0.006 236.9)",
+          "oklch(26% 0.006 236.9)",
+          "oklch(38% 0.006 236.9)",
+          "oklch(50% 0.006 236.9)",
+          "oklch(62% 0.006 236.9)",
+          "oklch(74% 0.006 236.9)",
+          "oklch(85% 0.006 236.9)",
+          "oklch(95% 0.006 236.9)"
+        ]
+      },
+      "dark-model-m0": {
         "role": "secondary",
-        "displayName": "Night Baseline Amber",
-        "canonical": "#d99a1a",
+        "displayName": "Dark Model Amber",
+        "canonical": "#e19a3d",
         "tonalRamp": [
-          "oklch(15% 0.146 78.1)",
-          "oklch(26% 0.146 78.1)",
-          "oklch(38% 0.146 78.1)",
-          "oklch(50% 0.146 78.1)",
-          "oklch(62% 0.146 78.1)",
-          "oklch(74% 0.146 78.1)",
-          "oklch(85% 0.146 78.1)",
-          "oklch(95% 0.146 78.1)"
+          "oklch(15% 0.136 69.8)",
+          "oklch(26% 0.136 69.8)",
+          "oklch(38% 0.136 69.8)",
+          "oklch(50% 0.136 69.8)",
+          "oklch(62% 0.136 69.8)",
+          "oklch(74% 0.136 69.8)",
+          "oklch(85% 0.136 69.8)",
+          "oklch(95% 0.136 69.8)"
         ]
       },
-      "night-good": {
-        "role": "tertiary",
-        "displayName": "Night Verdict Green",
-        "canonical": "#3cc279",
+      "dark-model-m1": {
+        "role": "secondary",
+        "displayName": "Dark Model Blue",
+        "canonical": "#6fa6e6",
         "tonalRamp": [
-          "oklch(15% 0.157 155.0)",
-          "oklch(26% 0.157 155.0)",
-          "oklch(38% 0.157 155.0)",
-          "oklch(50% 0.157 155.0)",
-          "oklch(62% 0.157 155.0)",
-          "oklch(74% 0.157 155.0)",
-          "oklch(85% 0.157 155.0)",
-          "oklch(95% 0.157 155.0)"
+          "oklch(15% 0.111 253.0)",
+          "oklch(26% 0.111 253.0)",
+          "oklch(38% 0.111 253.0)",
+          "oklch(50% 0.111 253.0)",
+          "oklch(62% 0.111 253.0)",
+          "oklch(74% 0.111 253.0)",
+          "oklch(85% 0.111 253.0)",
+          "oklch(95% 0.111 253.0)"
         ]
       },
-      "night-good-wash": {
-        "role": "tertiary",
-        "displayName": "Night Green Wash",
-        "canonical": "#173527",
+      "dark-model-m2": {
+        "role": "secondary",
+        "displayName": "Dark Model Plum",
+        "canonical": "#e07ab4",
         "tonalRamp": [
-          "oklch(15% 0.045 161.8)",
-          "oklch(26% 0.045 161.8)",
-          "oklch(38% 0.045 161.8)",
-          "oklch(50% 0.045 161.8)",
-          "oklch(62% 0.045 161.8)",
-          "oklch(74% 0.045 161.8)",
-          "oklch(85% 0.045 161.8)",
-          "oklch(95% 0.045 161.8)"
+          "oklch(15% 0.143 346.2)",
+          "oklch(26% 0.143 346.2)",
+          "oklch(38% 0.143 346.2)",
+          "oklch(50% 0.143 346.2)",
+          "oklch(62% 0.143 346.2)",
+          "oklch(74% 0.143 346.2)",
+          "oklch(85% 0.143 346.2)",
+          "oklch(95% 0.143 346.2)"
         ]
       },
-      "night-bad": {
-        "role": "tertiary",
-        "displayName": "Night Verdict Red",
-        "canonical": "#ee6b6b",
+      "dark-model-m3": {
+        "role": "secondary",
+        "displayName": "Dark Model Violet",
+        "canonical": "#a98bf0",
         "tonalRamp": [
-          "oklch(15% 0.163 22.3)",
-          "oklch(26% 0.163 22.3)",
-          "oklch(38% 0.163 22.3)",
-          "oklch(50% 0.163 22.3)",
-          "oklch(62% 0.163 22.3)",
-          "oklch(74% 0.163 22.3)",
-          "oklch(85% 0.163 22.3)",
-          "oklch(95% 0.163 22.3)"
+          "oklch(15% 0.146 296.1)",
+          "oklch(26% 0.146 296.1)",
+          "oklch(38% 0.146 296.1)",
+          "oklch(50% 0.146 296.1)",
+          "oklch(62% 0.146 296.1)",
+          "oklch(74% 0.146 296.1)",
+          "oklch(85% 0.146 296.1)",
+          "oklch(95% 0.146 296.1)"
         ]
       },
-      "night-bad-wash": {
-        "role": "tertiary",
-        "displayName": "Night Red Wash",
-        "canonical": "#3a2023",
+      "dark-model-m4": {
+        "role": "secondary",
+        "displayName": "Dark Model Moss",
+        "canonical": "#8cc06a",
         "tonalRamp": [
-          "oklch(15% 0.041 12.6)",
-          "oklch(26% 0.041 12.6)",
-          "oklch(38% 0.041 12.6)",
-          "oklch(50% 0.041 12.6)",
-          "oklch(62% 0.041 12.6)",
-          "oklch(74% 0.041 12.6)",
-          "oklch(85% 0.041 12.6)",
-          "oklch(95% 0.041 12.6)"
+          "oklch(15% 0.128 134.1)",
+          "oklch(26% 0.128 134.1)",
+          "oklch(38% 0.128 134.1)",
+          "oklch(50% 0.128 134.1)",
+          "oklch(62% 0.128 134.1)",
+          "oklch(74% 0.128 134.1)",
+          "oklch(85% 0.128 134.1)",
+          "oklch(95% 0.128 134.1)"
         ]
       },
-      "night-warn": {
-        "role": "tertiary",
-        "displayName": "Night Verdict Ochre",
-        "canonical": "#dca13a",
+      "dark-model-m5": {
+        "role": "secondary",
+        "displayName": "Dark Model Umber",
+        "canonical": "#c99a78",
         "tonalRamp": [
-          "oklch(15% 0.135 77.5)",
-          "oklch(26% 0.135 77.5)",
-          "oklch(38% 0.135 77.5)",
-          "oklch(50% 0.135 77.5)",
-          "oklch(62% 0.135 77.5)",
-          "oklch(74% 0.135 77.5)",
-          "oklch(85% 0.135 77.5)",
-          "oklch(95% 0.135 77.5)"
-        ]
-      },
-      "night-warn-wash": {
-        "role": "tertiary",
-        "displayName": "Night Ochre Wash",
-        "canonical": "#3a2f1c",
-        "tonalRamp": [
-          "oklch(15% 0.035 80.6)",
-          "oklch(26% 0.035 80.6)",
-          "oklch(38% 0.035 80.6)",
-          "oklch(50% 0.035 80.6)",
-          "oklch(62% 0.035 80.6)",
-          "oklch(74% 0.035 80.6)",
-          "oklch(85% 0.035 80.6)",
-          "oklch(95% 0.035 80.6)"
-        ]
-      },
-      "night-on-fill": {
-        "role": "tertiary",
-        "displayName": "Night On-Fill",
-        "canonical": "#0f1114",
-        "tonalRamp": [
-          "oklch(15% 0.007 258.4)",
-          "oklch(26% 0.007 258.4)",
-          "oklch(38% 0.007 258.4)",
-          "oklch(50% 0.007 258.4)",
-          "oklch(62% 0.007 258.4)",
-          "oklch(74% 0.007 258.4)",
-          "oklch(85% 0.007 258.4)",
-          "oklch(95% 0.007 258.4)"
-        ]
-      },
-      "night-layer-clinical": {
-        "role": "tertiary",
-        "displayName": "Night Layer Clinical",
-        "canonical": "#22b07e",
-        "tonalRamp": [
-          "oklch(15% 0.137 163.2)",
-          "oklch(26% 0.137 163.2)",
-          "oklch(38% 0.137 163.2)",
-          "oklch(50% 0.137 163.2)",
-          "oklch(62% 0.137 163.2)",
-          "oklch(74% 0.137 163.2)",
-          "oklch(85% 0.137 163.2)",
-          "oklch(95% 0.137 163.2)"
-        ]
-      },
-      "night-layer-ancillary": {
-        "role": "tertiary",
-        "displayName": "Night Layer Ancillary",
-        "canonical": "#2bb3c0",
-        "tonalRamp": [
-          "oklch(15% 0.111 204.8)",
-          "oklch(26% 0.111 204.8)",
-          "oklch(38% 0.111 204.8)",
-          "oklch(50% 0.111 204.8)",
-          "oklch(62% 0.111 204.8)",
-          "oklch(74% 0.111 204.8)",
-          "oklch(85% 0.111 204.8)",
-          "oklch(95% 0.111 204.8)"
-        ]
-      },
-      "night-layer-financial": {
-        "role": "tertiary",
-        "displayName": "Night Layer Financial",
-        "canonical": "#e0662f",
-        "tonalRamp": [
-          "oklch(15% 0.167 42.5)",
-          "oklch(26% 0.167 42.5)",
-          "oklch(38% 0.167 42.5)",
-          "oklch(50% 0.167 42.5)",
-          "oklch(62% 0.167 42.5)",
-          "oklch(74% 0.167 42.5)",
-          "oklch(85% 0.167 42.5)",
-          "oklch(95% 0.167 42.5)"
-        ]
-      },
-      "night-layer-integration": {
-        "role": "tertiary",
-        "displayName": "Night Layer Integration",
-        "canonical": "#b08a5a",
-        "tonalRamp": [
-          "oklch(15% 0.079 72.2)",
-          "oklch(26% 0.079 72.2)",
-          "oklch(38% 0.079 72.2)",
-          "oklch(50% 0.079 72.2)",
-          "oklch(62% 0.079 72.2)",
-          "oklch(74% 0.079 72.2)",
-          "oklch(85% 0.079 72.2)",
-          "oklch(95% 0.079 72.2)"
+          "oklch(15% 0.073 57.1)",
+          "oklch(26% 0.073 57.1)",
+          "oklch(38% 0.073 57.1)",
+          "oklch(50% 0.073 57.1)",
+          "oklch(62% 0.073 57.1)",
+          "oklch(74% 0.073 57.1)",
+          "oklch(85% 0.073 57.1)",
+          "oklch(95% 0.073 57.1)"
         ]
       }
     },
     "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The masthead title only."
+      },
       "headline": {
         "displayName": "Headline",
-        "purpose": "The page title, once per page, in the display cut."
+        "purpose": "Section headings beside the section number."
       },
-      "key-number": {
-        "displayName": "Key number",
-        "purpose": "The key-number strip in the display cut; lane counts 2.3rem, patient scores 2.2rem, secondary figures 1.35-1.6rem."
+      "section-number": {
+        "displayName": "Section number",
+        "purpose": "The large teal Bahnschrift number opening each section."
+      },
+      "key-figure": {
+        "displayName": "Key figure",
+        "purpose": "Key-points numbers; tallies, lane and leak counts in the same face at 1.4-3rem."
       },
       "title": {
-        "displayName": "Title",
-        "purpose": "Panel and section headings in the display cut."
+        "displayName": "Figure title",
+        "purpose": "After the teal Bahnschrift figure number."
       },
-      "subtitle": {
-        "displayName": "Subtitle",
-        "purpose": "Sub-headings inside panels, text cut, in ink-soft."
+      "standfirst": {
+        "displayName": "Standfirst",
+        "purpose": "The one line under the masthead title."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Running text on a 15px root (18px under A+); paragraphs max 78ch, leads 90ch."
+        "purpose": "Section ledes (one line) and running text."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "A figure's key to its marks."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Number captions, legends, footers; sentence case, never letter-spaced."
+        "purpose": "Axis ticks, plotted values, the rail heading, small figure labels."
       },
       "data": {
         "displayName": "Data (mono)",
-        "purpose": "Field names, URLs, codes, rule ids, paths, commands, numeric columns only."
+        "purpose": "Field names, rule ids, codes, record tokens."
       }
     },
     "shadows": [
       {
         "name": "none",
         "value": "none",
-        "purpose": "No surface casts a shadow; depth is the grey page to white panel step and a 1px rule."
+        "purpose": "Figures, tables, panels and controls are flat."
+      },
+      {
+        "name": "object",
+        "value": "0 1px 2px rgba(18,20,23,.05), 0 10px 30px -18px rgba(18,20,23,.35)",
+        "purpose": "Only the drawn browser and chat windows."
+      },
+      {
+        "name": "sheet",
+        "value": "0 1px 0 var(--rule-2), 0 14px 30px -24px rgba(18,20,23,.4)",
+        "purpose": "Only a drawn notice letter."
       }
     ],
     "motion": [
       {
-        "name": "static-by-default",
-        "value": "none",
-        "purpose": "Numbers are written in place (Kit.count returns text, Kit.countIn is a no-op); panes switch without an entrance; no hover lifts; replies appear at once."
+        "name": "ease",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "The house ease for every evidence motion."
       },
       {
-        "name": "caret-blink",
-        "value": "pulse 1s steps(1) infinite; opacity 1 to .35 to 1",
-        "purpose": "The caret in the portal's sign-in replay."
+        "name": "estimate-slide",
+        "value": "transform .75s var(--ease)",
+        "purpose": "Switching the briefing slides every forest-plot marker, interval and row to its new estimate."
       },
       {
-        "name": "demo-playback",
-        "value": "scripted timers",
-        "purpose": "Only the demos move: the portal sign-in replay and crawl playback, the dataset retention playback, the assistant's scripted scenes."
+        "name": "marks-arrive",
+        "value": "grow .8-.9s / popin .35-.5s var(--ease), staggered by --i",
+        "purpose": "A figure's bars and dots arrive the first time it is on screen (IntersectionObserver, threshold .18)."
+      },
+      {
+        "name": "rail-ink",
+        "value": "transform .45s var(--ease)",
+        "purpose": "The 2px teal bar slides to the current contents entry."
+      },
+      {
+        "name": "presenter-recede",
+        "value": "opacity .3s; others at .38",
+        "purpose": "Arrow keys step figure to figure; Escape, wheel or touch stops."
       },
       {
         "name": "reduced-motion",
-        "value": "prefers-reduced-motion: reduce -> animation none, transition none",
-        "purpose": "Disables every CSS animation and transition."
+        "value": "animation none; transitions limited to colour and opacity at .15s",
+        "purpose": "prefers-reduced-motion: reduce; markers are placed at once."
       }
     ],
     "breakpoints": [
       {
-        "name": "tasks-stack",
+        "name": "keypoints-one",
         "value": "520px"
+      },
+      {
+        "name": "report-narrow",
+        "value": "700px"
       },
       {
         "name": "rows-stack",
@@ -888,236 +969,193 @@
         "value": "860px"
       },
       {
-        "name": "stage-stack",
+        "name": "pair-stack",
         "value": "900px"
       },
       {
-        "name": "lanes-stack",
-        "value": "980px"
+        "name": "rail-to-row",
+        "value": "1000px"
       },
       {
-        "name": "container",
-        "value": "1140px"
+        "name": "keypoints-two",
+        "value": "1100px"
+      },
+      {
+        "name": "page-max",
+        "value": "1320px"
       }
     ],
-    "tints": [
-      {
-        "name": "selection-segment",
-        "value": "color-mix(in srgb, var(--ours) 11%, var(--card))",
-        "purpose": "Pressed segment."
-      },
-      {
-        "name": "selection-tile",
-        "value": "color-mix(in srgb, var(--ours) 7%, var(--card))",
-        "purpose": "Pressed file tile, patient and role, with an ours border."
-      },
-      {
-        "name": "message-you",
-        "value": "color-mix(in srgb, var(--ours) 12%, var(--card))",
-        "purpose": "The user's message in the assistant."
-      },
-      {
-        "name": "crumb-current",
-        "value": "color-mix(in srgb, var(--ours) 14%, var(--card))",
-        "purpose": "The current breadcrumb in the fake browser."
-      },
-      {
-        "name": "heat-ours",
-        "value": "color-mix(in srgb, var(--ours) 6%-50%, var(--card))",
-        "purpose": "Rules page per-rule heat map, by score."
-      },
-      {
-        "name": "primary-hover",
-        "value": "color-mix(in srgb, var(--ours) 85%, var(--ink))",
-        "purpose": "Hover on Play and Send."
-      },
-      {
-        "name": "text-selection",
-        "value": "color-mix(in srgb, var(--ours) 24%, transparent)",
-        "purpose": "::selection."
-      }
-    ]
+    "themes": {
+      "light": ":root",
+      "dark": "@media (prefers-color-scheme: dark) :root:not([data-theme=\"light\"]), and :root[data-theme=\"dark\"]; the dark-* tokens",
+      "note": "Equal themes; the rail's theme button overrides the system preference; A+ (html.big) lifts the root from 16px to 19px."
+    }
   },
   "components": [
-    {
-      "name": "Panel",
-      "kind": "card",
-      "refersTo": "card",
-      "description": "Every content block: a white 1px ruled panel at 6px on the grey page, no shadow.",
-      "html": "<div class=\"ds-desk\"><div class=\"ds-card\"><h2 class=\"ds-card-h\">Fields pulled</h2><p class=\"ds-card-p\">Only what the purpose needs.</p></div></div>",
-      "css": ".ds-desk{background:var(--bg,#f5f6f8);padding:16px;max-width:360px}.ds-card{background:var(--card,#fff);color:var(--ink,#14161a);border:1px solid var(--line,#e1e4e9);border-radius:6px;padding:16px 18px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-card-h{font-family:\"Segoe UI Variable Display\",\"Segoe UI Variable Text\",system-ui,sans-serif;font-size:1.06rem;font-weight:600;letter-spacing:-.005em;margin:0 0 10px}.ds-card-p{margin:0;color:var(--ink-2,#4d5560)}"
-    },
-    {
-      "name": "Key-number strip",
-      "kind": "custom",
-      "refersTo": "funnel",
-      "description": "One white ruled strip of display figures, each over a caption, coloured by owner.",
-      "html": "<div class=\"ds-funnel\"><div class=\"ds-fn\"><div class=\"ds-v\" style=\"color:var(--ours,#266ec4)\">32</div><div class=\"ds-l\">page loads · ours</div></div><div class=\"ds-fn\"><div class=\"ds-v\" style=\"color:var(--agent,#7d52dd)\">35</div><div class=\"ds-l\">page loads · AI agent</div></div><div class=\"ds-fn\"><div class=\"ds-v\" style=\"color:var(--base,#bc7f00)\">440</div><div class=\"ds-l\">page loads · baseline</div></div></div>",
-      "css": ".ds-funnel{display:grid;grid-template-columns:repeat(3,minmax(130px,1fr));background:var(--card,#fff);border:1px solid var(--line,#e1e4e9);border-radius:6px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif;max-width:540px}.ds-fn{padding:12px 16px;border-right:1px solid var(--line,#e1e4e9)}.ds-fn:last-child{border-right:none}.ds-v{font-family:\"Segoe UI Variable Display\",\"Segoe UI Variable Text\",system-ui,sans-serif;font-size:1.8rem;font-weight:600;letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}.ds-l{font-size:.8rem;color:var(--ink-2,#4d5560);margin-top:2px}"
-    },
-    {
-      "name": "Site navigation",
-      "kind": "nav",
-      "refersTo": "sitenav-link",
-      "description": "Plain text links; the current page is ink at 600 underlined in ours blue.",
-      "html": "<nav class=\"ds-nav\"><a href=\"#\">Index</a><a href=\"#\" aria-current=\"page\">The portal run</a><a href=\"#\">The dataset</a><a href=\"#\">Ask the assistant</a><a href=\"#\">Rules vs AI</a></nav>",
-      "css": ".ds-nav{display:flex;gap:20px;font:.86rem \"Segoe UI Variable Text\",system-ui,sans-serif}.ds-nav a{color:var(--ink-2,#4d5560);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}.ds-nav a:hover{color:var(--ink,#14161a)}.ds-nav a:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-nav a[aria-current=page]{color:var(--ink,#14161a);border-bottom-color:var(--ours,#266ec4);font-weight:600}"
-    },
-    {
-      "name": "Stepper",
-      "kind": "custom",
-      "refersTo": "step",
-      "description": "Underlined text tabs; the selected tab's underline and number in ours blue.",
-      "html": "<div class=\"ds-steps\" role=\"tablist\"><button role=\"tab\" aria-selected=\"false\"><span class=\"ds-n\">1</span>The portal</button><button role=\"tab\" aria-selected=\"true\"><span class=\"ds-n\">2</span>Discovery</button><button role=\"tab\" aria-selected=\"false\"><span class=\"ds-n\">3</span>The crawl</button></div>",
-      "css": ".ds-steps{display:flex;gap:22px;border-bottom:1px solid var(--line,#e1e4e9);font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-steps button{font:inherit;font-size:.92rem;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;padding:8px 0;color:var(--ink-2,#4d5560);cursor:pointer;display:inline-flex;gap:7px;align-items:baseline}.ds-steps button:hover{color:var(--ink,#14161a)}.ds-steps button:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-n{font-size:.8rem;color:var(--ink-3,#686e76);font-variant-numeric:tabular-nums}.ds-steps button[aria-selected=true]{color:var(--ink,#14161a);border-bottom-color:var(--ours,#266ec4);font-weight:600}.ds-steps button[aria-selected=true] .ds-n{color:var(--ours,#266ec4)}"
-    },
-    {
-      "name": "Segmented control",
-      "kind": "chip",
-      "refersTo": "seg-button",
-      "description": "A white bordered button group; the pressed segment takes an 11% ours tint.",
-      "html": "<div class=\"ds-seg\"><button aria-pressed=\"true\">Told the policy</button><button aria-pressed=\"false\">Unaided</button><button aria-pressed=\"false\">Told the Act</button></div>",
-      "css": ".ds-seg{display:inline-flex;border:1px solid var(--line,#e1e4e9);border-radius:6px;overflow:hidden;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-seg button{font:inherit;font-size:.86rem;border:none;border-right:1px solid var(--line,#e1e4e9);background:var(--card,#fff);padding:4px 11px;cursor:pointer;color:var(--ink-2,#4d5560)}.ds-seg button:last-child{border-right:none}.ds-seg button:hover{color:var(--ink,#14161a)}.ds-seg button:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-seg button[aria-pressed=true]{background:color-mix(in srgb,var(--ours,#266ec4) 11%,var(--card,#fff));color:var(--ink,#14161a);font-weight:600}"
-    },
-    {
-      "name": "Badges",
-      "kind": "chip",
-      "refersTo": "badge",
-      "description": "Borderless 4px chips; states are a wash with text in the solid hue, a failure that matters is solid red.",
-      "html": "<span class=\"ds-badge\">synthetic</span> <span class=\"ds-badge ds-good\">held</span> <span class=\"ds-badge ds-bad\">fell</span> <span class=\"ds-badge ds-warn\">attested</span> <span class=\"ds-badge ds-fail\">PL-01</span>",
-      "css": ".ds-badge{display:inline-flex;align-items:center;gap:5px;font:600 .78rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:2px 8px;border-radius:4px;background:var(--card-2,#f0f2f5);color:var(--ink-2,#4d5560)}.ds-good{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}.ds-bad{background:var(--bad-bg,#fbe5e5);color:var(--bad,#c53232)}.ds-warn{background:var(--warn-bg,#fcf1dd);color:var(--warn,#976419)}.ds-fail{background:var(--bad,#c53232);color:var(--on-fill,#fff);font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace}"
-    },
     {
       "name": "Primary button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The demo's action (Play, Send): solid ours blue with on-fill text.",
-      "html": "<button class=\"ds-play\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M8 5.8v12.4a.6.6 0 0 0 .9.5l10-6.2a.6.6 0 0 0 0-1l-10-6.2a.6.6 0 0 0-.9.5z\" fill=\"currentColor\"/></svg>Run the crawl</button>",
-      "css": ".ds-play{display:inline-flex;align-items:center;gap:6px;font:600 1rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:5px 12px;border-radius:6px;border:1px solid var(--ours,#266ec4);background:var(--ours,#266ec4);color:var(--on-fill,#fff);cursor:pointer}.ds-play:hover{background:color-mix(in srgb,var(--ours,#266ec4) 85%,var(--ink,#14161a))}.ds-play:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-play:disabled{opacity:.55;cursor:default}"
+      "description": "The one filled action: solid house teal, 4px.",
+      "html": "<button class=\"ds-btn\">Replay the crawl</button>",
+      "css": ".ds-btn{display:inline-flex;gap:7px;align-items:center;padding:5px 13px;border-radius:4px;border:1px solid var(--teal,#00737a);background:var(--teal,#00737a);color:var(--on,#fff);font:600 .86rem \"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;cursor:pointer;transition:background-color .15s,border-color .15s,transform .1s}.ds-btn:hover{background:var(--teal-2,#005a60);border-color:var(--teal-2,#005a60)}.ds-btn:active{transform:translateY(1px)}.ds-btn:focus-visible{outline:2px solid var(--teal,#00737a);outline-offset:2px}"
     },
     {
-      "name": "Plain button",
+      "name": "Ghost button",
       "kind": "button",
-      "refersTo": "button-plain",
-      "description": "Secondary actions (New, Scenes): page grey, line border, recess on hover.",
-      "html": "<button class=\"ds-plain\">Scenes</button>",
-      "css": ".ds-plain{display:inline-flex;align-items:center;gap:6px;font:600 .88rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:5px 12px;border-radius:6px;border:1px solid var(--line,#e1e4e9);background:var(--bg,#f5f6f8);color:var(--ink,#14161a);cursor:pointer}.ds-plain:hover{background:var(--card-2,#f0f2f5)}.ds-plain:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}"
+      "refersTo": "button-ghost",
+      "description": "Secondary actions: paper with a rule border.",
+      "html": "<button class=\"ds-ghost\">Confirm both</button>",
+      "css": ".ds-ghost{padding:5px 13px;border-radius:4px;border:1px solid var(--rule,#d3d9da);background:var(--paper,#fff);color:var(--ink,#121417);font:600 .86rem \"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;cursor:pointer;transition:background-color .15s,border-color .15s}.ds-ghost:hover{background:var(--paper-2,#f3f5f5);border-color:var(--ink-3,#5f676d)}.ds-ghost:focus-visible{outline:2px solid var(--teal,#00737a);outline-offset:2px}"
     },
     {
-      "name": "Selectable tile",
-      "kind": "custom",
-      "refersTo": "card",
-      "description": "Files, patients and roles; the pressed tile takes an ours border and a 7% ours tint.",
-      "html": "<div class=\"ds-tiles\"><button class=\"ds-tile\" aria-pressed=\"true\"><span class=\"ds-nm\">patients.csv</span><span class=\"ds-meta\">registration</span></button><button class=\"ds-tile\" aria-pressed=\"false\"><span class=\"ds-nm\">claims.csv</span><span class=\"ds-meta\">billing</span></button></div>",
-      "css": ".ds-tiles{display:flex;gap:8px;font-family:\"Segoe UI Variable Text\",system-ui,sans-serif}.ds-tile{text-align:left;font:inherit;background:var(--card,#fff);border:1px solid var(--line,#e1e4e9);border-radius:6px;padding:8px 10px;cursor:pointer;color:var(--ink,#14161a);display:grid;gap:4px;min-width:140px}.ds-tile:hover{border-color:var(--ink-3,#686e76)}.ds-tile:focus-visible{outline:2px solid var(--ours,#266ec4);outline-offset:2px}.ds-tile[aria-pressed=true]{border-color:var(--ours,#266ec4);background:color-mix(in srgb,var(--ours,#266ec4) 7%,var(--card,#fff))}.ds-nm{font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;font-size:.8rem;font-weight:600}.ds-meta{font-size:.74rem;color:var(--ink-3,#686e76)}"
+      "name": "Briefing switch",
+      "kind": "chip",
+      "refersTo": "seg-button",
+      "description": "Segmented control; the pressed segment is solid ink.",
+      "html": "<div class=\"ds-seg\"><button aria-pressed=\"false\">Task + register</button><button aria-pressed=\"false\">Told the Act</button><button aria-pressed=\"true\">Told the policy</button></div>",
+      "css": ".ds-seg{display:inline-flex;border:1px solid var(--rule,#d3d9da);border-radius:4px;overflow:hidden;background:var(--paper,#fff);font-family:\"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif}.ds-seg button{font:inherit;font-size:.84rem;border:none;border-right:1px solid var(--rule,#d3d9da);background:none;padding:4px 11px;color:var(--ink-2,#454c51);cursor:pointer;transition:background-color .18s,color .18s}.ds-seg button:last-child{border-right:none}.ds-seg button:hover{color:var(--ink,#121417);background:var(--paper-2,#f3f5f5)}.ds-seg button:focus-visible{outline:2px solid var(--teal,#00737a);outline-offset:-2px}.ds-seg button[aria-pressed=true]{background:var(--ink,#121417);color:var(--paper,#fff)}"
     },
     {
-      "name": "Verdict bar",
+      "name": "Section head",
       "kind": "custom",
-      "refersTo": "verdict-ok",
-      "description": "Held or declined, as a washed bar with no border.",
-      "html": "<div class=\"ds-verdict ds-ok\">Gate open: provenance stated</div><div class=\"ds-verdict ds-no\">Declined under PL-01</div>",
-      "css": ".ds-verdict{font:600 1rem \"Segoe UI Variable Text\",system-ui,sans-serif;padding:9px 12px;border-radius:6px;margin-bottom:8px;max-width:360px}.ds-ok{background:var(--good-bg,#e1f4e9);color:var(--good,#187d43)}.ds-no{background:var(--bad-bg,#fbe5e5);color:var(--bad,#c53232)}"
+      "refersTo": "headline",
+      "description": "The section boundary: 3px ink rule, teal Bahnschrift number, heading, one line.",
+      "html": "<section class=\"ds-sec\"><h2 class=\"ds-sh\"><span class=\"ds-sn\">2</span>Primary outcome: the traps</h2><p class=\"ds-lede\">Four jobs worded to tempt a breach of the purpose policy.</p></section>",
+      "css": ".ds-sec{border-top:3px solid var(--ink,#121417);padding-top:18px;max-width:640px;font-family:\"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;color:var(--ink,#121417)}.ds-sh{font:650 1.75rem/1.12 \"Segoe UI Variable Display\",\"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;letter-spacing:-.018em;margin:0 0 6px;display:grid;grid-template-columns:3.2rem 1fr;align-items:baseline}.ds-sn{font:600 2.3rem/1 Bahnschrift,\"DIN Alternate\",\"Segoe UI Variable Display\",\"Arial Narrow\",sans-serif;color:var(--teal,#00737a)}.ds-lede{color:var(--ink-2,#454c51);margin:0 0 0 3.2rem;font-size:1.04rem}"
     },
     {
-      "name": "Terminal slab",
+      "name": "Figure head",
       "kind": "custom",
-      "refersTo": "terminal",
-      "description": "Theme-invariant dark mono block for command output and the gate log.",
-      "html": "<pre class=\"ds-term\"><span class=\"ds-dim\">python scripts/run_pipeline.py</span>\n<span class=\"ds-ok2\">gate open</span></pre>",
-      "css": ".ds-term{margin:0;font-family:ui-monospace,\"Cascadia Mono\",Consolas,monospace;font-size:.8rem;white-space:pre-wrap;background:#111316;color:#d7dde3;border-radius:6px;padding:8px 10px}.ds-ok2{color:#5fd38d}.ds-dim{color:#8b949e}"
+      "refersTo": "title",
+      "description": "A figure inside a section: 1px rule, teal Bahnschrift number, title, a caption that keys the marks.",
+      "html": "<figure class=\"ds-fig\"><div class=\"ds-ft\"><span class=\"ds-fno\">Figure 3</span>Retention declared, per run</div><p class=\"ds-cap\">Dot: one run. Dashed red: the purpose ceiling.</p></figure>",
+      "css": ".ds-fig{margin:0;padding-top:12px;border-top:1px solid var(--rule,#d3d9da);max-width:640px;font-family:\"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;color:var(--ink,#121417)}.ds-ft{font-size:1.04rem;font-weight:600;line-height:1.35}.ds-fno{font-family:Bahnschrift,\"DIN Alternate\",\"Segoe UI Variable Display\",\"Arial Narrow\",sans-serif;color:var(--teal,#00737a);margin-right:10px}.ds-cap{font-size:.88rem;color:var(--ink-2,#454c51);margin:14px 0 0}"
+    },
+    {
+      "name": "Key-points panel",
+      "kind": "card",
+      "refersTo": "keypoints-panel",
+      "description": "Teal wash, Bahnschrift key figures, ours in Deep Teal.",
+      "html": "<aside class=\"ds-kp\"><h2>Key points</h2><div><div class=\"ds-kv\"><span class=\"ds-o\">32</span><span class=\"ds-vs\">vs</span>440</div><div class=\"ds-kl\">page loads, ours vs the baseline</div></div><div><div class=\"ds-kv\"><span class=\"ds-o\">20/20</span><span class=\"ds-vs\">vs</span>10/20</div><div class=\"ds-kl\">trap runs held, told the policy</div></div></aside>",
+      "css": ".ds-kp{background:var(--teal-wash,#e3f1f1);border-radius:6px;padding:18px 22px 20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 26px;font-family:\"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;max-width:560px}.ds-kp h2{grid-column:1/-1;margin:0;font:600 .9rem Bahnschrift,\"DIN Alternate\",\"Segoe UI Variable Display\",\"Arial Narrow\",sans-serif;color:var(--teal-2,#005a60)}.ds-kv{font:1.9rem/1.05 Bahnschrift,\"DIN Alternate\",\"Segoe UI Variable Display\",\"Arial Narrow\",sans-serif;font-variant-numeric:tabular-nums;color:var(--ink,#121417);white-space:nowrap}.ds-o{color:var(--teal-2,#005a60)}.ds-vs{font:.82rem \"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;color:var(--ink-3,#5f676d);margin:0 4px}.ds-kl{font-size:.86rem;color:var(--ink-2,#454c51);margin-top:6px}"
+    },
+    {
+      "name": "Booktabs table",
+      "kind": "custom",
+      "refersTo": "body",
+      "description": "Ink rules over, under and below the head; nothing else.",
+      "html": "<table class=\"ds-bt\"><thead><tr><th>Arm</th><th class=\"n\">Score</th><th class=\"n\">Page loads</th></tr></thead><tbody><tr><td>ours (reference)</td><td class=\"n\">1.00</td><td class=\"n\">32</td></tr><tr><td>baseline (take all)</td><td class=\"n\">0.41</td><td class=\"n\">440</td></tr></tbody></table>",
+      "css": ".ds-bt{border-collapse:collapse;font:.88rem \"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--ink,#121417);border-top:1.5px solid var(--ink,#121417);border-bottom:1.5px solid var(--ink,#121417);min-width:360px}.ds-bt th{font-weight:600;font-size:.8rem;color:var(--ink-2,#454c51);border-bottom:1px solid var(--ink,#121417);text-align:left;padding:6px 10px}.ds-bt td{padding:6px 10px}.ds-bt .n{text-align:right}.ds-bt tbody tr:hover{background:var(--paper-2,#f3f5f5)}"
+    },
+    {
+      "name": "Field chips and flags",
+      "kind": "chip",
+      "refersTo": "chip-need",
+      "description": "Mono field chips and verdict flags; washes with text in the solid hue, solid red only for the finding.",
+      "html": "<span class=\"ds-chip ds-need\">diagnosis_code</span> <span class=\"ds-chip\">ward</span> <span class=\"ds-chip ds-oos\">insurance_no</span> <span class=\"ds-flag ds-held\">held</span> <span class=\"ds-flag\">fell</span> <span class=\"ds-flag ds-warn\">attested</span>",
+      "css": ".ds-chip{font:.74rem \"Cascadia Mono\",ui-monospace,Consolas,monospace;padding:1px 6px;border-radius:3px;background:var(--paper-2,#f3f5f5);color:var(--ink-3,#5f676d)}.ds-need{background:var(--teal-wash,#e3f1f1);color:var(--teal-2,#005a60)}.ds-oos{background:var(--harm,#c0392b);color:var(--on,#fff)}.ds-flag{font:600 .78rem \"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;padding:1px 7px;border-radius:3px;background:var(--harm-wash,#fbe9e6);color:var(--harm,#c0392b)}.ds-held{background:var(--held-wash,#e3f2e9);color:var(--held,#1d7a4a)}.ds-warn{background:var(--caution-wash,#fbf1d9);color:var(--caution,#8a6100)}"
+    },
+    {
+      "name": "Contents rail",
+      "kind": "nav",
+      "refersTo": "rail-tool",
+      "description": "Numbered section links; the current one in ink 600 with a teal number and a 2px teal bar.",
+      "html": "<ol class=\"ds-toc\"><li><a href=\"#\">Key result</a></li><li><a href=\"#\"><span class=\"ds-tn\">1</span>Setting</a></li><li><a href=\"#\" aria-current=\"true\"><span class=\"ds-tn\">2</span>Primary outcome</a></li><li><a href=\"#\"><span class=\"ds-tn\">3</span>Secondary outcomes</a></li></ol>",
+      "css": ".ds-toc{list-style:none;margin:0;padding:0;display:grid;gap:1px;font-family:\"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;width:220px}.ds-toc a{display:block;padding:5px 0 5px 12px;color:var(--ink-2,#454c51);text-decoration:none;font-size:.88rem;border-left:2px solid transparent;transition:color .2s}.ds-toc a:hover{color:var(--ink,#121417)}.ds-toc a:focus-visible{outline:2px solid var(--teal,#00737a);outline-offset:2px}.ds-tn{display:inline-block;width:1.4rem;font-family:Bahnschrift,\"DIN Alternate\",\"Segoe UI Variable Display\",\"Arial Narrow\",sans-serif;color:var(--ink-3,#5f676d)}.ds-toc a[aria-current=true]{color:var(--ink,#121417);font-weight:600;border-left-color:var(--teal,#00737a)}.ds-toc a[aria-current=true] .ds-tn{color:var(--teal,#00737a)}"
+    },
+    {
+      "name": "Forest plot row",
+      "kind": "custom",
+      "refersTo": "key-figure",
+      "description": "Marker at the estimate (diamond for ours, square otherwise), Wilson interval bar, dashed teal reference line at 100%.",
+      "html": "<svg class=\"ds-forest\" viewBox=\"0 0 420 124\" role=\"img\" aria-label=\"Forest plot rows\"><line class=\"ds-g\" x1=\"140\" x2=\"140\" y1=\"10\" y2=\"106\"/><line class=\"ds-ref\" x1=\"400\" x2=\"400\" y1=\"10\" y2=\"106\"/><text class=\"ds-n\" x=\"4\" y=\"34\">ours (reference)</text><path d=\"M400,22 l8,8 -8,8 -8,-8z\" fill=\"var(--teal,#00737a)\"/><text class=\"ds-n\" x=\"4\" y=\"64\">model, told the policy</text><rect x=\"270\" y=\"58.75\" width=\"110\" height=\"2.5\" fill=\"var(--m1,#3a76b8)\"/><rect x=\"319\" y=\"54\" width=\"12\" height=\"12\" fill=\"var(--m1,#3a76b8)\"/><text class=\"ds-n\" x=\"4\" y=\"94\">baseline (take all)</text><rect x=\"134\" y=\"84\" width=\"12\" height=\"12\" fill=\"var(--ctrl,#5d666c)\"/><text class=\"ds-t\" x=\"140\" y=\"120\" text-anchor=\"middle\">0%</text><text class=\"ds-t\" x=\"400\" y=\"120\" text-anchor=\"middle\">100%</text></svg>",
+      "css": ".ds-forest{width:420px;max-width:100%;display:block;overflow:visible}.ds-forest .ds-g{stroke:var(--rule-2,#e6eaea)}.ds-forest .ds-ref{stroke:var(--teal,#00737a);stroke-width:1.5;stroke-dasharray:5 4}.ds-forest .ds-n{font:13px \"Segoe UI Variable Text\",\"Segoe UI\",system-ui,sans-serif;fill:var(--ink,#121417)}.ds-forest .ds-t{font:11px Bahnschrift,\"DIN Alternate\",\"Segoe UI Variable Display\",\"Arial Narrow\",sans-serif;fill:var(--ink-3,#5f676d)}.ds-forest rect,.ds-forest path{transition:transform .75s cubic-bezier(.16,1,.3,1)}"
     }
   ],
   "narrative": {
-    "northStar": "The Ruled Page",
-    "overview": "Each page reads like a well-set lab report laid on a soft grey desk: white panels with a thin rule round them, a title in a display cut and one line under it, and numbers set large and tabular. Colour marks data (which technique produced a number, which HIS layer a field belongs to, which model a series is, whether a rule held or fell) and one thing more: where you are and what you chose, in our blue. The presenter explains; the page shows the point and lets a panel member click, type or flip a switch.\n\nDensity is moderate and laptop-first: one centred 1140px column, a row of plain text links for navigation, a strip of key numbers inside one white panel, then underlined text tabs whose panes hold white panels and tables. Nothing floats and nothing moves on its own except the demos themselves (the portal's sign-in replay and crawl playback, the dataset's retention playback, the assistant's scripted scenes, the login caret). Two themes are equal citizens (system preference, overridable by a header switch), and an A+ switch lifts the root size from 15px to 18px for a projector.\n\nThe pages open offline by double-click, so the system is made from what every machine already has: the system's own Segoe UI Variable faces (Display for titles and figures, Text for everything else), a monospace stack, inline SVG icons, inline CSS and script. Minimal, quiet, and a little elegant; never decorated.",
+    "northStar": "The Evidence Report",
+    "overview": "The benchmark is a trial and the page is its evidence report. Techniques are arms of the trial: ours is the reference arm in the house teal, each AI model is an arm in its own muted hue, the take-everything baseline is the grey control arm, and harm is red. Every finding is a numbered figure with a caption that is only a key to its marks. The page reads like a journal article set on white paper: a heavy ink rule over the masthead, a one-line standfirst, a byline with dates, a tinted key-points panel, then numbered sections, each opened by a 3px ink rule.\n\nDensity is that of a well-set paper, not a dashboard. One report column beside a sticky contents rail; booktabs tables (ink rules top and bottom, nothing in between but a 1px ink rule under the head); forest plots with a marker, an interval bar and a dashed teal reference line; small multiples of run dots. Text is cut to the bone: a heading and at most one short line per section, the presenter explains. Motion is reserved for evidence: when the briefing switch changes, every marker slides to its new estimate; when a figure first scrolls into view, its marks arrive.\n\nThe file opens offline by double-click, so it is built from what the machine already has: Segoe UI Variable for text and headings, Bahnschrift for figure numbers, labels and figures, Cascadia Mono for data, inline SVG, inline CSS and script, no network asset. Light and dark are equal themes (system preference, overridable from the rail), and an A+ switch lifts the root from 16px to 19px for a projector. It rejects the dashboard of tabs with KPI cards and the dark neon \"AI vs rules\" page.",
     "keyCharacteristics": [
-      "Soft grey page, white panels with a 1px rule; no shadows, no gradients, no pills.",
-      "Colour for data (technique, layer, model, verdict) and for the current place and choice, in ours blue.",
-      "States are tinted washes, not outlines: green, red and ochre washes for verdicts, a light blue tint for a selection.",
-      "A display cut for the title, card headings and key figures; the text cut for everything else; mono only for data.",
-      "Navigation and steps are underlined text; the one filled button is the demo's primary action.",
-      "Numbers are written in place; only the demos animate."
+      "White journal page, ink text, one house teal for figure numbers, section numbers, links, focus, selection and the reference arm.",
+      "Arms keep fixed identities: ours teal, each model its own muted hue, baseline grey control, harm red.",
+      "Sections bounded by a 3px ink rule and a large teal Bahnschrift number; figures inside take a 1px rule.",
+      "Booktabs tables and forest plots, not cards and gauges.",
+      "A heading and at most one short line; captions are keys to the marks.",
+      "Motion carries evidence: markers slide to the new estimate (0.75s, the house ease)."
     ],
     "rules": [
       {
-        "name": "The Meaning or Place Rule",
-        "body": "A hue on the page must mean a technique, a layer, a model or a verdict, or mark the current place or choice in ours blue. Structure and emphasis are carried by ink, weight, rules and the grey-to-white step.",
+        "name": "The Arm Identity Rule",
+        "body": "Ours is teal, the baseline is control grey, each model keeps the hue its id assigns, in every figure, table and legend. No chart reassigns them, and no hue is given to an arm that would collide with another (the baseline left amber for that reason).",
         "section": "colors"
       },
       {
-        "name": "The Fixed Identity Rule",
-        "body": "Ours is blue, AI agents are violet, the baseline is amber, on every page and in the deck. No chart, strip, lane or table may reassign these hues. Ours blue alone doubles as the accent for place, selection and the primary action.",
-        "section": "colors"
-      },
-      {
-        "name": "The Wash Rule",
-        "body": "A state is a tinted wash with text in its solid hue, not an outline: good-wash, bad-wash and warn-wash for verdicts, a 7–12% ours tint for a selection. Only a failure that matters goes solid.",
+        "name": "The One House Hue Rule",
+        "body": "Teal is the only accent. Structure is carried by ink rules and weight; any other hue on the page must name an arm, a layer or a verdict.",
         "section": "colors"
       },
       {
         "name": "The 4.5 Floor Rule",
-        "body": "Small text holds at least 4.5:1 on its own background in both themes, including a verdict hue on its own wash (the washes are tuned to sit exactly there). Baseline amber and the lighter layer hues do not hold it and stay on fills and large figures.",
+        "body": "Small text holds 4.5:1 on its own background in both themes, including a verdict hue on its own wash. The model and layer hues are for marks, swatches and large figures (2rem and up); never set small text in them.",
         "section": "colors"
       },
       {
-        "name": "The Offline Faces Rule",
-        "body": "No downloaded or web fonts: the pages open offline, so only faces the machine already has are named, each with a full fallback stack.",
+        "name": "The Bahnschrift Means Evidence Rule",
+        "body": "Figure numbers, section numbers, axis ticks, plotted values and key figures are Bahnschrift with tabular figures; headings and prose are never Bahnschrift.",
         "section": "typography"
       },
       {
-        "name": "The Display Is for Titles and Figures Rule",
-        "body": "The display cut sets the page title, panel headings and large numbers only; body, labels, buttons and tables stay in the text cut.",
+        "name": "The Offline Faces Rule",
+        "body": "Platform faces only, each with a full fallback stack. No web fonts, no font files, no network request.",
         "section": "typography"
       },
       {
         "name": "The Sentence Case Rule",
-        "body": "No uppercase, letter-spaced labels and no eyebrow line above a heading; a label is a short sentence-case caption in ink-soft.",
+        "body": "Labels are short sentence-case captions; no uppercase tracked labels, no eyebrow or kicker above a heading.",
         "section": "typography"
       },
       {
-        "name": "The Mono Means Data Rule",
-        "body": "Monospace is for things a machine reads: field names, codes, URLs, paths, commands and numeric columns. Never for headings, briefs or decoration.",
-        "section": "typography"
-      },
-      {
-        "name": "The Tabular Numbers Rule",
-        "body": "Every number that can change or be compared uses tabular figures.",
-        "section": "typography"
-      },
-      {
-        "name": "The One-Line Brief Rule",
-        "body": "A page carries a title, a one-line brief, and a short lead per step. The presenter explains; the page never grows paragraphs of explanation, and every number stays labelled so an offline reader can still read it.",
+        "name": "The Heading and One Line Rule",
+        "body": "Every section carries its heading and at most one short line; a figure carries a title and a caption that only keys the marks. No paragraphs of explanation: the presenter explains.",
         "section": "layout"
       },
       {
-        "name": "The Ruled, Not Lifted Rule",
-        "body": "A panel is separated by its white-on-grey step and its 1px rule, never by a shadow, a glow or a hover lift. Tints mark state, never structure.",
+        "name": "The Section Boundary Rule",
+        "body": "Each section opens with a 3px ink rule, a large teal section number and its heading; figures inside take a 1px rule. The section boundary always dominates the figure boundary.",
+        "section": "layout"
+      },
+      {
+        "name": "The Unbroken Numbering Rule",
+        "body": "Figures and tables are numbered in reading order before rendering. Anything inside a closed fold is numbered S1, S2 so the visible numbering never skips.",
+        "section": "layout"
+      },
+      {
+        "name": "The Paper Rule",
+        "body": "Figures, tables, panels and controls cast no shadow; only a depicted object (window, letter) may. Tints mark state, never structure.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do colour a technique by its fixed hue (ours blue, agents violet, baseline amber) through a dot before its name and its numbers.",
-      "Do set white panels on the grey page with a 1px line border at 6px corners, and chips at 4px.",
-      "Do put a page's key numbers in one ruled strip, 1.8rem display at 600, each with a caption.",
-      "Do mark the current nav link and the selected step with a 2px ours-blue underline, and a selection with a light ours tint.",
-      "Do show verdict, category, rule and field states as a wash with text in the solid hue; go solid red only for a failure that matters.",
-      "Do keep the display cut for the title, panel headings and large numbers, the text cut for everything else, and monospace for data.",
-      "Do check every small text colour at 4.5:1 or better on its own background in both themes, and use on-fill for text on solid fills.",
-      "Do read every number from a committed artefact and give it a label.",
-      "Do draw icons from `Kit.icon` and give every control a visible 2px Ours Blue focus outline and a keyboard path."
+      "**Do** open every section with a 3px ink rule, a 2.3rem teal Bahnschrift number and the heading, and give figures inside a 1px rule.",
+      "**Do** number every figure and table in reading order, and number folded ones S1, S2.",
+      "**Do** keep each section to a heading and at most one short line, and keep captions to a key of the marks.",
+      "**Do** draw ours in the house teal, the baseline in control grey and each model in the hue its id assigns, everywhere.",
+      "**Do** set tables as booktabs, with tabular numbers right-aligned.",
+      "**Do** set every figure number, plotted value and key figure in Bahnschrift with tabular figures.",
+      "**Do** check small text at 4.5:1 on its own background in both themes, and keep the model and layer hues to marks and large figures.",
+      "**Do** keep motion for evidence: markers slide to the new estimate over 0.75s on `cubic-bezier(.16,1,.3,1)`, marks arrive once on first view, and reduced motion turns animation off.",
+      "**Do** keep the file self-contained: platform faces, inline SVG icons from the kit's one drawn family, inline CSS and script."
     ],
     "donts": [
-      "Don't add shadows, gradients, glows or hover lifts.",
-      "Don't use pill shapes or full rounding on controls, chips or tracks.",
-      "Don't outline a state where a wash will do, or fill a button other than the demo's primary action.",
-      "Don't animate numbers, panes or replies; only the demos move.",
-      "Don't use colour for structure or decoration; it is reserved for data meaning and the current place.",
-      "Don't use uppercase letter-spaced labels or an eyebrow or kicker line.",
-      "Don't load web fonts, CDNs or any external asset; the pages open offline.",
-      "Don't add explanatory paragraphs; one-line briefs only, the presenter explains.",
-      "Don't use emoji or unicode glyphs as icons.",
-      "Don't reassign the three technique hues inside a chart, strip, lane or table."
+      "**Don't** build a dashboard of tabs with KPI cards, or a dark neon \"AI vs rules\" page.",
+      "**Don't** add paragraphs of explanation to a section or a caption.",
+      "**Don't** let a figure rule compete with a section rule; the section boundary dominates.",
+      "**Don't** reassign an arm's hue, or give two arms colliding hues.",
+      "**Don't** add shadows to figures, tables, panels or controls; only a drawn window or letter carries one.",
+      "**Don't** use web fonts, CDNs or any network asset.",
+      "**Don't** use uppercase tracked labels, an eyebrow or kicker line, emoji or glyph icons.",
+      "**Don't** set small text in a model or layer hue."
     ]
   }
 }

@@ -1,15 +1,17 @@
-"""Build the one demo portal, docs/review/portal.html, in one command.
+"""Build the Report, docs/review/report.html, in one command.
 
     python tools/build_review_pages.py                  # every demo that can be built here
     python tools/build_review_pages.py --skip-portal    # no browser on this machine
+    python tools/build_review_pages.py --report-only    # re-render the report from the staged parts
 
-Every demo is built as a part into the git-ignored ``build/review-parts/`` and
-the parts are assembled into a single self-contained file with a tab per demo
-(``tools/page_kit.assemble``; six tabs since 2026-10-09). A part this machine
+Every demo is built as a part into the git-ignored ``build/review-parts/`` (each
+builder audits its own), and the parts' data blocks become one self-contained
+evidence report (``tools/build_report.py``, since 2026-10-11; before that a shell
+with a tab per demo). A part this machine
 cannot rebuild -- the portal run and the HIS update need Chromium
 (``python -m playwright install chromium``), the journey needs the public
 Synthea sample (``python scripts/fetch_public_dataset.py``) -- is carried over
-from the portal already committed, never dropped. Every part is synthetic or
+from the report already committed, never dropped. Every part is synthetic or
 public-synthetic data, so the portal is committable. The dataset walkthrough
 and the hospital-register page left the portal; ``tools/build_dataset_page.py``
 and ``tools/build_real_page.py`` still build them on their own.
@@ -25,9 +27,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
-from tools.page_kit import (                                     # noqa: E402
-    PORTAL, REVIEW_DIR, TABS, assemble, part_path, parts_in, write,
-)
+from tools.page_kit import LEGACY_PORTAL, REPORT, REVIEW_DIR, part_data, part_path, parts_in   # noqa: E402
+from tools.build_report import KEYS, build as build_report, report_data       # noqa: E402
 
 SYNTHEA = ROOT / "data" / "public_synthea"
 RESULTS = ROOT / "docs" / "benchmark_results"
@@ -83,26 +84,31 @@ def build_parts(*, skip_browser: bool = False) -> dict[str, str]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-portal", action="store_true", help="no browser here: carry the browser-built demos over")
+    parser.add_argument("--report-only", action="store_true", help="rebuild nothing: re-render the report from the staged parts")
     args = parser.parse_args()
 
-    previous = parts_in(PORTAL)
-    parts = build_parts(skip_browser=args.skip_portal)
-    tabs = {k for k, _ in TABS}
-    for key, html in previous.items():
-        if key not in parts and key in tabs:
-            parts[key] = html
-            print(f"  carried over {key} from the committed portal")
+    # What the committed report already carries, for a section this machine cannot rebuild.
+    previous = report_data(REPORT) or report_data(LEGACY_PORTAL) or {k: part_data(v) for k, v in parts_in(LEGACY_PORTAL).items()}
+    if args.report_only:
+        parts = {k: part_path(k).read_text(encoding="utf-8") for k in KEYS if part_path(k).exists()}
+    else:
+        parts = build_parts(skip_browser=args.skip_portal)
+    sections = {k: part_data(html) for k, html in parts.items() if k in KEYS}
+    for key, data in previous.items():
+        if key not in sections and key in KEYS and data:
+            sections[key] = data
+            print(f"  carried over {key} from the committed report")
 
-    missing = [k for k, _ in TABS if k not in parts]
-    write(PORTAL, assemble(parts))
-    size = PORTAL.stat().st_size / 1024 / 1024
-    print(f"  wrote {PORTAL.relative_to(ROOT)}  ({len([k for k in parts if k in tabs])} tabs, {size:.1f} MB)"
+    missing = [k for k in KEYS if k not in sections]
+    build_report(sections)
+    size = REPORT.stat().st_size / 1024 / 1024
+    print(f"  wrote {REPORT.relative_to(ROOT)}  (the Report, {len(sections)} of {len(KEYS)} sections, {size:.1f} MB)"
           + (f"; not available: {', '.join(missing)}" if missing else ""))
 
     for old in RETIRED:
         if old.exists():
             old.unlink()
-            print(f"  removed {old.relative_to(ROOT)} (now a tab of the portal)")
+            print(f"  removed {old.relative_to(ROOT)} (now part of the report)")
     return 0
 
 

@@ -52,7 +52,7 @@ DEMO_IMG = ROOT / "docs" / "review" / "img"
 DEMOS = [
     ("portal-crawl.png", "1 · The portal run",
      "Every page each technique loaded, replayed on a map of the portal: ours 32, the AI agent 35, the baseline 440 "
-     "— each total checked against the meter.", "portal.html#portal"),
+     "— each total checked against the meter.", "report.html#s-setting"),
     ("dataset-patient.png", "2 · An export we never saw",
      "Synthea's public sample, one patient's bill: the agent takes the diagnosis; ours takes three fields; the "
      "baseline reads 180,570 records.", "portal.html#dataset"),
@@ -61,13 +61,13 @@ DEMOS = [
      "taken for, refused by the other two with the rule named; six questions answered from totals, four gated.", "portal.html#real"),
     ("journey-follow.png", "4 · The journey of one entry",
      "One line of patients.csv through all seven stages. Follow the diagnosis through the agent on the billing "
-     "job: the rail turns red at Extract and Purpose.", "portal.html#journey"),
+     "job: the rail turns red at Extract and Purpose.", "report.html#s-record"),
     ("assistant-refusal.png", "5 · Ask the assistant",
      "The panel types; reception asking for a diagnosis is refused before any detail is asked, with the three "
-     "checks shown. Verified against the Python assistant on load.", "portal.html#assistant"),
+     "checks shown. Verified against the Python assistant on load.", "report.html#s-assistant"),
     ("rules-vs-ai.png", "6 · Rules vs just AI",
      "Eight tasks, five repeats, every repeat scored: close on the score, apart on traps, coverage, minimisation "
-     "and repeatability.", "portal.html#rules"),
+     "and repeatability.", "report.html#s-result"),
 ]
 TARGET = ROOT / "Review-II.pptx"
 
@@ -466,7 +466,7 @@ def draw_demo(slide) -> None:
         r3.font.size = Pt(caption - 1)
         r3.font.color.rgb = GREY
     add_text(slide, 0.6, 6.78, 12.1, 0.35, [
-        "Open docs/review/portal.html — every demo is offline, built from a real run of the pipeline "
+        "Open docs/review/report.html — every demo is offline, built from a real run of the pipeline "
         "(tools/build_review_pages.py), and shows no raw patient identifier."], size=10.5, color=NAVY)
 
 
@@ -641,12 +641,13 @@ def dataset_rows(name: str = "benchmark-dataset") -> tuple[list[list[str]], str,
 
 
 def real_register() -> dict | None:
-    """The hospital register's numbers, read from the portal's real-data part (its own data block)."""
+    """The hospital register's numbers, read from the real-data part's own data block (it is staged
+    by ``tools/build_real_page.py``; the report does not carry it)."""
 
     sys.path.insert(0, str(ROOT))
-    from tools.page_kit import PORTAL, part_data, parts_in
-    part = parts_in(PORTAL).get("real")
-    return part_data(part) or None if part else None
+    from tools.page_kit import part_data, part_path
+    part = part_path("real")
+    return (part_data(part.read_text(encoding="utf-8")) or None) if part.exists() else None
 
 
 def public_ceiling() -> tuple[int, int, int] | None:

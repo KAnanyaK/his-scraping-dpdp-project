@@ -32,6 +32,7 @@ from compliance.policy import PURPOSE_POLICY                             # noqa:
 from compliance.rules import ALL_RULES                                   # noqa: E402
 from data_synthetic.catalogue import FIELD_CATALOGUE                     # noqa: E402
 from extraction.adapters.mock_his import MockHISDataSource               # noqa: E402
+from extraction.techniques.compliant import CompliantExtractionTechnique  # noqa: E402
 from extraction.techniques.ai_agent import (  # noqa: E402
     AIAgentTechnique, BRIEFING_LABELS, BRIEFINGS, model_slug, recorded_models,
 )
@@ -160,6 +161,7 @@ def build_data() -> dict:
     agents = [a for a in _agents() if a["k"] in admitted]
 
     tasks: dict[str, dict] = {}
+    ours = CompliantExtractionTechnique()
     for task in bound:
         policy = PURPOSE_POLICY[task.purpose]
         tasks[task.task_id] = {
@@ -169,6 +171,8 @@ def build_data() -> dict:
             "needed": sorted(f"{layer}/{name}" for layer, name in task.field_refs()),
             "allowed": sorted(c.value for c in policy.allowed_categories),
             "ceiling": policy.max_retention_days,
+            # What ours declared, read off its own run rather than restated here.
+            "ours_retention": ours.extract(source, task).run.retention_days,
             "runs": {a["k"]: _runs_for(task, a["provider"], a["model"], a["briefing"], source) for a in agents},
         }
 
