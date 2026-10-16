@@ -266,7 +266,9 @@ def audit(output: TechniqueOutput, normalised: NormalisedOutput) -> ExportAudit:
 
     Normalised before matching: case and punctuation are ignored, a name is
     found when all its words appear in one artefact in any order (HL7 writes
-    ``Family^Given``), and a phone number by its digits.
+    ``Family^Given``), and a phone number by its digits within one field, however
+    that field formats them. Digits are never joined across fields: a message's
+    timestamp, control id and tokens together can spell any short number by chance.
     """
 
     corpus: list[str] = []
@@ -275,7 +277,7 @@ def audit(output: TechniqueOutput, normalised: NormalisedOutput) -> ExportAudit:
     for resources in normalised.fhir.values():
         corpus.extend(json.dumps(r) for r in resources)
     texts = [_norm(c) for c in corpus]
-    digits = [re.sub(r"\D", "", c) for c in corpus]
+    digits = [_digit_fields(c) for c in corpus]
 
     values: set[str] = set()
     for layer_value, rows in output.rows.items():
@@ -302,14 +304,25 @@ def _norm(text: str) -> str:
     return " " + re.sub(r"[^a-z0-9]+", " ", text.casefold()) + " "
 
 
-def _appears(value: str, texts: list[str], digits: list[str]) -> bool:
-    """A raw value is in the export if it, its words, or its digits are."""
+# What separates one field from the next: HL7's delimiters (| ^ ~ & \ and the segment break)
+# and JSON's structure. A phone written "+91 98765-43210" stays one field.
+_FIELD_BREAK = re.compile(r'[|^~&\\\r\n"{}\[\],:]')
+
+
+def _digit_fields(text: str) -> list[str]:
+    """The digits of each field of one artefact, field by field."""
+
+    return [d for d in (re.sub(r"\D", "", f) for f in _FIELD_BREAK.split(text)) if d]
+
+
+def _appears(value: str, texts: list[str], digits: list[list[str]]) -> bool:
+    """A raw value is in the export if it, its words, or its digits (within one field) are."""
 
     words = _norm(value).split()
     only_digits = re.sub(r"\D", "", value)
     if len(only_digits) >= 7 and len(only_digits) >= len(value.replace(" ", "")) - 4:
         # a phone-like value: match by digits, however it is formatted
-        if any(only_digits in d for d in digits):
+        if any(only_digits in d for fields in digits for d in fields):
             return True
     if not words:
         return False

@@ -9,7 +9,7 @@ from extraction.technique import ExtractionTask, LayerFields
 from extraction.techniques.compliant import CompliantExtractionTechnique
 from extraction.techniques.unconstrained import UnconstrainedExtractionTechnique
 from interop.layers import HISLayer
-from interop.normalise import _appears, _norm, audit, normalise
+from interop.normalise import _appears, _digit_fields, _norm, audit, normalise
 
 COHORT = ExtractionTask(task_id="cohort", purpose=Purpose.CARE_COORDINATION, needed=[
     LayerFields(layer=HISLayer.PATIENT_ADMINISTRATION, fields=["mrn", "date_of_birth", "sex", "pincode"])])
@@ -41,7 +41,15 @@ def test_a_pseudonymised_cohort_export_is_less_identifiable_than_a_raw_one():
 
 def test_the_leak_search_sees_through_reordering_and_formatting():
     texts = [_norm("PID|1||X|Kapoor^Krisha||1988|F|||||91 98765 43210")]
-    digits = ["".join(ch for ch in "PID|1||X|Kapoor^Krisha||1988|F|||||91 98765 43210" if ch.isdigit())]
+    digits = [_digit_fields("PID|1||X|Kapoor^Krisha||1988|F|||||91 98765 43210")]
     assert _appears("Krisha Kapoor", texts, digits)               # Family^Given in HL7
     assert _appears("+91-9876543210", texts, digits)               # spaces instead of a dash
     assert not _appears("Meera Goda", texts, digits)
+
+
+def test_digits_are_never_joined_across_fields():
+    # A message's timestamp, control id and tokens together can spell a record number by chance;
+    # that is not the record number leaving. Found on 2026-10-12: about 2% of random keys did it.
+    msg = r"MSH|^~\&|EXTRACTION|HIS|||20261012065130||ADT^A04|run-13|P|2.5" + "\r" + "PID|1||PSN-25197b0c21b8^^^HIS^MR"
+    assert not _appears("MRN1325197", [_norm(msg)], [_digit_fields(msg)])
+    assert _appears("MRN1325197", [_norm("PID|1||MRN-1325197^^^HIS^MR")], [_digit_fields("PID|1||MRN-1325197^^^HIS^MR")])
