@@ -46,7 +46,7 @@ The contribution is the compliance work: extraction designed and benchmarked aga
 
 **Stack.** Jinja templates in `tools/mock_portal/templates/`, with inline CSS in `base.html`. Flask is the only dependency. Any new dependency needs team confirmation first.
 
-**The review portal.** One file, `docs/review/portal.html` (2026-10-06: the separate pages became its tabs), assembled from parts built from `tools/*_page.html` + `tools/page_base.css` / `page_base.js` by `tools/build_review_pages.py`; they open offline by double-click, so everything is inlined (no web fonts, no CDN), and every number on them is read from a committed artefact, never typed. They must never show a raw identifier (each builder audits its own output). Refreshed 2026-09-26, polished 2026-09-27; changed on request.
+**The Report.** One file, `docs/review/report.html` (renamed from `portal.html` 2026-10-11; that name is reserved for the separate **Portal** deliverable, `docs/review/portal-brief.md`): an evidence report (one scrolling page, numbered figures in trial order, a contents rail, presenter keys) rendered by `tools/build_report.py` from `tools/report/` and the data blocks of the demo parts that `tools/build_review_pages.py` builds from `tools/*_page.html`; they open offline by double-click, so everything is inlined (no web fonts, no CDN), and every number on them is read from a committed artefact, never typed. They must never show a raw identifier (each builder audits its own output). Refreshed 2026-09-26, polished 2026-09-27; changed on request.
 
 **Out of scope for design work.** The Review deck is locked to the mandatory VIT/SENSE Project-I 2026 template. The staff assistant is kept deliberately small.
 

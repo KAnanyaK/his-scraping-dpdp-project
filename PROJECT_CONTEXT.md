@@ -72,7 +72,7 @@ Framed as a comparative advantage over existing scraping literature, not a compl
 - **Done:** fifth-layer audit-event fields, per-layer schemas, a synthetic export writer, the dataset adapter (`adapters/dataset_his.py`, column-map driven), and the portal adapter's label→field mapping.
 - **Done:** per-layer pydantic schemas. **Not planned:** a real AutoScraper baseline (the panel accepted the hand-written one, 2026-09-13).
 - **The comparison** is ours (the reference implementation: it executes each task's expert field list) against publicly available AI models (four, recorded and replayed) and an unconstrained baseline; the morality model it replaced is gone (2026-09-16).
-- Over twenty runnable scripts, about 400 tests (a full run takes 2-3 minutes), a browsable result at `docs/benchmark_results/benchmark.md` and the demo portal `docs/review/portal.html`. See `DEMO_GUIDE.md` and `docs/compliance/approach.md`.
+- Over twenty runnable scripts, about 400 tests (a full run takes 2-3 minutes), a browsable result at `docs/benchmark_results/benchmark.md` and the demo portal `docs/review/portal-v1.html`. See `DEMO_GUIDE.md` and `docs/compliance/approach.md`.
 
 ## Known Loose Ends
 

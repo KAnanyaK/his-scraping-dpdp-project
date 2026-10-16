@@ -10,7 +10,7 @@ re-running the matching script from the repo root.
 | `care-coordination-*.{json,md}` | `python scripts/score_extraction_run.py` | The rules scored against hand-built runs, no generator involved |
 | `*--purpose-matrix.{json,md}` | `python scripts/compare_purposes.py` | One unchanged extraction scored against every purpose in the policy. **The purpose-limitation result.** |
 | `benchmark-portal.{json,md}` | `python scripts/run_pipeline.py` | The same techniques scraping the served portal through a real browser; cost includes real page loads; the transport is observed; every run is audit-logged. **The end-to-end result.** |
-| *(the rules-vs-AI page)* | `python tools/build_review_pages.py` | Now the *Rules vs AI* tab of the one demo portal, `docs/review/portal.html` (2026-10-06). |
+| *(the rules-vs-AI page)* | `python tools/build_review_pages.py` | Now the key result and sections 2–4 of the Report, `docs/review/report.html` (2026-10-11). |
 | `weight-sweep.md` | `python tools/weight_sweep.py` | The ranking re-scored under twenty-one rule weightings; ties are marked as ties. |
 | `benchmark.json`, `benchmark-portal.json` | the two benchmarks | The data the deck builder, the demo page and the weight sweep read. Tracked, and CI regenerates and diffs the in-memory one. |
 | `*.retention.json` (git-ignored) | `python scripts/run_pipeline.py` | The retention sidecar beside each export: run, purpose, retention declared, the date after which `scripts/purge_exports.py` erases the files. |

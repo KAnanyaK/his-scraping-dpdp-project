@@ -2,7 +2,7 @@
 
 A final-year research project at VIT (School of Electronics Engineering, SENSE), by Avanindra (23BLC1089) and Ananya (23BLC1017), guided by Dr. Manoj Kumar.
 
-**What is delivered.** The code, the committed artefacts under `docs/benchmark_results/` and the demo portal `docs/review/portal.html`. Every number in them is regenerated from the repository (see `README.md`, "Run it"). CI reruns the suite and checks that the committed benchmark and the weight sweep reproduce to the number.
+**What is delivered.** The code, the committed artefacts under `docs/benchmark_results/` and the Report `docs/review/report.html`. Every number in them is regenerated from the repository (see `README.md`, "Run it"). CI reruns the suite and checks that the committed benchmark and the weight sweep reproduce to the number.
 
 **How it was built.** Development was AI-assisted: an AI coding assistant wrote and revised much of the code and documentation under the team's direction and review, and commits carry a `Co-Authored-By` trailer where it did. Separately, AI models are also the *object of study*: the benchmark compares our rule-driven reference technique with publicly available language models given the same job. Their decisions are recorded once and replayed, so nothing in the demos calls a model.
 

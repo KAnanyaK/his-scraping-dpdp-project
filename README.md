@@ -117,7 +117,7 @@ retention sidecar that the purge erases and logs, a record of processing
 generated from the log, and the access authorisation the scraper needs to get
 past the portal's robots.txt.
 
-**The demo portal** (offline, one file, built from real runs, no raw identifier on any tab): [`docs/review/portal.html`](docs/review/portal.html) — six tabs: the portal run with its crawl replayed, rules vs AI, one entry's journey, patient rights (an access request and a breach), the staff assistant, and the HIS update. `python tools/build_review_pages.py` rebuilds it.
+**The demo portal** (offline, one file, built from real runs, no raw identifier on any tab): [`docs/review/report.html`](docs/review/report.html) — six tabs: the portal run with its crawl replayed, rules vs AI, one entry's journey, patient rights (an access request and a breach), the staff assistant, and the HIS update. `python tools/build_review_pages.py` rebuilds it.
 
 ## Run it
 

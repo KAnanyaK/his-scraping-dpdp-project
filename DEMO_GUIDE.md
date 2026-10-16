@@ -145,11 +145,12 @@ adapter boundary and the compliance layer doing what they were designed to do.
 
 First run on a new machine needs the browser: `python -m playwright install chromium`.
 
-### The demo portal (interactive; one file, `docs/review/portal.html`, every demo a tab)
+### The Report (interactive; one file, `docs/review/report.html`)
 
-Six tabs (cut from nine on 2026-10-09), each built from a real run and
-committed, offline, with no raw direct identifier on any of them: Portal run, Rules vs
-AI, Journey, Patient rights, Assistant, HIS update. `python
+One scrolling evidence report (2026-10-11; it replaced the six-tab portal), built from real runs and
+committed, offline, with no raw direct identifier: the key result, then Setting, Primary
+and Secondary outcomes, Adverse events, One record followed, Patients' rights, Sensitivity
+(the HIS update) and the Assistant. `→` / `←` step figure to figure. `python
 tools/build_review_pages.py` rebuilds the portal (~90 s; `--skip-portal` where
 there is no browser). The Synthea walkthrough (Demo F) and the hospital-register
 page are built on their own now, outside the portal.
