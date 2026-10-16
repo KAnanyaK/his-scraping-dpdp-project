@@ -71,7 +71,7 @@ Review-* Template.pptx
 .impeccable/config.local.json
 .impeccable/hook.cache.json
 
-# staging for the demo portal (tools/build_review_pages.py assembles docs/review/portal.html)
+# staging for the demo portal (tools/build_review_pages.py assembles docs/review/portal-v1.html)
 /build/
 
 # final-review working checklist (local only)
