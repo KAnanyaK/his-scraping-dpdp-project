@@ -26,6 +26,17 @@ VIEWPORT = {"width": 1366, "height": 900}
 SHOTS = {
     "portal-crawl": ("fig-crawl", 9),
     "rules-vs-ai": ("fig-forest", 2),
+    # Review-III deck (tools/build_review3_deck.py)
+    "r3-traps": ("fig-traps", 2),
+    "r3-injection": ("fig-injection", 2),
+    "r3-coverage": ("fig-coverage", 2),
+    "r3-stability": ("fig-stability", 2),
+    "r3-modules": ("fig-modules", 2),
+    "r3-retention": ("fig-retention", 2),
+    "r3-breach": ("fig-breach", 2),
+    "r3-release": ("fig-release", 2),
+    "r3-scraper": ("fig-scraper", 2),
+    "r3-assistant": ("fig-assistant", 4),
 }
 
 
