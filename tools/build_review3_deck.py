@@ -577,7 +577,7 @@ def build(*, without_instruction_slide: bool = False) -> Path:
         f"HIS update: a release that renames, moves and splits screens; {f['same']} of {f['rows']} benchmark rows "
         "unchanged; 27 of 31 assistant tasks re-worded themselves, 4 withheld until two proposals were "
         "confirmed.",
-        "Sensitivity: 21 rule weightings never move the baseline from last; ablation shows each of our five "
+        "Sensitivity: 17 alternative rule weightings never move the baseline from last; ablation shows each of our five "
         "design choices moves only the rule it serves.",
         "Assistant page self-check: 1,053 recorded conversations replayed on every load.",
     ], size=13.5)
