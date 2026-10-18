@@ -1,4 +1,4 @@
-# AI-Driven HIS Management Agent with DPDP-Compliant Web Scraping
+# Data Extraction Techniques for HIS Towards DPDP Compliance
 
 A final-year research project (VIT, SENSE) that treats **compliance with India's
 Digital Personal Data Protection Act, 2023 as a measurable, benchmarkable property

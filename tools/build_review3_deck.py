@@ -51,7 +51,7 @@ TARGET = ROOT / "Review-III.pptx"
 IMG = ROOT / "docs" / "review" / "img"
 FIG = ROOT / "docs" / "thesis" / "figures"
 VIDEO = ROOT / "docs" / "review" / "video" / "demo.mp4"
-TITLE = "AI-Driven HIS Management Agent with DPDP-Compliant Web Scraping"
+TITLE = "Data Extraction Techniques for HIS Towards DPDP Compliance"
 RED = NAVY.__class__(0xB0, 0x30, 0x30)
 TEAL = NAVY.__class__(0x0E, 0x6E, 0x6E)
 

@@ -67,7 +67,7 @@ def record(raw_dir: Path) -> Path:
         ctx = browser.new_context(viewport=SIZE, record_video_dir=str(raw_dir), record_video_size=SIZE,
                                   color_scheme="light")
         page = ctx.new_page()
-        card(page, "Review-III  |  SENSE, VIT Chennai", "AI-Driven HIS Management Agent with DPDP-Compliant Web Scraping",
+        card(page, "Review-III  |  SENSE, VIT Chennai", "Data Extraction Techniques for HIS Towards DPDP Compliance",
              "Ananya Karmakar (23BLC1017)  &middot;  Avanindra Kushwah (23BLC1089)<br>Guide: Dr. Manoj Kumar", 5)
         card(page, "Part 1", "One job through the whole pipeline",
              "Ours, an AI model told the hospital's policy, and the baseline, replayed from the recorded run:"

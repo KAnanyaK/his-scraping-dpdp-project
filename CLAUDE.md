@@ -4,7 +4,7 @@ This file gives Claude Code persistent context for this repository. Read it full
 
 ## Project Identity
 
-**Name:** AI-Driven HIS Management Agent with DPDP-Compliant Web Scraping
+**Name:** Data Extraction Techniques for HIS Towards DPDP Compliance
 **Institution:** VIT, SENSE department — final-year research project
 **Team:** Avanindra (23BLC1089), Ananya (23BLC1017)
 **Guide:** Dr. Manoj Kumar
