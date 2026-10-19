@@ -1,7 +1,7 @@
 """Evaluate an extraction run against the DPDP rule set.
 
-This is the entry point the compliance benchmarking harness (build step 5) and
-the demo script both call. It stays deliberately thin: build the rule list, run
+This is the entry point the compliance benchmarking harness and the pipeline
+script both call. It stays deliberately thin: build the rule list, run
 each rule, hand the results to ``ComplianceReport`` for scoring.
 """
 

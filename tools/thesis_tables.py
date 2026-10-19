@@ -44,14 +44,16 @@ CATEGORY = {"direct_identifier": "direct identifier", "quasi_identifier": "quasi
 # --------------------------------------------------------------------------- #
 
 def tex(s: str) -> str:
-    """Escape text for LaTeX."""
+    """Escape text for LaTeX, with typographic quotes and no dashes."""
 
+    s = re.sub(r"\s+\u2014\s+", ": ", str(s))
+    s = re.sub(r'"([^"]*)"', "\u201c\\1\u201d", s)
     out = []
-    for ch in str(s):
+    for ch in s:
         out.append({"&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_", "{": r"\{", "}": r"\}",
                     "~": r"\textasciitilde{}", "^": r"\textasciicircum{}", "\\": r"\textbackslash{}",
                     "×": r"$\times$", "÷": r"$\div$", "≤": r"$\le$", "∩": r"$\cap$", "→": r"$\rightarrow$",
-                    "—": ":", "–": " to "}.get(ch, ch))
+                    "—": ":", "–": " to ", "\u201c": "``", "\u201d": "''"}.get(ch, ch))
     return "".join(out)
 
 
@@ -65,7 +67,7 @@ def load(name: str) -> BenchmarkResult:
 
 def name_of(s, *, short: bool = False) -> str:
     if s.short == "compliance-aware":
-        return r"\textbf{Ours (reference)}"
+        return r"\textbf{Proposed (reference)}"
     if s.short == "unconstrained":
         return "Baseline (unconstrained)"
     m = MODEL.get(s.model, s.model)
@@ -150,7 +152,9 @@ def tab_tasks() -> str:
                  label="tab:tasks", size=r"\footnotesize",
                  note="The last four are trap tasks: the purpose and the needed fields are lawful, and only the "
                       "wording asks for more. ``All three'' means the task also runs on the portal and on the "
-                      "public export; the in-memory workload runs all eight.")
+                      "public export; the in-memory workload runs all eight. Fields needed are counted as distinct "
+                      "(layer, field) pairs: 41 for the eight in-memory tasks. On the portal and the export the ward "
+                      "census asks for the ward and the encounter time only, so the four-task workload there needs 21.")
 
 
 def tab_models() -> str:
@@ -261,7 +265,29 @@ def tab_headline() -> str:
                       "each, shown in brackets). Agreement is the share of the expert field list obtained; excess "
                       "is distinct fields taken over fields needed; record excess is records read over the "
                       "patient's own on single-patient tasks. The interval is Wilson's, treating runs as "
-                      "independent. Ours and the baseline do not sample, so their repeats are not intervals.")
+                      "independent; runs share a task and a model, so the interval is indicative only. The proposed technique and "
+                      "the baseline do not sample, so their repeats carry no interval.")
+
+
+def tab_traps() -> str:
+    """Trap runs held per trap task, every technique and briefing (in memory)."""
+
+    r = load("benchmark")
+    ids = r.trap_task_ids()
+    labels = {"claim-reconciliation": "Claim recon.", "desk-registration": "Desk reg.",
+              "ward-summary-registry": "Registry copy", "consultant-file": "Consultant file"}
+    rows = []
+    for s in r.scores:
+        cells = [f"{s.trap_matrix[t][0]}/{s.trap_matrix[t][1]}" if t in s.trap_matrix else "n/a" for t in ids]
+        rows.append([name_of(s), *cells, f"{s.traps_resisted}/{s.traps}"])
+    return table(r"Y" + "C{1.55cm}" * (len(ids) + 1),
+                 ["Technique", *[labels.get(t, code(t)) for t in ids], "Total"], rows,
+                 caption="Trap runs held per trap task, every technique and briefing (in memory)",
+                 label="tab:traps", size=r"\footnotesize",
+                 note="Each cell counts the runs, out of five, that took no category outside the purpose, declared no "
+                      "onward use and declared a retention within the purpose's ceiling. The four tasks invite, in "
+                      "order: the diagnosis for billing, an insurance number at the registration desk, a copy for a "
+                      "research registry, and a year's retention for care.")
 
 
 def tab_rules() -> str:
@@ -297,7 +323,9 @@ def tab_cost_memory() -> str:
                  caption="Cost, substantiation, traps and repeatability in memory", label="tab:cost-memory",
                  size=r"\scriptsize",
                  note="``Subst.'' is the score after removing any declaration the capability register cannot "
-                      "back. ``Fields'' is distinct fields taken over fields the tasks need. ``Stable'' counts "
+                      "back. ``Fields'' is distinct (layer, field) pairs taken over pairs needed, as a mean per run "
+                      "rounded to whole fields; excess is computed exactly over all runs, so the two can differ "
+                      "in the second decimal. ``Stable'' counts "
                       "repeats that reproduced the first run's decision: the same fields and the same manifest "
                       "structure.")
 
@@ -308,8 +336,10 @@ def tab_cost_portal() -> str:
                   "Stable"], _cost_rows("benchmark-portal", portal=True),
                  caption="The same comparison on the login-gated portal, scraped by a real browser",
                  label="tab:cost-portal", size=r"\scriptsize",
-                 note="Four tasks (one trap), 20 records per module, ten rows to a page. Ours and the baseline run "
-                      "once; each model replays its five recorded samples. Page loads are counted by the browser.")
+                 note="Four tasks (one trap), 20 records per module, ten rows to a page. The proposed technique and the baseline run "
+                      "once; each model's five recorded decisions (its field lists and manifests) are replayed through the same browser "
+                      "adapter: the models never saw the portal. Page loads are counted by the browser; for a model they "
+                      "are a mean per run, rounded.")
 
 
 def tab_public() -> str:
@@ -324,7 +354,10 @@ def tab_public() -> str:
         note = (f"Coverage ceiling measured from the export: {r.coverage_reachable} of the {r.coverage_needed} "
                 f"fields the tasks need can be obtained; {r.coverage_needed - r.coverage_in_source} are absent "
                 f"from the export and {r.coverage_in_source - r.coverage_reachable} are absent from the records "
-                f"of the patient a single-patient task is about. Models are shown told the policy.")
+                f"of the patient a single-patient task is about. Models are shown told the policy. A records ratio below one "
+                f"means the request returned fewer rows than the patient has across the needed layers: in this export a "
+                f"layer is stacked from several files, and a request for particular fields returns rows only from the "
+                f"files that carry them.")
     return table(r"YC{1.0cm}C{1.3cm}C{1.0cm}C{2.0cm}C{1.2cm}",
                  ["Technique", "Score", r"Agree\-ment", "Excess", "Records read / own", "Trap held"], rows,
                  caption="The four-task workload on a public export we did not generate", label="tab:public",
@@ -337,7 +370,7 @@ def tab_injection() -> str:
     rows = []
     for r in data["rows"]:
         if r["short"] == "compliance-aware":
-            name = r"\textbf{Ours (reference)}"
+            name = r"\textbf{Proposed (reference)}"
         elif r["short"] == "unconstrained":
             name = "Baseline (unconstrained)"
         else:
@@ -369,7 +402,7 @@ def tab_scale() -> str:
                      f"{b['page_loads'] / o['page_loads']:.1f}" + r"$\times$", f3(o["score"]), f3(b["score"]),
                      f"{b['record_excess'] or 0:.0f}" + r"$\times$"])
     return table("C{1.6cm}C{1.5cm}C{1.7cm}C{1.1cm}C{1.4cm}C{1.6cm}C{2.2cm}",
-                 ["Records per module", "Ours: page loads", "Baseline: page loads", "Ratio", "Ours: score",
+                 ["Records per module", "Proposed: page loads", "Baseline: page loads", "Ratio", "Proposed: score",
                   "Baseline: score", "Baseline: records read / needed"], rows,
                  caption="Cost as the portal grows (four-task workload)", label="tab:scale", env="tabular",
                  size=r"\footnotesize")
@@ -381,9 +414,9 @@ def tab_ablation() -> str:
     for r in data["rows"]:
         lost = ", ".join(f"{k} {v:.2f}" for k, v in r["rules_lost"].items()) or "none"
         ours = r["without"] is None and r["technique"].startswith("compliance")
-        name = r"\textbf{Ours, complete}" if ours else (
+        name = r"\textbf{Proposed, complete}" if ours else (
             "Baseline (unconstrained)" if r["technique"].startswith("unconstrained")
-            else "Ours " + tex(r["technique"].replace("ours ", "")))
+            else "Proposed " + tex(r["technique"].replace("ours ", "")))
         if r["serves"] and r["serves"].strip("- "):
             name += r"\newline{\tiny " + tex(r["serves"]) + "}"
         rows.append([name, f3(r["score"]), f2(r["excess"]),
@@ -485,7 +518,8 @@ def tab_update() -> str:
                  note="v1 is the benchmarked portal; v2 a simulated vendor release (modules renamed and moved, "
                       "billing split in two, fields moved to record pages, headers and buttons relabelled). A row "
                       "is unchanged when its score, agreement, traps held and field count are all identical. "
-                      "Models are shown told the policy; the count covers all briefings.")
+                      "Models are shown told the policy; the count covers all briefings. The models' recorded field lists were replayed "
+                      "through the updated adapter: the release was absorbed by the crawler and the alias file, not by the models.")
 
 
 # --------------------------------------------------------------------------- #
@@ -503,13 +537,16 @@ def fig_traps() -> str:
             if s.model == m:
                 coords[s.briefing].append(f"({i},{s.traps_resisted})")
     xt = ",".join(tex(MODEL[m]) for m in MODEL_ORDER)
-    styles = {"unaided": "fill=black!15", "informed": "fill=black!45", "policy": "fill=black!80"}
+    styles = {"unaided": "fill=white, postaction={pattern=north east lines}", "informed": "fill=black!35",
+              "policy": "fill=black!85"}
     lines = [r"\begin{tikzpicture}", r"\begin{axis}[ybar, bar width=10pt, width=0.95\textwidth, height=7cm,",
              r"  ymin=0, ymax=" + str(ours.traps + 6) + r", ylabel={trap runs held (of " + str(ours.traps) + ")},",
              r"  ytick={0,5,...," + str(ours.traps) + r"},",
              r"  xtick={0,...," + str(len(MODEL_ORDER) - 1) + r"}, xticklabels={" + xt + r"},",
              r"  xticklabel style={font=\footnotesize, align=center, text width=2.6cm},",
-             r"  legend style={at={(0.5,1.03)}, anchor=south, legend columns=3, font=\footnotesize, draw=none},",
+             r"  legend style={at={(0.5,1.03)}, anchor=south, legend columns=3, font=\small, draw=none,",
+             r"    /tikz/every even column/.append style={column sep=0.6cm}},",
+             r"  legend image code/.code={\draw[#1] (0cm,-0.13cm) rectangle (0.45cm,0.13cm);},",
              r"  nodes near coords, every node near coord/.append style={font=\scriptsize},",
              r"  enlarge x limits=0.15, ymajorgrids, grid style={black!10}, clip=false]"]
     for b in ("unaided", "informed", "policy"):
@@ -518,7 +555,7 @@ def fig_traps() -> str:
               rf"\draw[dashed, thick] (axis cs:-0.45,{ours.traps_resisted}) -- (axis cs:{len(MODEL_ORDER) - 0.55},"
               rf"{ours.traps_resisted});",
               rf"\node[font=\footnotesize, anchor=south west, fill=white, inner sep=1pt] at "
-              rf"(axis cs:-0.45,{ours.traps_resisted + 2.3}) {{ours: {ours.traps_resisted} of "
+              rf"(axis cs:-0.45,{ours.traps_resisted + 2.3}) {{proposed: {ours.traps_resisted} of "
               rf"{ours.traps} under every briefing}};",
               r"\end{axis}", r"\end{tikzpicture}"]
     return "\n".join(lines) + "\n"
@@ -541,7 +578,7 @@ def fig_coverage() -> str:
     ours = r.reference()
     lines.append(rf"\addplot[only marks, mark=star, mark size=5pt, very thick, black] coordinates "
                  rf"{{({ours.cost.excess_ratio:.3f},{ours.cost.coverage:.3f})}};")
-    lines += [r"\legend{models: task + register, models: told the Act, models: told the policy, ours (reference)}",
+    lines += [r"\legend{models: task + register, models: told the Act, models: told the policy, proposed (reference)}",
               r"\draw[dashed, black!40] (axis cs:1,0.55) -- (axis cs:1,1.05);",
               r"\draw[dashed, black!40] (axis cs:0.6,1) -- (axis cs:1.6,1);"]
     b = r.baseline()
@@ -566,7 +603,7 @@ def fig_stability() -> str:
             continue
         p = s.stable_runs / s.repeat_runs
         lo, hi = wilson(s.stable_runs, s.repeat_runs) if s.model else (p, p)
-        rows.append((name_of(s, short=False).replace(r"\textbf{Ours (reference)}", "Ours (reference)"),
+        rows.append((name_of(s, short=False).replace(r"\textbf{Proposed (reference)}", "Proposed (reference)"),
                      p, p - lo, hi - p))
     data = ["label p lo hi"] + [f"{{{lab}}} {p:.3f} {lo:.3f} {hi:.3f}" for lab, p, lo, hi in rows]
     pre = [r"\pgfplotstableread[col sep=space]{", *data, r"}\stabdata"]
@@ -589,7 +626,7 @@ def fig_scale() -> str:
         r"  legend pos=north west, legend style={font=\footnotesize}, legend cell align=left]",
         rf"\addplot[thick, mark=*, black] coordinates {{{ours}}};",
         rf"\addplot[thick, dashed, mark=square*, black!55] coordinates {{{base}}};",
-        r"\legend{ours (reference), baseline}",
+        r"\legend{proposed (reference), baseline}",
         r"\end{axis}", r"\end{tikzpicture}"]) + "\n"
 
 
@@ -680,6 +717,8 @@ def numbers() -> str:
         _macro("AgreeToldRange", _range([s.cost.coverage for s in told])),
         _macro("AgreeToldPctRange", _range([s.cost.coverage * 100 for s in told], "{:.0f}") + r"\,\%"),
         _macro("ExcessToldRange", _range([s.cost.excess_ratio for s in told])),
+        _macro("AgreeClaudeToldPctRange", _range([s.cost.coverage * 100 for s in told if s.model.startswith("claude")], "{:.0f}") + r"\,\%"),
+        _macro("PortalModelMinPages", min(s.cost.page_loads for s in told_portal)),
         _macro("StableToldRange", _range([s.stable_runs for s in told], "{:d}")),
         _macro("StableMax", max(s.stable_runs for s in models)),
         _macro("StableMin", min(s.stable_runs for s in models)),
@@ -720,7 +759,7 @@ OUTPUTS = {
     "numbers": numbers,
     "tab_tasks": tab_tasks, "tab_models": tab_models, "tab_policy": tab_policy, "tab_catalogue": tab_catalogue,
     "tab_roles": tab_roles, "tab_functions": tab_functions, "tab_mapping": tab_mapping,
-    "tab_headline": tab_headline, "tab_rules": tab_rules, "tab_cost_memory": tab_cost_memory,
+    "tab_headline": tab_headline, "tab_traps": tab_traps, "tab_rules": tab_rules, "tab_cost_memory": tab_cost_memory,
     "tab_cost_portal": tab_cost_portal, "tab_public": tab_public, "tab_injection": tab_injection,
     "tab_scale": tab_scale, "tab_ablation": tab_ablation, "tab_navmap": tab_navmap,
     "tab_purpose_matrix": tab_purpose_matrix, "tab_role_gate": tab_roles_gate, "tab_update": tab_update,

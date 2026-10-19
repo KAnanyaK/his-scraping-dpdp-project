@@ -28,7 +28,6 @@ VIEWPORT = {"width": 1366, "height": 860}
 PAGES = {
     "report-forest.png": ("report.html", [], 2500, "#fig-forest"),
     "portal-v2.png": ("portal-v2.html", ["Space"] * 5, 2600, None),
-    "portal-v5.png": ("portal-v5.html", ["Space"] * 2, 2200, None),
     "agent-portal.png": ("agent-portal.html", ["t", "Space", "Space", "Space", "Space"], 2200, None),
 }
 
@@ -51,8 +50,17 @@ def capture_portal(browser) -> list[Path]:
         target = OUT / "portal-list.png"
         page.screenshot(path=str(target))
         written.append(target)
-        page.locator("tbody tr a").first.click()
-        page.wait_for_load_state("load")
+        # The record page shown is the first adult's: the synthetic population includes children,
+        # whose contact fields would read as a child's own.
+        import re
+        links = page.locator("tbody tr a")
+        for i in range(links.count()):
+            page.goto(portal.url + "/m/registration/")
+            page.locator("tbody tr a").nth(i).click()
+            page.wait_for_load_state("load")
+            born = re.search(r"\b(19\d\d|20\d\d)-\d\d-\d\d\b", page.inner_text("body"))
+            if born and int(born.group(1)) <= 2000:
+                break
         target = OUT / "portal-record.png"
         page.screenshot(path=str(target))
         written.append(target)

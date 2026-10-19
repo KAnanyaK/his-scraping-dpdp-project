@@ -306,8 +306,8 @@ def build(*, without_instruction_slide: bool = False) -> Path:
             "Whether they took only what the purpose needed is never measured.",
         ]),
         ("Why it matters now", [
-            "The DPDP Act, 2023 and the DPDP Rules, 2025 make purpose, minimisation, notice, retention, "
-            "safeguards and accountability binding on every hospital that processes patient data.",
+            "The DPDP Act, 2023 and the DPDP Rules, 2025 set duties on purpose, minimisation, notice, retention, "
+            "safeguards and accountability for every hospital; most take effect in May 2027, and this work anticipates them.",
             "A scraper tuned for coverage is, under the Act, tuned to over-collect.",
         ]),
         ("What we built", [
@@ -476,7 +476,7 @@ def build(*, without_instruction_slide: bool = False) -> Path:
     rows = [head]
     portal = {s.short: s for s in f["por"].scores}
     for sc, _ in f["mem"].by_model():
-        name = "Ours (reference)" if sc.short == "compliance-aware" else (
+        name = "Proposed (reference)" if sc.short == "compliance-aware" else (
             "Baseline (take all)" if sc.short == "unconstrained" else tt.MODEL.get(sc.model, sc.model))
         p = portal.get(sc.short)
         rows.append([name, f"{sc.mean_compliance_score:.3f}", f"{sc.traps_resisted}/{sc.traps}",
@@ -529,7 +529,7 @@ def build(*, without_instruction_slide: bool = False) -> Path:
     add_text(res3, 8.3, 1.35, 4.45, 5.3, [
         "Cost and compliance move together",
         f"On the portal ours loads {ours_p.cost.page_loads} pages, the baseline {base_p.cost.page_loads}, at the "
-        f"same coverage; scores 1.000 and {base_p.mean_compliance_score:.3f}.",
+        f"same coverage; portal-workload scores 1.000 and {base_p.mean_compliance_score:.3f}.",
         "The extra pages are exactly the overreach minimisation forbids: every patient's records read to answer "
         "for one.",
         "",
@@ -586,7 +586,7 @@ def build(*, without_instruction_slide: bool = False) -> Path:
 
     compare = t_compare
     title(compare, "Results: Comparison with Existing Solutions")
-    crow = [["Property", "Generated scrapers [2],[3],[5]", "LLM agents [4]", "AI models, told policy", "Coverage baseline", "Ours"],
+    crow = [["Property", "Generated scrapers [2],[3],[5]", "LLM agents [4]", "AI models, told policy", "Coverage baseline", "Proposed"],
             ["Purpose stated and scored", "no", "no", "yes", "no", "yes"],
             ["Fields limited to what the job needs", "no", "no", f"partly ({pct(lo, hi)})", "no", "yes"],
             ["Records limited to the patient", "no", "no", "yes", "no", "yes"],

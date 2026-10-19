@@ -61,7 +61,7 @@ def is_token(value: Any) -> bool:
     return isinstance(value, str) and value.startswith(TOKEN_PREFIX)
 
 
-# Quasi-identifiers generalised on a pseudonymised export (review F3): date of
+# Quasi-identifiers generalised on a pseudonymised export (ISO/IEC 20889): date of
 # birth, sex and PIN code together re-identify most people. The date keeps its
 # year (age stays usable clinically), the PIN its first three digits (the
 # sorting district). Sex is kept: it is clinically needed and, without the

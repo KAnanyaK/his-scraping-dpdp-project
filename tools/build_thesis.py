@@ -76,7 +76,14 @@ def stage() -> None:
         shutil.copy2(here / f, BUILD / f)
     (BUILD / "code").mkdir(exist_ok=True)
     for name, src in CODE.items():
-        shutil.copy2(ROOT / src, BUILD / "code" / name)
+        # The module docstring restates what the chapters say; the listing shows the code itself.
+        text = (ROOT / src).read_text(encoding="utf-8")
+        body = re.sub(r'\A"""(?:.|\n)*?"""\n+', "", text, count=1)
+        (BUILD / "code" / name).write_text(body, encoding="utf-8", newline="\n")
+    commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True,
+                            text=True).stdout.strip() or "unknown"
+    (BUILD / "generated" / "version.tex").write_text(
+        f"\\newcommand{{\\BuildCommit}}{{{commit}}}\n", encoding="utf-8", newline="\n")
 
 
 def compile_pdf(engine: str) -> Path:

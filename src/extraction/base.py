@@ -1,9 +1,10 @@
 """Abstract data-source interface for the extraction layer.
 
-The adapter pattern here is a hard architectural constraint (CLAUDE.md): a
-synthetic source (`adapters.mock_his`) and a live HIS source (`adapters.live_his`)
-must be interchangeable without any change to downstream compliance or agent
-code. Downstream code depends only on `HISDataSource`.
+The adapter pattern here is a fixed design rule of the project: a synthetic
+source (`adapters.mock_his`), the browser-driven portal source
+(`adapters.portal_his`), the file source (`adapters.dataset_his`) and a future
+live HIS source (`adapters.live_his`, a stub) must be interchangeable without
+any change to downstream compliance or agent code. Downstream code depends only on `HISDataSource`.
 
 Records cross this boundary as plain dicts. Interoperability shaping
 (HL7/FHIR/DICOM/ISO-IEEE-11073) happens in `interop`, not here.
