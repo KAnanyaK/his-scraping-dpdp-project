@@ -1,391 +1,404 @@
 ---
 name: HIS Staff Assistant
-description: The staff-guidance assistant as its own portal, drawn as hospital wayfinding. A pale corridor wall, navy sign panels set in white Atkinson Hyperlegible Next, five department colours on square pictogram tiles, red only for the staff-only door when it stays shut, green only for a check passed; one offline file with the face embedded.
+description: The staff-guidance assistant as its own portal, in Portal v2's dark console. A night ground with faint glass panels and hairlines, Inter embedded; a five-stop stepper shows the run through the assistant, and a dark schematic of the HIS screen lights only the columns and the button a step uses. Lit yellow means here, teal a check passed, red the staff-only door shut, five department hues the modules. One offline file.
 colors:
-  wall: "#e6eaee"
-  wall-2: "#dbe1e7"
-  panel: "#ffffff"
-  panel-2: "#f4f6f8"
-  navy: "#14315c"
-  navy-2: "#1d4174"
-  navy-3: "#0f2647"
-  on-navy: "#ffffff"
-  on-navy-2: "#c8d3e2"
-  ink: "#13202d"
-  ink-2: "#3c4957"
-  ink-3: "#55616f"
-  rule: "#c9d1d9"
-  rule-2: "#e0e5ea"
-  unlit: "#b8c2cc"
-  you-slip: "#e4ebf4"
-  go: "#1d7740"
-  go-wash: "#e1f1e6"
-  stop: "#c8102e"
-  stop-wash: "#fbe5e8"
-  amber: "#e8a400"
-  amber-ink: "#2b1d00"
-  d-patient-administration: "#1f63c0"
-  d-clinical-ehr: "#0b7a85"
-  d-ancillary-departmental: "#6a44b8"
-  d-administrative-financial: "#a8650a"
-  d-infrastructure-integration: "#4b5b6b"
-  replica-chrome: "#2c3238"
-  replica-ground: "#f3f4f5"
+  night: "#070a12"
+  night-2: "#0b1019"
+  well: "#0c111b"
+  panel: "rgba(255, 255, 255, .028)"
+  panel-2: "rgba(255, 255, 255, .05)"
+  panel-3: "rgba(255, 255, 255, .08)"
+  hairline: "rgba(160, 175, 200, .13)"
+  hairline-2: "rgba(160, 175, 200, .22)"
+  hairline-3: "rgba(160, 175, 200, .36)"
+  schematic: "rgba(5, 8, 14, .55)"
+  text: "#edf2fa"
+  text-2: "#aeb8c9"
+  text-3: "#8792a6"
+  passed: "#2ee6c9"
+  door: "#ff4d6a"
+  door-text: "#ff7a8f"
+  lit: "#ffd84d"
+  lit-text: "#ffe48a"
+  ask-key: "#ffffff"
+  ask-key-low: "#dfe7f1"
+  key-ink: "#08110f"
+  key-off: "#2a3446"
+  dept-patient-administration: "#6cb6ff"
+  dept-clinical-ehr: "#4be38a"
+  dept-ancillary-departmental: "#b392ff"
+  dept-administrative-financial: "#ff9f5a"
+  dept-infrastructure-integration: "#9aa7bb"
+  on-dept: "#07101a"
 typography:
-  title:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 700
-    lineHeight: 1.45
-    letterSpacing: "0.005em"
-  board-head:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
+  brand:
+    fontFamily: "Inter, \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif"
     fontSize: "1rem"
-    fontWeight: 700
-    lineHeight: 1.45
-  said:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
+    fontWeight: 650
+    letterSpacing: "-0.01em"
+  title:
+    fontFamily: "Inter, \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 650
+    lineHeight: 1.35
+    letterSpacing: "-0.01em"
+  enquiry-echo:
+    fontFamily: "Inter, \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
-    lineHeight: 1.45
-  body:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 400
-    lineHeight: 1.45
-    fontFeature: "\"tnum\", \"lnum\""
-  sign-name:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
+    lineHeight: 1.5
+  screen-title:
+    fontFamily: "Inter, \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif"
     fontSize: "0.9375rem"
-    fontWeight: 700
-    lineHeight: 1.15
-  chip:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
-    fontSize: "0.875rem"
+    fontWeight: 650
+    letterSpacing: "-0.005em"
+  body:
+    fontFamily: "Inter, \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif"
+    fontSize: "0.9375rem"
     fontWeight: 400
-    lineHeight: 1.45
+    lineHeight: 1.5
+    fontFeature: "\"cv11\", \"ss01\""
   label:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
+    fontFamily: "Inter, \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 600
+    lineHeight: 1.25
+  secondary:
+    fontFamily: "Inter, \"Segoe UI Variable Text\", \"Segoe UI\", system-ui, sans-serif"
     fontSize: "0.8125rem"
-    fontWeight: 400
-    lineHeight: 1.2
-  key-cap:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
-    fontSize: "0.8125rem"
-    fontWeight: 700
-    lineHeight: 1
-  stamp:
-    fontFamily: "\"Atkinson Hyperlegible Next\", \"Segoe UI\", system-ui, sans-serif"
-    fontSize: "0.8125rem"
-    fontWeight: 700
-    lineHeight: 1.45
-    letterSpacing: "0.02em"
+    fontWeight: 500
+    lineHeight: 1.3
+    fontFeature: "\"cv11\", \"ss01\", \"tnum\""
 rounded:
-  key: "4px"
-  tile: "5px"
-  sign: "6px"
-  panel: "8px"
-  you-slip: "8px 8px 2px 8px"
+  kbd: "0.3125rem"
+  inline-key: "0.375rem"
+  segment: "0.4375rem"
+  control: "0.625rem"
+  field: "0.75rem"
+  surface: "0.875rem"
+  pill: "999px"
+  round: "50%"
 spacing:
-  hair: "0.0625rem"
+  xxs: "0.125rem"
   xs: "0.25rem"
   sm: "0.375rem"
   md: "0.5rem"
-  step: "0.625rem"
-  lg: "0.75rem"
-  xl: "0.875rem"
-  floor-y: "1rem"
-  floor-x: "1.25rem"
-  stage-gap: "1.375rem"
-  board-h: "12.5rem"
-  board-h-short: "12rem"
+  lg: "0.625rem"
+  xl: "0.75rem"
+  2xl: "1rem"
+  3xl: "1.25rem"
+  gutter: "1.5rem"
 components:
-  band:
-    backgroundColor: "{colors.navy-3}"
-    textColor: "{colors.on-navy}"
-    height: "3.5rem"
-    padding: "0 1.25rem"
+  status-pill:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.text-2}"
+    typography: "{typography.secondary}"
+    rounded: "{rounded.pill}"
+    height: "1.75rem"
+    padding: "0 0.75rem 0 0.625rem"
+  badge-segment:
+    backgroundColor: "{colors.panel}"
+    rounded: "{rounded.control}"
+    padding: "0.1875rem"
   badge:
-    textColor: "{colors.on-navy-2}"
-    rounded: "{rounded.sign}"
-    height: "2.5rem"
-    padding: "0 0.75rem 0 0.5rem"
-  badge-pressed:
-    backgroundColor: "{colors.on-navy}"
-    textColor: "{colors.navy}"
-  tour-button:
-    backgroundColor: "{colors.amber}"
-    textColor: "{colors.amber-ink}"
-    rounded: "{rounded.sign}"
-    height: "2.5rem"
-    padding: "0 0.875rem 0 0.75rem"
-  tile:
-    backgroundColor: "{colors.navy}"
-    textColor: "{colors.on-navy}"
-    rounded: "{rounded.tile}"
-    size: "1.75rem"
-  stage-sign:
-    backgroundColor: "{colors.wall-2}"
-    textColor: "{colors.ink-3}"
-    rounded: "{rounded.sign}"
-    height: "3.75rem"
-    padding: "0.4375rem 0.5rem"
-  stage-sign-current:
-    backgroundColor: "{colors.navy-2}"
-    textColor: "{colors.on-navy}"
-  stage-sign-passed:
-    backgroundColor: "{colors.navy}"
-    textColor: "{colors.on-navy}"
-  stage-sign-stopped:
-    backgroundColor: "{colors.stop}"
-    textColor: "{colors.on-navy}"
-  stage-sign-unknown:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink-2}"
-  desk:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.panel}"
-  board:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.panel}"
-    height: "{spacing.board-h}"
-    padding: "0.75rem 1rem"
-  step-sign:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.sign}"
-    padding: "0.5rem 0.625rem"
-  chip:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    typography: "{typography.chip}"
-    rounded: "{rounded.sign}"
-    height: "2rem"
-    padding: "0.25rem 0.625rem"
-  chip-out:
-    textColor: "{colors.ink-2}"
-  chip-play:
-    backgroundColor: "#fff7e2"
-  you-slip:
-    backgroundColor: "{colors.you-slip}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.you-slip}"
-    padding: "0.5rem 0.75rem"
-  refusal:
-    backgroundColor: "{colors.stop-wash}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.sign}"
-    padding: "0.625rem 0.75rem"
-  ask-input:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body}"
-    rounded: "{rounded.sign}"
-    height: "2.75rem"
-    padding: "0 0.875rem"
-  send-button:
-    backgroundColor: "{colors.navy}"
-    textColor: "{colors.on-navy}"
-    rounded: "{rounded.sign}"
-    height: "2.75rem"
-    padding: "0 1rem"
-  send-button-hover:
-    backgroundColor: "{colors.navy-2}"
-  replica:
-    backgroundColor: "{colors.replica-ground}"
-    rounded: "{rounded.panel}"
-  replica-chrome:
-    backgroundColor: "{colors.replica-chrome}"
+    textColor: "{colors.text-2}"
+    typography: "{typography.label}"
+    rounded: "{rounded.segment}"
     height: "2rem"
     padding: "0 0.75rem"
-  pin:
-    backgroundColor: "{colors.navy}"
-    textColor: "{colors.on-navy}"
-    typography: "{typography.label}"
-    rounded: "{rounded.tile}"
-    padding: "0.1875rem 0.5rem 0.1875rem 0.3125rem"
-  key-cap:
+  badge-active:
+    backgroundColor: "rgba(255, 255, 255, .11)"
+    textColor: "{colors.ask-key}"
+    rounded: "{rounded.segment}"
+  tour-key:
     backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink-2}"
-    typography: "{typography.key-cap}"
-    rounded: "{rounded.key}"
-    height: "1.25rem"
+    textColor: "{colors.text}"
+    typography: "{typography.label}"
+    rounded: "{rounded.control}"
+    height: "2.5rem"
+    padding: "0 0.9375rem 0 0.8125rem"
+  tour-key-playing:
+    backgroundColor: "rgba(255, 216, 77, .09)"
+    textColor: "{colors.text}"
+    rounded: "{rounded.control}"
+  desk:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.text}"
+    rounded: "{rounded.surface}"
+  you-slip:
+    backgroundColor: "rgba(255, 255, 255, .075)"
+    textColor: "{colors.text}"
+    rounded: "{rounded.surface}"
+    padding: "0.4375rem 0.8125rem"
+  task-chip:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.text}"
+    typography: "{typography.secondary}"
+    rounded: "{rounded.control}"
+    height: "1.875rem"
+    padding: "0.25rem 0.625rem"
+  task-chip-hover:
+    backgroundColor: "{colors.panel-3}"
+  ask-field:
+    backgroundColor: "rgba(0, 0, 0, .3)"
+    textColor: "{colors.text}"
+    typography: "{typography.body}"
+    rounded: "{rounded.field}"
+    height: "2.75rem"
+    padding: "0 0.9375rem"
+  ask-key:
+    backgroundColor: "{colors.ask-key}"
+    textColor: "{colors.key-ink}"
+    rounded: "{rounded.field}"
+    height: "2.75rem"
+    padding: "0 0.9375rem 0 1.0625rem"
+  ask-key-disabled:
+    backgroundColor: "{colors.key-off}"
+    textColor: "{colors.text-3}"
+  step-row:
+    textColor: "{colors.text}"
+    typography: "{typography.body}"
+    rounded: "{rounded.field}"
+    padding: "0.5625rem 0.625rem"
+  step-row-selected:
+    backgroundColor: "{colors.panel-2}"
+  step-number:
+    backgroundColor: "{colors.dept-administrative-financial}"
+    textColor: "{colors.on-dept}"
+    rounded: "{rounded.round}"
+    size: "1.5rem"
+  question-card:
+    backgroundColor: "{colors.panel-2}"
+    textColor: "{colors.text}"
+    rounded: "{rounded.field}"
+    padding: "0.625rem 0.8125rem 0.6875rem"
+  refusal-card:
+    backgroundColor: "rgba(255, 77, 106, .07)"
+    textColor: "{colors.text}"
+    rounded: "{rounded.field}"
+    padding: "0.6875rem 0.875rem 0.75rem"
+  stop-tile:
+    backgroundColor: "{colors.night-2}"
+    textColor: "{colors.text-3}"
+    rounded: "{rounded.round}"
+    size: "2rem"
+  stop-tile-current:
+    backgroundColor: "{colors.night-2}"
+    textColor: "{colors.lit}"
+    rounded: "{rounded.round}"
+    size: "2rem"
+  stop-tile-passed:
+    backgroundColor: "{colors.ask-key}"
+    textColor: "{colors.key-ink}"
+    rounded: "{rounded.round}"
+    size: "2rem"
+  stop-tile-stopped:
+    backgroundColor: "{colors.door}"
+    textColor: "{colors.ask-key}"
+    rounded: "{rounded.round}"
+    size: "2rem"
+  board:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.text}"
+    rounded: "{rounded.surface}"
+    padding: "0.875rem 1.125rem"
+  step-selector:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.text-2}"
+    typography: "{typography.label}"
+    rounded: "{rounded.round}"
+    size: "2rem"
+  schematic-screen:
+    backgroundColor: "{colors.schematic}"
+    textColor: "{colors.text-3}"
+    typography: "{typography.secondary}"
+    rounded: "{rounded.surface}"
+  screen-button:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.text-2}"
+    typography: "{typography.secondary}"
+    rounded: "0.5rem"
+    height: "1.75rem"
+    padding: "0 0.6875rem"
+  screen-button-press:
+    backgroundColor: "rgba(255, 216, 77, .09)"
+    textColor: "{colors.ask-key}"
+    rounded: "0.5rem"
+    height: "1.75rem"
+  step-pin:
+    backgroundColor: "rgba(255, 216, 77, .1)"
+    textColor: "{colors.lit-text}"
+    typography: "{typography.secondary}"
+    rounded: "{rounded.pill}"
+    height: "1.75rem"
+    padding: "0 0.75rem 0 0.5rem"
+  key-cap:
+    textColor: "{colors.text-2}"
+    typography: "{typography.secondary}"
+    rounded: "{rounded.kbd}"
+    height: "1.375rem"
+    padding: "0 0.3125rem"
 ---
 
 # Design System: HIS Staff Assistant
 
 ## Overview
 
-**Creative North Star: "The Enquiry Desk"**
+**Creative North Star: "Only The Decision Is Lit"**
 
-The HIS Staff Assistant shows a request as a route through the hospital's own screens. The visitor puts on a staff badge (Reception, Nurse, Administrator) and asks at the enquiry desk in their own words, or plays that badge's tour. The request then walks five fixed stage signs: Enquiry (understood, from which words), Staff only (the DPDP check for this badge, before any detail is asked), Details (each one shape-checked), Department (the modules the steps need) and Screen (each step placed on the screen where it happens). Under the signs, the active stage's board, and under that a replica of the hospital's portal that lights the column and the button the step uses. It refuses the chatbot with a side panel and the node-graph "AI pipeline".
+The HIS Staff Assistant is the project's rule-based staff-guidance agent as its own portal, set in Portal v2's dark product console. A staff request is treated as a run through the assistant: it is understood, it meets the staff-only door (the DPDP check for the role, run before any detail is asked), the details are collected and shape-checked, it is routed to a department, and its steps are placed on a screen. Each of those five stops lights on a stepper as the engine decides it, and a dark schematic of the HIS screen then lights the columns and the one button the chosen step uses. Everything else is quiet glass on a night ground.
 
-The world is hospital wayfinding signage. The ground is a pale cool corridor wall (Wall). Signs are navy panels set in white Atkinson Hyperlegible Next. The five HIS modules are departments, each with its own colour on a square pictogram tile, drawn in one stroked family; arrows are drawn too. State colours are earned: red for the staff-only door when it stays shut, green for a check passed, amber for "you are here". Signs hold fixed positions and only their state changes. The answer on the desk is a set of step signs in their departments' colours. Each pairs with the replica screen that proves where it happens. The replica is the hospital's portal, not ours: a grey chrome bar, tabs, a page with the module's buttons and columns, and blank ruled rows. No patient value appears anywhere.
+The page refuses two things: the light signage panel of the earlier wayfinding build, and the chatbot with a sidebar. The conversation is one half of the floor; the other half is the route the request took, so the room sees the gate and the placement, not just a reply. The reply wording is the engine's own, replayed and self-checked against 1,053 recorded Python conversations on open; this system governs presentation only. No patient value appears anywhere: example inputs are the registry's own, and the schematic's rows are blank.
 
-The standing bar holds: **elegant and professional.** The system keeps it as restraint. There is no decorative gradient, no glass and no side stripe. A shadow appears only where a sign stands off the wall. Motion is short and explains a decision, then stops: signs light in order, an arrow is drawn into the next sign, the board and replica repaint from the new state. Density is presentation density for the presenting laptop (1366x768). The desk scrolls; the route holds one geometry per screen size, and the presenter explains.
+Density is a working console sized for the presenting laptop (1366x768): three fixed frame rows, the stepper and board at fixed heights so the geometry never jumps between tasks, and every word the panel reads at 13px or more.
 
 **Key Characteristics:**
-- A pale corridor wall, a navy sign band, an enquiry desk (about 42%) beside the route (about 58%).
-- Five stage signs in fixed positions, joined by drawn arrows; only their state changes (waiting, current, passed, stopped, unknown).
-- Five department colours on square pictogram tiles, one drawn and stroked family, never glyphs.
-- Red only for the staff-only door when it stays shut; green only for a check passed; amber for "you are here".
-- Every step on the desk pairs with a replica of the hospital's screen, its column and button lit, with no patient value shown.
-- Atkinson Hyperlegible Next throughout, embedded; 13px floor.
-- A new turn lands what is playing; reduced motion lands every state at once.
+- Night ground with two faint radial tints (teal behind the route, violet behind the desk); glass panels at 2.8 to 5% white with blue-grey hairlines.
+- One face, Inter, embedded, weights 400 to 700, tabular figures on every count.
+- Lit yellow for "here" only; teal for a check passed; red for the staff-only door shut; five department hues for the modules; white for the Ask key and for stops already passed.
+- A five-stop stepper whose track fills behind each stop, 190ms apart.
+- A schematic HIS screen with empty rows, lighting only what the current step uses.
+- Drawn SVG icons in one 1.75 stroke, held in round tiles.
 
 ## Colors
 
-Wayfinding colour: a cool neutral wall and white panels carry the floor, navy carries the signs, five department colours carry where things are, and three state colours are earned by what the engine decided.
+A night palette where hue is spent only on a decision: where the run is, what passed, what was refused, and which department it went to.
 
 ### Primary
-- **Sign Navy** (navy): passed stage signs, the send button, the "you are here" pin, the arrows once lit, the pressed badge's text, text selection. **Sign Navy Light** (navy-2): the current stage sign and the send button's hover. **Band Navy** (navy-3): the top sign band.
-- **On Navy / On Navy 2** (on-navy, on-navy-2): text on navy. On Navy 2 is the status line on a lit sign and an unpressed badge.
+- **Lit Yellow** (lit, with lit-text for words): "here". The current stop's tile ring and halo, its caption, the button to press on the schematic and its ring, the step pin, the input's caret and focus ring, the playing Tour key's border and stop glyph, the status beacon while a run plays, and every keyboard focus outline.
 
-### Secondary
-- **Department colours** (d-patient-administration blue, d-clinical-ehr teal, d-ancillary-departmental violet, d-administrative-financial amber-brown, d-infrastructure-integration slate): one colour per HIS module, as the crawler's layers name them. Each appears on the module's pictogram tile, on a step sign's number and pressed outline, on the replica's current tab underline, lit column tint (11%) and pressed button, and on the Department sign's tile once passed. Text in a department colour is mixed 82% with black (`--dc-ink`). Clinical is teal, not green, because green is reserved for a passed check.
+### Secondary: the five departments
+- **Registration Sky** (dept-patient-administration), **Clinical Green** (dept-clinical-ehr), **Orders Violet** (dept-ancillary-departmental), **Billing Orange** (dept-administrative-financial), **Audit Slate** (dept-infrastructure-integration). The module a step is routed to, wherever it shows: the step's number disc and module name, the selected step's ring, the Department stop's tile once passed, the board's module row and step selector, the schematic's active tab underline, its lit column heads and lit record fields. They are brightened for the night ground and carry dark ink (on-dept) when filled.
 
-### Tertiary
-- **No Entry Red** (stop, with stop-wash): the Staff only sign when the door stays shut, its no-entry tile, the refusal on the desk (wash ground, red head), and the no-entry pictogram on the "Outside your role" chip.
-- **Clear Green** (go, with go-wash): a check passed. The tick tile on a passed sign, each rule that passed on the door's board, each detail given, the answer's tile, and the foot's self-check.
-- **Wayfinding Amber** (amber, amber-ink): "you are here". Focus outlines, the Tour button, the pin's ring, the current board's sign outline, the tour chip's border, the underline under the words the enquiry matched, and the ask box's focus halo (45%).
+### Tertiary: signals
+- **Passed Teal** (passed): a check that passed. The rule ticks on the board, the "steps placed" status dot and border, the matched words underlined in the echoed enquiry, the foot's self-check dot, text selection.
+- **Door Red** (door, with door-text for words): the staff-only door shut, and nothing else. The stopped stop's solid tile and halo, the track into it, the refusal card's tint and title, the refused status pill, the failed rule's id and name. The "Outside your role" sample chip carries the same no-entry sign in red, because it is the door offered as a demonstration.
+- **Ask White** (ask-key, ask-key-low, key-ink): the Ask key, a white to #dfe7f1 gradient with dark ink, and the solid white tile of every stop already passed. The active badge is a soft white glass, not solid.
 
 ### Neutral
-- **Corridor Wall** (wall): the page. **Wall 2** (wall-2): a waiting stage sign.
-- **Panel / Panel 2** (panel, panel-2): the desk, the board, chips, step signs; Panel 2 for hover, a question, a disabled input.
-- **Ink / Ink 2 / Ink 3** (ink, ink-2, ink-3): text; secondary; labels, status, quiet notes.
-- **Rule / Rule 2** (rule, rule-2): borders of chips, signs and inputs; hairlines on the desk.
-- **Unlit** (unlit): a waiting sign's tile and an unused department on the board.
-- **Your Slip** (you-slip): the visitor's own message.
-- **Replica Chrome / Replica Ground** (replica-chrome, replica-ground): the hospital portal's own greys, kept apart from our navy so the replica reads as their screen.
+- **Night / Night 2 / Well** (night, night-2, well): the ground; the unlit stop tiles; the opaque fill behind the sticky input on a phone.
+- **Panel / Panel 2 / Panel 3** (panel, panel-2, panel-3): glass fills for controls and surfaces; hover and selected rows; chip hover.
+- **Hairline / 2 / 3** (hairline, hairline-2, hairline-3): frame dividers and surface outlines; control borders and the stepper track; hover borders and dashed "waiting" outlines.
+- **Schematic** (schematic): the HIS screen's darker glass, so it reads as another system inside the console.
+- **Text / Text 2 / Text 3** (text, text-2, text-3): replies and names; secondary lines and inactive controls; labels, captions and unlit stops.
+- **Key Off** (key-off): the Ask key when typing is switched off.
 
 ### Named Rules
-**The Earned State Rule.** Red means the staff-only door stayed shut, green means a check passed, amber means "you are here". None of the three marks anything else.
+**The Light Is A Decision Rule.** A glow, ring or solid fill marks something the assistant decided: the stop being decided, a check passed, the door shut, the department, the button to press. Panels, labels and the frame never glow. The Ask key's soft shadow is a lift, not light.
 
-**The Department Colour Rule.** A department colour belongs to its module. It appears wherever a step goes to that module (tile, step number, replica tab, column, button), never as decoration. The Department sign takes its module's colour only once passed.
+**The Yellow Means Here Rule.** Lit yellow names the current position and nothing else: one stop, one button, one pin, the focused control. A passed stop turns white, never stays yellow.
 
-**The Their Screen Rule.** The replica keeps the hospital portal's own greys. Our navy appears on it only as the pin.
+**The Red Is The Door Rule.** Red appears only where the staff-only door is shut for this role (or on the sample chip that demonstrates it). An answer that does not fit its shape is plain bold text, not red; a notice that typing is off is grey.
+
+**The Department Owns Its Hue Rule.** A department hue always means that module, across the step number, the board, the tab and the lit columns; it is never used for a state.
 
 ## Typography
 
-**Body Font:** Atkinson Hyperlegible Next (SIL OFL; embedded latin WOFF2, variable weight 200-800, font-display: block; fallback Segoe UI, system-ui, sans-serif)
+**Display Font:** Inter (embedded variable WOFF2, weights 100 to 900, OFL; fallback Segoe UI Variable Text, Segoe UI, system-ui)
+**Body Font:** Inter
+**Label/Mono Font:** none; key caps are Inter at 600
 
-**Character:** One signage face built for legibility, set like wayfinding: bold short names on signs, regular status beneath, tabular lining figures everywhere.
+**Character:** One neutral product face carries every word and figure, tightened slightly at title sizes (-0.01em), with Inter's cv11 and ss01 alternates and tabular figures on counts. Hierarchy comes from weight steps (500, 550, 600, 650) and a narrow size range, never from a second face.
 
 ### Hierarchy
-- **Title** (700, 1.125rem, +0.005em): "HIS Staff Assistant" in the band.
-- **Board head** (700, 1rem): the board's stage name, with a muted 400 aside; the reply heads on the desk.
-- **Said** (400, 1.0625rem): the visitor's words on the Enquiry board, matched words in navy 700 over a 2px amber underline.
-- **Body** (400, 1rem, lh 1.45): replies, the ask box, step text.
-- **Sign name** (700, 0.9375rem, lh 1.15; 0.875rem on compact signs): stage names, badge names, the Tour button.
-- **Chip** (400, 0.875rem): task chips, rule ids, slot names.
-- **Label** (400, 0.8125rem, lh 1.2): sign status, step "where" lines, facts, group heads (700, Ink 3), badge task counts, everything on the replica, the foot.
-- **Key cap** (700, 0.8125rem): the foot's key caps.
-- **Stamp** (700, 0.8125rem, uppercase, +0.02em): the "Stopped" stamp on a cancelled request; the only uppercase.
+- **Brand** (650, 1rem, -0.01em): the product name in the bar.
+- **Title** (650, 1rem, 1.35): a reply's heading (the task name, the refusal) and the board's heading.
+- **Enquiry echo** (400, 1.0625rem): the visitor's words repeated on the board, with matched words in bold and underlined in teal.
+- **Screen title** (650, 0.9375rem, -0.005em): the schematic's page heading.
+- **Body** (400, 0.9375rem, 1.5): conversation text and step instructions.
+- **Label** (600, 0.875rem): badge names, the Tour key, stop names, slot and module names, the step selector.
+- **Secondary** (500 to 600, 0.8125rem, 1.3): stop captions, task chips, board facts and descriptions, the schematic's columns, tabs and buttons, the pin, the foot, key caps, the status pill. This is the floor.
 
 ### Named Rules
-**The One Face Rule.** Atkinson Hyperlegible Next sets everything, the replica included. No second face and no monospace.
+**The One Face Rule.** Inter for everything, embedded, so the projected room sees what was designed. No mono, no display face.
 
-**The 13px Floor Rule.** Nothing read is set below 0.8125rem of a root that is never below 16px (`clamp(16px, 0.6vw + 8px, 19px)`).
+**The 13px Floor Rule.** Nothing the panel reads is below 0.8125rem. The root is `clamp(16px, 0.6vw + 8px, 19px)`, about 16.2px at 1366 wide, so the floor lands at 13.2px on the presenting laptop and 13px on a phone.
 
 ## Layout
 
-The page is a three-row grid filling the viewport (100dvh): the band (3.5rem), the floor, the foot (2.25rem). The floor is two columns, the desk (42fr) and the route (58fr), 1.25rem apart, padded 1rem 1.25rem .875rem.
+The frame is a three-row grid filling the viewport (100dvh): the product bar (3.25rem), the floor (the rest), the foot (2.25rem). Bar and foot share a 1.5rem side gutter, divided from the floor by hairlines, on a 70% night fill.
 
-- **Band:** the information tile and the title at left; the three badges (pictogram, name, task count) at right; the Tour button (amber, "Tour · Reception").
-- **Desk:** the conversation (scrolls), the task strip, the ask bar. The welcome carries the badge's task directory in a disclosure ("Your tasks · n"), open on desktop and closed on a phone. The task strip is a two-column grid: a label column ("Common", "Outside your role") and a row of chips (three common tasks and "All tasks"; one dashed chip for a task outside the role).
-- **Route:** three rows: the stage signs, the board at a fixed height (`--board-h`), the replica filling the rest. The five signs share one row, 1.375rem apart, a drawn arrow in each gap.
-- **Fixed route geometry.** A sign is a fixed height (3.75rem) with its status clamped to two lines; the board is `--board-h` (12.5rem; 12rem at ≤760px viewport height) and scrolls only as a fallback. Driving every task and probe at 1280/1366/1440/1600/1920 gives one route geometry per screen size: the signs, board and replica never move as answers change.
-- **Replica:** a chrome bar (2rem: "HIS Portal", the access notice, "signed in: role"), the module tabs, then the page. On the home view it shows a two-column directory of the five modules. On a step it shows the module's title line with the pin inline at its right, the buttons, and the list table (four blank ruled rows) or the record page (label column and blank values), then "No patient data is shown here."
-- **Foot:** the self-check line (or the typing-off notice), "Screens as of" the crawl date, the keys at right.
-- **Scale:** root `clamp(16px, 0.6vw + 8px, 19px)`; everything in rem.
-- **Compact signs** (861-1680px wide): stages 1rem apart, arrows .875rem, sign tiles 1.5rem, sign names .875rem.
-- **1320px and narrower:** the "Screens as of" line goes.
-- **1180px and narrower:** badges drop their task count.
-- **Short screens** (max-height 760px, wider than 860px): band 3.25rem, foot 2rem, floor padding .75rem, signs 3.375rem, board 12rem.
-- **860px and narrower (phone):** the page scrolls; the band wraps with the badges as a full-width row (no pictogram) and Tour without its role. The floor is one column. The conversation grows with its answers, each new answer scrolls to its start, and the ask bar sticks to the bottom of the screen. The task strip is one column. The route becomes a stack of signs (no arrows, status on one line at the right). The board grows, the replica is at least 22rem with a sideways-scrolling table, and the keys go.
-- **520px and narrower:** the ask box's placeholder shortens to "Ask for an HIS task".
+- **Product bar:** mark and name, the status pill, then right-aligned the badge segment (three badges with task counts) and the Tour key.
+- **Floor:** two columns, the desk 42% and the route 58%, 1.25rem apart, padded 1rem 1.5rem 0.875rem.
+- **Desk:** one glass panel stacking the conversation (scrolling, its top and bottom edges faded with a 0.875rem mask), the common tasks (a two-column grid plus one task outside the role), and the input row.
+- **Route:** three rows: the stepper (5.5rem), the board (12.5rem), and the schematic screen (the rest). Stepper and board heights are fixed so one geometry holds for every task at a given size; the board scrolls inside itself if it must.
+- **Foot:** the rule-based note with the self-check count, the date of the screens, and the key caps on the right.
+
+Scaling is in rem off the root clamp. Below 1320px the foot's source line goes; below 1180px the badge counts and the Tour key's role go. On a short laptop (height 760px or less, width over 860px) the bars, gaps and route rows tighten (stepper 5.25rem, board 12rem). At 860px and below the page stacks into one column and scrolls: the badges take a full row, the conversation grows with its answers, the input sticks to the bottom of the screen on the opaque well, the stepper runs down the page as rows with the caption right-aligned, and the schematic keeps at least 22rem. At 520px the status pill goes and the grids go to one column.
+
+### Named Rules
+**The Fixed Board Rule.** The stepper and board keep fixed heights at each size, measured by driving every task and probe at 1280, 1366, 1440, 1600 and 1920; content never pushes the schematic around.
 
 ## Elevation & Depth
 
-Signs on a wall. Depth is a sign standing off the wall and nothing else: the band over the floor, the desk, board and replica as panels, a lit sign lifting slightly as it passes. Everything inside a panel is flat, separated by 1px rules and tinted washes.
+Depth is glass and light on a dark ground, not lift. Surfaces are a top-to-bottom white gradient (4.2% to 1.4%) over the night with a hairline; the schematic is darker glass inside the console. The few shadows are decisions made visible, plus one plain lift under the Ask key.
 
 ### Shadow Vocabulary
-- **Band** (`box-shadow: 0 1px 0 rgba(255, 255, 255, .06), 0 6px 14px -10px rgba(15, 38, 71, .7)`): the sign band over the floor.
-- **Panel** (`box-shadow: 0 1px 1px rgba(19, 32, 45, .08), 0 8px 20px -14px rgba(19, 32, 45, .45)`): the desk and the board.
-- **Replica** (`box-shadow: 0 1px 1px rgba(19, 32, 45, .08), 0 10px 24px -16px rgba(19, 32, 45, .55)`, with a 1px #c4cbd2 border): the hospital's screen.
-- **Lit sign** (`box-shadow: 0 3px 8px -5px rgba(15, 38, 71, .8)`; stopped `0 3px 8px -5px rgba(120, 10, 25, .8)`): a passed or shut stage sign.
-- **Pressed badge** (`box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .45)`).
-- **Tour button** (`box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .14)`): a flat amber key with a lip.
-- **Rings, not shadows:** the pin's amber ring (`0 0 0 2px`), a pressed step's department ring (`0 0 0 1px`), the pressed replica button's halo (`0 0 0 3px`, department at 22%), the ask box's focus halo (`0 0 0 3px rgba(232, 164, 0, .45)`).
+- **Current stop** (`inset 0 0 0 1.5px #ffd84d, 0 0 0 4px rgba(255,216,77,.14), 0 0 16px rgba(255,216,77,.42)`): the stop being decided.
+- **Door shut** (`0 0 0 4px rgba(255,77,106,.15), 0 0 16px rgba(255,77,106,.5)`): the stopped stop's solid red tile.
+- **Button to press** (`0 0 0 3px rgba(255,216,77,.14), 0 0 16px rgba(255,216,77,.32)`): the schematic's button for this step.
+- **Running beacon** (`0 0 0 0 -> 7px rgba(255,216,77,.6 -> 0)`, 1.1s): the status dot while a run plays.
+- **Ask key** (`0 0 0 1px rgba(255,255,255,.4), 0 6px 14px -6px rgba(0,0,0,.6)`): the one control that lifts.
+- **Department ring** (`inset 0 0 0 1px` the department hue at 44 to 62%): the selected step row, the module row on the board, a department tile.
 
 ### Named Rules
-**The Off The Wall Rule.** A shadow appears only where a sign stands off the wall: the band, the panels, a lit stage sign, the pressed badge. No decorative gradient, no glass, no side stripe.
+**The Glass Not Card Rule.** No panel is lifted by a dark shadow; rings are inset hairlines, and glow is reserved for the decisions above.
 
 ## Shapes
 
-Sign corners. Stage signs, badges, chips, step signs, the refusal, the ask box and the Tour and send buttons are 6px; panels and the replica 8px; pictogram tiles and the pin 5px (the foot's tile 4px); key caps and the replica's buttons 4px. The visitor's own message is a slip with one tucked corner (8px 8px 2px 8px). Borders carry state: 1.5px on stage signs and the ask box, dashed for an unknown enquiry, a task outside the role, a detail still to come, a rule not reached, and a step withheld. Pictograms are drawn on a 24px grid with a 1.75 stroke (2.1 on tiles), round caps and joins. Arrows between signs are the same drawn arrow used as a mask.
+Soft, small, consistent radii in a product register: key caps 0.3125rem, inline keys 0.375rem, badges 0.4375rem, chips and controls 0.625rem, fields, step rows and cards 0.75rem, panels 0.875rem, the status pill and step pin fully round. Every icon sits in a round tile (1.5 to 2rem); stop tiles, step numbers and the step selector are circles. Waiting states are a dashed 1.5px outline in place of a fill. The visitor's own message is a slip with one tucked corner (0.25rem at bottom right). The stepper track is a 2px rounded line.
 
 ## Components
 
-### Stage signs (signature)
-Five fixed signs: Enquiry, Staff only, Details, Department, Screen. Each is a tile and a name over a two-line status ("Understood", "Open: 3 of 3 rules", "All 2 given", the module, "n steps placed"). States: waiting (Wall 2, unlit tile, the stage pictogram); current (Navy Light, a white tile); passed (Navy, a green tick tile; the Department sign's tile becomes its module's pictogram in its colour, ringed white); stopped (red, a white no-entry tile, "No entry · PL‑01"); unknown (white panel, dashed Ink 3 border, a question tile). The sign whose board is shown carries a 2px amber outline. Clicking a sign shows its board.
+### The stepper (signature)
+Five stops on one hairline track: Enquiry, Staff only, Details, Department, Screen, each a 2rem round tile with a drawn icon, a name and a two-line caption. States: waiting (night tile, grey), current (yellow ring and halo, caption in lit text), passed (solid white tile with dark ink; the Department tile fills with the module's hue), stopped (solid red tile with halo, name and caption in red, the track into it red), unknown (dashed outline). The track into a passed stop turns 60% white. The stop shown on the board is underlined in white. Stops light 190ms apart; each tile pops from 0.82 scale over 240ms and the track wipes in over 180ms behind it.
 
-### Boards
-One per stage, under the signs at the fixed board height. Enquiry quotes the words with the matched ones underlined in amber; or, when several tasks fit, the options as chips (it asks rather than guesses). Staff only lists the badge's three rules: a tile (green tick, red no-entry, or dashed "not reached"), the rule id and the rule. Details lists each slot with how it was given. Department lists the five modules with the steps that use each, tinted 9% in its colour, the rest unlit, over Purpose, Data and Keep facts. Screen has a step selector (numbers in department colours) and the step's text.
+### The board
+Glass, 0.875rem radius, fixed height. Its content follows the selected stop: the echoed enquiry with matched words; the three door rules (PL-01, DM-01, SS-01) as rows of tile, id and plain name, ticked teal, refused red, or dashed "not reached"; the details as slots, dashed until given; the five modules with the steps that use each; and on Screen a four-cell readout (module, page, columns lit, button to press) with round step selectors filled in the department hue. It fades in from 45% over 220ms and sits at 40% until the walk reaches it.
 
-### Replica screen
-The hospital's portal as crawled: chrome, module tabs (the current one underlined in its department colour), a page title line carrying the pin, the module's buttons and its list or record layout with blank values. A lit column or field is tinted 11% in the department colour. The pressed button is outlined 2px in it, with a 3px halo. The pin is navy with an amber ring and always reads "Step n: press …" (or "the column(s) lit") inline on the title line. A step that cannot be placed shows a dashed "withheld rather than guessed" note.
+### The schematic HIS screen (signature)
+A darker glass frame: a chrome line (portal name, the access notice, who is signed in), the module tabs with the active one underlined in its hue, then the page: a title, a row of buttons, and either a table with empty rows or a record's field list. Only the step's columns or fields light, in the department hue on a faint white wash with a 2px underline; the button to press rings yellow; a "Step n: press ..." pin sits on the title line. Before a placement it lists the modules with their button and field counts. A step the map cannot place shows a dashed "withheld" box with the reason. "No patient data is shown here" closes every page.
 
-### Step signs
-The answer on the desk: one button a step, the number on a 1.625rem tile in its department colour, the step text, a "where" line (module in the department's ink, screen, the button in quotes) and an optional note. The pressed step takes its department border, a 7% wash and a 1px ring. Facts follow (Why, Keep).
-
-### Refusal
-A No Entry wash panel with a red 1px border: "Not for Reception: …", the engine's reason, the hand-off with a drawn arrow ("This is something nurse can do"), and "No patient details were asked for." A cancelled request keeps its turn on the desk with an outlined "Stopped" stamp.
+### The conversation
+- **Assistant message:** a round tile (info, check in teal, no-entry in red) beside the text. A guidance reply has a title, a sub line, then numbered step rows.
+- **Step row:** a 1.5rem disc in the department hue with dark ink, the instruction, then the module name in its hue, the page, and the button as a small inline key; selected rows ring in the hue.
+- **Question card:** Panel 2 with a hairline ring, the question in 600, "Detail n of m", and an example chip. An answer that does not fit is plain bold.
+- **Refusal card:** red at 7% with a red ring, the title in red, then who can do it instead, then "No patient details were asked for."
+- **Visitor slip:** white glass at 7.5%, right-aligned, tucked bottom-right corner.
 
 ### Buttons
-- **Badge:** transparent with a 22% white border on the band; hover 8% white; pressed white with navy text and a soft shadow.
-- **Tour:** amber with Amber Ink, a play pictogram, "Tour · Role"; while touring it reads "Stop" on white.
-- **Send:** navy with a drawn arrow; hover Navy Light; 1px down when pressed; greyed when typing is off.
-- **Chips:** white with a Rule border, hover navy border; "All tasks" bold; outside the role dashed with a red no-entry pictogram; the tour chip amber-bordered on #fff7e2.
-- **Focus:** a 3px amber outline, 2px offset.
+- **Ask key:** the one solid white control, a gradient to #dfe7f1 with dark ink, label and arrow; pure white on hover, 1px down on press; slate and flat when typing is off.
+- **Tour key:** glass with a hairline, play glyph, "Tour" and the badge's role; while playing, a yellow border at 55% and a stop glyph in yellow.
+- **Focus:** a 2px lit-yellow outline at 2px offset on every control.
+
+### Chips
+Glass with a Hairline 2 border, 0.8125rem text, Panel 3 on hover. The task outside the role is dashed with a red no-entry sign. "All tasks" is in Text 2.
 
 ### Inputs / Fields
-- **Ask box:** 2.75rem, white, 1.5px Rule border, navy caret; on focus a navy border and the amber halo; a warm #fff8e6 ground while a tour types into it.
+The ask field is 2.75rem high on a 30% black well with a hairline; hover strengthens the border, focus turns it yellow at 55% with a 3px yellow ring at 13% and a yellow caret. During a tour its border holds a faint yellow and the task strip dims to 50%.
 
 ### Navigation
-- **Keys:** `/` to type, 1 2 3 a badge, T a tour, Space lands what is moving (in a tour, the next turn), Esc to stop it. Badges carry `aria-keyshortcuts`; the foot shows the keys as caps.
+- **Status pill:** Ready (grey dot), running (yellow beacon), at a stop (yellow dot), steps placed (teal dot and border), refused (red dot and border), with the count in tabular figures.
+- **Badge segment:** three badges in a glass track; the active one is white glass with a white inset ring.
+- **Key caps:** in the foot: `/` ask, 1 2 3 badge, T tour, Space next.
 
 ### Motion
-One ease, `cubic-bezier(.16, 1, .3, 1)`. One timer table (`later`, `land`): a new turn calls `land()` first, so whatever was playing lands whole before the next request walks.
-- **The walk:** signs that change light one after another, 190ms apart, each settling from scale .97 in 220ms. When a sign passes, the arrow into the next is drawn by a clip-path wipe on its `::before` (180ms). Colours change by 220ms transitions.
-- **Board and replica:** they go quiet (opacity .45) during the walk, then repaint from the new state. The board's lines rise 4px (220ms, 60ms apart), the replica page fades in (200ms), the pin slides in 6px (240ms, +140ms), and the pressed button's halo grows once from 0 to 3px, ease-out over 280ms (+200ms).
-- **The desk:** each message rises 4px in 220ms with no overshoot.
-- **The tour:** it types at 26ms a character, waits 380ms, then asks; 1.8s after an answer and 1.5s after anything else; then it walks the answer's steps on the replica 1.7s apart. Space skips to the next turn.
-- **Reduced motion:** every state lands at once (no transitions, no animations; timers fire immediately; the tour's waits are capped at 300ms).
-- **At rest:** nothing moves.
+One ease, `cubic-bezier(.16, 1, .3, 1)`, durations 160 to 280ms, no overshoot. Stops 190ms apart; the schematic page fades in over 220ms, the pin slides 6px in over 240ms after 140ms, the target's ring blooms over 280ms after 200ms. In a tour, typing runs at 26ms a character and steps advance every 1.7s; Space lands whatever is moving. Reduced motion lands every state at once.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** show every request as a route through five fixed stage signs; change only their state.
-- **Do** keep red for the staff-only door when it stays shut, green for a check passed, amber for "you are here".
-- **Do** give each HIS module its department colour, and use it only where a step goes to that module.
-- **Do** pair every step with the replica screen that proves where it happens, its column and button lit and the pin inline on the title line.
-- **Do** keep the route's geometry fixed: signs 3.75rem with the status clamped to two lines, the board at `--board-h` (12.5rem; 12rem at ≤760px viewport height).
-- **Do** draw every pictogram and arrow in the one stroked family on square tiles.
-- **Do** set everything in Atkinson Hyperlegible Next, embedded, at or above the 13px floor.
-- **Do** call `land()` before a new turn, and land every state at once under reduced motion.
-- **Do** keep the file single and offline.
+- **Do** light only what the engine decided: one current stop in yellow, passed stops in white, the door in red, the module in its department hue.
+- **Do** run the door before the details: the stepper shows Staff only before any detail is asked, and a refusal leaves Details, Department and Screen waiting.
+- **Do** render the engine's reply text exactly as it comes; the page is self-checked against the recorded conversations and switches typing off on any difference.
+- **Do** keep the schematic's rows empty and every example input the registry's own; no patient value on the page.
+- **Do** keep the stepper and board at fixed heights per size so nothing on the route jumps.
+- **Do** keep the file single and offline: Inter embedded, SVG and CSS only.
 
 ### Don't:
-- **Don't** show a patient value: the replica's rows stay blank and say "No patient data is shown here."
-- **Don't** use green for a department; Clinical is teal because green means a check passed.
-- **Don't** say "crawler", "Python" or a URL path in staff-facing text.
-- **Don't** let the signs, board or replica resize as answers change.
-- **Don't** add a decorative gradient, glass, a side stripe, or a shadow on anything that is not a sign standing off the wall.
-- **Don't** use glyphs or an icon font for pictograms or arrows.
-- **Don't** overshoot or bounce; rises are 220ms and the press halo grows once.
-- **Don't** turn the page into a chatbot with a side panel or a node-graph pipeline.
-- **Don't** set anything read below 0.8125rem.
+- **Don't** set anything the panel reads below 0.8125rem (13px at the 1366 root).
+- **Don't** use red for anything but the staff-only door, or yellow for anything but "here".
+- **Don't** use a department hue for a state, or a state colour for a department.
+- **Don't** glow chrome: panels, labels and the frame stay quiet glass and hairlines.
+- **Don't** name a screen the map could not place; show the dashed withheld box with the reason instead.
+- **Don't** put internal words (crawler, paths, layer names) or vendor names in staff-facing text.

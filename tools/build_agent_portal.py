@@ -46,7 +46,7 @@ OUT = REVIEW_DIR / "agent-portal.html"
 SHELL = HERE / "agent.html"
 CSS = HERE / "agent.css"
 SCRIPTS = ["engine.js", "agent.js"]
-FONT = HERE / "fonts" / "AtkinsonHyperlegibleNext-latin-wght.woff2"
+FONT = HERE / "fonts" / "Inter-latin-wght.woff2"       # Portal v2's face (user, 2026-10-23)
 
 # One tour per badge (user, 2026-10-16), each a recorded Python conversation.
 TOURS = [

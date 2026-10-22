@@ -1,5 +1,5 @@
 /* The HIS Staff Assistant portal: the enquiry desk on the left, the request's route on the right.
-   A request walks five signs, each lit by what the engine decided: understood, the staff-only door
+   A request walks five stops on one track, each lit by what the engine decided: understood, the staff-only door
    (the DPDP check for this badge, before any detail is asked), the details, the department, and the
    screen, where a replica of the hospital's portal lights the column and the button the step uses.
    Keys: / to type, 1 2 3 a badge, T a tour, Space lands what is moving (in a tour: its next turn), Esc to stop it. */
@@ -11,14 +11,14 @@
   const cap = (s) => String(s).charAt(0).toUpperCase() + String(s).slice(1);
   const dash = (s) => String(s).replace(/ -- /g, " — ").replace(/--/g, "—");
   const human = (s) => String(s).replace(/_/g, " ");
+  const ids = (h) => String(h).replace(/\b(?:MRN\d+|[A-Z]{2,}-\d[\d-]*\d)\b/g, (m) => `<span class="id">${m}</span>`);
   const slotLabel = (n) => cap(String(n).replace(/\bmrn\b/g, "MRN").replace(/_id\b/g, " ID").replace(/_/g, " "));
   const fmt = (n) => Number(n).toLocaleString("en-IN");
   const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   const icon = (id) => `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#${id}"/></svg>`;
   const SCREENS = Object.fromEntries(D.screens.map((s) => [s.title, s]));
   const LAYER_OF = Object.fromEntries(D.screens.map((s) => [s.title, s.layer]));
-  const dept = (layer) => `--dc: var(--d-${layer}); --dc-ink: color-mix(in srgb, var(--d-${layer}) 82%, #000)`;
-  const ROLE_ICON = "p-badge";
+  const dept = (layer) => `--dc: var(--d-${layer})`;
   const PHONE = matchMedia("(max-width: 860px)"), NARROW = matchMedia("(max-width: 520px)");
 
   /* ------------------------------------------------------------ state */
@@ -114,7 +114,7 @@
         tile.innerHTML = icon(layer ? `d-${layer}` : st === "passed" ? "p-check" : st === "stopped" ? "p-noentry" : st === "unknown" ? "p-question" : STAGES[i].icon);
         sign.querySelector(".sl > span").textContent = statusLine(i, st);
         sign.setAttribute("aria-label", `${STAGES[i].name}: ${statusLine(i, st)}`);
-        if (changed && animate) anim(sign, [{ transform: "scale(.97)" }, { transform: "none" }], { duration: 220 });
+        if (changed && animate) anim(tile, [{ transform: "scale(.82)" }, { transform: "none" }], { duration: 240 });
         if (changed && animate && st === "passed" && lis[i + 1] && !still()) {
           lis[i + 1].animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], { duration: 180, easing: "cubic-bezier(.16, 1, .3, 1)", pseudoElement: "::before", fill: "backwards" });
         }
@@ -123,6 +123,18 @@
     });
     return d;
   }
+  // The bar's status pill: what the route is doing, then where the request ended.
+  function setStatus(cls, text) { const s = $("status"); s.className = `status ${cls}`; s.querySelector("span").textContent = text; }
+  function settled() {
+    const k = ctx ? ctx.reply.kind : null;
+    if (k === "guidance") { const n = F[ctx.fn].steps.length; return setStatus("done", `${n} ${n === 1 ? "step" : "steps"} placed`); }
+    if (k === "declined") return setStatus("stop", `Refused · ${String(R[role].gate[ctx.fn].rule).replace("-", "‑")}`);
+    if (k === "ask_input") return setStatus("at", "Asking for a detail");
+    if (k === "ask_choose") return setStatus("at", "Which task?");
+    if (k === "unrecognised") return setStatus("ready", "Not an HIS task");
+    return setStatus("ready", "Ready");
+  }
+
   function furthest() {
     const st = states();
     if (!ctx) return 0;
@@ -166,7 +178,7 @@
     const rows = f.inputs.map((s) => {
       const v = sl.inputs[s.name], pend = sl.pending === s.name;
       const how = v != null ? (sl.prefilled.includes(s.name) ? "taken from your message" : sl.misfits[s.name] ? "given after one that did not fit" : "given") : pend ? (sl.misfits[s.name] ? "did not fit; asked again" : "asked now") : "not yet";
-      return `<li><span class="tile ${v != null ? "go" : "wait"}">${icon(v != null ? "p-check" : "p-form")}</span><span><span class="sn">${esc(slotLabel(s.name))}</span><span class="sv">${v != null ? esc(v) + " · " : ""}${how}</span></span></li>`;
+      return `<li><span class="tile ${v != null ? "go" : "wait"}">${icon(v != null ? "p-check" : "p-form")}</span><span><span class="sn">${esc(slotLabel(s.name))}</span><span class="sv">${v != null ? ids(esc(v)) + " · " : ""}${how}</span></span></li>`;
     }).join("");
     return `<h2>Details <span class="muted">· ${esc(f.label)}</span></h2><ul class="slots">${rows}</ul>`;
   }
@@ -180,11 +192,20 @@
   }
   function boardScreen() {
     if (!ctx || !ctx.fn || states()[4] !== "passed") return `<h2>Screen</h2><p class="lede">Each step is placed on the screen where it happens, worded with the portal's own labels and buttons.</p>`;
-    const f = F[ctx.fn], s = f.steps[stepAt], layer = s.place ? LAYER_OF[s.place.module] : s.layer;
-    return `<h2>Screen</h2><div class="stepsel" role="group" aria-label="Step shown on the screen">${f.steps.map((st, i) => {
+    const f = F[ctx.fn], s = f.steps[stepAt], pl = s.place, layer = pl ? LAYER_OF[pl.module] : s.layer;
+    const sel = `<div class="stepsel" role="group" aria-label="Step shown on the screen">${f.steps.map((st, i) => {
       const l = st.place ? LAYER_OF[st.place.module] : st.layer;
       return `<button type="button" data-step="${i}" aria-pressed="${i === stepAt}" style="${dept(l)}">${i + 1}</button>`;
-    }).join("")}</div><p class="now" style="${dept(layer)}">${esc(dash(stepText(ctx.reply, stepAt)))}</p>`;
+    }).join("")}</div>`;
+    const lit = pl ? s.fields.map((x) => pl.labels[x]).filter(Boolean) : [];
+    const rows = pl && pl.screen === "record page";
+    const spot = pl ? `<dl class="spot" style="${dept(layer)}">
+        <div><dt>Module</dt><dd class="mod">${esc(pl.module)}</dd></div>
+        <div><dt>Page</dt><dd>${esc(cap(pl.screen))}</dd></div>
+        <div><dt>${rows ? "Rows" : "Columns"} lit</dt><dd>${lit.length ? lit.map(esc).join(" · ") : `<span class="nil">–</span>`}</dd></div>
+        <div><dt>Press</dt><dd>${pl.button ? `<span class="btn">${esc(pl.button)}</span>` : `<span class="nil">–</span>`}</dd></div></dl>`
+      : `<p class="lede">Not placed on a screen of the hospital system, so it is withheld rather than guessed.</p>`;
+    return `<div class="bh"><h2>Screen <span class="muted">· step ${stepAt + 1} of ${f.steps.length}</span></h2>${sel}</div>${spot}<p class="now">${ids(esc(dash(stepText(ctx.reply, stepAt))))}</p>`;
   }
   const BOARDS = [boardEnquiry, boardDoor, boardDetails, boardDept, boardScreen];
   function paintBoard(i, animate) {
@@ -192,7 +213,7 @@
     [...$("stages").children].forEach((li, k) => li.querySelector(".sign").setAttribute("aria-current", String(k === i)));
     $("board").innerHTML = BOARDS[i]();
     $("board").querySelectorAll("[data-step]").forEach((b) => b.addEventListener("click", () => showStep(+b.dataset.step)));
-    if (animate) [...$("board").querySelectorAll("h2, .lede, .said, .rules li, .slots li, .dirs li, .stepsel, .now, .facts, .choices, .muted")].forEach((el, k) => rise(el, k * 60));
+    if (animate) anim($("board"), [{ opacity: .45 }, { opacity: 1 }], { duration: 220 });
   }
 
   /* ------------------------------------------------------------ the replica: the hospital's portal, as crawled */
@@ -207,7 +228,7 @@
     if (!ctx || !ctx.fn || states()[4] !== "passed") {
       el.style.cssText = "";
       el.innerHTML = chrome + `<div class="tabs">${D.screens.map((s) => `<span>${esc(s.title)}</span>`).join("")}</div>`
-        + `<div class="home"><p class="hh">The hospital system's modules</p>${D.screens.map((s) => `<div class="mod" style="${dept(s.layer)}"><span class="tile dept">${icon(`d-${s.layer}`)}</span><b>${esc(s.title)}</b><span>${s.listButtons.length + s.recordButtons.length} buttons · ${s.record.length} fields</span></div>`).join("")}</div>`;
+        + `<div class="page"><div class="ph"><b>Home</b><span>The hospital system's modules</span></div><table class="modlist"><thead><tr><th>Module</th><th>Buttons</th><th>Fields</th></tr></thead><tbody>${D.screens.map((s) => `<tr><td><span class="mi">${icon(`d-${s.layer}`)}</span>${esc(s.title)}</td><td>${s.listButtons.length + s.recordButtons.length}</td><td>${s.record.length}</td></tr>`).join("")}</tbody></table></div>`;
       return;
     }
     const f = F[ctx.fn], step = f.steps[stepAt], place = step.place;
@@ -232,10 +253,13 @@
     const target = el.querySelector(".tools .press");
     const pin = document.createElement("span");
     pin.className = "pin"; pin.setAttribute("aria-hidden", "true");
-    pin.innerHTML = `${icon("p-pin")}<span>Step ${stepAt + 1}: ${target ? `press ${esc(place.button)}` : uses.size ? `the ${uses.size === 1 ? "column" : "columns"} lit` : "on this screen"}</span>`;
+    const lit = record ? (uses.size === 1 ? "row" : "rows") : (uses.size === 1 ? "column" : "columns");
+    pin.innerHTML = `${icon("p-pin")}<span>Step ${stepAt + 1}: ${target ? `press ${esc(place.button)}` : uses.size ? `use the lit ${lit}` : "on this screen"}</span>`;
     el.querySelector(".ph").append(pin);
+    const on = el.querySelector(".tabs .on");
+    if (on && on.parentElement.scrollWidth > on.parentElement.clientWidth) on.parentElement.scrollLeft = Math.max(0, on.offsetLeft - 12);
     if (animate) {
-      anim(el.querySelector(".page"), [{ opacity: 0 }, { opacity: 1 }], { duration: 200 });
+      anim(el.querySelector(".page"), [{ opacity: .35 }, { opacity: 1 }], { duration: 220 });
       anim(pin, [{ opacity: 0, transform: "translateX(6px)" }, { opacity: 1, transform: "none" }], { duration: 240, delay: 140 });
       if (target) anim(target, [{ boxShadow: "0 0 0 0 transparent" }, { boxShadow: "0 0 0 3px color-mix(in srgb, var(--dc) 22%, transparent)" }], { duration: 280, delay: 200, easing: "ease-out" });
     }
@@ -264,8 +288,8 @@
       + (withheld ? `<p class="soft">${esc(dash(D.texts.withheldHead.trim()))}</p>` : "")
       + `<ol class="steps">${steps.map((s, i) => {
         const st = f.steps[i] || {}, pl = st.place, layer = pl ? LAYER_OF[pl.module] : st.layer;
-        const where = pl ? `<span class="where"><b>${esc(pl.module)}</b><span>${esc(pl.screen)}</span>${pl.button ? `<span>“${esc(pl.button)}”</span>` : ""}</span>` : `<span class="where"><span>${esc(st.where || "not placed")}</span></span>`;
-        return `<li><button class="step" type="button" data-step="${i}" aria-pressed="${i === 0}" style="${dept(layer)}"><span class="num">${i + 1}</span><span><span class="tx">${esc(dash(s.text))}</span>${where}${s.note ? `<span class="note">${esc(dash(s.note))}</span>` : ""}</span></button></li>`;
+        const where = pl ? `<span class="where"><b>${esc(pl.module)}</b><span>${esc(pl.screen)}</span>${pl.button ? `<span class="btn">${esc(pl.button)}</span>` : ""}</span>` : `<span class="where"><span>${esc(st.where || "not placed")}</span></span>`;
+        return `<li><button class="step" type="button" data-step="${i}" aria-pressed="${i === 0}" style="${dept(layer)}"><span class="num">${i + 1}</span><span><span class="tx">${ids(esc(dash(s.text)))}</span>${where}${s.note ? `<span class="note">${esc(dash(s.note))}</span>` : ""}</span></button></li>`;
       }).join("")}</ol>`
       + `<p class="facts"><span><b>Why</b> part of your work as ${esc(role)}: ${esc(p.plain || "")}</span><span><b>Keep</b> no longer than ${fmt(p.days)} days</span></p>`;
   }
@@ -294,9 +318,9 @@
   }
   function askHTML(r) {
     const lines = r.text.split("\n"), last = lines.pop(), ex = last.match(/^(.*) \(e\.g\. (.*)\)$/);
-    const pre = lines.map((l) => (l === D.texts.misfit ? `<p class="misfit">${esc(l)}</p>` : `<p class="soft">${esc(dash(l))}</p>`)).join("");
+    const pre = lines.map((l) => (l === D.texts.misfit ? `<p class="misfit">${esc(l)}</p>` : `<p class="soft">${ids(esc(dash(l)))}</p>`)).join("");
     const f = r.fn ? F[r.fn] : null, prog = f && Engine.live && session.state === "collecting" ? `Detail ${Object.keys(session.inputs).length + 1} of ${f.inputs.length}` : "";
-    return pre + `<div class="question"><p class="q">${esc(ex ? ex[1] : last)}</p><div class="qrow">${prog ? `<span class="prog">${prog}</span>` : ""}${ex ? `<button class="chip say" type="button" data-say="${esc(ex[2])}">Use the example: <b>${esc(ex[2])}</b></button>` : ""}</div></div>`;
+    return pre + `<div class="question"><p class="q">${esc(ex ? ex[1] : last)}</p><div class="qrow">${prog ? `<span class="prog">${prog}</span>` : ""}${ex ? `<button class="chip say" type="button" data-say="${esc(ex[2])}">Use the example: <b>${ids(esc(ex[2]))}</b></button>` : ""}</div></div>`;
   }
   function replyHTML(r) {
     if (r.kind === "guidance") return guidanceHTML(r);
@@ -336,7 +360,7 @@
     land();
     const wasIdle = !Engine.live ? history.length === 0 || ["guidance", "declined", "unrecognised", "help", "changes", "cancelled"].includes(ctx && ctx.reply.kind) : session.state === "idle";
     if (!Engine.live && wasIdle) history = [];
-    add("you", esc(text || "(nothing)"));
+    add("you", ids(esc(text || "(nothing)")));
     const r = respond(text);
     if (["guidance", "declined", "unrecognised", "help", "changes", "cancelled"].includes(r.kind)) history = [];
     track(text, r, wasIdle);
@@ -347,21 +371,22 @@
     if (d > 0 && !still()) {
       [...$("stages").children].forEach((li) => li.querySelector(".sign").setAttribute("aria-current", "false"));
       $("board").classList.add("pending"); $("screen").classList.add("pending");
+      setStatus("run", "Walking the route");
     }
-    later(d, () => { $("board").classList.remove("pending"); $("screen").classList.remove("pending"); paintBoard(furthest(), true); paintScreen(true); });
+    later(d, () => { $("board").classList.remove("pending"); $("screen").classList.remove("pending"); paintBoard(furthest(), true); paintScreen(true); settled(); });
   }
 
   /* ------------------------------------------------------------ badges, tasks, welcome */
   function paintBadges() {
-    $("badges").innerHTML = D.roles.map((r, i) => `<button class="badge" type="button" data-role="${r.id}" aria-pressed="${r.id === role}" aria-keyshortcuts="${i + 1}">${icon(ROLE_ICON)}<b>${esc(cap(r.id))}</b><small>${mine(r.id).length} tasks</small></button>`).join("");
+    $("badges").innerHTML = D.roles.map((r, i) => `<button class="badge" type="button" data-role="${r.id}" aria-pressed="${r.id === role}" aria-keyshortcuts="${i + 1}"><b>${esc(cap(r.id))}</b><small>${mine(r.id).length} tasks</small></button>`).join("");
     $("badges").querySelectorAll(".badge").forEach((b) => b.addEventListener("click", () => setRole(b.dataset.role)));
   }
   function paintTasks() {
     const common = (D.common[role] || []).filter((id) => F[id]).slice(0, 3);
     const out = D.outside[role];
-    $("tasks").innerHTML = `<span class="lab">Common</span><span class="row">${common.map((id) => `<button class="chip say" type="button" data-say="${esc(F[id].label)}">${esc(cap(F[id].label))}</button>`).join("")}`
-      + `<button class="chip say all" type="button" data-say="help">All tasks</button></span>`
-      + (out ? `<span class="lab">Outside your role</span><span class="row"><button class="chip out say" type="button" data-say="${esc(F[out].label)}">${icon("p-noentry")}${esc(cap(F[out].label))}</button></span>` : "");
+    $("tasks").innerHTML = `<span class="lab">Common</span><div class="grid">${common.map((id) => `<button class="chip say" type="button" data-say="${esc(F[id].label)}">${esc(cap(F[id].label))}</button>`).join("")}`
+      + `<button class="chip say all" type="button" data-say="help">All tasks</button></div>`
+      + (out ? `<div class="outside"><span class="lab">Outside your role</span><button class="chip out say" type="button" data-say="${esc(F[out].label)}">${icon("p-noentry")}<span>${esc(cap(F[out].label))}</span></button></div>` : "");
     $("tasks").querySelectorAll(".say").forEach((b) => b.addEventListener("click", () => ask(b.dataset.say)));
   }
   function welcome() {
@@ -381,7 +406,7 @@
     document.body.dataset.role = r;
     $("log").innerHTML = "";
     paintBadges(); paintTasks(); welcome();
-    paintStages(false); paintBoard(0, false); paintScreen(false);
+    paintStages(false); paintBoard(0, false); paintScreen(false); settled();
     $("tourFor").textContent = `· ${cap(role)}`;
   }
 
@@ -448,7 +473,7 @@
   });
 
   $("foot").innerHTML = (Engine.live
-    ? `<span class="ok"><span class="tile go">${icon("p-check")}</span>Rule-based, no AI model · checked against ${fmt(Engine.checked)} recorded conversations</span>`
+    ? `<span class="ok"><i aria-hidden="true"></i>Rule-based, no AI model · checked against ${fmt(Engine.checked)} recorded conversations</span>`
     : `<span class="off">Rule-based, no AI model · typing is off on this copy; the tours and tasks still play</span>`)
     + `<span class="src">Screens as of ${esc(D.portalAsOf)}</span>`
     + `<span class="keys"><kbd>/</kbd> ask <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> badge <kbd>T</kbd> tour <kbd>Space</kbd> next</span>`;
