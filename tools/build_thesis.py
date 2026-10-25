@@ -1,7 +1,9 @@
 """Build the project report (the thesis) from docs/thesis/ on the School's template.
 
-    python tools/build_thesis.py              # writes Thesis.pdf and build/thesis-overleaf.zip
-    python tools/build_thesis.py --no-pdf     # only the Overleaf zip (no TeX engine needed)
+    python tools/build_thesis.py              # writes Thesis.pdf and Thesis-LaTeX.zip
+    python tools/build_thesis.py --no-pdf     # only the LaTeX zip (no TeX engine needed)
+
+The Word copy, Thesis.docx, is built from the same sources by tools/thesis_docx/build_thesis_docx.py.
 
 The School's class file and logo (``Thesis-1.cls``, ``logo.png``) are its
 files, not project output, and are kept out of the repository like the review
@@ -12,19 +14,24 @@ repository root (git-ignored).
 The build copies ``docs/thesis/`` and the two template files into
 ``build/thesis/``, regenerates the tables and plot data from the artefacts
 (``tools/thesis_tables.py``), and compiles with Tectonic when it is installed
-(``TECTONIC`` names the executable if it is not on the path). The zip holds
-everything Overleaf needs: upload it as a new project and compile with
-pdfLaTeX and BibTeX.
+(``TECTONIC`` names the executable if it is not on the path). The zip,
+``Thesis-LaTeX.zip`` at the repository root, holds everything Overleaf needs,
+including the School's two files and a ``latexmkrc`` that selects XeLaTeX (the
+engine Tectonic uses, so the PDF and an Overleaf build agree): upload it as a
+new project and compile.
 """
 
 from __future__ import annotations
 
 import argparse
+import ast
+import io
 import os
 import re
 import shutil
 import subprocess
 import sys
+import tokenize
 import zipfile
 from pathlib import Path
 
@@ -35,7 +42,7 @@ import thesis_tables  # noqa: E402
 
 SOURCE = ROOT / "docs" / "thesis"
 BUILD = ROOT / "build" / "thesis"
-ZIP = ROOT / "build" / "thesis-overleaf.zip"
+ZIP = ROOT / "Thesis-LaTeX.zip"
 PDF = ROOT / "Thesis.pdf"
 TEMPLATE_FILES = ("Thesis-1.cls", "logo.png")
 # Source files the appendix lists verbatim (\lstinputlisting{code/...}), copied at build time.
@@ -67,6 +74,32 @@ def tectonic() -> str | None:
     return None
 
 
+def code_only(text: str) -> str:
+    """The source without its documentation strings, comment-only lines or repeated blank lines."""
+
+    tree = ast.parse(text)
+    drop: set[int] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and node.body:
+            first = node.body[0]
+            if isinstance(first, ast.Expr) and isinstance(first.value, ast.Constant) \
+                    and isinstance(first.value.value, str):
+                drop.update(range(first.lineno, first.end_lineno + 1))
+    lines = text.splitlines()
+    for tok in tokenize.generate_tokens(io.StringIO(text).readline):
+        if tok.type == tokenize.COMMENT and lines[tok.start[0] - 1].lstrip().startswith("#"):
+            drop.add(tok.start[0])
+    kept: list[str] = []
+    for i, line in enumerate(lines, 1):
+        # A blank line is dropped at the start, after another blank, and straight after a block opener
+        # (where the documentation string used to be).
+        if i in drop or (not line.strip() and (not kept or not kept[-1].strip()
+                                                 or kept[-1].rstrip().endswith(":"))):
+            continue
+        kept.append(line)
+    return "\n".join(kept).rstrip() + "\n"
+
+
 def stage() -> None:
     if BUILD.exists():
         shutil.rmtree(BUILD)
@@ -76,14 +109,15 @@ def stage() -> None:
         shutil.copy2(here / f, BUILD / f)
     (BUILD / "code").mkdir(exist_ok=True)
     for name, src in CODE.items():
-        # The module docstring restates what the chapters say; the listing shows the code itself.
+        # The documentation strings and comments restate what the chapters say; the listing shows the code.
         text = (ROOT / src).read_text(encoding="utf-8")
-        body = re.sub(r'\A"""(?:.|\n)*?"""\n+', "", text, count=1)
-        (BUILD / "code" / name).write_text(body, encoding="utf-8", newline="\n")
+        (BUILD / "code" / name).write_text(code_only(text), encoding="utf-8", newline="\n")
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True,
                             text=True).stdout.strip() or "unknown"
     (BUILD / "generated" / "version.tex").write_text(
         f"\\newcommand{{\\BuildCommit}}{{{commit}}}\n", encoding="utf-8", newline="\n")
+    # Overleaf reads latexmkrc: compile with XeLaTeX, as Tectonic does here.
+    (BUILD / "latexmkrc").write_text("$pdf_mode = 5;\n", encoding="utf-8", newline="\n")
 
 
 def compile_pdf(engine: str) -> Path:

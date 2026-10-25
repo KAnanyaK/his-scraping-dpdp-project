@@ -4,7 +4,7 @@
 
 Two kinds of picture. The portal fixture is started on synthetic data and two
 of its pages are captured as the service account sees them. The presentation
-pages (the Report, Portal v2, Portal v5, the HIS Staff Assistant) are opened
+pages (the Report and the HIS Staff Assistant) are opened
 from docs/review/, stepped to a telling state with their own keys, and
 captured. Every picture is of synthetic data; none shows a real patient.
 Rebuild after tools/build_review_pages.py.
@@ -27,7 +27,6 @@ VIEWPORT = {"width": 1366, "height": 860}
 # picture -> (page, keys pressed in order, milliseconds to wait after each, element to capture or None)
 PAGES = {
     "report-forest.png": ("report.html", [], 2500, "#fig-forest"),
-    "portal-v2.png": ("portal-v2.html", ["Space"] * 5, 2600, None),
     "agent-portal.png": ("agent-portal.html", ["t", "Space", "Space", "Space", "Space"], 2200, None),
 }
 

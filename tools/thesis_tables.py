@@ -58,7 +58,10 @@ def tex(s: str) -> str:
 
 
 def code(s: str) -> str:
-    return r"\texttt{" + tex(s) + "}"
+    # A long identifier or path may break after a hyphen, underscore or slash, so it never runs into the
+    # next column.
+    out = tex(s).replace("-", r"-\allowbreak{}").replace(r"\_", r"\_\allowbreak{}")
+    return r"\texttt{" + re.sub(r"/(?=.)", r"/\\allowbreak{}", out) + "}"
 
 
 def load(name: str) -> BenchmarkResult:
@@ -146,7 +149,7 @@ def tab_tasks() -> str:
         trap = tex(t.trap) if t.trap else "none"
         where = "all three" if t.task_id in portal else "in memory"
         rows.append([code(t.task_id), tex(t.purpose.replace("_", " ")), needs, trap, where])
-    return table(r"L{2.4cm}L{1.6cm}YL{2.9cm}L{1.2cm}",
+    return table(r"L{2.8cm}L{1.6cm}YL{2.8cm}L{1.2cm}",
                  ["Task", "Purpose", "Minimum necessary fields (layer)", "What the wording invites", "Sources"],
                  rows, caption="The eight extraction tasks and the expert field list each one executes",
                  label="tab:tasks", size=r"\footnotesize",
@@ -182,7 +185,7 @@ def tab_policy() -> str:
         rows.append([code(purpose.value), tex(cats), f"{pol.max_retention_days} days",
                      "yes" if pol.requires_pseudonymised_identifiers else "no"])
     return table(r"L{3.3cm}YC{1.7cm}C{1.9cm}",
-                 ["Purpose", "Categories necessary for it", "Retention ceiling", "Pseudonymise on export"],
+                 ["Purpose", "Categories necessary for it", "Retention ceiling", r"Pseudo\-nymise on export"],
                  rows, caption="The purpose policy read by DM-01, SL-01 and SS-01", label="tab:policy")
 
 
@@ -360,7 +363,7 @@ def tab_public() -> str:
                 f"files that carry them.")
     return table(r"YC{1.0cm}C{1.3cm}C{1.0cm}C{2.0cm}C{1.2cm}",
                  ["Technique", "Score", r"Agree\-ment", "Excess", "Records read / own", "Trap held"], rows,
-                 caption="The four-task workload on a public export we did not generate", label="tab:public",
+                 caption="The four-task workload on a public export not produced by the project", label="tab:public",
                  note=note)
 
 
@@ -424,7 +427,7 @@ def tab_ablation() -> str:
                      tex(r["leaked"]), tex(lost)])
     return table(r"L{3.3cm}C{0.8cm}C{0.8cm}C{0.9cm}C{0.7cm}C{1.1cm}Y",
                  ["Variant (principle served)", "Score", "Excess", "Rec. exc.", "Traps", "Leaked", "Rules below 1"],
-                 rows, caption="Ablation: our technique with one design choice switched off at a time",
+                 rows, caption="Ablation: the proposed technique with one design choice disabled at a time",
                  label="tab:ablation", size=r"\scriptsize",
                  note="Eight tasks in memory, the same seven rules. ``Leaked'' is the export audit on the patient "
                       "summary: raw identifiers found in the shaped export over identifiers extracted.")
@@ -476,7 +479,7 @@ def tab_purpose_matrix() -> str:
                  ["Extraction", "Judged under", "Declared", "Score", "Passed", "Failed", "Why"], rows,
                  caption="One extraction judged under every purpose", label="tab:purpose-matrix",
                  size=r"\footnotesize",
-                 note="Each block is one run by our technique with a full manifest; only the purpose it is judged "
+                 note="Each block is one run by the proposed technique with a full manifest; only the purpose it is judged "
                       "under changes. NT-01 fails under every undeclared purpose because the notice named the "
                       "declared one.")
 
@@ -512,7 +515,7 @@ def tab_update() -> str:
             rows.append([name_of(s, short=True), f3(s.mean_compliance_score), f3(t.mean_compliance_score),
                          f2(s.cost.coverage), f2(t.cost.coverage), str(s.cost.page_loads), str(t.cost.page_loads)])
     return table(r"YC{1.1cm}C{1.1cm}C{1.3cm}C{1.3cm}C{1.0cm}C{1.0cm}",
-                 ["Technique", "Score v1", "Score v2", "Agreement v1", "Agreement v2", "Pages v1", "Pages v2"],
+                 ["Technique", "Score v1", "Score v2", r"Agree\-ment v1", r"Agree\-ment v2", "Pages v1", "Pages v2"],
                  rows, caption=f"The scraper on the updated HIS: {same} of {len(v1.scores)} technique rows unchanged",
                  label="tab:update", size=r"\footnotesize",
                  note="v1 is the benchmarked portal; v2 a simulated vendor release (modules renamed and moved, "
