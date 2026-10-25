@@ -2099,11 +2099,15 @@ class Front:
         for k, (name, reg) in enumerate(STUDENTS, 1):
             x.append(w.para(w.text_run(f"Student {k}", bold), style="Normal", before=480, after=200, keep_next=True))
             fields = [w.para(w.text_run("Name: ", bold) + w.text_run(name), style="Normal", after=240)]
-            for label in ("Mobile No.:", "E-mail:"):
-                fields.append(w.para(w.text_run(label, bold), style="Normal", after=240, extra=line))
+            # Word joins the borders of neighbouring paragraphs that are formatted alike and draws only the
+            # last line; a right indent one twip different on each keeps every line its own rule.
+            for k, label in enumerate(("Mobile No.:", "E-mail:"), 1):
+                fields.append(w.para(w.text_run(label, bold), style="Normal", after=240, extra=line,
+                                     ind=f'<w:ind w:right="{k}"/>'))
             fields.append(w.para(w.text_run("Permanent Address:", bold), style="Normal", after=240))
-            for _ in range(3):
-                fields.append(w.para("", style="Normal", after=240, extra=line))
+            for k in range(3):
+                fields.append(w.para("", style="Normal", after=240, extra=line,
+                                     ind=f'<w:ind w:right="{k + 3}"/>'))
             x.append(f'<w:tbl><w:tblPr><w:tblW w:w="{TEXT_W}" w:type="dxa"/><w:tblLayout w:type="fixed"/></w:tblPr>'
                      f'<w:tblGrid><w:gridCol w:w="{photo_w}"/><w:gridCol w:w="{rest_w}"/></w:tblGrid>'
                      f'<w:tr><w:trPr><w:cantSplit/></w:trPr>'
