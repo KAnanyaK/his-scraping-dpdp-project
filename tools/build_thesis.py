@@ -6,9 +6,9 @@
 
 Everything is written to ``final-thesis/``: ``thesis_common.pdf``, ``thesis_common.zip``
 (LaTeX) and, beside them, ``thesis_ananya.pdf`` and ``thesis_avanindra.pdf``. A student's
-own copy differs from the common one only in its Declaration, made by that student alone
-("I ... submitted by me") with one signature block, as the individual copies the School asks
-for. The Word copy, ``thesis_common.docx``, is built from the same sources by
+own copy names both students on its title page and that student alone inside: the Declaration
+is made by that student ("I ... submitted by me", one signature block), and the Certificate and
+the Biodata name that student, as the School's individual copies require. The Word copy, ``thesis_common.docx``, is built from the same sources by
 tools/thesis_docx/build_thesis_docx.py.
 
 The School's class file and logo (``Thesis-1.cls``, ``logo.png``) are its
@@ -53,7 +53,9 @@ FINAL = ROOT / "final-thesis"
 ZIP = FINAL / "thesis_common.zip"
 PDF = FINAL / "thesis_common.pdf"
 # Each student's own copy: the file name and the "Name & Reg. No." of its Declaration.
-COPIES = {"ananya": "Ananya Karmakar, 23BLC1017", "avanindra": "Avanindra Kushwah, 23BLC1089"}
+# Each student's own copy: file name -> (biodata position, name, registration number). The title page
+# names both students; inside, the Declaration, the Certificate and the Biodata name this student alone.
+COPIES = {"ananya": (1, "Ananya Karmakar", "23BLC1017"), "avanindra": (2, "Avanindra Kushwah", "23BLC1089")}
 TEMPLATE_FILES = ("Thesis-1.cls", "logo.png")
 # Source files the appendix lists verbatim (\lstinputlisting{code/...}), copied at build time.
 CODE = {
@@ -126,14 +128,14 @@ def write_biodata() -> None:
     if not students:
         return
     blocks = []
-    for k, s in enumerate(students, 1):
+    for macro, s in zip(("BiodataOne", "BiodataTwo"), students):
         address = r" \\[0.4em] ".join(thesis_tables.tex(line) for line in s.get("address", []))
         photo = f"private/{s['photo']}" if s.get("photo") and (SOURCE / "private" / s["photo"]).exists() else ""
-        blocks.append(rf"\biodatablock{{Student {k}}}{{{thesis_tables.tex(s['name'])}}}"
+        # \BiodataOne{heading}: chapters/biodata.tex shows one block in a student's own copy, both otherwise.
+        blocks.append(rf"\newcommand{{\{macro}}}[1]{{\biodatablock{{#1}}{{{thesis_tables.tex(s['name'])}}}"
                       rf"{{{thesis_tables.tex(s.get('mobile', ''))}}}{{{thesis_tables.tex(s.get('email', ''))}}}"
-                      rf"{{{address}}}{{{photo}}}")
-    (BUILD / "generated" / "biodata.tex").write_text("\n\n\\vspace{1.5cm}\n\n".join(blocks) + "\n",
-                                                     encoding="utf-8", newline="\n")
+                      rf"{{{address}}}{{{photo}}}}}")
+    (BUILD / "generated" / "biodata.tex").write_text("\n".join(blocks) + "\n", encoding="utf-8", newline="\n")
 
 
 def stage() -> None:
@@ -176,10 +178,12 @@ def compile_pdf(engine: str, target: Path = PDF) -> Path:
 
 
 def compile_copy(engine: str, key: str) -> Path:
-    """A student's own copy: the same build with that student's Declaration (generated/copy.tex)."""
+    """A student's own copy: the same build naming that student alone inside (generated/copy.tex)."""
 
+    index, name, reg = COPIES[key]
     switch = BUILD / "generated" / "copy.tex"
-    switch.write_text(f"\\newcommand{{\\DeclarationStudent}}{{{COPIES[key]}}}\n", encoding="utf-8", newline="\n")
+    switch.write_text(f"\\newcommand{{\\CopyIndex}}{{{index}}}\n\\newcommand{{\\CopyName}}{{{name}}}\n"
+                      f"\\newcommand{{\\CopyReg}}{{{reg}}}\n", encoding="utf-8", newline="\n")
     try:
         return compile_pdf(engine, FINAL / f"thesis_{key}.pdf")
     finally:
