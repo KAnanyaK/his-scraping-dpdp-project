@@ -1,6 +1,6 @@
-"""Build a Word copy of the thesis (Thesis.docx) from the same LaTeX sources as Thesis.pdf.
+"""Build the Word copy of the thesis (final-thesis/thesis_common.docx) from the LaTeX sources of the PDF.
 
-    python build_thesis_docx.py                  # writes Thesis.docx and a PDF of it to check against
+    python build_thesis_docx.py                  # writes thesis_common.docx and a PDF of it to check against
     python build_thesis_docx.py --no-word        # skip Word: page numbers in the contents stay unset
 
 The page set-up, type and layout follow the School's Word template (A4, Times New Roman 12 pt,
@@ -11,7 +11,7 @@ Word copy says what the PDF says. Figures drawn in TikZ or pgfplots are compiled
 Tectonic and placed as images; equations become editable Word equations.
 
 Environment:
-    THESIS_DOCX_OUT  where to write Thesis.docx (default: the repository root, beside Thesis.pdf)
+    THESIS_DOCX_OUT  where to write the Word copy (default: final-thesis/thesis_common.docx)
     THESIS_TEMPLATE  the folder with the School's logo.png (as tools/build_thesis.py)
 """
 
@@ -38,7 +38,7 @@ import build_thesis  # noqa: E402
 
 SOURCE = ROOT / "docs" / "thesis"
 WORK = HERE / "work"
-OUT = Path(os.environ.get("THESIS_DOCX_OUT", ROOT / "Thesis.docx"))
+OUT = Path(os.environ.get("THESIS_DOCX_OUT", ROOT / "final-thesis" / "thesis_common.docx"))
 CHECK_PDF = WORK / "Thesis-docx.pdf"
 
 # The official title, as submitted at the start of the project (user, 2026-10-18).

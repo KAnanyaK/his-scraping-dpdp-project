@@ -1,9 +1,15 @@
 """Build the project report (the thesis) from docs/thesis/ on the School's template.
 
-    python tools/build_thesis.py              # writes Thesis.pdf and Thesis-LaTeX.zip
+    python tools/build_thesis.py              # the common copy (PDF + LaTeX zip) and each student's PDF
+    python tools/build_thesis.py --common     # the common copy only
     python tools/build_thesis.py --no-pdf     # only the LaTeX zip (no TeX engine needed)
 
-The Word copy, Thesis.docx, is built from the same sources by tools/thesis_docx/build_thesis_docx.py.
+Everything is written to ``final-thesis/``: ``thesis_common.pdf``, ``thesis_common.zip``
+(LaTeX) and, beside them, ``thesis_ananya.pdf`` and ``thesis_avanindra.pdf``. A student's
+own copy differs from the common one only in its Declaration, made by that student alone
+("I ... submitted by me") with one signature block, as the individual copies the School asks
+for. The Word copy, ``thesis_common.docx``, is built from the same sources by
+tools/thesis_docx/build_thesis_docx.py.
 
 The School's class file and logo (``Thesis-1.cls``, ``logo.png``) are its
 files, not project output, and are kept out of the repository like the review
@@ -15,7 +21,7 @@ The build copies ``docs/thesis/`` and the two template files into
 ``build/thesis/``, regenerates the tables and plot data from the artefacts
 (``tools/thesis_tables.py``), and compiles with Tectonic when it is installed
 (``TECTONIC`` names the executable if it is not on the path). The zip,
-``Thesis-LaTeX.zip`` at the repository root, holds everything Overleaf needs,
+``final-thesis/thesis_common.zip``, holds everything Overleaf needs,
 including the School's two files and a ``latexmkrc`` that selects XeLaTeX (the
 engine Tectonic uses, so the PDF and an Overleaf build agree): upload it as a
 new project and compile.
@@ -43,8 +49,11 @@ import thesis_tables  # noqa: E402
 
 SOURCE = ROOT / "docs" / "thesis"
 BUILD = ROOT / "build" / "thesis"
-ZIP = ROOT / "Thesis-LaTeX.zip"
-PDF = ROOT / "Thesis.pdf"
+FINAL = ROOT / "final-thesis"
+ZIP = FINAL / "thesis_common.zip"
+PDF = FINAL / "thesis_common.pdf"
+# Each student's own copy: the file name and the "Name & Reg. No." of its Declaration.
+COPIES = {"ananya": "Ananya Karmakar, 23BLC1017", "avanindra": "Avanindra Kushwah, 23BLC1089"}
 TEMPLATE_FILES = ("Thesis-1.cls", "logo.png")
 # Source files the appendix lists verbatim (\lstinputlisting{code/...}), copied at build time.
 CODE = {
@@ -148,7 +157,7 @@ def stage() -> None:
     (BUILD / "latexmkrc").write_text("$pdf_mode = 5;\n", encoding="utf-8", newline="\n")
 
 
-def compile_pdf(engine: str) -> Path:
+def compile_pdf(engine: str, target: Path = PDF) -> Path:
     proc = subprocess.run([engine, "-X", "compile", "--keep-logs", "main.tex"], cwd=BUILD,
                           capture_output=True, text=True, encoding="utf-8", errors="replace")
     log = (BUILD / "main.log").read_text(encoding="utf-8", errors="replace") if (BUILD / "main.log").exists() else ""
@@ -161,9 +170,20 @@ def compile_pdf(engine: str) -> Path:
     print(f"  compiled: {len(wide)} overfull boxes over 2pt" + (f" (widest {max(wide):.1f}pt)" if wide else ""))
     if undefined:
         print("  undefined references or citations: " + ", ".join(undefined))
-    out = BUILD / "main.pdf"
-    shutil.copy2(out, PDF)
-    return PDF
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(BUILD / "main.pdf", target)
+    return target
+
+
+def compile_copy(engine: str, key: str) -> Path:
+    """A student's own copy: the same build with that student's Declaration (generated/copy.tex)."""
+
+    switch = BUILD / "generated" / "copy.tex"
+    switch.write_text(f"\\newcommand{{\\DeclarationStudent}}{{{COPIES[key]}}}\n", encoding="utf-8", newline="\n")
+    try:
+        return compile_pdf(engine, FINAL / f"thesis_{key}.pdf")
+    finally:
+        switch.unlink()
 
 
 def make_zip() -> Path:
@@ -180,6 +200,7 @@ def make_zip() -> Path:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-pdf", action="store_true", help="stage and zip only; do not compile")
+    parser.add_argument("--common", action="store_true", help="the common copy only, not the students' own")
     args = parser.parse_args()
 
     changed = thesis_tables.write()
@@ -192,6 +213,9 @@ def main() -> int:
         else:
             print(f"  wrote {compile_pdf(engine).relative_to(ROOT)}")
     print(f"  wrote {make_zip().relative_to(ROOT)}")
+    if not args.no_pdf and engine is not None and not args.common:
+        for key in COPIES:
+            print(f"  wrote {compile_copy(engine, key).relative_to(ROOT)}")
     return 0
 
 
