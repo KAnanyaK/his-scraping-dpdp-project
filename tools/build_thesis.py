@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import ast
 import io
+import json
 import os
 import re
 import shutil
@@ -100,6 +101,32 @@ def code_only(text: str) -> str:
     return "\n".join(kept).rstrip() + "\n"
 
 
+def biodata() -> list[dict] | None:
+    """The students' details for the Biodata page, from the git-ignored private folder, if present."""
+
+    path = SOURCE / "private" / "biodata.json"
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))["students"]
+
+
+def write_biodata() -> None:
+    """generated/biodata.tex in the build only: the details are personal data and stay out of git."""
+
+    students = biodata()
+    if not students:
+        return
+    blocks = []
+    for k, s in enumerate(students, 1):
+        address = r" \\[0.4em] ".join(thesis_tables.tex(line) for line in s.get("address", []))
+        photo = f"private/{s['photo']}" if s.get("photo") and (SOURCE / "private" / s["photo"]).exists() else ""
+        blocks.append(rf"\biodatablock{{Student {k}}}{{{thesis_tables.tex(s['name'])}}}"
+                      rf"{{{thesis_tables.tex(s.get('mobile', ''))}}}{{{thesis_tables.tex(s.get('email', ''))}}}"
+                      rf"{{{address}}}{{{photo}}}")
+    (BUILD / "generated" / "biodata.tex").write_text("\n\n\\vspace{1.5cm}\n\n".join(blocks) + "\n",
+                                                     encoding="utf-8", newline="\n")
+
+
 def stage() -> None:
     if BUILD.exists():
         shutil.rmtree(BUILD)
@@ -116,6 +143,7 @@ def stage() -> None:
                             text=True).stdout.strip() or "unknown"
     (BUILD / "generated" / "version.tex").write_text(
         f"\\newcommand{{\\BuildCommit}}{{{commit}}}\n", encoding="utf-8", newline="\n")
+    write_biodata()
     # Overleaf reads latexmkrc: compile with XeLaTeX, as Tectonic does here.
     (BUILD / "latexmkrc").write_text("$pdf_mode = 5;\n", encoding="utf-8", newline="\n")
 
@@ -142,8 +170,9 @@ def make_zip() -> Path:
     ZIP.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(ZIP, "w", zipfile.ZIP_DEFLATED) as z:
         for path in sorted(BUILD.rglob("*")):
-            if path.is_file() and path.suffix not in {".pdf", ".log", ".aux", ".blg", ".bbl", ".out", ".toc",
-                                                      ".lof", ".lot"}:
+            # the private JSON is the build's input; generated/biodata.tex already carries the page
+            if path.is_file() and path.name != "biodata.json" and path.suffix not in {
+                    ".pdf", ".log", ".aux", ".blg", ".bbl", ".out", ".toc", ".lof", ".lot"}:
                 z.write(path, path.relative_to(BUILD).as_posix())
     return ZIP
 

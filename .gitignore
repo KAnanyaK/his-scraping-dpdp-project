@@ -81,3 +81,6 @@ Review-* Template.pptx
 
 # pseudonymisation keys written beside an export folder (interop.normalise)
 *.keys/
+
+# personal data for the thesis Biodata page (details and photos); reaches the built documents only
+/docs/thesis/private/

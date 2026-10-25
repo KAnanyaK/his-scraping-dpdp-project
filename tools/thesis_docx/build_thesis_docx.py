@@ -1941,7 +1941,7 @@ def package(body: str, w: Writer, out: Path) -> None:
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
         '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
-        '<Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/>'
+        '<Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Default Extension="jpg" ContentType="image/jpeg"/><Default Extension="jpeg" ContentType="image/jpeg"/>'
         f'<Override PartName="/word/document.xml" ContentType="{ct}.document.main+xml"/>'
         f'<Override PartName="/word/styles.xml" ContentType="{ct}.styles+xml"/>'
         f'<Override PartName="/word/numbering.xml" ContentType="{ct}.numbering+xml"/>'
@@ -2096,23 +2096,38 @@ class Front:
         box = ("<w:tcBorders>" + "".join(f'<w:{s} w:val="single" w:sz="6" w:space="0" w:color="000000"/>'
                                          for s in ("top", "left", "bottom", "right")) + "</w:tcBorders>")
         bold = w.rpr(Run(b=True))
-        for k, (name, reg) in enumerate(STUDENTS, 1):
+        # The details come from the git-ignored private folder (build_thesis.biodata); without it the page
+        # is the sample's blank form, to be filled in by hand.
+        students = build_thesis.biodata() or [{"name": name} for name, _ in STUDENTS]
+        private = SOURCE / "private"
+        for k, s in enumerate(students, 1):
             x.append(w.para(w.text_run(f"Student {k}", bold), style="Normal", before=480, after=200, keep_next=True))
-            fields = [w.para(w.text_run("Name: ", bold) + w.text_run(name), style="Normal", after=240)]
+            fields = [w.para(w.text_run("Name: ", bold) + w.text_run(s["name"]), style="Normal", after=240)]
             # Word joins the borders of neighbouring paragraphs that are formatted alike and draws only the
             # last line; a right indent one twip different on each keeps every line its own rule.
-            for k, label in enumerate(("Mobile No.:", "E-mail:"), 1):
-                fields.append(w.para(w.text_run(label, bold), style="Normal", after=240, extra=line,
-                                     ind=f'<w:ind w:right="{k}"/>'))
-            fields.append(w.para(w.text_run("Permanent Address:", bold), style="Normal", after=240))
-            for k in range(3):
-                fields.append(w.para("", style="Normal", after=240, extra=line,
-                                     ind=f'<w:ind w:right="{k + 3}"/>'))
+            for j, (label, key) in enumerate((("Mobile No.:", "mobile"), ("E-mail:", "email")), 1):
+                if s.get(key):
+                    fields.append(w.para(w.text_run(label + " ", bold) + w.text_run(s[key]), style="Normal",
+                                         after=240))
+                else:
+                    fields.append(w.para(w.text_run(label, bold), style="Normal", after=240, extra=line,
+                                         ind=f'<w:ind w:right="{j}"/>'))
+            fields.append(w.para(w.text_run("Permanent Address:", bold), style="Normal", after=120))
+            if s.get("address"):
+                for text in s["address"]:
+                    fields.append(w.para(w.text_run(text), style="Normal", after=60))
+            else:
+                for j in range(3):
+                    fields.append(w.para("", style="Normal", after=240, extra=line,
+                                         ind=f'<w:ind w:right="{j + 3}"/>'))
+            photo = private / s["photo"] if s.get("photo") else None
+            cell = (w.para(w.image_run(Image_(path=photo, width_twips=int(3.5 * CM))), style="FrontCenter")
+                    if photo and photo.exists() else w.para(w.text_run("Photo", bold), style="FrontCenter"))
             x.append(f'<w:tbl><w:tblPr><w:tblW w:w="{TEXT_W}" w:type="dxa"/><w:tblLayout w:type="fixed"/></w:tblPr>'
                      f'<w:tblGrid><w:gridCol w:w="{photo_w}"/><w:gridCol w:w="{rest_w}"/></w:tblGrid>'
                      f'<w:tr><w:trPr><w:cantSplit/></w:trPr>'
                      f'<w:tc><w:tcPr><w:tcW w:w="{photo_w}" w:type="dxa"/>{box}<w:vAlign w:val="center"/></w:tcPr>'
-                     + w.para(w.text_run("Photo", bold), style="FrontCenter")
+                     + cell
                      + f'</w:tc><w:tc><w:tcPr><w:tcW w:w="{rest_w}" w:type="dxa"/><w:tcMar><w:left w:w="400" '
                        f'w:type="dxa"/></w:tcMar></w:tcPr>' + "".join(fields) + "</w:tc></w:tr></w:tbl>")
         return "".join(x)
@@ -2239,7 +2254,8 @@ def word_finish(docx: Path, pdf: Path) -> None:
     proc = subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
                            str(HERE / "word_update_fields.ps1"), "-Docx", str(docx), "-Pdf", str(pdf)],
                           capture_output=True, text=True)
-    if proc.returncode != 0:
+    # The script's exit code is 0 even when Word refuses the file, so its report line is checked too.
+    if proc.returncode != 0 or "Word:" not in proc.stdout:
         print(proc.stdout, proc.stderr)
         sys.exit("Word could not update the document")
     print("  " + proc.stdout.strip())
