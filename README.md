@@ -43,9 +43,10 @@ Three layers:
 **99% by the completion ledger** (`PLAN.md` §5). The pipeline runs end to end in
 one command. The 2026-10-10 final-build review was worked through (method
 reframed, scoring made non-compensatory, export made attributable and
-validatable, Rules 2025 encoded where the product had the mechanism); the report
-drafts under `docs/report/` predate it and are revised in the documentation
-phase. Review-II was held on 30 Sep 2026; Review-III is on 26 Oct 2026.
+validatable, Rules 2025 encoded where the product had the mechanism). The
+project report (thesis), the review decks and the review documents are kept by
+the team outside this repository. Review-II was held on 30 Sep 2026; Review-III
+is on 28 Oct 2026.
 
 **No hospital data, by design of the plan.** A hospital's export is its
 patients' personal data and may never be released to a student project; nothing
@@ -176,8 +177,7 @@ tools/              mock_portal/ (the login-gated portal fixture, Flask, TLS); t
 tests/              the suite (pytest)
 docs/
   compliance/       approach.md, dpdp-provision-map.md (section mapping, verified against the Gazette)
-  report/           outline.md, chapters 1-8, appendices, manuscript
-  review/           review-ii-flow.md (presenter script), the demo pages and their index
+  review/           the demo pages (the Report, Portals v1-v5, the HIS Staff Assistant)
   access/           when-access-lands.md (day-one procedure for real data)
   methodology/      benchmark-protocol.md (every parameter behind the numbers; what would change one)
   benchmark_results/ tracked results, the navigation map, the demo page

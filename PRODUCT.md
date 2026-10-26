@@ -59,7 +59,7 @@ The contribution is the compliance work: extraction designed and benchmarked aga
 ## Evidence on Hand
 
 - Synthetic records (Faker generator; `scripts/generate_dataset.py` → `data/`, git-ignored) and the public Synthea sample (`scripts/fetch_public_dataset.py` → `data/public_synthea/`).
-- Committed artefacts: `docs/benchmark_results/benchmark-portal.{json,md}`, `navigation-map.json`, and page captures in `docs/review/img/` (`tools/capture_demo_pages.py`).
+- Committed artefacts: `docs/benchmark_results/benchmark-portal.{json,md}` and `navigation-map.json`. Page captures (`tools/capture_demo_pages.py` writes `docs/review/img/`) stay on the team's machines.
 - **Absent, and not to be fabricated:** any real hospital portal, real vendor UI, real hospital name or logo, or real patient data. We have no live HIS access and plan as if a hospital dataset never arrives.
 
 ## Product Principles

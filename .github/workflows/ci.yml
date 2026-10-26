@@ -55,8 +55,4 @@ jobs:
         run: python tools/report_tables.py --check
         env:
           PYTHONIOENCODING: utf-8
-      - name: the thesis's tables and quoted numbers match the artefacts
-        run: python tools/thesis_tables.py --check
-        env:
-          PYTHONIOENCODING: utf-8
       # The deck is not built here: the VIT template is kept outside the repository.
