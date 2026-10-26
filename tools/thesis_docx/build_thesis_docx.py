@@ -1,7 +1,13 @@
 """Build the Word copy of the thesis (final-thesis/thesis_common.docx) from the LaTeX sources of the PDF.
 
-    python build_thesis_docx.py                  # writes thesis_common.docx and a PDF of it to check against
-    python build_thesis_docx.py --no-word        # skip Word: page numbers in the contents stay unset
+    python build_thesis_docx.py                  # the Word copy and, exported by Word, all three PDFs
+    python build_thesis_docx.py --common         # the common copy only (Word file and its PDF)
+    python build_thesis_docx.py --no-word        # skip Word: page numbers unset, no PDFs
+
+The PDFs in final-thesis/ are Word's own exports of these Word files, so each PDF is a carbon copy of
+the Word layout: thesis_common.pdf from thesis_common.docx, and each student's own copy
+(thesis_ananya.pdf, thesis_avanindra.pdf) from a Word file built the same way with that student's
+Declaration ("I ... submitted by me", one signature block) and Certificate, and no Biodata page.
 
 The page set-up, type and layout follow the School's Word template (A4, Times New Roman 12 pt,
 1.5 line spacing, justified text, centred chapter openings, italic centred captions, roman page
@@ -783,7 +789,7 @@ class Reader:
                 size["v"] = SIZES[name]
                 i = j
                 continue
-            if name in ("setstretch", "thispagestyle", "vspace", "definecolor"):
+            if name in ("setstretch", "thispagestyle", "vspace", "definecolor", "enlargethispage"):
                 flush()
                 if name == "definecolor":
                     _, j = braced(s, j)
@@ -1923,7 +1929,7 @@ def pageref(bm: str) -> str:
             f'<w:r><w:fldChar w:fldCharType="end"/></w:r>')
 
 
-def package(body: str, w: Writer, out: Path) -> None:
+def package(body: str, w: Writer, out: Path, creator: str = "") -> None:
     rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
     rels = [f'<Relationship Id="rIdStyles" Type="{rel}/styles" Target="styles.xml"/>',
             f'<Relationship Id="rIdNumbering" Type="{rel}/numbering" Target="numbering.xml"/>',
@@ -1957,7 +1963,7 @@ def package(body: str, w: Writer, out: Path) -> None:
     core = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
             '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" '
             'xmlns:dc="http://purl.org/dc/elements/1.1/">'
-            f'<dc:title>{esc(TITLE)}</dc:title><dc:creator>{esc(", ".join(s for s, _ in STUDENTS))}</dc:creator>'
+            f'<dc:title>{esc(TITLE)}</dc:title><dc:creator>{esc(creator or ", ".join(s for s, _ in STUDENTS))}</dc:creator>'
             '<dc:subject>Data protection compliance of data extraction from hospital information systems</dc:subject>'
             '<cp:keywords>DPDP Act 2023, hospital information systems, web scraping, compliance benchmarking, HL7, FHIR'
             '</cp:keywords></cp:coreProperties>')
@@ -1984,8 +1990,9 @@ def package(body: str, w: Writer, out: Path) -> None:
 
 
 class Front:
-    def __init__(self, w: Writer, inline: Inline, logo: Path):
-        self.w, self.inline, self.logo = w, inline, logo
+    def __init__(self, w: Writer, inline: Inline, logo: Path, copy: tuple[int, str, str] | None = None):
+        # copy: (position, name, registration number) for a student's own copy; None for the common copy
+        self.w, self.inline, self.logo, self.copy = w, inline, logo, copy
 
     def c(self, text: str, size: float | None = None, bold=False, before=None, after=None) -> str:
         runs = self.inline.runs(text, Fmt(b=bold))
@@ -2048,29 +2055,37 @@ class Front:
 
     def declaration(self, bm: str) -> str:
         t = "\\textbf{\\textit{" + TITLE + "}}"
+        we, us = ("I", "me") if self.copy else ("We", "us")
         body = [
-            f"We hereby declare that the report titled {t} submitted by us to the School of Electronics "
+            f"{we} hereby declare that the report titled {t} submitted by {us} to the School of Electronics "
             "Engineering, Vellore Institute of Technology, Chennai, in partial fulfilment of the requirements for "
             "the award of \\textbf{Bachelor of Technology} in \\textbf{Electronics and Computer Engineering}, is a "
-            "bonafide record of the work carried out by us under the supervision of "
+            f"bonafide record of the work carried out by {us} under the supervision of "
             "\\textbf{\\textit{Dr.~Manoj Kumar}}.",
-            "We further declare that the work reported in this report has not been submitted and will not be "
+            f"{we} further declare that the work reported in this report has not been submitted and will not be "
             "submitted, either in part or in full, for the award of any other degree or diploma of this institute "
             "or of any other institute or University.",
         ]
         x = [self.school_head("Declaration", bm)]
         x += [self.w.para(self.w.runs(self.inline.runs(p)), style="Body") for p in body]
         x.append(self.w.para("", style="Normal", after=600))
-        x.append(self.sign_table([
-            ("Signature of the Student: \\dotfill", "Signature of the Student: \\dotfill"),
-            ("Name \\& Reg.\\ No.: Ananya Karmakar, 23BLC1017", "Name \\& Reg.\\ No.: Avanindra Kushwah, 23BLC1089"),
-            ("Date: \\dotfill", "Date: \\dotfill")]))
+        if self.copy:
+            _, name, reg = self.copy
+            x.append(self.sign_table([("Signature of the Student: \\dotfill", ""),
+                                      (f"Name \\& Reg.\\ No.: {name}, {reg}", ""), ("Date: \\dotfill", "")]))
+        else:
+            x.append(self.sign_table([
+                ("Signature of the Student: \\dotfill", "Signature of the Student: \\dotfill"),
+                ("Name \\& Reg.\\ No.: Ananya Karmakar, 23BLC1017",
+                 "Name \\& Reg.\\ No.: Avanindra Kushwah, 23BLC1089"),
+                ("Date: \\dotfill", "Date: \\dotfill")]))
         return "".join(x)
 
     def certificate(self, bm: str) -> str:
+        by = (f"\\textbf{{\\textit{{{self.copy[1]}}} ({self.copy[2]})}}" if self.copy else
+              "\\textbf{\\textit{Ananya Karmakar} (23BLC1017)} and \\textbf{\\textit{Avanindra Kushwah} (23BLC1089)}")
         p = ("This is to certify that the project report titled \\textbf{\\textit{" + TITLE + "}} submitted by "
-             "\\textbf{\\textit{Ananya Karmakar} (23BLC1017)} and \\textbf{\\textit{Avanindra Kushwah} (23BLC1089)} "
-             "to Vellore Institute of Technology, Chennai, in partial fulfilment of the requirement for the award "
+             + by + " to Vellore Institute of Technology, Chennai, in partial fulfilment of the requirement for the award "
              "of the degree of \\textbf{Bachelor of Technology} in \\textbf{Electronics and Computer Engineering} "
              "is a bonafide work carried out under my supervision. The project report fulfils the requirements as "
              "per the regulations of this University and, in my opinion, meets the necessary standards for "
@@ -2149,7 +2164,7 @@ def load_macros() -> tuple[dict[str, str], str]:
     return macros, tex_macros
 
 
-def build(out: Path) -> Path:
+def build(out: Path, copy: str | None = None) -> Path:
     warnings: list[str] = []
 
     def warn(msg: str):
@@ -2186,7 +2201,9 @@ def build(out: Path) -> Path:
     num.walk(acronyms, numbered_floats=False)
     num.chapter = 0
     num.walk(main)
-    num.toc += [(1, "", "Bibliography", bib_bm), (1, "", "Biodata", bio_bm)]
+    num.toc += [(1, "", "Bibliography", bib_bm)]
+    if copy is None:                        # a student's own copy has no Biodata page
+        num.toc.append((1, "", "Biodata", bio_bm))
 
     bib = read_bib(SOURCE / "refs.bib")
     missing = [k for k in num.cites if k not in bib]
@@ -2195,7 +2212,8 @@ def build(out: Path) -> Path:
     bib_numbers = {k: n for n, k in enumerate((k for k in num.cites if k in bib), 1)}
 
     w = Writer(num, bib_numbers)
-    fm = Front(w, inline, build_thesis.template_dir() / "logo.png")
+    student = build_thesis.COPIES[copy] if copy else None
+    fm = Front(w, inline, build_thesis.template_dir() / "logo.png", student)
     ctx: dict = {}
     body: list[str] = [fm.title_page(), w.para("", style="Normal", sect=sect("title")),
                        fm.declaration(decl_bm), fm.certificate(cert_bm)]
@@ -2229,11 +2247,12 @@ def build(out: Path) -> Path:
         runs = w.text_run(f"[{n}]\t") + w.runs(bib_entry(bib[key], inline))
         body.append(w.para(runs, style="Bib", bookmark=f"_Bib{n:03d}",
                            extra='<w:tabs><w:tab w:val="left" w:pos="600"/></w:tabs>'))
-    body.append(fm.biodata(bio_bm))
+    if copy is None:
+        body.append(fm.biodata(bio_bm))
     body.append(sect("main"))
 
     out.parent.mkdir(parents=True, exist_ok=True)
-    package("".join(body), w, out)
+    package("".join(body), w, out, creator=student[1] if student else "")
     print(f"  wrote {out}: {len(num.toc)} contents entries, {len(num.lof)} figures, {len(num.lot)} tables, "
           f"{sum(1 for b in flatten(main) if isinstance(b, Code) and b.caption)} listings, "
           f"{len(bib_numbers)} references")
@@ -2264,12 +2283,20 @@ def word_finish(docx: Path, pdf: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-word", action="store_true", help="do not open Word to fill in page numbers")
+    parser.add_argument("--common", action="store_true", help="the common copy only")
     parser.add_argument("--out", default=str(OUT))
     args = parser.parse_args()
     out = build(Path(args.out))
-    if not args.no_word and os.name == "nt":
-        WORK.mkdir(parents=True, exist_ok=True)
-        word_finish(out, CHECK_PDF)
+    if args.no_word or os.name != "nt":
+        return 0
+    WORK.mkdir(parents=True, exist_ok=True)
+    final = Path(args.out).parent
+    word_finish(out, final / "thesis_common.pdf")
+    if not args.common:
+        for key in build_thesis.COPIES:
+            docx = WORK / f"thesis_{key}.docx"         # only its PDF is a deliverable
+            build(docx, copy=key)
+            word_finish(docx, final / f"thesis_{key}.pdf")
     return 0
 
 

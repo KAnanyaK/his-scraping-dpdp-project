@@ -4,8 +4,10 @@
     python tools/build_thesis.py --common     # the common copy only
     python tools/build_thesis.py --no-pdf     # only the LaTeX zip (no TeX engine needed)
 
-Everything is written to ``final-thesis/``: ``thesis_common.pdf``, ``thesis_common.zip``
-(LaTeX) and, beside them, ``thesis_ananya.pdf`` and ``thesis_avanindra.pdf``. A student's
+The LaTeX zip is written to ``final-thesis/thesis_common.zip``. The PDFs compiled here go to
+``build/`` (``thesis-latex.pdf`` and one per student) as a check: the PDFs handed in are Word's
+exports of the Word copy (tools/thesis_docx/build_thesis_docx.py), so that they match it page for
+page. A student's
 own copy names both students on its title page and that student alone inside: the Declaration
 is made by that student ("I ... submitted by me", one signature block), and the Certificate and
 the Biodata name that student, as the School's individual copies require. The Word copy, ``thesis_common.docx``, is built from the same sources by
@@ -51,7 +53,7 @@ SOURCE = ROOT / "docs" / "thesis"
 BUILD = ROOT / "build" / "thesis"
 FINAL = ROOT / "final-thesis"
 ZIP = FINAL / "thesis_common.zip"
-PDF = FINAL / "thesis_common.pdf"
+PDF = ROOT / "build" / "thesis-latex.pdf"
 # Each student's own copy: the file name and the "Name & Reg. No." of its Declaration.
 # Each student's own copy: file name -> (biodata position, name, registration number). The title page
 # names both students; inside, the Declaration, the Certificate and the Biodata name this student alone.
@@ -185,7 +187,7 @@ def compile_copy(engine: str, key: str) -> Path:
     switch.write_text(f"\\newcommand{{\\CopyIndex}}{{{index}}}\n\\newcommand{{\\CopyName}}{{{name}}}\n"
                       f"\\newcommand{{\\CopyReg}}{{{reg}}}\n", encoding="utf-8", newline="\n")
     try:
-        return compile_pdf(engine, FINAL / f"thesis_{key}.pdf")
+        return compile_pdf(engine, ROOT / "build" / f"thesis-latex-{key}.pdf")
     finally:
         switch.unlink()
 

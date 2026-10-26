@@ -18,7 +18,8 @@ try {
   }
   $pages = $doc.ComputeStatistics(2)
   $doc.Save()
-  $doc.ExportAsFixedFormat($Pdf, 17)
+  # PDF for print, with document properties, bookmarks from the headings and tagged structure.
+  $doc.ExportAsFixedFormat($Pdf, 17, $false, 0, 0, 1, 1, 0, $true, $true, 1, $true, $true, $false)
   $doc.Close($false)
   "Word: $pages pages; contents and lists numbered; PDF of the Word copy at $Pdf"
 } finally {
