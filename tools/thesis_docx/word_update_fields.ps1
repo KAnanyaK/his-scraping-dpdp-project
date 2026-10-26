@@ -9,6 +9,13 @@ try {
   [void]$doc.Fields.Update()
   $doc.Repaginate()
   [void]$doc.Fields.Update()
+  # Turn the page numbers of the contents and lists (PAGEREF fields) into plain text, so they show in
+  # any viewer, Google Docs included, which drops field results. The entries' links stay; the footer's
+  # PAGE fields live in another story and are untouched. Backwards, since unlinking shrinks the collection.
+  for ($i = $doc.Fields.Count; $i -ge 1; $i--) {
+    $f = $doc.Fields.Item($i)
+    if ($f.Type -eq 37) { $f.Unlink() }
+  }
   $pages = $doc.ComputeStatistics(2)
   $doc.Save()
   $doc.ExportAsFixedFormat($Pdf, 17)
