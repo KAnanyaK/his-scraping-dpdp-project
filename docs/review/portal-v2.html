@@ -133,7 +133,7 @@ button, select { font: inherit; color: inherit; }
 .wf { font: 500 0.8125rem/1.35 var(--f-mono); color: var(--text-2); letter-spacing: -.02em; padding: 0.25rem 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 0.4375rem; background: rgba(255, 255, 255, .035); border: 1px solid var(--hair); }
 .work table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.8125rem; line-height: 1.2; }
 .work col.ln { width: 19%; }
-.work tbody th { text-align: left; font-weight: 500; color: var(--text-2); padding: 0.15625rem 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.work tbody th { text-align: left; font-size: 0.78125rem; font-weight: 500; color: var(--text-2); padding: 0.15625rem 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .work tbody th .rid { display: inline-block; min-width: 2.875rem; font: 600 0.75rem/1 var(--f-mono); color: var(--text-3); }
 .work td { position: relative; text-align: right; padding: 0.15625rem 0.25rem 0.15625rem 0.375rem; border-top: 1px solid var(--hair); white-space: nowrap; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; }
 .work tbody th { border-top: 1px solid var(--hair); }
@@ -219,7 +219,7 @@ button, select { font: inherit; color: inherit; }
 
 /* ------------------------------------------------------------------ the trial run, under the lanes */
 .timing { padding-top: 0.625rem; border-top: 1px solid var(--hair); font-size: 0.8125rem; }
-.thd, .trow { display: grid; grid-template-columns: 1.375rem 7.5rem minmax(0, 1.5fr) 8.75rem minmax(0, 1fr) 4.25rem 4.5rem; align-items: center; column-gap: 0.625rem; }
+.thd, .trow { display: grid; grid-template-columns: 1.375rem 8.25rem minmax(0, 1.5fr) 8.75rem minmax(0, 1fr) 4.25rem 4.5rem; align-items: center; column-gap: 0.625rem; }
 .thd { margin-bottom: 0.25rem; color: var(--text-3); font-weight: 550; white-space: nowrap; }
 .thd .tt { grid-column: 1 / 3; color: var(--text); font-weight: 650; font-size: 0.875rem; }
 .thd .tsub { display: none; }
@@ -227,7 +227,7 @@ button, select { font: inherit; color: inherit; }
 .thd .tcol.acc { grid-column: 3 / 5; } .thd .tcol.pro { grid-column: 5 / 7; } .thd .tcol.tot { grid-column: 7; text-align: right; }
 .trow { height: 1.375rem; }
 .trow .rd { width: 1.125rem; height: 1.125rem; font-size: 0.6875rem; }
-.trow .tn { font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trow .tn { font-size: 0.78125rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tbar { position: relative; height: 0.375rem; border-radius: 3px; background: rgba(255, 255, 255, .06); overflow: hidden; }
 .tbar b { position: absolute; inset: 0; border-radius: 3px; transform-origin: 0 50%; transform: scaleX(0); background: var(--lane); }
 .tbar.pro b { background: linear-gradient(90deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .85)); }
@@ -268,11 +268,17 @@ button, select { font: inherit; color: inherit; }
 @media (max-height: 800px) and (min-width: 861px) {
   .lane { row-gap: 0.25rem; }
   .lanes, .lane + .lane { gap: 0.5rem; padding-top: 0.5rem; }
-  .ro { min-height: 0; line-height: 1.25; }
+  .ro { min-height: 0; line-height: 1.2; font-size: 0.78125rem; }
+  .ro .big { font-size: 1rem; }
   .timing { padding-top: 0.375rem; }
   .thd { margin-bottom: 0.125rem; }
-  .trow { height: 1.1875rem; }
+  .trow { height: 1.0625rem; }
   .tfoot { display: none; }
+  .kpi .kv { font-size: 1.0625rem; }
+  .lh .ln { font-size: 0.8125rem; }
+  .lh .ls, .kpi .kl { font-size: 0.75rem; }
+  .thd { font-size: 0.75rem; } .thd .tt { font-size: 0.8125rem; }
+  .stops { font-size: 0.75rem; }
 }
 @media (max-width: 1300px) { .brand .tag, .hint { display: none; } .jobs button { padding: 0 0.5rem; } .jobbar { gap: 1rem; } .purpose { gap: 0.625rem; } .purpose .cats { gap: 0.5rem; } .stage { grid-template-columns: 22.5rem 7.75rem minmax(0, 1fr); } .purpose .cats { gap: 0.5rem; } }
 @media (max-width: 1100px) { .purpose { display: none; } .kpis { gap: 0.75rem; } }
@@ -590,7 +596,7 @@ button, select { font: inherit; color: inherit; }
       formula: "token = HMAC-SHA-256(key, id), first 48 bits", note: "Each identifier is replaced by a keyed hash before export; the key stays with the hospital, apart from the export",
       rows: [row("Identifiers read", "Direct identifier values in what it read", (l) => [fmt(l.J.export.identifiers)], { at: on }),
         row("Left as tokens", "Identifiers replaced by keyed tokens before export", (l) => (l.J.pseud.on ? [fmt(l.J.export.identifiers), "good"] : ["none", "bad"]), { at: on }),
-        row("Birth date, PIN coarsened", "Quasi-identifiers generalised: the date of birth to its year, the PIN code to its first 3 digits", (l) => (l.J.pseud.generalised ? ["yes", "good"] : ["no", l.J.pseud.on ? "" : "bad"]), { at: on }),
+        row("DOB, PIN coarsened", "Quasi-identifiers generalised: the date of birth to its year, the PIN code to its first 3 digits", (l) => (l.J.pseud.generalised ? ["yes", "good"] : ["no", l.J.pseud.on ? "" : "bad"]), { at: on }),
         row("k-anonymity", "k: the smallest group of exported rows sharing one combination of quasi-identifiers; k = 1 means a row is unique", (l) => {
           const { k, k_rows: n } = l.J.pseud;
           if (k == null) return ["none left", "good", null, "No quasi-identifier left in this export"];
@@ -682,7 +688,7 @@ button, select { font: inherit; color: inherit; }
      A timed trial of the same runs (scripts/time_portal_trial.py), on this laptop's browser and the same portal. Access
      is the extraction through the browser; processing is the rules, the tokens, the HL7 v2 / FHIR shaping and the
      export audit. Access fills as the lane reads at Extract; processing fills from Score to Export. */
-  const secs = (ms) => (ms == null ? DASH : ms >= 1000 ? `${(ms / 1000).toFixed(2)} s` : `${Math.round(ms)} ms`);
+  const secs = (ms) => (ms == null ? DASH : ms >= 1000 ? `${(ms / 1000).toFixed(2)} s` : ms > 0 && ms < 1 ? "<1 ms" : `${Math.round(ms)} ms`);
   function timingHTML() {
     if (!D.trial || !lanes.every((l) => l.J.time)) return "";
     const T = D.trial, when = shortDate(T.generated);

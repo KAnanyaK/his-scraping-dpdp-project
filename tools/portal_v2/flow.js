@@ -249,7 +249,7 @@
       formula: "token = HMAC-SHA-256(key, id), first 48 bits", note: "Each identifier is replaced by a keyed hash before export; the key stays with the hospital, apart from the export",
       rows: [row("Identifiers read", "Direct identifier values in what it read", (l) => [fmt(l.J.export.identifiers)], { at: on }),
         row("Left as tokens", "Identifiers replaced by keyed tokens before export", (l) => (l.J.pseud.on ? [fmt(l.J.export.identifiers), "good"] : ["none", "bad"]), { at: on }),
-        row("Birth date, PIN coarsened", "Quasi-identifiers generalised: the date of birth to its year, the PIN code to its first 3 digits", (l) => (l.J.pseud.generalised ? ["yes", "good"] : ["no", l.J.pseud.on ? "" : "bad"]), { at: on }),
+        row("DOB, PIN coarsened", "Quasi-identifiers generalised: the date of birth to its year, the PIN code to its first 3 digits", (l) => (l.J.pseud.generalised ? ["yes", "good"] : ["no", l.J.pseud.on ? "" : "bad"]), { at: on }),
         row("k-anonymity", "k: the smallest group of exported rows sharing one combination of quasi-identifiers; k = 1 means a row is unique", (l) => {
           const { k, k_rows: n } = l.J.pseud;
           if (k == null) return ["none left", "good", null, "No quasi-identifier left in this export"];
@@ -341,7 +341,7 @@
      A timed trial of the same runs (scripts/time_portal_trial.py), on this laptop's browser and the same portal. Access
      is the extraction through the browser; processing is the rules, the tokens, the HL7 v2 / FHIR shaping and the
      export audit. Access fills as the lane reads at Extract; processing fills from Score to Export. */
-  const secs = (ms) => (ms == null ? DASH : ms >= 1000 ? `${(ms / 1000).toFixed(2)} s` : `${Math.round(ms)} ms`);
+  const secs = (ms) => (ms == null ? DASH : ms >= 1000 ? `${(ms / 1000).toFixed(2)} s` : ms > 0 && ms < 1 ? "<1 ms" : `${Math.round(ms)} ms`);
   function timingHTML() {
     if (!D.trial || !lanes.every((l) => l.J.time)) return "";
     const T = D.trial, when = shortDate(T.generated);
