@@ -146,8 +146,7 @@
 
   /* ------------------------------------------------------------ the boards */
   function boardEnquiry() {
-    if (!ctx) return `<h2>Enquiry</h2><p class="lede">Ask at the desk in your own words. The route lights as the assistant decides, and the screen shows where each step happens.</p>
-      <p class="muted">It helps only with the hospital system's tasks for your badge.</p>`;
+    if (!ctx) return `<h2>Enquiry</h2><p class="lede">Ask at the desk. The route lights as the assistant decides, and the screen shows where each step happens.</p>`;
     const k = ctx.reply.kind;
     let said = esc(ctx.request);
     if (ctx.fn) {
@@ -157,8 +156,7 @@
     if (k === "unrecognised") return `<h2>Enquiry</h2><p class="said">“${said}”</p><p class="lede">Not one of the hospital system's tasks, so nothing further happens: no door, no details.</p>`;
     if (k === "ask_choose") return `<h2>Enquiry <span class="muted">· sounds like ${ctx.options.length} tasks, so it asks rather than guesses</span></h2><p class="said">“${said}”</p><div class="choices">${ctx.options.map((o, i) => `<span class="chip"><b>${i + 1}</b> ${esc(cap(o))}</span>`).join("")}</div>`;
     const f = F[ctx.fn];
-    return `<h2>Enquiry</h2><p class="said">“${said}”</p><p class="lede">Understood as <b>${esc(f.label)}</b> <span class="muted">· ${esc(f.group)}</span></p>
-      <p class="muted">Recognised by the words underlined; one of ${fmt(D.functions.length)} fixed tasks.</p>`;
+    return `<h2>Enquiry</h2><p class="said">“${said}”</p><p class="lede">Understood as <b>${esc(f.label)}</b> <span class="muted">· ${esc(f.group)}</span></p>`;
   }
   function boardDoor() {
     if (!ctx || !ctx.fn) return `<h2>Staff only</h2><p class="lede">Every task is checked against your badge before a single detail is asked.</p>`;
@@ -224,7 +222,7 @@
   }
   function paintScreen(animate) {
     const el = $("screen");
-    const chrome = `<div class="chrome"><b>HIS Portal</b><span>Authorised staff only. Access is logged.</span><span class="who">signed in: ${esc(role)}</span></div>`;
+    const chrome = `<div class="chrome"><b>HIS Portal</b><span class="who">signed in: ${esc(role)}</span></div>`;
     if (!ctx || !ctx.fn || states()[4] !== "passed") {
       el.style.cssText = "";
       el.innerHTML = chrome + `<div class="tabs">${D.screens.map((s) => `<span>${esc(s.title)}</span>`).join("")}</div>`
@@ -284,7 +282,7 @@
       if (c && n >= 0) steps[n].note = c[1];
     }
     const withheld = lines[2] === D.texts.withheldHead;
-    return `<h3>${esc(cap(f.label))}</h3><p class="sub">Steps for ${esc(role)}</p>`
+    return `<h3>${esc(cap(f.label))}</h3>`
       + (withheld ? `<p class="soft">${esc(dash(D.texts.withheldHead.trim()))}</p>` : "")
       + `<ol class="steps">${steps.map((s, i) => {
         const st = f.steps[i] || {}, pl = st.place, layer = pl ? LAYER_OF[pl.module] : st.layer;
@@ -378,25 +376,16 @@
 
   /* ------------------------------------------------------------ badges, tasks, welcome */
   function paintBadges() {
-    $("badges").innerHTML = D.roles.map((r, i) => `<button class="badge" type="button" data-role="${r.id}" aria-pressed="${r.id === role}" aria-keyshortcuts="${i + 1}"><b>${esc(cap(r.id))}</b><small>${mine(r.id).length} tasks</small></button>`).join("");
+    $("badges").innerHTML = D.roles.map((r, i) => `<button class="badge" type="button" data-role="${r.id}" aria-pressed="${r.id === role}" aria-keyshortcuts="${i + 1}" title="${mine(r.id).length} tasks"><b>${esc(cap(r.id))}</b></button>`).join("");
     $("badges").querySelectorAll(".badge").forEach((b) => b.addEventListener("click", () => setRole(b.dataset.role)));
   }
-  function paintTasks() {
-    const common = (D.common[role] || []).filter((id) => F[id]).slice(0, 3);
-    const out = D.outside[role];
-    $("tasks").innerHTML = `<span class="lab">Common</span><div class="grid">${common.map((id) => `<button class="chip say" type="button" data-say="${esc(F[id].label)}">${esc(cap(F[id].label))}</button>`).join("")}`
-      + `<button class="chip say all" type="button" data-say="help">All tasks</button></div>`
-      + (out ? `<div class="outside"><span class="lab">Outside your role</span><button class="chip out say" type="button" data-say="${esc(F[out].label)}">${icon("p-noentry")}<span>${esc(cap(F[out].label))}</span></button></div>` : "");
-    $("tasks").querySelectorAll(".say").forEach((b) => b.addEventListener("click", () => ask(b.dataset.say)));
-  }
+  // The welcome: two of the badge's common tasks and one it may not do, so the staff-only door is found.
   function welcome() {
-    const help = R[role].help.split("\n").slice(1).filter((l) => !/^Say "cancel"/.test(l)).join("\n");
-    const div = add("bot", `<p>What do you need to do in the hospital system? Ask in your own words, or pick a task.</p>
-      <p class="soft">You get the steps for ${esc(role)}, placed on the screens where they happen, or you are told who can do it instead.</p>
-      <div class="choices"><button class="chip play" type="button">${icon("p-play")}<span>Play the ${esc(role)} tour</span></button></div>
-      <details class="directory"${PHONE.matches ? "" : " open"}><summary class="dh">${icon("p-arrow")}Your tasks · ${mine(role).length}</summary>${listHTML({ text: help })}</details>`, `<span class="tile">${icon("p-info")}</span>`);
-    div.querySelectorAll(".directory .say").forEach((b) => b.addEventListener("click", () => ask(b.dataset.say)));
-    div.querySelector(".play").addEventListener("click", () => { if (!touring) playTour(); });
+    const common = (D.common[role] || []).filter((id) => F[id]).slice(0, 2), out = D.outside[role];
+    const start = (id, cls = "", tag = "") => `<button class="start say ${cls}" type="button" data-say="${esc(F[id].label)}">${cls ? icon("p-noentry") : ""}<span class="st">${esc(cap(F[id].label))}</span>${tag ? `<small>${tag}</small>` : ""}${icon("p-chev")}</button>`;
+    add("bot", `<p class="greet">What do you need to do in the hospital system?</p>
+      <p class="soft">Ask in your own words, or start with one of these.</p>
+      <div class="starts">${common.map((id) => start(id)).join("")}${out ? start(out, "out", `Not for ${esc(role)}`) : ""}</div>`, `<span class="tile">${icon("p-info")}</span>`);
   }
   function setRole(r) {
     if (touring) stopTour();
@@ -405,9 +394,8 @@
     role = r; session = new Engine.Session(role); history = []; ctx = null; lastGuidance = null; stepAt = 0;
     document.body.dataset.role = r;
     $("log").innerHTML = "";
-    paintBadges(); paintTasks(); welcome();
+    paintBadges(); welcome();
     paintStages(false); paintBoard(0, false); paintScreen(false); settled();
-    $("tourFor").textContent = `· ${cap(role)}`;
   }
 
   /* ------------------------------------------------------------ the tour: one recorded conversation per badge */
@@ -449,6 +437,7 @@
   }
   function nextNow() { if (!touring) return; land(); clearTimeout(tourTimer); if (waitingNext) waitingNext(); }
   $("tour").addEventListener("click", () => (touring ? stopTour() : playTour()));
+  $("alltasks").addEventListener("click", () => ask("help"));
 
   /* ------------------------------------------------------------ wiring */
   $("stages").innerHTML = STAGES.map((s, i) => `<li><button class="sign" type="button" data-board="${i}" data-state="waiting"><span class="tile">${icon(s.icon)}</span><span class="sl"><b>${esc(s.name)}</b><span>Waiting</span></span></button></li>`).join("");
@@ -475,8 +464,7 @@
   $("foot").innerHTML = (Engine.live
     ? `<span class="ok"><i aria-hidden="true"></i>Rule-based, no AI model · checked against ${fmt(Engine.checked)} recorded conversations</span>`
     : `<span class="off">Rule-based, no AI model · typing is off on this copy; the tours and tasks still play</span>`)
-    + `<span class="src">Screens as of ${esc(D.portalAsOf)}</span>`
-    + `<span class="keys"><kbd>/</kbd> ask <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> badge <kbd>T</kbd> tour <kbd>Space</kbd> next</span>`;
+    + `<span class="keys"><kbd>/</kbd> ask <kbd>T</kbd> tour <kbd>Space</kbd> next</span>`;
   const placeholder = () => { $("input").placeholder = !Engine.live ? "Typing is off on this copy" : NARROW.matches ? "Ask for an HIS task" : "Ask for an HIS task, in your own words"; };
   NARROW.addEventListener("change", placeholder); placeholder();
   if (!Engine.live) $("input").disabled = true;

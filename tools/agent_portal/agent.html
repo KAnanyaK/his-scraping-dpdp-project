@@ -18,17 +18,17 @@
     <div class="status" id="status" role="status"><i aria-hidden="true"></i><span>Ready</span></div>
     <div class="ctl">
       <nav class="badges" id="badges" aria-label="Staff badge"></nav>
-      <button class="tour-btn" id="tour" type="button" aria-describedby="tourFor"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><use href="#p-play"/></svg><svg class="i-stop" viewBox="0 0 24 24" aria-hidden="true"><use href="#p-stop"/></svg><span>Tour</span><span class="for" id="tourFor"></span></button>
+      <button class="tour-btn" id="tour" type="button"><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><use href="#p-play"/></svg><svg class="i-stop" viewBox="0 0 24 24" aria-hidden="true"><use href="#p-stop"/></svg><span>Tour</span></button>
     </div>
   </header>
 
   <main class="floor">
     <section class="desk" aria-label="Enquiry desk">
       <div class="log" id="log" aria-live="polite"></div>
-      <div class="tasks" id="tasks"></div>
       <form class="ask" id="ask" autocomplete="off">
         <label class="sr-only" for="input">Ask the assistant</label>
         <input id="input" type="text" placeholder="Ask for an HIS task, in your own words" spellcheck="false">
+        <button class="alltasks" id="alltasks" type="button">All tasks</button>
         <button class="send" id="send" type="submit"><span>Ask</span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#p-arrow"/></svg></button>
       </form>
     </section>
@@ -57,7 +57,8 @@
     <symbol id="p-question" viewBox="0 0 24 24"><path d="M9.3 9.2a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2 1-1.2 1.9v.6"/><circle cx="12" cy="17.6" r="1.1" fill="currentColor" stroke="none"/></symbol>
     <symbol id="p-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
     <symbol id="p-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5" fill="currentColor"/></symbol>
-    <symbol id="p-pin" viewBox="0 0 24 24"><path d="M12 21s6.5-6 6.5-11a6.5 6.5 0 0 0-13 0c0 5 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="p-chev" viewBox="0 0 24 24"><path d="M9.5 6.5 15 12l-5.5 5.5"/></symbol>
+    <symbol id="p-pin"viewBox="0 0 24 24"><path d="M12 21s6.5-6 6.5-11a6.5 6.5 0 0 0-13 0c0 5 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
     <!-- the five departments -->
     <symbol id="d-patient_administration" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.5" rx="1.5"/><circle cx="9" cy="11.2" r="2"/><path d="M5.9 16a3.3 3.3 0 0 1 6.2 0M14 10.5h4M14 13.5h4"/></symbol>
     <symbol id="d-clinical_ehr" viewBox="0 0 24 24"><path d="M12 19.5s-7-4.4-7-9.4A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.1c0 5-7 9.4-7 9.4z"/><path d="M7.2 12.4h2.6l1.4-2.2 1.8 4 1.3-1.8h2.5"/></symbol>
