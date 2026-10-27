@@ -3,7 +3,8 @@
    of it; every value read is a particle that flies into the technique's lane and travels on through
    the rules, the export and the erasure. A particle's colour is its DPDP data category; a red halo is
    a value out of the job's purpose; a white diamond is an identifier that left as a token. The
-   presenter steps it: Space / right arrow next, left back, Home / End, 1-3 the briefing, J the job.
+   presenter steps it: Space / right arrow next, left back, Home / End, 1-3 the briefing, M the model, J the job.
+   Beside the hospital, the working shows each station's calculation as the report makes it, live.
    Every number is the recorded one; each lane replays one run end to end. */
 (() => {
   "use strict";
@@ -45,7 +46,8 @@
   const jobName = (id) => id.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
 
   const state = { job: D.jobs[0].id, model: D.models.includes("claude-opus-5-5") ? "claude-opus-5-5" : D.models[0], briefing: "policy" };
-  let step = 0, p = 0, playing = false, last = 0, lanes = [], geo = null, ctx = null, dpr = 1;
+  let step = 0, p = 0, playing = false, last = 0, lanes = [], geo = null, ctx = null, dpr = 1, leaving = [];
+  const SWAP_OUT = 220, SWAP_IN = 320;                 // ms: a swapped lane's old run fading out, its new run fading in
   const JOB = () => D.jobs.find((j) => j.id === state.job);
 
   /* ------------------------------------------------------------ glow sprites */
@@ -108,7 +110,7 @@
       `<span class="cat${j.allowed.includes(c) ? "" : " no"}" style="color:${COL[c]}" data-tip="${esc(CAT[c])}: ${j.allowed.includes(c) ? "allowed for this purpose" : "out of this purpose"}"><i style="background:${COL[c]}"></i><span style="color:var(--${j.allowed.includes(c) ? "text-2" : "text-3"})">${esc(CAT[c])}</span></span>`).join("")}</span>`;
   }
 
-  /* ------------------------------------------------------------ the lanes, the person */
+  /* ------------------------------------------------------------ the lanes */
   function laneHTML(l) {
     const t = l.L, name = l.slot === "A" ? "Ours" : l.slot === "C" ? "Baseline" : modelName(t.model);
     const sub = l.slot === "A" ? "the reference: the job's expert field list" : l.slot === "C" ? "takes everything it can reach"
@@ -138,7 +140,8 @@
     if (k === 4) {
       const failed = D.rule_ids.filter((r) => J.rules[r] && J.rules[r][0] !== "pass");
       const lamps = D.rule_ids.map((r, i) => `<i class="${failed.includes(r) ? "no" : ""}" style="transition-delay:${120 + i * 70}ms" data-tip="${esc(r)} ${esc(D.rule_titles[r] || "")}: ${failed.includes(r) ? "broken" : "held"}"></i>`).join("");
-      let extra = failed.length ? `<div class="bad">${failed.length === D.rule_ids.length ? "every rule broken" : esc(failed.join(", ")) + " broken"}</div>` : `<div class="good">7 of 7 rules held</div>`;
+      let extra = !failed.length ? `<div class="good">${D.rule_ids.length} of ${D.rule_ids.length} rules held</div>`
+        : `<div class="bad" data-tip="Broken: ${esc(failed.join(", "))}">${failed.length === D.rule_ids.length ? "every rule broken" : failed.length === 1 ? `${esc(failed[0])} broken` : `${failed.length} rules broken`}</div>`;
       if (t.samples > 1 && t.mean[state.job] != null) extra += `<div class="sub" data-tip="The mean over all ${t.samples} recorded runs; this lane replays the first">${t.samples} runs: ${f3(t.mean[state.job])}</div>`;
       return `<div><span class="big">${f3(J.score)}</span><span class="lamps">${lamps}</span></div>${extra}`;
     }
@@ -163,22 +166,175 @@
     if (J.erase) return `<div><span class="big date">${esc(shortDate(J.erase))}</span></div><div class="sub">after ${J.retention} days</div>`;
     return `<div class="bad strong">Never erased</div><div class="sub">no erase date</div>`;
   }
-  const DASH = '<span class="dash">–</span>';
-  function person() {
-    const j = JOB(), P = D.patient;
-    const rows = lanes.map((l) => {
-      const mine = l.J.named && l.J.patients.includes(P.index);
-      const others = l.J.rows.length - (mine ? 1 : 0);
-      const nm = l.slot === "A" ? "Ours" : l.slot === "C" ? "Baseline" : modelName(l.L.model);
-      const e = l.J.export;
-      return `<tr data-l="${l.cls}"><td><span class="who"><span class="rd ${l.cls}">${l.slot}</span><span class="nm">${esc(nm)}</span></span></td>`
-        + `<td data-s="3" data-v="${l.J.named ? (mine ? l.J.cols.length : 0) : "?"}">${DASH}</td>`
-        + `<td data-s="3" data-v="${fmt(others)}">${DASH}</td>`
-        + `<td data-s="7" data-v="${e.kind === "tok" ? "token" : e.kind === "raw" ? "raw id" : "none"}" class="${e.kind === "raw" ? "bad" : e.kind === "tok" ? "good" : ""}">${DASH}</td>`
-        + `<td data-s="8" data-v="${l.J.erase ? esc(shortDate(l.J.erase)) : "never"}" class="${l.J.erase ? "" : "bad"}">${DASH}</td></tr>`;
+  /* ------------------------------------------------------------ the working: each station's calculation, live
+     The panel follows the station. Its first line is the formula the report uses there; each row is one factor,
+     worked for the three lanes with the recorded run's own figures, and each figure arrives when its lane does.
+     At Score the seven rule scores land one by one and their sum is divided out in front of the presenter. */
+  const DASH = "–";
+  const RULE = { "DM-01": "Minimisation", "LB-01": "Lawful basis", "SL-01": "Storage limit", "SS-01": "Safeguards", "PL-01": "Purpose limit", "NT-01": "Notice", "AC-01": "Accountability" };
+  const f2 = (n) => (n == null ? DASH : Number(n).toFixed(2));
+  const times = (n) => (n == null ? DASH : `${Number(n) >= 10 ? Number(n).toFixed(1) : Number(n).toFixed(2)}×`);
+  const RULE_AT = (i) => 0.2 + i * 0.13;               // seconds into Score when rule i lands
+  const named = (l) => l.J.named && l.J.patients.includes(D.patient.index);
+  const leaves = (l) => (l.J.export.kind === "tok" ? ["token", "good"] : l.J.export.kind === "raw" ? ["raw id", "bad"] : ["none", ""]);
+  const workKey = () => `${step}|${state.job}|${state.model}|${state.briefing}`;
+  function station() {
+    const j = JOB(), P = D.patient, A = lanes[0].J;
+    const span = (label, v, tip, at) => ({ label, tip, span: () => v, at });
+    const row = (label, tip, cell, opt = {}) => ({ label, tip, cell, ...opt });
+    if (step === 0) return {
+      formula: `values = patients × fields = ${P.of} × ${D.columns.length}`, note: "Every value the hospital holds, each coloured by its DPDP data category",
+      rows: [span("Patients", [fmt(P.of)]), span(`Fields, in ${D.modules.length} modules`, [fmt(D.columns.length)]),
+        span("Values held", [fmt(P.of * D.columns.length)]),
+        span("This job's purpose", [PURPOSE[j.purpose] || j.purpose]),
+        span("Categories it allows", [`${j.allowed.length} of ${CATS.length}`], j.allowed.map((c) => CAT[c]).join(", ")),
+        span("Retention ceiling", [`${j.ceiling} days`]),
+        span("Fields the job needs", [fmt(A.cost.needed)], "The job's expert field list: every field with a reason"),
+        span("Patient followed", [P.mrn], j.single ? "The patient this job is about" : `One of the ${P.of} patients this job covers`)],
+    };
+    if (step === 1) {
+      const at = (k) => () => step > 1 || p - 0.25 >= k * 0.22;
+      return {
+        formula: "pass = TLS ∧ robots ∧ authorised ∧ signed in", note: "A run passes the gate only when every check holds",
+        rows: [span("TLS on the session", [D.meta.tls ? "observed" : "absent", D.meta.tls ? "good" : "bad"], "Observed on the browser's own session, not declared", at(0)),
+          span("robots.txt", ["Disallow: /"], "Read and honoured: only the hospital's authorisation lets the crawler in", at(1)),
+          span("Authorisation", [D.meta.authorisation || DASH], "Logged with every run", at(2)),
+          span("Signed in as", [D.meta.account || DASH], "A service account: a username and a password, nothing else", at(3)),
+          span("Every run", ["audit-logged"], "Written to the hash-chained audit log at the metering boundary", at(3))],
+      };
+    }
+    if (step === 2) return {
+      formula: "module = found by its fields, never its URL", note: "The crawler reads each page's column headers and infers the module's HIS layer from the fields it finds",
+      rows: [span("Pages the crawl loaded", [fmt(D.discover)], "", () => p >= 0.3),
+        span("Modules found", [fmt(D.modules.length)], D.modules.map((m) => m.title).join(", "), () => p >= 1.25),
+        span("Fields mapped", [fmt(D.columns.length)], "Each column header read and matched to the catalogue", () => p >= 1.25)],
+    };
+    if (step === EXTRACT) {
+      const on = (l) => reached(l, EXTRACT);
+      return {
+        formula: "coverage = got ÷ need;  excess = read ÷ need", note: "Coverage: the needed fields obtained ÷ the fields the job needs. Excess: the distinct fields read ÷ the fields the job needs. Both as the meter saw them at the adapter boundary",
+        rows: [
+          row("Values read", "Patient × field values that left the hospital", (l) => [fmt(landed(l))], { live: true }),
+          row(`Fields read, of ${D.columns.length}`, "Distinct fields the meter saw", (l) => [fmt(l.J.cost.distinct)], { at: on }),
+          row("Coverage", "Needed fields obtained ÷ the fields the job needs", (l) => [f2(l.J.cost.coverage), l.J.cost.coverage < 1 ? "warn" : "", null, `${l.J.cost.matched} of ${l.J.cost.needed} needed fields`], { at: on }),
+          row("Excess ratio", "Fields read ÷ the fields the job needs (1.00× is exactly the list)", (l) => [times(l.J.cost.excess), "", null, `${l.J.cost.distinct} read ÷ ${l.J.cost.needed} needed`], { at: on }),
+          row("Records ÷ patient's own", "Records read ÷ the patient's own records in the modules the job needs (one-patient jobs)", (l) => l.J.cost.rec_needed == null
+            ? ["n/a", "nil", null, "Not a one-patient job: no record count to compare"]
+            : [times(l.J.cost.rec_excess), l.J.cost.rec_excess > 1 ? "bad" : "", null, `${l.J.cost.records} records read; the patient's own are ${l.J.cost.rec_needed}`], { at: on }),
+          row("This patient's values", `Values of ${P.mrn} it read`, (l) => [l.J.named ? fmt(named(l) ? l.J.cols.length : 0) : "?", "", null, l.J.named ? "" : "Read without the record number: it cannot say whose they were"], { at: on }),
+          row("Other patients read", "Other patients whose rows it read", (l) => { const o = l.J.rows.length - (named(l) ? 1 : 0); return [fmt(o), o && j.single ? "bad" : ""]; }, { at: on }),
+          row("Out of purpose", "Values whose data category is outside this job's purpose", (l) => { const o = l.J.oos.length * l.J.rows.length; return [fmt(o), o ? "bad" : "good"]; }, { at: on })],
+      };
+    }
+    if (step === SCORE) {
+      const ids = D.rule_ids.filter((r) => A.rules[r] && A.rules[r][0] !== "not_applicable");
+      const landedRules = () => (step > SCORE ? ids.length : ids.filter((_, i) => p >= RULE_AT(i)).length);
+      return {
+        formula: `score = (${ids.map((r) => r.slice(0, 2)).join("+")}) ÷ ${ids.length}`, note: "Each rule scores the run from 0 to 1; every rule weighs the same, so the score is their mean. Hover a figure for how its rule reached it",
+        rows: [...ids.map((r, i) => row(`<span class="rid">${esc(r)}</span>${esc(RULE[r] || D.rule_titles[r] || "")}`, `${r} ${D.rule_titles[r] || ""}`,
+          (l) => { const v = l.J.rules[r]; return [f3(v[1]), v[0] === "pass" ? "" : "bad", v[1], l.J.why[r]]; }, { at: () => p >= RULE_AT(i), html: true })),
+        row("Score", "The sum of the rule scores ÷ the number of rules: the run's compliance score", (l) => {
+          const k = landedRules();
+          if (k < ids.length) return [k ? `${ids.slice(0, k).reduce((a, r) => a + l.J.rules[r][1], 0).toFixed(2)} ÷ ${ids.length}` : DASH, "nil"];
+          return [f3(l.J.score), l.J.score < 1 ? "bad" : "good", null, `${ids.reduce((a, r) => a + l.J.rules[r][1], 0).toFixed(3)} ÷ ${ids.length}`];
+        }, { live: true, total: true }),
+        row("Mean of all runs", "The benchmark's figure for this job: every recorded run scored", (l) => {
+          const n = l.L.samples, m = l.L.mean[state.job], rg = l.L.range[state.job];
+          return [f3(m ?? l.J.score), "", null, n > 1 ? `${n} runs${rg ? `, from ${f3(rg[0])} to ${f3(rg[1])}` : ""}` : "Deterministic: one run, the same every time"];
+        }, { at: () => p >= RULE_AT(ids.length) })],
+      };
+    }
+    const on = (l) => reached(l, step);
+    if (step === PSEUD) return {
+      formula: "token = HMAC-SHA-256(key, id), first 48 bits", note: "Each identifier is replaced by a keyed hash before export; the key stays with the hospital, apart from the export",
+      rows: [row("Identifiers read", "Direct identifier values in what it read", (l) => [fmt(l.J.export.identifiers)], { at: on }),
+        row("Left as tokens", "Identifiers replaced by keyed tokens before export", (l) => (l.J.pseud.on ? [fmt(l.J.export.identifiers), "good"] : ["none", "bad"]), { at: on }),
+        row("Birth date, PIN coarsened", "Quasi-identifiers generalised: the date of birth to its year, the PIN code to its first 3 digits", (l) => (l.J.pseud.generalised ? ["yes", "good"] : ["no", l.J.pseud.on ? "" : "bad"]), { at: on }),
+        row("k-anonymity", "k: the smallest group of exported rows sharing one combination of quasi-identifiers; k = 1 means a row is unique", (l) => {
+          const { k, k_rows: n } = l.J.pseud;
+          if (k == null) return ["none left", "good", null, "No quasi-identifier left in this export"];
+          if (n <= 1) return ["1 row", "", null, "One patient's export: k cannot exceed 1"];
+          return [`k = ${k}`, k === 1 ? "bad" : "", null, `k = ${k} over ${n} exported rows`];
+        }, { at: on }),
+        row("This patient, out as", `How ${P.mrn} leaves the hospital`, leaves, { at: on })],
+    };
+    if (step === SHAPE) return {
+      formula: "HL7 v2: one message per record, per module", note: "Each record is shaped into an HL7 v2 message for its module, and into FHIR resources for the same records",
+      rows: [row("Modules", "Modules its values came from", (l) => [fmt(l.mods.length)], { at: on }),
+        row("HL7 v2 messages", "", (l) => [fmt(l.J.shape.hl7)], { at: on }),
+        row("FHIR resources", "", (l) => [fmt(l.J.shape.fhir)], { at: on }),
+        row("Values carried", "", (l) => [fmt(l.ps.length)], { at: on })],
+    };
+    if (step === EXPORT) return {
+      formula: "leaks = raw identifiers found in the export", note: "The export is searched for every raw identifier the run read; digits are matched within one field",
+      rows: [row("Identifiers read", "", (l) => [fmt(l.J.export.identifiers)], { at: on }),
+        row("Found raw in the export", "Raw identifier values the audit found in the HL7 and FHIR it made", (l) => [fmt(l.J.export.leaked), l.J.export.leaked ? "bad" : "good"], { at: on }),
+        row("Leak rate", "Raw identifiers found ÷ identifiers read", (l) => { const e = l.J.export; return e.identifiers ? [`${Math.round((100 * e.leaked) / e.identifiers)}%`, e.leaked ? "bad" : "good"] : [DASH, "nil"]; }, { at: on }),
+        row("This patient, out as", `How ${P.mrn} leaves the hospital`, leaves, { at: on })],
+    };
+    // Erase, then the job as the report gives it
+    const mean = (l) => l.L.mean[state.job] ?? l.J.score;
+    const rows = [
+      row("Retention declared", `Must not exceed the purpose's ceiling of ${j.ceiling} days`, (l) => (l.J.retention == null ? ["none", "bad"]
+        : [`${l.J.retention} d`, l.J.retention > j.ceiling ? "bad" : ""]), { at: on }),
+      row("Erased on", "The run's date + the retention it declared; the purge runs as the pipeline's last stage", (l) => (l.J.erase ? [shortDate(l.J.erase).replace(/ \d{4}$/, "")] : ["never", "bad"]), { at: on }),
+      { sub: "This job, as the report gives it" },
+      row("Score, all runs", "The mean over every recorded run of this job", (l) => [f3(mean(l)), mean(l) < 1 ? "bad" : "good", mean(l)], { at: on }),
+      row("Behaviour", "DM-01, PL-01 and a retention within the ceiling: what it pulled and decided; the mean of its runs", (l) => [f2(l.J.behaviour), l.J.behaviour < 1 ? "bad" : ""], { at: on }),
+      row("Coverage", "Agreement with the expert field list: needed fields obtained ÷ needed", (l) => [f2(l.J.cost.coverage), l.J.cost.coverage < 1 ? "warn" : ""], { at: on }),
+      row("Excess ratio", "Fields read ÷ the fields the job needs", (l) => [times(l.J.cost.excess)], { at: on }),
+      row("Distinct decisions", "How many different decisions its recorded runs made for this job: the fields pulled and the manifest filed", (l) => (l.L.samples > 1
+        ? [`${l.L.decisions[state.job] ?? DASH} in ${l.L.samples}`, (l.L.decisions[state.job] || 1) > 1 ? "warn" : ""] : ["1, fixed"]), { at: on }),
+    ];
+    if (j.trap) rows.push(row("Trap held, all runs", j.trap, (l) => {
+      const t = l.L.traps[state.job], w = l.L.wilson && l.L.wilson[state.job];
+      if (!t) return [DASH, "nil"];
+      return [`${t[0]} of ${t[1]}`, t[0] === t[1] ? "good" : "bad", null, w ? `95% Wilson interval: ${Math.round(w[0] * 100)}% to ${Math.round(w[1] * 100)}%` : "Deterministic: one run"];
+    }, { at: on }));
+    return { formula: `erase on = run date + retention ≤ ${j.ceiling} days`, note: `The retention a run declares must not exceed this purpose's ceiling of ${j.ceiling} days; the purge runs as the pipeline's last stage`, rows };
+  }
+  let work = null;
+  function working() {
+    const S = station(), key = workKey();
+    const lanesOn = S.rows.some((r) => r.cell);
+    // one header row: the station's name over the label column, each lane's badge over its column
+    const head = `<thead><tr class="wh"><th><span class="wt">Working</span><span class="ws">${esc(STOPS[step])}</span></th>${lanes.map((l) =>
+      `<th${lanesOn ? "" : ' class="off"'} data-tip="${esc(l.slot === "A" ? "Ours" : l.slot === "C" ? "Baseline" : `${modelName(l.L.model)}, ${BRIEFW[l.L.briefing]}`)}"><span class="rd ${l.cls}">${l.slot}</span></th>`).join("")}</tr>`
+      + `<tr class="fm"><td colspan="4"><div class="wf"${S.note ? ` data-tip="${esc(S.note)}"` : ""}>${esc(S.formula)}</div></td></tr></thead>`;
+    const cells = [];
+    const body = S.rows.map((r) => {
+      if (r.sub) return `<tr class="sub"><td colspan="4">${esc(r.sub)}</td></tr>`;
+      const label = `<th scope="row"${r.tip ? ` data-tip="${esc(r.tip)}"` : ""}>${r.html ? r.label : esc(r.label)}</th>`;
+      if (r.span) {
+        cells.push({ f: () => (r.at && !r.at() ? [DASH, "nil"] : r.span()) });
+        return `<tr>${label}<td colspan="3" class="span" data-c="${cells.length - 1}"></td></tr>`;
+      }
+      return `<tr${r.total ? ' class="total"' : ""}>${label}${lanes.map((l) => {
+        cells.push({ f: () => (r.live || !r.at || r.at(l) ? r.cell(l) : [DASH, "nil"]) });
+        return `<td data-l="${l.cls}" data-c="${cells.length - 1}"></td>`;
+      }).join("")}</tr>`;
     }).join("");
-    $("person").innerHTML = `<div class="ph"><span class="pid">${esc(P.mrn)}</span><span class="pn">${esc(P.name)} \u00b7 ${j.single ? "the patient this job is about" : `one of the ${P.of} patients this job covers`}</span></div>`
-      + `<table><thead><tr><th>One patient</th><th data-tip="This patient's values it read">Theirs</th><th data-tip="Other patients whose rows it read">Others</th><th data-tip="How the identifier leaves the hospital">Out as</th><th>Kept until</th></tr></thead><tbody>${rows}</tbody></table>`;
+    const el = $("work");
+    el.innerHTML = `<table><colgroup><col><col class="ln"><col class="ln"><col class="ln"></colgroup>${head}<tbody>${body}</tbody></table>`;
+    // a new station's working sets in place; the same station re-set for another run does not blink
+    el.classList.remove("in");
+    if (!still() && work && work.key.split("|")[0] !== key.split("|")[0]) { void el.offsetWidth; el.classList.add("in"); }
+    el.querySelectorAll("td[data-c]").forEach((td) => { cells[Number(td.dataset.c)].el = td; });
+    work = { key, cells };
+  }
+  function syncWork() {
+    if (!work || work.key !== workKey()) working();
+    for (const c of work.cells) {
+      const [t, cls = "", bar = null, tip = ""] = c.f();
+      const sig = `${t}|${cls}|${bar}|${tip}`;
+      if (c.sig === sig) continue;
+      const fresh = c.sig != null && c.was === DASH && t !== DASH && !still();
+      c.sig = sig; c.was = t;
+      c.el.className = `${c.el.colSpan > 1 ? "span" : ""}${cls ? ` ${cls}` : ""}${bar != null ? " meter" : ""}`;
+      c.el.innerHTML = `<span class="v${fresh ? " flip" : ""}">${esc(t)}</span>`;
+      if (bar != null) c.el.style.setProperty("--w", clamp(bar).toFixed(3)); else c.el.style.removeProperty("--w");
+      if (tip) c.el.dataset.tip = tip; else delete c.el.dataset.tip;
+    }
   }
 
   function build() {
@@ -192,7 +348,7 @@
       l.divs = [...l.el.querySelectorAll(".pipe i")];
       l.shown = {};
     });
-    purpose(); person();
+    purpose(); work = null;
     measure();
   }
 
@@ -357,6 +513,7 @@
     ctx.globalCompositeOperation = "lighter";
     lanes.forEach((l) => drawLane(l, time));
     ctx.globalCompositeOperation = "source-over";
+    if (leaving.length) drawLeaving(performance.now());
   }
   function drawMatrix() {
     const { colX, rowY, cell } = geo, of = D.patient.of, P = D.patient.index;
@@ -408,24 +565,25 @@
   }
   function drawLane(l, time) {
     const n = l.ps.length, e = l.J.export, S = l.slots;
+    // a lane whose run was just swapped comes in over the old one as it goes (see switchTo)
+    const fade = l.born == null || still() ? 1 : clamp((performance.now() - l.born) / SWAP_IN);
     // a dense lane glows less per value, so hundreds of them read as a mass, not a white-out
     const dens = clamp(Math.sqrt(36 / Math.max(1, n)), 0.2, 1), halo = n > 120 ? 2.3 : 3.4;
     ctx.globalCompositeOperation = "source-over";
-    // afterimages: every stretch a value has left keeps it, faint and still, with what happened to it marked
-    if (step >= SCORE) {
-      const now = step - SCORE;
-      for (let i = 0; i < n; i++) {
-        const q = l.ps[i], upto = now - (moveF(l, i) > 0 ? 0 : 1);
-        for (let k = 0; k <= upto && k < STRETCH.length - 1; k++) ghost(l, q, S[k].pos(q), S[k].r, k, dens);
-      }
-      // the module envelopes shaping made, and the file that left, as quiet outlines
-      const shapedAt = (k) => S[k].frames && (now > k || (now === k && p >= doneAt(l, step)));
+    // A value is drawn only where it is: a stretch it has left keeps nothing of it. The module envelopes shaping
+    // makes, and the file that leaves, are outlines round the values inside them, so they come with the values
+    // and go with them.
+    if (step >= SHAPE && fade > 0) {
+      const sh = SHAPE - EXTRACT, ex = EXPORT - EXTRACT;
+      const arrive = clamp((p - MOVE * 0.8) / 0.6), leave = 1 - ease(clamp(p / MOVE));
       ctx.lineWidth = 1;
-      if (shapedAt(SHAPE - EXTRACT)) frames(S[SHAPE - EXTRACT].frames, now === SHAPE - EXTRACT ? 0.32 : 0.14);
-      if (shapedAt(EXPORT - EXTRACT)) {
-        frames(S[EXPORT - EXTRACT].frames, now === EXPORT - EXTRACT ? 0.22 : 0.1);
-        const [fx, fy, fw, fh] = S[EXPORT - EXTRACT].file;
-        ctx.globalAlpha = now === EXPORT - EXTRACT ? 0.75 : 0.3; ctx.strokeStyle = e.leaked ? BREACH : "#ffffff"; ctx.lineWidth = 1.2;
+      if (step === SHAPE) frames(S[sh].frames, 0.32 * arrive * fade);
+      if (step === EXPORT) frames(S[sh].frames, 0.32 * leave * fade);
+      const fileA = step === EXPORT ? arrive : step === ERASE ? leave : 0;
+      if (fileA > 0) {
+        frames(S[ex].frames, 0.22 * fileA * fade);
+        const [fx, fy, fw, fh] = S[ex].file;
+        ctx.globalAlpha = 0.75 * fileA * fade; ctx.strokeStyle = e.leaked ? BREACH : "#ffffff"; ctx.lineWidth = 1.2;
         ctx.beginPath(); ctx.roundRect(fx, fy, fw, fh, 5); ctx.stroke();
       }
     }
@@ -437,11 +595,11 @@
       if (settle > 0) {
         for (let i = 0; i < n; i++) {
           const [x, y] = M.at(i), q = l.ps[i];
-          ctx.globalAlpha = 0.9 * ease(settle); ctx.fillStyle = q.idf && !l.tokens ? BREACH : COL[q.cat];
+          ctx.globalAlpha = 0.9 * ease(settle) * fade; ctx.fillStyle = q.idf && !l.tokens ? BREACH : COL[q.cat];
           ctx.fillRect(x - M.pt * 0.4, y - M.pt * 0.4, M.pt * 0.8, M.pt * 0.8);
         }
         const [fx, fy, fw, fh] = M.frame, per = 2 * (fw + fh);
-        ctx.globalAlpha = 1; ctx.strokeStyle = BREACH; ctx.lineWidth = 1.5; ctx.shadowColor = BREACH; ctx.shadowBlur = 10;
+        ctx.globalAlpha = fade; ctx.strokeStyle = BREACH; ctx.lineWidth = 1.5; ctx.shadowColor = BREACH; ctx.shadowBlur = 10;
         ctx.setLineDash([per * ease(settle), per]);
         ctx.beginPath(); ctx.roundRect(fx, fy, fw, fh, 4); ctx.stroke();
         ctx.setLineDash([]); ctx.shadowBlur = 0;
@@ -451,7 +609,7 @@
     for (let i = 0; i < n; i++) {
       const w = where(l, i);
       if (!w) continue;
-      const a = w.a * (1 - ease(settle));
+      const a = w.a * (1 - ease(settle)) * fade;
       if (a <= 0.01) continue;
       const q = l.ps[i];
       // what the value has become by now: a token, a generalised quasi-identifier, an identifier left raw
@@ -495,21 +653,14 @@
     for (const [x, y, w, h] of list) { ctx.beginPath(); ctx.roundRect(x, y, w, h, Math.min(4, w / 3)); ctx.stroke(); }
   }
   function diamond(x, y, s) { ctx.beginPath(); ctx.moveTo(x, y - s); ctx.lineTo(x + s, y); ctx.lineTo(x, y + s); ctx.lineTo(x - s, y); ctx.closePath(); ctx.fill(); }
-  /* An afterimage: where a value was, at a station it has left. A token stays a dim diamond; a value out of
-     purpose, or an identifier that left raw, keeps a red ring. */
-  function ghost(l, q, [x, y], r, k, dens) {
-    const rr = Math.max(1, r * 0.85), later = k >= PSEUD - EXTRACT;
-    if (later && q.idf && l.tokens) { ctx.globalAlpha = 0.32; ctx.fillStyle = "#fff"; diamond(x, y, rr * 1.4); return; }
-    if (later && q.cat === "quasi_identifier" && l.gen) {
-      ctx.globalAlpha = 0.3; ctx.strokeStyle = COL[q.cat]; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(x, y, rr, 0, 6.2832); ctx.stroke(); return;
+  /* The run a lane showed before a switch, held as it last looked and faded out over the new one. */
+  function drawLeaving(now) {
+    leaving = leaving.filter((s) => now - s.t0 < SWAP_OUT);
+    for (const s of leaving) {
+      ctx.globalAlpha = 1 - ease((now - s.t0) / SWAP_OUT);
+      ctx.drawImage(s.img, s.x, s.y, s.w, s.h);
     }
-    ctx.globalAlpha = 0.16; ctx.fillStyle = COL[q.cat];
-    ctx.beginPath(); ctx.arc(x, y, rr, 0, 6.2832); ctx.fill();
-    if (q.oos || (later && q.idf && !l.tokens)) {
-      ctx.globalAlpha = 0.65 * Math.max(0.5, dens); ctx.strokeStyle = BREACH; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(x, y, rr + 1.4, 0, 6.2832); ctx.stroke();
-    }
+    ctx.globalAlpha = 1;
   }
 
   /* ------------------------------------------------------------ the page's state at this moment */
@@ -539,15 +690,7 @@
       if (s >= 0) { l.spot.style.left = `${SEG[s] * 100}%`; l.spot.style.width = `${(SEG[s + 1] - SEG[s]) * 100}%`; }
       l.divs.forEach((d, k) => d.classList.toggle("on", step === k + SCORE));
     });
-    $("person").querySelectorAll("td[data-s]").forEach((td) => {
-      const l = lanes.find((x) => x.cls === td.parentElement.dataset.l), k = Number(td.dataset.s);
-      const on = reached(l, k);
-      const was = td.dataset.on === "1";
-      if (on !== was) {
-        td.dataset.on = on ? "1" : "0";
-        td.innerHTML = on ? `<span class="v${playing && !still() ? " flip" : ""}">${esc(td.dataset.v)}</span>` : DASH;
-      }
-    });
+    syncWork();
   }
   function set(l, k, v) {
     l.kv[k].classList.toggle("nil", step < EXTRACT);
@@ -580,7 +723,7 @@
     $("transport").innerHTML = `<div class="keys"><button id="k-home" aria-label="Back to the start" data-tip="Home">${ICON.home}</button><button id="k-back" aria-label="Previous station" data-tip="Left arrow">${ICON.back}</button>`
       + `<button class="go" id="k-go" aria-label="Next station">${ICON.next}<span id="go-t">Start</span><kbd>Space</kbd></button></div>`
       + `<div class="track" id="track"><span class="fill" id="fill"></span>${STOPS.map((s, k) => `<button data-k="${k}" aria-label="${s}"><i></i><span>${s}</span></button>`).join("")}</div>`
-      + `<div class="hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> briefing · <kbd>J</kbd> job</div>`;
+      + `<div class="hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> briefing · <kbd>M</kbd> model · <kbd>J</kbd> job</div>`;
     $("k-home").onclick = () => jump(0);
     $("k-back").onclick = () => jump(step - 1);
     $("k-go").onclick = next;
@@ -614,13 +757,29 @@
     track(); status();
   }
   function switchTo(patch) {
+    const was = { job: state.job, ids: lanes.map((l) => l.id) };
     Object.assign(state, patch);
     $("brief").querySelectorAll("button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.b === state.briefing)));
     $("jobs").querySelectorAll("button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.j === state.job)));
     $("model").value = state.model;
+    // A lane whose run changes lets go of the old one at once: what it drew is kept only as a picture that
+    // fades out over the new run fading in, and nothing of the old run moves again.
+    const swapped = (k) => was.job !== state.job || was.ids[k] !== lanesIdFor(k);
+    const fx = $("fx"), now = performance.now();
+    leaving = [];
+    if (!still() && step >= EXTRACT && fx.width) lanes.forEach((l, k) => {
+      if (!swapped(k) || !l.pipe) return;
+      const pad = 10, x = l.pipe.x - pad, y = l.pipe.y - pad, w = l.pipe.w + 2 * pad, h = l.pipe.h + 2 * pad;
+      const img = document.createElement("canvas");
+      img.width = Math.max(1, Math.round(w * dpr)); img.height = Math.max(1, Math.round(h * dpr));
+      img.getContext("2d").drawImage(fx, Math.round(x * dpr), Math.round(y * dpr), img.width, img.height, 0, 0, img.width, img.height);
+      leaving.push({ img, x, y, w, h, t0: now });
+    });
     playing = false; p = duration(step);
     build(); status();
+    lanes.forEach((l, k) => { l.born = was.job !== state.job || was.ids[k] !== l.id ? now : null; });
   }
+  const lanesIdFor = (k) => (k === 0 ? "ours" : k === 2 ? "base" : `${state.model}|${state.briefing}`);
   function frame(now) {
     if (playing) {
       p += Math.min(0.1, (now - last) / 1000);
@@ -643,6 +802,7 @@
     else if (e.key === "End") { e.preventDefault(); jump(LAST); }
     else if (e.key === "1" || e.key === "2" || e.key === "3") switchTo({ briefing: BRIEF[Number(e.key) - 1][0] });
     else if (e.key === "j" || e.key === "J") { const k = D.jobs.findIndex((j) => j.id === state.job); switchTo({ job: D.jobs[(k + 1) % D.jobs.length].id }); }
+    else if (e.key === "m" || e.key === "M") { const k = D.models.indexOf(state.model); switchTo({ model: D.models[(k + 1) % D.models.length] }); }
   });
   const tip = $("tip");
   document.addEventListener("mouseover", (e) => {
@@ -655,6 +815,15 @@
   });
   let rz = null;
   addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { measure(); track(); }, 120); });
+  // On a phone the stage grows with what it holds (the working is taller at some stations than at others), so
+  // the canvas is re-measured whenever the stage's size changes, never left stretched over a new layout.
+  if (window.ResizeObserver) {
+    let seen = "";
+    new ResizeObserver(([e]) => {
+      const sz = `${Math.round(e.contentRect.width)}x${Math.round(e.contentRect.height)}`;
+      if (sz !== seen) { seen = sz; if (geo) measure(); }
+    }).observe($("stage"));
+  }
 
   window.FLOW = { next, jump, switchTo, get step() { return step; }, get lanes() { return lanes; } };
   header(); transport(); build(); track(); status();

@@ -55,8 +55,10 @@ def _flow(portal: dict, rules_part: dict) -> tuple[dict, set[str]]:
     """Per technique and job: what the run read, the rules' verdicts, the export, the erasure."""
 
     from compliance.access_report import mask
-    from compliance.benchmark import bind_subject
+    from compliance.benchmark import _split_scores as split_scores, bind_subject, necessary_records
     from compliance.checkers import run_all
+    from compliance.models import RecordScope
+    from compliance.stats import wilson
     from compliance.policy import PURPOSE_POLICY
     from data_synthetic.catalogue import FIELD_CATALOGUE
     from extraction.adapters.mock_his import MockHISDataSource
@@ -102,15 +104,27 @@ def _flow(portal: dict, rules_part: dict) -> tuple[dict, set[str]]:
             pages[tid][visit["task"]] += 1
     bench = {v1._tech_id(row["technique"])[0]: row for row in rules_part.get("portal", [])}
 
+    necessary = {t.task_id: necessary_records(t, source) for t in tasks}
     lanes: dict[str, dict] = {}
     for technique in default_techniques(tasks, source):
         tid, model, briefing = v1._tech_id(technique.name)
         b = bench.get(tid, {})
+        traps = b.get("trap_matrix", {})
         lane = {"id": tid, "model": model, "briefing": briefing, "jobs": {},
                 "samples": b.get("repeats", 1), "mean": b.get("per_task", {}), "range": b.get("per_task_range", {}),
-                "traps": b.get("trap_matrix", {}), "decisions": b.get("distinct_decisions", {})}
+                "traps": traps, "decisions": b.get("distinct_decisions", {}),
+                # the report prints a 95% Wilson interval beside a model's counts; ours and the baseline do not sample
+                "wilson": {job: [round(x, 2) for x in wilson(*hr)] for job, hr in traps.items() if model and hr and hr[1]}}
         for task in tasks:
-            out = technique.extract(MeteredSource(source), task)
+            metered = MeteredSource(source)
+            out = technique.extract(metered, task)
+            # As the benchmark harness does: a single-patient run's manifest gets the records the meter saw
+            # against the patient's own, so DM-01 scores the record axis on evidence and this run's score is
+            # the one the benchmark gives it.
+            if necessary[task.task_id] is not None:
+                out.run.scope = RecordScope(records_pulled=metered.records, records_necessary=necessary[task.task_id])
+            cost = metered.cost({(lf.layer.value, f) for lf in task.needed for f in lf.fields}, 0.0,
+                                records_necessary=necessary[task.task_id])
             read = set()
             for layer_rows in out.rows.values():
                 for r in layer_rows:
@@ -122,6 +136,18 @@ def _flow(portal: dict, rules_part: dict) -> tuple[dict, set[str]]:
             allowed = {c.value for c in PURPOSE_POLICY[task.purpose].allowed_categories}
             needed = {f"{lf.layer.value}/{f}" for lf in task.needed for f in lf.fields}
             report = run_all(out.run, out.records)
+            # the report's behaviour score is a mean over every run a technique made of the job
+            splits = [split_scores(report, out.run)]
+            for k in range(1, lane["samples"] if model else 1):
+                technique.sample = k
+                again = MeteredSource(source)
+                o2 = technique.extract(again, task)
+                if necessary[task.task_id] is not None:
+                    o2.run.scope = RecordScope(records_pulled=again.records, records_necessary=necessary[task.task_id])
+                splits.append(split_scores(run_all(o2.run, o2.records), o2.run))
+            if model:
+                technique.sample = 0
+            behaviour, paperwork = (sum(s[i] for s in splits) / len(splits) for i in (0, 1))
             shaped = normalise(out, key=f"{DISPLAY_KEY}:{tid}")      # each export its own key, as in the pipeline
             a = audit(out, shaped)
             pid = ""
@@ -141,7 +167,13 @@ def _flow(portal: dict, rules_part: dict) -> tuple[dict, set[str]]:
                 "oos": [col_of[k] for k in keys if cat[k.split("/")[0]].get(k.split("/")[1]) not in allowed],
                 "needed": len(needed), "hit": len(needed & set(keys)),
                 "rules": {r.rule_id: [r.status.value, round(r.score, 3)] for r in report.results},
+                "why": _why(out.run, out.records, report),
                 "score": round(report.compliance_score, 3),
+                "behaviour": round(behaviour, 3), "paperwork": round(paperwork, 3),
+                # the cost profile the report prints: what the meter saw at the adapter boundary
+                "cost": {"distinct": cost.distinct_fields, "needed": cost.needed_fields, "matched": cost.matched_fields,
+                         "coverage": cost.coverage, "excess": cost.excess_ratio, "records": cost.records,
+                         "rec_needed": cost.records_necessary, "rec_excess": cost.record_excess},
                 "export": {"kind": kind, "token": token, "leaked": a.leaked, "identifiers": a.identifier_values},
                 # the stages between the rules and the export: pseudonymise (and generalise), then shape
                 "pseud": {"on": shaped.pseudonymised, "generalised": a.generalised, "k": a.k, "k_rows": a.k_rows},
@@ -157,6 +189,67 @@ def _flow(portal: dict, rules_part: dict) -> tuple[dict, set[str]]:
     patient = {"index": about, "mrn": mask(register[about]["mrn"]), "name": v1._mask_value("full_name", None, register[about]["full_name"]),
                "of": len(register)}
     return {"columns": columns, "modules": modules, "jobs": jobs, "lanes": lanes, "patient": patient}, secrets
+
+
+def _why(run, records, report) -> dict[str, str]:
+    """Each rule's score as the rule computes it (compliance/rules/), in figures a presenter can read out.
+
+    Field names and counts only: no value of any record is quoted.
+    """
+
+    from compliance.models import FieldCategory
+    from compliance.policy import PURPOSE_POLICY, policy_for
+
+    by = {r.rule_id: r for r in report.results}
+    pol = policy_for(run.purpose)
+    taken = set().union(*(r.field_categories for r in records)) if records else set()
+    outside = set(FieldCategory) - pol.allowed_categories
+    excess = taken - pol.allowed_categories
+    out: dict[str, str] = {}
+
+    cat = 1.0 - len(excess) / len(outside) if outside else 1.0
+    dm = f"categories outside the purpose taken: {len(excess)} of {len(outside)}, so 1 - {len(excess)}/{len(outside)} = {cat:.2f}"
+    if run.scope is not None:
+        p, n = run.scope.records_pulled, run.scope.records_necessary
+        rec = 1.0 if p <= max(n, 0) or p == 0 else n / p
+        dm += f"; records read {p} where the patient's own are {n}, so {min(p, n)}/{p} = {rec:.2f}; DM-01 is the lower of the two"
+    out["DM-01"] = dm + f" = {by['DM-01'].score:.3f}"
+
+    lb = run.lawful_basis
+    out["LB-01"] = ("no lawful basis declared = 0" if lb is None else
+                    f"basis '{lb.type.value}' declared without its reference = 0.5" if not lb.reference else
+                    f"basis '{lb.type.value}' declared with its reference = 1")
+
+    ceiling = pol.max_retention_days
+    days = ("no retention declared, -0.5" if run.retention_days is None else
+            f"retention {run.retention_days} d over the {ceiling} d ceiling, -0.5" if run.retention_days > ceiling else
+            f"retention {run.retention_days} d within the {ceiling} d ceiling")
+    out["SL-01"] = f"1, {days}; {'a deletion route declared' if run.deletion_mechanism else 'no deletion route, -0.5'} = {by['SL-01'].score:g}"
+
+    s = run.security
+    checks = [s.transport_encrypted, s.at_rest_encrypted, s.access_controlled]
+    names = ["TLS", "encrypted at rest", "access control"]
+    if pol.requires_pseudonymised_identifiers and FieldCategory.DIRECT_IDENTIFIER in taken:
+        checks.append(s.identifiers_pseudonymised)
+        names.append("identifiers pseudonymised")
+    held = [n for n, ok in zip(names, checks) if ok]
+    out["SS-01"] = f"{len(held)} of {len(checks)} safeguards ({', '.join(held) or 'none'}) = {by['SS-01'].score:.2f}"
+
+    if not run.purpose_specified or run.purpose not in PURPOSE_POLICY:
+        out["PL-01"] = "no specific purpose declared = 0"
+    elif run.secondary_uses:
+        out["PL-01"] = f"{len(run.secondary_uses)} onward use(s) beyond the purpose = {by['PL-01'].score:g}"
+    else:
+        out["PL-01"] = "confined to the one declared purpose = 1"
+
+    nt = run.notice
+    out["NT-01"] = ("no privacy notice recorded = 0" if nt is None else
+                    "a notice that covers the purpose = 1" if nt.covers_purpose else "a notice not covering the purpose = 0.5")
+
+    g = run.governance
+    ac = [g.audit_log_enabled, g.accountable_party is not None, g.processing_record_kept]
+    out["AC-01"] = f"{sum(ac)} of 3 controls (audit log, accountable party, record of processing) = {by['AC-01'].score:.2f}"
+    return out
 
 
 def payload() -> tuple[dict, set[str]]:

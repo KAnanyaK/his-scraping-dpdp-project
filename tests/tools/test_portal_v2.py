@@ -82,6 +82,36 @@ def test_each_lane_replays_one_recorded_run(built):
             assert f"{m}|{b}" in data["lanes"]
 
 
+def test_the_working_is_the_benchmarks_own_arithmetic(built):
+    """The working panel shows each run's figures as the benchmark computes them.
+
+    Each lane's run is scored with the record axis the harness fills in, so its score lies inside the benchmark's
+    range for that job (and equals it for ours and the baseline, which do not sample); the score is the mean of
+    the seven rule scores the panel sums; the per-job behaviour averages to the benchmark's behaviour score; and
+    coverage and excess are the meter's.
+    """
+
+    data, _, _ = built
+    bench = {v1._tech_id(r["technique"])[0]: r for r in v1._parts()["rules"]["portal"]}
+    for tid, lane in data["lanes"].items():
+        b = bench[tid]
+        for job, j in lane["jobs"].items():
+            lo, hi = b["per_task_range"].get(job, [b["per_task"][job]] * 2)
+            assert lo - 1e-9 <= j["score"] <= hi + 1e-9, (tid, job, j["score"], lo, hi)
+            if not lane["model"]:
+                assert j["score"] == b["per_task"][job], (tid, job)
+            scores = [j["rules"][r][1] for r in data["rule_ids"] if j["rules"][r][0] != "not_applicable"]
+            assert abs(sum(scores) / len(scores) - j["score"]) <= 0.0015, (tid, job)
+            assert set(j["why"]) == set(data["rule_ids"])
+            c = j["cost"]
+            assert c["matched"] == j["hit"] and c["needed"] == j["needed"]
+            assert c["coverage"] == round(c["matched"] / c["needed"], 3) and c["excess"] == round(c["distinct"] / c["needed"], 3)
+        behaviour = sum(j["behaviour"] for j in lane["jobs"].values()) / len(lane["jobs"])
+        assert abs(behaviour - b["behaviour_score"]) <= 0.0015, (tid, behaviour, b["behaviour_score"])
+        # an interval only where runs were sampled, as the report prints one
+        assert bool(lane["wilson"]) == bool(lane["model"] and lane["traps"])
+
+
 def test_the_committed_page_carries_its_data_and_font():
     assert PAGE.exists(), "build it with python tools/build_portal_v2.py"
     html = PAGE.read_text(encoding="utf-8")
