@@ -112,6 +112,20 @@ def test_the_working_is_the_benchmarks_own_arithmetic(built):
         assert bool(lane["wilson"]) == bool(lane["model"] and lane["traps"])
 
 
+def test_the_trial_run_timed_the_runs_the_lanes_replay(built):
+    """The timing under the lanes is of the same runs: each trial run made the page loads the recorded run made."""
+
+    data, _, _ = built
+    if not v2.TRIAL.exists():
+        pytest.skip("no timed trial yet: python scripts/time_portal_trial.py")
+    assert data["trial"] and data["trial"]["crawl"]["ms"] > 0
+    for tid, lane in data["lanes"].items():
+        for job, j in lane["jobs"].items():
+            t = j["time"]
+            assert t and t["access_ms"] > 0 and t["process_ms"] > 0, (tid, job)
+            assert t["pages"] == j["pages"], (tid, job, t["pages"], j["pages"])
+
+
 def test_the_committed_page_carries_its_data_and_font():
     assert PAGE.exists(), "build it with python tools/build_portal_v2.py"
     html = PAGE.read_text(encoding="utf-8")

@@ -337,9 +337,48 @@
     }
   }
 
+  /* ------------------------------------------------------------ the trial run: time to access and process the records
+     A timed trial of the same runs (scripts/time_portal_trial.py), on this laptop's browser and the same portal. Access
+     is the extraction through the browser; processing is the rules, the tokens, the HL7 v2 / FHIR shaping and the
+     export audit. Access fills as the lane reads at Extract; processing fills from Score to Export. */
+  const secs = (ms) => (ms == null ? DASH : ms >= 1000 ? `${(ms / 1000).toFixed(2)} s` : `${Math.round(ms)} ms`);
+  function timingHTML() {
+    if (!D.trial || !lanes.every((l) => l.J.time)) return "";
+    const T = D.trial, when = shortDate(T.generated);
+    const row = (l) => `<div class="trow" id="tm-${l.cls}" data-l="${l.cls}"><span class="rd ${l.cls}">${l.slot}</span>`
+      + `<span class="tn">${esc(l.slot === "A" ? "Ours" : l.slot === "C" ? "Baseline" : modelName(l.L.model))}</span>`
+      + `<span class="tbar acc"><b></b></span><span class="tv acc" data-tip="${esc(`${l.J.time.pages} page loads, ${l.J.time.records} records read`)}"></span>`
+      + `<span class="tbar pro"><b></b></span><span class="tv pro"></span><span class="tv tot"></span></div>`;
+    return `<div class="timing" id="timing" data-tip="${esc(`A timed trial of the same runs on ${T.machine}, ${when}: the fixture portal (${T.portal.records} records a module, ${T.portal.page_size} a page) in a real browser. Wall-clock, hardware-dependent; no score depends on it.`)}">`
+      + `<div class="thd"><span class="tt">Trial run</span><span class="tsub">time to access and process the records</span>`
+      + `<span class="tcol acc">Access <i>browser</i></span><span class="tcol pro">Process <i>rules, tokens, HL7/FHIR, audit</i></span><span class="tcol tot">Total</span></div>`
+      + lanes.map(row).join("")
+      + `<div class="tfoot">Sign-in and crawl, once before every job: ${secs(T.crawl.ms)}, ${T.crawl.pages} page loads · ${esc(when)}, this laptop</div></div>`;
+  }
+  function syncTiming() {
+    if (!$("timing")) return;
+    const maxA = Math.max(...lanes.map((l) => l.J.time.access_ms)), maxP = Math.max(...lanes.map((l) => l.J.time.process_ms));
+    lanes.forEach((l) => {
+      const t = l.J.time, el = l.tm;
+      if (!el) return;
+      const fa = step > EXTRACT ? 1 : step < EXTRACT ? 0 : clamp(p / l.E);
+      const fp = step >= EXPORT ? (reached(l, EXPORT) ? 1 : 0.75 + 0.25 * clamp(p / doneAt(l, EXPORT)))
+        : step < SCORE ? 0 : (step - SCORE + clamp(p / duration(step))) / (EXPORT - SCORE + 1);
+      const sig = `${fa.toFixed(3)}|${fp.toFixed(3)}`;
+      if (el.dataset.sig === sig) return;
+      el.dataset.sig = sig;
+      el.querySelector(".tbar.acc b").style.transform = `scaleX(${(fa * t.access_ms) / maxA})`;
+      el.querySelector(".tbar.pro b").style.transform = `scaleX(${(fp * t.process_ms) / maxP})`;
+      el.querySelector(".tv.acc").textContent = fa ? `${secs(fa * t.access_ms)} · ${fmt(Math.round(fa * t.pages))} loads` : DASH;
+      el.querySelector(".tv.pro").textContent = fp ? secs(fp * t.process_ms) : DASH;
+      el.querySelector(".tv.tot").textContent = fa ? secs(fa * t.access_ms + fp * t.process_ms) : DASH;
+      el.classList.toggle("nil", !fa);
+    });
+  }
+
   function build() {
     lanes = lanesFor();
-    $("lanes").innerHTML = `<div class="stops" id="stops" style="grid-template-columns:${COLS}">${STRETCH.map((s) => `<span>${s}</span>`).join("")}</div>` + lanes.map(laneHTML).join("");
+    $("lanes").innerHTML = `<div class="stops" id="stops" style="grid-template-columns:${COLS}">${STRETCH.map((s) => `<span>${s}</span>`).join("")}</div>` + lanes.map(laneHTML).join("") + timingHTML();
     lanes.forEach((l) => {
       l.el = $(`lane-${l.cls}`);
       l.kv = Object.fromEntries([...l.el.querySelectorAll("[data-k]")].map((e) => [e.dataset.k, e]));
@@ -347,6 +386,7 @@
       l.spot = l.el.querySelector(".spot");
       l.divs = [...l.el.querySelectorAll(".pipe i")];
       l.shown = {};
+      l.tm = $(`tm-${l.cls}`);
     });
     purpose(); work = null;
     measure();
@@ -691,6 +731,7 @@
       l.divs.forEach((d, k) => d.classList.toggle("on", step === k + SCORE));
     });
     syncWork();
+    syncTiming();
   }
   function set(l, k, v) {
     l.kv[k].classList.toggle("nil", step < EXTRACT);

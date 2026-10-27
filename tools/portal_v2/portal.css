@@ -162,12 +162,14 @@ button, select { font: inherit; color: inherit; }
 .checks li.on svg { stroke: var(--a); }
 
 /* ------------------------------------------------------------------ the lanes */
-.lanes { position: relative; display: flex; flex-direction: column; justify-content: center; gap: clamp(0.875rem, 2.6vh - 0.35rem, 2rem); min-width: 0; z-index: 1; }
+.lanes { position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 0; gap: clamp(0.875rem, 2.6vh - 0.35rem, 2rem); min-width: 0; z-index: 1; }
 .stops { display: grid; grid-template-columns: 40% 20% 20% 20%; font-size: 0.8125rem; font-weight: 600; color: var(--text-3); }
 .stops span { padding-left: 0.625rem; transition: color .3s var(--ease); white-space: nowrap; }
 .stops span.on { color: var(--lit); }
 .stops span.done { color: var(--text-2); }
-.lane { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto; row-gap: 0.4375rem; }
+/* the pipes share what the column has left after headers, readouts and the trial strip, up to their usual height */
+.lane { flex: 0 1 auto; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(2.25rem, clamp(3.25rem, 12vh - 2.6rem, 6.5rem)) auto; row-gap: 0.4375rem; }
+.stops, .timing { flex: none; }
 .lane + .lane { padding-top: clamp(0.875rem, 2.6vh - 0.35rem, 2rem); border-top: 1px solid var(--hair); }
 .lane .rd { width: 1.375rem; height: 1.375rem; font-size: 0.75rem; align-self: center; }
 .lh { grid-column: 1; display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
@@ -180,7 +182,7 @@ button, select { font: inherit; color: inherit; }
 .kpi .kv { justify-self: end; font-size: 1.25rem; font-weight: 650; letter-spacing: -.02em; color: var(--text); }
 .kpi .kv.nil { color: #3a4558; }
 .lane.a .kpi .kv.hot { color: var(--a); } .lane.b .kpi .kv.hot { color: var(--b); } .lane.c .kpi .kv.hot { color: var(--c); }
-.pipe { grid-column: 1; position: relative; height: clamp(3.25rem, 12vh - 2.6rem, 6.5rem); border-radius: 0.875rem; background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012)); border: 1px solid var(--hair); overflow: hidden; }
+.pipe { grid-column: 1; position: relative; min-height: 0; border-radius: 0.875rem; background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012)); border: 1px solid var(--hair); overflow: hidden; }
 .pipe::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--glow) 0%, transparent 22%); opacity: .14; }
 .lane.a { --glow: var(--a); } .lane.b { --glow: var(--b); } .lane.c { --glow: var(--c); }
 .pipe i { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--hair-2); }
@@ -206,6 +208,27 @@ button, select { font: inherit; color: inherit; }
 .chip.tok { color: #fff; background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
 .chip.raw { color: #fff; background: rgba(255, 77, 106, .22); box-shadow: inset 0 0 0 1px rgba(255, 77, 106, .7), 0 0 14px -2px rgba(255, 77, 106, .7); }
 .chip.none { color: var(--text-2); background: var(--panel-2); font-family: var(--f); }
+
+/* ------------------------------------------------------------------ the trial run, under the lanes */
+.timing { padding-top: 0.625rem; border-top: 1px solid var(--hair); font-size: 0.8125rem; }
+.thd, .trow { display: grid; grid-template-columns: 1.375rem 7.5rem minmax(0, 1.5fr) 8.75rem minmax(0, 1fr) 4.25rem 4.5rem; align-items: center; column-gap: 0.625rem; }
+.thd { margin-bottom: 0.25rem; color: var(--text-3); font-weight: 550; white-space: nowrap; }
+.thd .tt { grid-column: 1 / 3; color: var(--text); font-weight: 650; font-size: 0.875rem; }
+.thd .tsub { display: none; }
+.thd .tcol i { font-style: normal; font-weight: 500; color: var(--text-3); opacity: .8; margin-left: 0.25rem; }
+.thd .tcol.acc { grid-column: 3 / 5; } .thd .tcol.pro { grid-column: 5 / 7; } .thd .tcol.tot { grid-column: 7; text-align: right; }
+.trow { height: 1.375rem; }
+.trow .rd { width: 1.125rem; height: 1.125rem; font-size: 0.6875rem; }
+.trow .tn { font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tbar { position: relative; height: 0.375rem; border-radius: 3px; background: rgba(255, 255, 255, .06); overflow: hidden; }
+.tbar b { position: absolute; inset: 0; border-radius: 3px; transform-origin: 0 50%; transform: scaleX(0); background: var(--lane); }
+.tbar.pro b { background: linear-gradient(90deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, .85)); }
+.trow[data-l="a"] { --lane: var(--a); } .trow[data-l="b"] { --lane: var(--b); } .trow[data-l="c"] { --lane: var(--c); }
+.tv { font-weight: 600; color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tv.pro, .tv.tot { text-align: right; }
+.tv.tot { color: var(--lane); font-weight: 650; }
+.trow.nil .tv { color: #4a5568; font-weight: 500; }
+.tfoot { margin-top: 0.3125rem; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ------------------------------------------------------------------ the transport */
 .transport { display: flex; align-items: center; gap: 1.5rem; padding: 0 1.5rem; border-top: 1px solid var(--hair); background: rgba(7, 10, 18, .7); min-width: 0; }
@@ -233,6 +256,16 @@ button, select { font: inherit; color: inherit; }
 
 .tip { position: fixed; z-index: 50; max-width: 18rem; padding: 0.4375rem 0.625rem; border-radius: 0.5rem; background: #141b2a; border: 1px solid var(--hair-2); color: var(--text); font-size: 0.75rem; line-height: 1.4; pointer-events: none; box-shadow: 0 12px 30px -10px rgba(0, 0, 0, .7); }
 
+/* a maximised window on the presenting laptop (about 1536 x 730): the lanes and the trial strip compact to fit */
+@media (max-height: 800px) and (min-width: 861px) {
+  .lane { row-gap: 0.25rem; }
+  .lanes, .lane + .lane { gap: 0.5rem; padding-top: 0.5rem; }
+  .ro { min-height: 0; line-height: 1.25; }
+  .timing { padding-top: 0.375rem; }
+  .thd { margin-bottom: 0.125rem; }
+  .trow { height: 1.1875rem; }
+  .tfoot { display: none; }
+}
 @media (max-width: 1300px) { .brand .tag, .hint { display: none; } .jobs button { padding: 0 0.5rem; } .jobbar { gap: 1rem; } .purpose { gap: 0.625rem; } .purpose .cats { gap: 0.5rem; } .stage { grid-template-columns: 22.5rem 7.75rem minmax(0, 1fr); } .purpose .cats { gap: 0.5rem; } }
 @media (max-width: 1100px) { .purpose { display: none; } .kpis { gap: 0.75rem; } }
 @media (max-width: 860px) {

@@ -43,6 +43,8 @@ SHELL = HERE / "portal.html"
 CSS = HERE / "portal.css"
 SCRIPTS = ["flow.js"]
 FONT = HERE / "fonts" / "Inter-latin-wght.woff2"
+# The timed trial run (scripts/time_portal_trial.py): wall-clock to access and to process each job's records.
+TRIAL = ROOT / "docs" / "benchmark_results" / "portal-trial-timing.json"
 # The tokens a page shows are made with fixed display keys (one per technique, as each export has its own),
 # so a rebuild does not churn them.
 # An export made by the pipeline still gets a fresh random secret (interop.normalise).
@@ -268,8 +270,15 @@ def payload() -> tuple[dict, set[str]]:
     for lane in flow["lanes"].values():
         if lane["model"] and lane["model"] not in models:
             models.append(lane["model"])
+    # The timed trial run, when there is one: each lane's job carries how long it took on this machine.
+    trial = json.loads(TRIAL.read_text(encoding="utf-8")) if TRIAL.exists() else None
+    if trial:
+        for tid, lane in flow["lanes"].items():
+            for job, j in lane["jobs"].items():
+                j["time"] = trial["runs"].get(tid, {}).get(job)
     data = {
         "built": date.today().isoformat(),
+        "trial": {k: trial[k] for k in ("generated", "machine", "crawl", "portal")} if trial else None,
         "meta": {k: P["meta"].get(k) for k in ("records", "generated", "tls", "account", "authorisation")},
         "discover": traced["discover"], "harness": traced["harness"],
         "rule_ids": P["rule_ids"], "rule_titles": {r["id"]: r["title"] for r in v1._rule_titles()},
