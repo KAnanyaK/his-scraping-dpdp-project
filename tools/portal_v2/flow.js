@@ -406,7 +406,14 @@
     D.modules.forEach((mod) => { for (let i = 0; i < mod.count; i++) { colX.push(x); x += pitch; } x += gapM; });
     const rowY = Array.from({ length: of }, (_, r) => y0 + r * pitch);
     // the module labels sit over their columns
-    [...$("mods").children].forEach((s, k) => { const mod = D.modules[k]; s.style.left = `${colX[mod.start] - x0}px`; s.style.width = `${colX[mod.start + mod.count - 1] + cell - colX[mod.start]}px`; });
+    // the module labels sit over their columns; a name wider than its module's columns is set a little smaller to fit
+    [...$("mods").children].forEach((s, k) => {
+      const mod = D.modules[k], w = colX[mod.start + mod.count - 1] + cell - colX[mod.start];
+      s.style.left = `${colX[mod.start] - x0}px`; s.style.width = `${w}px`; s.style.fontSize = "";
+      s.classList.remove("fit");
+      const need = s.scrollWidth, base = parseFloat(getComputedStyle(s).fontSize);
+      if (need > w) { s.style.fontSize = `${Math.max(10.5, (base * w) / need - 0.2)}px`; s.classList.add("fit"); }
+    });
     geo = { st, colX, rowY, cell, pitch, mx0: x0, mx1: x - gapM, my0: y0, my1: y0 + of * pitch };
     // every value crosses the gate at its lock, level with the middle of the hospital
     const bar = $("gate").querySelector(".gbar").getBoundingClientRect(), gt = $("gate").getBoundingClientRect();
